@@ -2,7 +2,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from python_parser.partial_state import PartialState
 import python_parser.action
-import python_parser.effect
 
 @dataclass(eq=True, frozen=True)
 class State(PartialState):
@@ -19,7 +18,7 @@ class State(PartialState):
     # def get_successors(self, action: python_parser.action.Action) -> frozenset[State]:
     #     return super().get_successors(action)
 
-    # def _get_successor(self,  effect: python_parser.effect.Effect) -> State:
+    # def _get_successor(self,  effect: PartialState) -> State:
     #     return super()._get_successor(effect)
 
     def __eq__(self, other_state: State) -> bool:

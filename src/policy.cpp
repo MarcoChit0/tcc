@@ -1,163 +1,145 @@
-#pragma once
-#include "./general.cpp"
+#include "./policy.hpp"
 
-#include "./state.cpp"
-#include "./action.cpp"
-
-class Policy : public Object
+Policy::Policy(const State &state, const Action &action, const Policy &parent_policy)
 {
-public:
-    using Object::Object;
+    this->id = ++last_used_id;
+    this->state() = state;
+    this->action() = action;
+    this->parent_policy() = parent_policy;
+}
 
-    // static std::unordered_map<Id, State> policies_states;
-    // static std::unordered_map<Id, Action> policies_actions;
-    // static std::unordered_map<Id, Policy> policies_parents_policies;
+Policy::DomainIterator Policy::domain_iterator() const
+{
+    return DomainIterator(*this);
+}
 
-    // static std::unordered_map<Id, std::unordered_map<State, Action>> policies_mappingss;
-    // static std::unordered_map<Id, std::unordered_set<State>> policies_outgoing_non_goal_statess;
-    // static std::unordered_map<Id, bool> do_policies_reach_the_goal;
-
-    static std::unordered_map<int64_t, State> policies_states;
-    static std::unordered_map<int64_t, Action> policies_actions;
-    static std::unordered_map<int64_t, Policy> policies_parents_policies;
-
-    static std::unordered_map<int64_t, std::unordered_map<State, Action>> policies_mappingss;
-    static std::unordered_map<int64_t, std::unordered_set<State>> policies_outgoing_non_goal_statess;
-    static std::unordered_map<int64_t, bool> do_policies_reach_the_goal;
-    static int64_t cache_size_estimation;
-
-    static void clear_cache()
+Action &Policy::operator[](const State &state) const
+{
+    if (this->is_none())
     {
-        policies_mappingss.clear();
-        policies_outgoing_non_goal_statess.clear();
-        do_policies_reach_the_goal.clear();
-        cache_size_estimation = 0;
-    };
-
-    Policy(const State &state, const Action &action, const Policy &parent_policy)
-    {
-        this->id = ++last_used_id;
-        policies_states[this->id] = state;
-        policies_actions[this->id] = action;
-        policies_parents_policies[this->id] = parent_policy;
-    };
-
-    State &state() const
-    {
-        return policies_states[this->id];
+        throw std::out_of_range("State not in policy.");
     }
-
-    Action &action() const
+    if (this->state() == state)
     {
-        return policies_actions[this->id];
+        return this->action();
     }
+    return this->parent_policy()[state];
+}
 
-    Policy &parent_policy() const
+bool Policy::contains(const State &state) const
+{
+    if (this->is_none())
     {
-        return policies_parents_policies[this->id];
+        return false;
     }
-
-    std::unordered_map<State, Action> &mappings() const
+    if (this->state() == state)
     {
-        if (not policies_mappingss.contains(this->id))
+        return true;
+    }
+    return this->parent_policy().contains(state);
+}
+
+size_t Policy::size() const
+{
+    if (this->is_none())
+    {
+        return 0;
+    }
+    return this->parent_policy().size() + 1;
+}
+
+set<State> Policy::outgoing_non_goal_states(const PartialState &goal_condition) const
+{
+    Function this_function {&Policy::outgoing_non_goal_states, *this};
+    auto &cache = functions_cache[this_function];
+    if (not cache.contains(goal_condition))
+    {
+        auto &do_reach_the_goal_cache = functions_cache[Function{&Policy::does_reach_the_goal, *this}];
+        if (this->is_none())
         {
-            cache_size_estimation += 2;
-            if (this->is_none())
-            {
-                policies_mappingss[this->id] = {};
-            }
-            else
-            {
-                policies_mappingss[this->id] = this->parent_policy().mappings();
-                policies_mappingss[this->id][this->state()] = this->action();
-                cache_size_estimation += 2 * policies_mappingss[this->id].size();
-            }
+            cache[goal_condition] = {};
+            do_reach_the_goal_cache[goal_condition] = false;
         }
-
-        return policies_mappingss[this->id];
-    };
-
-    std::unordered_set<State> &outgoing_non_goal_states(const PartialState &goal_condition) const
-    {
-        if (not policies_outgoing_non_goal_statess.contains(this->id))
+        else
         {
-            cache_size_estimation += 4;
-            if (this->is_none())
+            cache[goal_condition] = this->parent_policy().outgoing_non_goal_states(goal_condition);
+            do_reach_the_goal_cache[goal_condition] = this->parent_policy().does_reach_the_goal(goal_condition);
+            cache[goal_condition].erase(this->state());
+            for (const State &successor_state: this->state().get_successors(this->action()))
             {
-                policies_outgoing_non_goal_statess[this->id] = {};
-                do_policies_reach_the_goal[this->id] = false;
-            }
-            else
-            {
-                this->mappings();
-                policies_outgoing_non_goal_statess[this->id] = this->parent_policy().outgoing_non_goal_states(goal_condition);
-                do_policies_reach_the_goal[this->id] = this->parent_policy().does_reach_the_goal(goal_condition);
-                policies_outgoing_non_goal_statess[this->id].erase(this->state());
-                for (const State &successor_state: this->state().get_successors(this->action()))
+                if (successor_state.is_goal(goal_condition))
                 {
-                    if (successor_state.is_goal(goal_condition))
+                    do_reach_the_goal_cache[goal_condition] = true;
+                }
+                else
+                {
+                    if (not this->contains(successor_state))
                     {
-                        do_policies_reach_the_goal[this->id] = true;
-                    }
-                    else
-                    {
-                        if (not policies_mappingss[this->id].contains(successor_state))
-                        {
-                            policies_outgoing_non_goal_statess[this->id].insert(successor_state);
-                        }
+                        cache[goal_condition].insert(successor_state);
                     }
                 }
-                cache_size_estimation += policies_outgoing_non_goal_statess[this->id].size();
             }
         }
-
-        return policies_outgoing_non_goal_statess[this->id];
-    };
-
-    bool &does_reach_the_goal(const PartialState &goal_condition) const
-    {
-        if (not do_policies_reach_the_goal.contains(this->id))
-        {
-            this->outgoing_non_goal_states(goal_condition);
-        }
-
-        return do_policies_reach_the_goal[this->id];
-    };
-
-    friend std::ostream& operator<<(std::ostream &out, const Policy &self)
-    {
-        bool first = true;
-        for (const std::pair<State, Action> &pair: self.mappings())
-        {
-            if (not first)
-            {
-                out << std::endl;
-            }
-            State state = pair.first;
-            Action action = pair.second;
-            out << "[" << state << "]" << " -> " << action;
-            first = false;
-        }
-        return out;
-    };
+    }
+    return cache[goal_condition];
 };
-DEFINE_OBJECT_HASH(Policy);
 
-// std::unordered_map<Policy::Id, State> Policy::policies_states;
-// std::unordered_map<Policy::Id, Action> Policy::policies_actions;
-// std::unordered_map<Policy::Id, Policy> Policy::policies_parents_policies;
+bool Policy::does_reach_the_goal(const PartialState &goal_condition) const
+{
+    Function this_function {&Policy::does_reach_the_goal, *this};
+    auto &cache = functions_cache[this_function];
+    if (not cache.contains(goal_condition))
+    {
+        this->outgoing_non_goal_states(goal_condition);
+    }
+    return cache[goal_condition];
+};
 
-// std::unordered_map<Policy::Id, std::unordered_map<State, Action>> Policy::policies_mappingss;
-// std::unordered_map<Policy::Id, std::unordered_set<State>> Policy::policies_outgoing_non_goal_statess;
-// std::unordered_map<Policy::Id, bool> Policy::do_policies_reach_the_goal;
+std::ostream& operator<<(std::ostream &out, const Policy &self)
+{
+    bool first = true;
+    for (const State &state: self.domain_iterator())
+    {
+        if (not first)
+        {
+            out << std::endl;
+        }
+        out << "[" << state << "]" << " -> " << self[state];
+        first = false;
+    }
+    return out;
+};
 
-std::unordered_map<int64_t, State> Policy::policies_states;
-std::unordered_map<int64_t, Action> Policy::policies_actions;
-std::unordered_map<int64_t, Policy> Policy::policies_parents_policies;
+Policy::DomainIterator::DomainIterator(const Policy &policy) : policy(policy)
+{
+}
 
-std::unordered_map<int64_t, std::unordered_map<State, Action>> Policy::policies_mappingss;
-std::unordered_map<int64_t, std::unordered_set<State>> Policy::policies_outgoing_non_goal_statess;
-std::unordered_map<int64_t, bool> Policy::do_policies_reach_the_goal;
-int64_t Policy::cache_size_estimation = 0;
+Policy::DomainIterator Policy::DomainIterator::begin() const
+{
+    return *this;
+}
 
-#define EMPTY_POLICY Policy()
+Policy::DomainIterator Policy::DomainIterator::end() const
+{
+    return DomainIterator({});
+}
+
+Policy::DomainIterator &Policy::DomainIterator::operator++()
+{
+    this->policy.id = this->policy.parent_policy().id;
+    return *this;
+}
+
+bool Policy::DomainIterator::operator!=(const Policy::DomainIterator &other) const
+{
+    return this->policy != other.policy;
+}
+
+State Policy::DomainIterator::operator*() const
+{
+    return this->policy.state();
+}
+
+Policy::Heuristic::Heuristic(const Task &task) : task(task)
+{
+}

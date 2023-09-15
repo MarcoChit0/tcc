@@ -4,8 +4,6 @@ from python_parser.variable import Variable
 from python_parser.action import Action
 from python_parser.partial_state import PartialState
 from python_parser.state import State
-from python_parser.effect import Effect
-from python_parser.atomic_effect import AtomicEffect
 
 def convert_sas_to_task(sas: str) -> Task:
     sas_lines = deque(sas.split('\n'))
@@ -79,26 +77,24 @@ def convert_sas_to_task(sas: str) -> Task:
             l = deque(map(int, sas_lines.popleft().split(' ')))
             action_precondition_fact_variable = variables[l.popleft()]
             action_precondition_facts[action_precondition_fact_variable] = l.popleft()
-        action_effect_number_of_atomic_effects = int(sas_lines.popleft())
-        action_effect_atomic_effects: set[AtomicEffect] = set()
-        for _ in range(action_effect_number_of_atomic_effects):
+        action_effect_number_of_facts = int(sas_lines.popleft())
+        action_effect_facts: dict[Variable, int] = defaultdict(lambda: None)
+        for _ in range(action_effect_number_of_facts):
             l = deque(map(int, sas_lines.popleft().split(' ')))
             action_effect_atomic_effect_condition_number_of_facts = l.popleft()
             if action_effect_atomic_effect_condition_number_of_facts > 0:
                 raise Exception("Verify wheter effect conditions are really working.")
-            action_effect_atomic_effect_condition_facts: dict[Variable, str] = {}
+            # action_effect_atomic_effect_condition_facts: dict[Variable, str] = {}
             # for _ in range(action_effect_atomic_effect_condition_number_of_facts):
             #     action_effect_atomic_effect_condition_fact_variable = variables[l.popleft()]
             #     action_effect_atomic_effect_condition_facts[action_effect_atomic_effect_condition_fact_variable] = l.popleft()
-            action_effect_atomic_effect_condition = PartialState(facts=action_effect_atomic_effect_condition_facts)
-            action_effect_atomic_effect_fact_variable = variables[l.popleft()]
+            # action_effect_atomic_effect_condition = PartialState(facts=action_effect_atomic_effect_condition_facts)
+            action_effect_variable = variables[l.popleft()]
             x = l.popleft()
             if x != -1:
-                action_precondition_facts[action_effect_atomic_effect_fact_variable] = x
-            action_effect_atomic_effect = AtomicEffect(condition=action_effect_atomic_effect_condition, affected_variable=action_effect_atomic_effect_fact_variable, assignment_value=l.popleft())
-            action_effect_atomic_effects.add(action_effect_atomic_effect)
-        action_effect = Effect(atomic_effects=frozenset(action_effect_atomic_effects))
-        action_effects = set([action_effect])
+                action_precondition_facts[action_effect_variable] = x
+            action_effect_facts[action_effect_variable] = l.popleft()
+        action_effects = set([PartialState(action_effect_facts)])
         action_cost = int(sas_lines.popleft())
         action_id = action_i * variable_id
         if not using_metric:

@@ -1,13 +1,12 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from python_parser.effect import Effect
 from python_parser.partial_state import PartialState
 
 @dataclass(eq=True, frozen=True)
 class Action:
     name: str
     precondition: PartialState
-    effects: frozenset[Effect]
+    effects: frozenset[PartialState]
     cost: int
     is_an_axiom: bool
     id: int

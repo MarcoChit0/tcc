@@ -82,3 +82,39 @@ std::ostream& operator<<(std::ostream &out, const PartialState &self)
 // map<PartialState::Id, vec<Fact>> PartialState::partial_states_true_factss;
 vec<vec<Fact>> PartialState::partial_states_true_factss;
 boost::bimap<PartialState::Id, mpz_class> PartialState::partial_states_hashes;
+
+
+vec<PartialState> PartialState::get_regressed_partial_states(const vec<Action> &actions) const
+{
+    std::cout<<"LOG::PartialState::get_regressed_partial_states()::begin\n";
+    if(not regressed_partial_states.contains(this->id))
+    {
+        vec<PartialState> predecessors;
+        set<int64_t> predecessors_ids;
+        for(auto action : actions)
+        {
+            for (auto effect : action.effects())
+            {
+                if (this->does_model(effect))
+                {
+                    vec<Fact> predecessor_true_facts = this->true_facts();
+                    for(int i = 0; i < this->true_facts().size(); i++)
+                    {
+                        predecessor_true_facts[i] = action.precondition().true_facts()[i];
+                    }
+                    PartialState predecessor = PartialState(predecessor_true_facts);
+                    if(predecessors_ids.find(predecessor.id) != predecessors_ids.end())
+                    {
+                        predecessors_ids.insert(predecessor.id);
+                        predecessors.push_back(predecessor);
+                    }
+                }
+            }
+        }
+        regressed_partial_states[this->id] = predecessors;
+    }
+    std::cout<<"LOG::PartialState::get_regressed_partial_states()::end\n";
+    return regressed_partial_states[this->id];
+}
+
+map<PartialState::Id, vec<PartialState>> PartialState::regressed_partial_states;

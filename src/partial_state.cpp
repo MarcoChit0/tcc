@@ -93,8 +93,10 @@ vec<PartialState> PartialState::get_regressed_partial_states(const vec<Action> &
         set<int64_t> predecessors_ids;
         for(auto action : actions)
         {
+            std::cout << "Action: " << action << std::endl;
             for (auto effect : action.effects())
             {
+                std::cout << "Effect: " << effect << std::endl;
                 if (this->does_model(effect))
                 {
                     vec<Fact> predecessor_true_facts = this->true_facts();
@@ -103,7 +105,8 @@ vec<PartialState> PartialState::get_regressed_partial_states(const vec<Action> &
                         predecessor_true_facts[i] = action.precondition().true_facts()[i];
                     }
                     PartialState predecessor = PartialState(predecessor_true_facts);
-                    if(predecessors_ids.find(predecessor.id) != predecessors_ids.end())
+                    std::cout << "Predecessor: " << predecessor << std::endl;
+                    if(not predecessors_ids.contains(predecessor.id))
                     {
                         predecessors_ids.insert(predecessor.id);
                         predecessors.push_back(predecessor);

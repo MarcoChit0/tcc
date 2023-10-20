@@ -21,7 +21,7 @@ Policy AndStar::get_solution(const Task &task)
     double last_recurrent_procedure_time = NONE;
     auto recurrent_procedure = [*this, &queue]()
     {
-        std::cout << "Current f: " << policy_heuristic[queue.top()] << std::endl;
+        // std::cout << "Current f: " << policy_heuristic[queue.top()] << std::endl;
         double memory_limit = get_memory_limit();
         double memory_usage = get_memory_usage();
         if (memory_usage > 0.95 * memory_limit)

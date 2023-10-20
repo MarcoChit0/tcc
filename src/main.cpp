@@ -13,6 +13,7 @@
 #include "./state_heuristics/star.hpp"
 #include "./task_solvers/and_star.hpp"
 #include "./samples_generator/random_walk.hpp"
+#include "./samples_generator/breadth_first_search.hpp"
 
 void print_end(const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, const str &domain_file_name, const str &task_file_name)
 {
@@ -102,16 +103,11 @@ int main(int argc, char** argv)
         throw std::domain_error("Invalid policy heuristic.");
     }
 
-    // AndStar and_star = AndStar(*policy_heuristic_ptr, *state_heuristic_ptr);
-    // Policy solution = and_star.get_solution(task);
-
-    // print_end("Solved.", {solution}, and_star, str(argv[1]), str(argv[2]));
-    RandomWalk random_walk = RandomWalk();
-    vec<std::pair<State, int>> samples = random_walk.generate_samples(task, 1, 2);
-    for(std::pair<State,int> pair : samples)
-    {
-        std::cout << "State : " << pair.first << std::endl;
-        std::cout << "Value : " << pair.second << std::endl;
-    }
+    // RandomWalk random_walk = RandomWalk(task, 10, 10);
+    // random_walk.generate_samples();
+    // random_walk.print_samples();
+    BreadthFirstSearch breadth_first_search = BreadthFirstSearch(task, 20, 5);
+    breadth_first_search.generate_samples();
+    breadth_first_search.print_samples();
     return 0;
 }

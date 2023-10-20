@@ -24,6 +24,7 @@ public:
 
     Task(const str &domain_file_name, const str &task_file_name);
 };
+
 DEFINE_OBJECT_HASH(Task);
 
 class Task::Solver

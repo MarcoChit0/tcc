@@ -1,9 +1,8 @@
 #include "samples_generator.hpp"
 
-SamplesGenerator::SamplesGenerator(Task task, int number_of_samples)
+SamplesGenerator::SamplesGenerator(Task task)
 {
     this->task = task;
-    this->number_of_samples = number_of_samples;
     this->samples = vec<SAMPLE>{};
 }
 
@@ -18,11 +17,13 @@ void SamplesGenerator::print_samples() const
     }
 }
 
-SAMPLE SamplesGenerator::get_sample(State new_initial_state, const State::Heuristic& state_heuristic)
+SAMPLE SamplesGenerator::get_sample(State new_initial_state)
 {
-    Task new_task = this->task;
-    new_task.initial_state().id = new_initial_state.id;
-    DeltaNearest delta_nearest = DeltaNearest(new_task, state_heuristic);
-    Policy optimal_policy = AndStar(delta_nearest, state_heuristic).get_solution(new_task);
-    return std::make_tuple(new_initial_state, optimal_policy.size(), state_heuristic[new_initial_state]);
+    const State original_task_initial_state = this->task.initial_state();
+    this->task.initial_state().id = new_initial_state.id;
+    Star h_star = Star(this->task);
+    DeltaNearest delta_nearest = DeltaNearest(this->task, h_star);
+    Policy optimal_policy = AndStar(delta_nearest, h_star).get_solution(this->task);
+    this->task.initial_state() = original_task_initial_state;
+    return std::make_tuple(new_initial_state, optimal_policy.size(), h_star[new_initial_state], optimal_policy);
 }

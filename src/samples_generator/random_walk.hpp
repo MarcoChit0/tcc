@@ -4,7 +4,10 @@
 class RandomWalk: public SamplesGenerator
 {
 public:
-    int length;
-    RandomWalk(Task task, int number_of_samples, int length);
+    RandomWalk(Task task);
     void generate_samples();
+    vec<PartialState> perform_random_walk(PartialState partial_state);
+    State select_state(PartialState initial_partial_state, Star h_star, set<int64_t>* states_ids);
 };
+
+extern int random_walk_length;

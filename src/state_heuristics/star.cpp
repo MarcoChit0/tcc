@@ -91,7 +91,7 @@ vec<State> Star::get_concrete_states_from_pdb(const PartialState &partial_state)
         {
             State state;
             state.id = pair.first.id;
-            if (partial_state.does_model(state))
+            if (partial_state.does_model(state) and state.does_model(partial_state))
             {
                 concrete_states.push_back(state);
             }

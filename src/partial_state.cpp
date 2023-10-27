@@ -82,7 +82,6 @@ std::ostream& operator<<(std::ostream &out, const PartialState &self)
 vec<vec<Fact>> PartialState::partial_states_true_factss;
 boost::bimap<PartialState::Id, mpz_class> PartialState::partial_states_hashes;
 
-
 vec<PartialState> PartialState::get_regressed_partial_states(const vec<Action> &actions) const
 {
     if(not regressed_partial_states.contains(this->id))
@@ -121,7 +120,6 @@ vec<PartialState> PartialState::get_regressed_partial_states(const vec<Action> &
         }
         regressed_partial_states[this->id] = predecessors;
     }
-    // std::cout<<"LOG::PartialState::get_regressed_partial_states()::end\n";
     return regressed_partial_states[this->id];
 }
 

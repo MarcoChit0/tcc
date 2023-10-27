@@ -31,6 +31,12 @@ class ArgParsingNamespace(tap.Tap):
     white_list_file_path: str
     black_list_file_path: str
     save_folder_name_prefix: str
+    state_heuristic: str
+    policy_heuristic: str
+    number_of_samples: int
+    random_walk_length: int
+    breadth_first_search_depth: int
+    samples_generator: str
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=7)
@@ -40,6 +46,12 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-w", "--white-list-file-path", type=str, default='./white-list.txt')
         self.add_argument("-b", "--black-list-file-path", type=str, default='./black-list.txt')
         self.add_argument("-p", "--save-folder-name-prefix", type=str, default=f'test,v{datetime.date.today().isoformat()}')
+        self.add_argument("-sh", "--state-heuristic", type=str, default='lmcut')
+        self.add_argument("-ph", "--policy-heuristic", type=str, default='delta-nearest')
+        self.add_argument("-ns", "--number-of-samples", type=int, default=10)
+        self.add_argument("-rwl", "--random_walk_length", type=int, default=10)
+        self.add_argument("-bfsd", "--breadth-first-search-depth", type=int, default=10)
+        self.add_argument("-sg", "--samples-generator", type=str, default='random-walk')
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
@@ -61,16 +73,20 @@ class TaskInfo:
     domain_file_path: str
     task_file_path: str
 
-def get_splitted_command(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str) -> list[str]:
+def get_splitted_command(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples: int, random_walk_length: int, breadth_first_search_depth: int, samples_generator: str) -> list[str]:
     return [
         f'./and_star',
         f'{task_info.domain_file_path}',
         f'{task_info.task_file_path}',
         f'{policy_heuristic}',
         f'{state_heuristic}',
+        f'{number_of_samples}',
+        f'{random_walk_length}',
+        f'{breadth_first_search_depth}',
+        f'{samples_generator}'
     ]
 
-def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str) -> None:
+def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:int, random_walk_length:int, breadth_first_search_depth: int, samples_generator: str) -> None:
     global apn, threads_semaphore, folder_creation_lock, process_creation_lock, print_lock
 
     save_folder_path = f'./misc/data/raw_results/{apn.save_folder_name_prefix},{policy_heuristic},{state_heuristic}'
@@ -84,7 +100,7 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str)
 
     process_creation_lock.acquire(); time.sleep(0.1)
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, random_walk_length, breadth_first_search_depth, samples_generator), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0
@@ -130,7 +146,7 @@ def get_tasks_infos() -> Generator[TaskInfo, None, None]:
                 yield TaskInfo(domain_label=domain_label, task_label=task_label, domain_file_path=sorted(domain_files_paths)[0 if len(domain_files_paths) == 1 else task_index], task_file_path=task_file_path)
 
 def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
-    yield Thread(target=run_thread, args=(task_info, 'nearest', 'lmcut'))
+    yield Thread(target=run_thread, args=(task_info, apn.policy_heuristic, apn.state_heuristic, apn.number_of_samples, apn.random_walk_length, apn.breadth_first_search_depth, apn.samples_generator))
 
 lock_file = open('/tmp/and-star-lab.lock', 'w')
 fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)

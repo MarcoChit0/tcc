@@ -4,19 +4,19 @@ RandomWalk::RandomWalk(Task task) : SamplesGenerator(task) {}
 
 void RandomWalk::generate_samples()
 {
-    int generated_samples = 0;
-    vec<SAMPLE> samples;
-    set<int64_t> states_ids;
-    Star h_star = Star(this->task);
     if (this->samples != vec<SAMPLE>{})
     {
         return;
     }
+    int generated_samples = 0;
+    vec<SAMPLE> samples;
+    set<int64_t> states_ids;
+    Star h_star = Star(this->task);
     if (h_star[this->task.initial_state()] == +INFTY)
     {
         return;
     }
-    while (++generated_samples <= number_of_samples)
+    while (++generated_samples < number_of_samples)
     {
         State state = this->select_state(this->task.goal_condition(), h_star, &states_ids);
         SAMPLE sample = this->get_sample(state);

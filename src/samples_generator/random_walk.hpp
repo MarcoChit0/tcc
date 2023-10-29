@@ -1,7 +1,7 @@
 #pragma once
 #include "samples_generator.hpp"
 
-class RandomWalk: public SamplesGenerator
+class RandomWalk: virtual public SamplesGenerator
 {
 public:
     RandomWalk(Task task);

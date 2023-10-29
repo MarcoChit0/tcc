@@ -1,7 +1,8 @@
+#pragma once
 #include "samples_generator.hpp"
 #include <queue>
 
-class BreadthFirstSearch: public SamplesGenerator
+class BreadthFirstSearch: virtual public SamplesGenerator
 {
 public:
     BreadthFirstSearch(Task task);

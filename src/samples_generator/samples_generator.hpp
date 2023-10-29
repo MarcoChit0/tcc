@@ -9,8 +9,8 @@ class SamplesGenerator : public Object
 {
     using Object::Object;
     public:
-        Task task;
         vec<SAMPLE> samples;
+        Task task;
         SamplesGenerator(Task task);
         virtual void generate_samples() = 0;
         void print_samples() const;

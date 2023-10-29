@@ -16,6 +16,7 @@
 #include "./samples_generator/random_walk.hpp"
 #include "./samples_generator/breadth_first_search.hpp"
 #include "./samples_generator/samples_generator.hpp"
+#include "./samples_generator/union.hpp"
 
 #define HEURISTIC std::pair<Policy::Heuristic*, State::Heuristic*>
 
@@ -157,6 +158,11 @@ SamplesGenerator* parse_samples_generator(const Task& task, str sample_generator
     if (sample_generator == "breadth-first-search")
     {
         return new BreadthFirstSearch(task);
+    }
+    else
+    if (sample_generator == "union")
+    {
+        return new Union(task);
     }
     else
     {

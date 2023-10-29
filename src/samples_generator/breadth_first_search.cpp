@@ -4,10 +4,10 @@ BreadthFirstSearch::BreadthFirstSearch(Task task) : SamplesGenerator(task) {}
 
 void BreadthFirstSearch::generate_samples()
 {
-    if (this->samples.size() > 0)
+    if (this->samples != vec<SAMPLE>{})
     {
         return;
-    }    
+    }   
     Star h_star = Star(this->task);
     if (h_star[this->task.initial_state()] == +INFTY)
     {
@@ -27,7 +27,7 @@ void BreadthFirstSearch::generate_samples()
             }
             for (State state : h_star.get_concrete_states_from_pdb(partial_state))
             {
-                if (generated_samples <= number_of_samples and not sampled_states.contains(state.id))
+                if (generated_samples < number_of_samples and not sampled_states.contains(state.id))
                 {
                     samples.push_back(this->get_sample(state));
                     sampled_states.insert(state.id);

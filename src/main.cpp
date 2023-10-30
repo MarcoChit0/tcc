@@ -24,33 +24,46 @@ int number_of_samples = 0;
 int random_walk_length = 0;
 int breadth_first_search_depth = 0;
 
-void print_end(const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, const str &domain_file_name, const str &task_file_name)
+void print_end(const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, Policy::Heuristic *policy_heuristic, State::Heuristic *state_heuristic)
 {
-    std::cout << std::endl;
-    std::cout << "Termination: " << termination << std::endl;
-    std::cout << "Final Memory Usage: " << get_memory_usage() << std::endl;
-    std::cout << "Total Elapsed Time: " << get_ellapsed_time() << std::endl;
-    std::cout << "Number of generated policies: " << and_star.number_of_generated_policies << std::endl;
-    std::cout << "Number of inserted policies: " << and_star.number_of_inserted_policies << std::endl;
-    std::cout << "Number of removed policies: " << and_star.number_of_removed_policies << std::endl;
-    std::cout << "Number of expanded policies: " << and_star.number_of_expanded_policies << std::endl;
-
-    if (opt_solution.has_value())
-    {
-        std::cout << std::endl;
-        std::cout << "A Solution Policy:" << std::endl;
-        std::cout << *opt_solution << std::endl;
-        std::cout << "Size: " << opt_solution->size() << std::endl;
-    }
+    std::cout << termination;
+    std::cout << "," << get_memory_usage();
+    std::cout << "," << get_ellapsed_time();
+    std::cout << "," << and_star.number_of_generated_policies;
+    std::cout << "," << and_star.number_of_inserted_policies;
+    std::cout << "," << and_star.number_of_removed_policies;
+    std::cout << "," << and_star.number_of_expanded_policies;
+    std::cout << "," << opt_solution.has_value() ? opt_solution->size() : -1;
+    std::cout << "," << typeid(policy_heuristic).name();
+    std::cout << "," << typeid(state_heuristic).name();
+    
 }
 
-void compare_multiple_policies(const Task& task, const vec<HEURISTIC>& heuristics, const str &domain_file_name, const str &task_file_name)
+void compare_multiple_policies(const Task& task, const vec<HEURISTIC>& heuristics)
 {
+    const char* header =
+        "Termination," 
+        "Final Memory Usage, Total Elapsed Time,"
+        "Number of generated policies," 
+        "Number of inserted policies," 
+        "Number of removed policies," 
+        "Number of expanded policies"
+        "Optimal solution size,"
+        "Policy heuristic,"
+        "State heuristic,"
+        "Number of samples,"
+        "Random walks length,"
+        "Breadth first search depth,"
+        "Number of lookups,"
+        ;
+    std::cout << header << std::endl;
     for(const HEURISTIC& heuristic : heuristics)
     {
-        AndStar and_star = AndStar(*heuristic.first, *heuristic.second);
+        Policy::Heuristic *policy_heuristic = heuristic.first;
+        State::Heuristic *state_heuristic = heuristic.second;
+        AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
         opt<Policy> opt_solution = and_star.get_solution(task);
-        print_end("optimal", opt_solution, and_star, domain_file_name, task_file_name);
+        print_end("optimal", opt_solution, and_star, policy_heuristic, state_heuristic);
     }
 }
 
@@ -73,7 +86,7 @@ vec<HEURISTIC> parse_policies_heuristics(const Task& task, vec<State::Heuristic*
     {
         for(State::Heuristic* state_heuristic : state_heuristics)
         {    
-            if (heuristic_policy_string == "count")
+                        if (heuristic_policy_string == "count")
             {
                 heuristics.push_back(std::make_pair(new Count(task),state_heuristic));
             }
@@ -182,6 +195,6 @@ int main(int argc, char** argv)
     SamplesGenerator* samples_generator = parse_samples_generator(task, str(argv[8]));
     vec<State::Heuristic*> states_heuristics = parse_states_heuristics(task, str(argv[4]));
     vec<HEURISTIC> heuristics = parse_policies_heuristics(task, states_heuristics, str(argv[3]), samples_generator);
-    compare_multiple_policies(task, heuristics, str(argv[1]), str(argv[2]));
+    compare_multiple_policies(task, heuristics);
     return 0;
 }

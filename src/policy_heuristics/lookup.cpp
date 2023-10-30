@@ -9,7 +9,6 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, Sample
     for (SAMPLE sample : this->samples_generator->samples)
     {
         this->table[std::get<0>(sample).id] = std::get<1>(sample);
-        std::cout << "sample["<< get<0>(sample).id <<"] = "<< std::get<0>(sample) << " " << std::get<1>(sample) << std::endl;
     }
 };
 
@@ -31,7 +30,6 @@ int LookUp::operator[](const Policy &policy) const
             {
                 table_look_up = std::max(this->table[domain_state.id], table_look_up);
                 this->number_of_lookups++;
-                std::cout << "domain: "<< domain_state.id << std::endl;
             }
         }
         // look for state on OUT~
@@ -42,7 +40,6 @@ int LookUp::operator[](const Policy &policy) const
             {
                 table_look_up = std::max(this->table[outgoing_non_goal_state.id], table_look_up);
                 this->number_of_lookups++;
-                std::cout << "out: " << outgoing_non_goal_state.id << std::endl;
             }
         }
         // compute delta-nearest

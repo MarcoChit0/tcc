@@ -4,6 +4,7 @@
 #include <chrono>
 #include <random>
 #include <string>
+#include <map>
 #include <typeindex>
 
 #include <iostream>

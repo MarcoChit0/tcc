@@ -146,7 +146,9 @@ def get_tasks_infos() -> Generator[TaskInfo, None, None]:
                 yield TaskInfo(domain_label=domain_label, task_label=task_label, domain_file_path=sorted(domain_files_paths)[0 if len(domain_files_paths) == 1 else task_index], task_file_path=task_file_path)
 
 def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
-    yield Thread(target=run_thread, args=(task_info, apn.policy_heuristic, apn.state_heuristic, apn.number_of_samples, apn.random_walk_length, apn.breadth_first_search_depth, apn.samples_generator))
+    for policy_heuristic in apn.policy_heuristic.split(','):
+        for state_heuristic in apn.state_heuristic.split(','):
+            yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, apn.number_of_samples, apn.random_walk_length, apn.breadth_first_search_depth, apn.samples_generator))
 
 lock_file = open('/tmp/and-star-lab.lock', 'w')
 fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)

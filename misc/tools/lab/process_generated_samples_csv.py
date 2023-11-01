@@ -43,6 +43,6 @@ for file in sorted(files):
         df['instance'] = instance.replace(".txt", "")
         max_h = max(max_h, max(df['h_d'].max(), df['h_nd'].max()))
         min_h = min(min_h, min(df['h_d'].min(), df['h_nd'].min()))
-        dfs = dfs.append(df, ignore_index=True)
+        dfs = dfs._append(df, ignore_index=True)
 plot_data(dfs, last_domain, min_h, max_h)
         

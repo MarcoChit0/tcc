@@ -18,15 +18,18 @@
 #include "./samples_generator/samples_generator.hpp"
 #include "./samples_generator/union.hpp"
 
-#define HEURISTIC std::pair<Policy::Heuristic*, State::Heuristic*>
+#define HEURISTIC std::pair<Policy::Heuristic *, State::Heuristic *>
 
 int number_of_samples = 0;
 int random_walk_length = 0;
 int breadth_first_search_depth = 0;
 
-void print_end(const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, Policy::Heuristic *policy_heuristic, State::Heuristic *state_heuristic)
+void print_end(const str& domain, const str& problem, const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic* policy_heuristic)
 {
-    std::cout << termination;
+    std::cout << "domain,problem,termination,memory,time,generated,inserted,removed,expanded,solution_size,policy_heuristic,state_heuristic,number_of_samples,random_walk_length,breadth_first_search_depth,number_of_lookups" << std::endl;
+    std::cout << domain;
+    std::cout << "," << problem; 
+    std::cout << "," << termination;
     std::cout << "," << get_memory_usage();
     std::cout << "," << get_ellapsed_time();
     std::cout << "," << and_star.number_of_generated_policies;
@@ -34,146 +37,87 @@ void print_end(const str &termination, const opt<Policy> &opt_solution, const An
     std::cout << "," << and_star.number_of_removed_policies;
     std::cout << "," << and_star.number_of_expanded_policies;
     std::cout << "," << opt_solution.has_value() ? opt_solution->size() : -1;
-    std::cout << "," << typeid(policy_heuristic).name();
-    std::cout << "," << typeid(state_heuristic).name();
-    
+    std::cout << "," << policy_heuristic_string;
+    std::cout << "," << state_heuristic_string;
+    std::cout << "," << number_of_samples;
+    std::cout << "," << random_walk_length;
+    std::cout << "," << breadth_first_search_depth;
+    std::cout << "," << (policy_heuristic_string == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1;
+    std::cout << std::endl;
 }
 
-void compare_multiple_policies(const Task& task, const vec<HEURISTIC>& heuristics)
+Policy::Heuristic *parse_policies_heuristics(const Task &task, const State::Heuristic *state_heuristic, str policy_heuristic, SamplesGenerator *samples_generator)
 {
-    const char* header =
-        "Termination," 
-        "Final Memory Usage, Total Elapsed Time,"
-        "Number of generated policies," 
-        "Number of inserted policies," 
-        "Number of removed policies," 
-        "Number of expanded policies"
-        "Optimal solution size,"
-        "Policy heuristic,"
-        "State heuristic,"
-        "Number of samples,"
-        "Random walks length,"
-        "Breadth first search depth,"
-        "Number of lookups,"
-        ;
-    std::cout << header << std::endl;
-    for(const HEURISTIC& heuristic : heuristics)
+    if (policy_heuristic == "count")
     {
-        Policy::Heuristic *policy_heuristic = heuristic.first;
-        State::Heuristic *state_heuristic = heuristic.second;
-        AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
-        opt<Policy> opt_solution = and_star.get_solution(task);
-        print_end("optimal", opt_solution, and_star, policy_heuristic, state_heuristic);
+        return new Count(task);
+    }
+    else if (policy_heuristic == "nearest")
+    {
+        return new Nearest(task, *state_heuristic);
+    }
+    else if (policy_heuristic == "delta")
+    {
+        return new Delta(task, *state_heuristic);
+    }
+    else if (policy_heuristic == "delta-nearest")
+    {
+        return new DeltaNearest(task, *state_heuristic);
+    }
+    else if (policy_heuristic == "lookup")
+    {
+        return new LookUp(task, *state_heuristic, samples_generator);
+    }
+    else
+    {
+        throw std::domain_error("Invalid policy heuristic.");
     }
 }
 
-vec<str> strtok(str s, char delim)
+State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_string)
 {
-    vec<str> tokens;
-    std::stringstream ss(s);
-    str token;
-    while (std::getline(ss, token, delim))
+
+    if (state_heuristic_string == "blind")
     {
-        tokens.push_back(token);
+        return new Blind(task);
     }
-    return tokens;
+    else if (state_heuristic_string == "max")
+    {
+        return new Max(task);
+    }
+    else if (state_heuristic_string == "add")
+    {
+        return new Add(task);
+    }
+    else if (state_heuristic_string == "ff")
+    {
+        return new Ff(task);
+    }
+    else if (state_heuristic_string == "lmcut")
+    {
+        return new Lmcut(task);
+    }
+    else if (state_heuristic_string == "star")
+    {
+        return new Star(task);
+    }
+    else
+    {
+        throw std::domain_error("Invalid state heuristic.");
+    }
 }
 
-vec<HEURISTIC> parse_policies_heuristics(const Task& task, vec<State::Heuristic*> state_heuristics, str heuristic_policies_string, SamplesGenerator* samples_generator)
-{
-    vec<HEURISTIC> heuristics;
-    for(const str& heuristic_policy_string : strtok(heuristic_policies_string, ','))
-    {
-        for(State::Heuristic* state_heuristic : state_heuristics)
-        {    
-                        if (heuristic_policy_string == "count")
-            {
-                heuristics.push_back(std::make_pair(new Count(task),state_heuristic));
-            }
-            else
-            if (heuristic_policy_string == "nearest")
-            {
-                heuristics.push_back(std::make_pair(new Nearest(task, *state_heuristic), state_heuristic));
-            }
-            else
-            if (heuristic_policy_string == "delta")
-            {
-                heuristics.push_back(std::make_pair(new Delta(task, *state_heuristic), state_heuristic));
-            }
-            else
-            if (heuristic_policy_string == "delta-nearest")
-            {
-                heuristics.push_back(std::make_pair(new DeltaNearest(task, *state_heuristic), state_heuristic));
-            }
-            else
-            if (heuristic_policy_string == "lookup")
-            {
-                heuristics.push_back(std::make_pair(new LookUp(task, *state_heuristic, samples_generator), state_heuristic));
-            }
-            else
-            {
-                throw std::domain_error("Invalid policy heuristic.");
-            }
-        }
-    }
-    return heuristics;
-}
-
-vec<State::Heuristic*> parse_states_heuristics(const Task& task, str heuristic_states_string)
-{
-    vec<State::Heuristic*> state_heuristics;
-    for(const str& heuristic_state_string : strtok(heuristic_states_string, ','))
-    {
-        if (heuristic_state_string == "blind")
-        {
-            state_heuristics.push_back(new Blind(task));
-        }
-        else
-        if (heuristic_state_string == "max")
-        {
-            state_heuristics.push_back(new Max(task));
-        }
-        else
-        if (heuristic_state_string == "add")
-        {
-            state_heuristics.push_back(new Add(task));
-        }
-        else
-        if (heuristic_state_string == "ff")
-        {
-            state_heuristics.push_back(new Ff(task));
-        }
-        else
-        if (heuristic_state_string == "lmcut")
-        {
-            state_heuristics.push_back(new Lmcut(task));
-        }
-        else
-        if (heuristic_state_string == "star")
-        {
-            state_heuristics.push_back(new Star(task));
-        }
-        else
-        {
-            throw std::domain_error("Invalid state heuristic.");
-        }
-    }
-    return state_heuristics;
-}
-
-SamplesGenerator* parse_samples_generator(const Task& task, str sample_generator)
+SamplesGenerator *parse_samples_generator(const Task &task, str sample_generator)
 {
     if (sample_generator == "random-walk")
     {
         return new RandomWalk(task);
     }
-    else
-    if (sample_generator == "breadth-first-search")
+    else if (sample_generator == "breadth-first-search")
     {
         return new BreadthFirstSearch(task);
     }
-    else
-    if (sample_generator == "union")
+    else if (sample_generator == "union")
     {
         return new Union(task);
     }
@@ -183,8 +127,7 @@ SamplesGenerator* parse_samples_generator(const Task& task, str sample_generator
     }
 }
 
-
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
@@ -192,9 +135,12 @@ int main(int argc, char** argv)
     random_walk_length = std::atoi(argv[6]);
     breadth_first_search_depth = std::atoi(argv[7]);
     Task task = Task(str(argv[1]), str(argv[2]));
-    SamplesGenerator* samples_generator = parse_samples_generator(task, str(argv[8]));
-    vec<State::Heuristic*> states_heuristics = parse_states_heuristics(task, str(argv[4]));
-    vec<HEURISTIC> heuristics = parse_policies_heuristics(task, states_heuristics, str(argv[3]), samples_generator);
-    compare_multiple_policies(task, heuristics);
+    SamplesGenerator *samples_generator = parse_samples_generator(task, str(argv[8]));
+    State::Heuristic* state_heuristic = parse_states_heuristics(task, str(argv[4]));
+    Policy::Heuristic* policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator);
+    // run
+    AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
+    opt<Policy> opt_solution = and_star.get_solution(task);
+    print_end(str(argv[1]), str(argv[2]), "optimal", opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic);
     return 0;
 }

@@ -9,6 +9,7 @@
 #include "./state.hpp" // Yet not covered.
 #include "./task.hpp"
 #include "./variable.hpp"
+#include "./samples_generator/sample.hpp"
 
 map<Action, str> actions_names;
 map<Action, PartialState> actions_preconditions;
@@ -29,9 +30,14 @@ map<Task, State> tasks_initial_states;
 map<Task, PartialState> tasks_goal_conditions;
 map<Task, vec<str>> tasks_action_classess;
 map<Task, vec<Action>> tasks_actionss;
+// map<Task, set<set<Fact>>> tasks_mutex_groupss;
 
 map<Variable, str> variables_names;
 map<Variable, vec<Fact>> variables_factss;
+
+map<Sample, int> samples_non_deterministic_values;
+map<Sample, int> samples_deterministic_values;
+map<Sample, State> samples_states;
 
 
 str &Action::name() const
@@ -54,7 +60,6 @@ int &Action::cost() const
     return actions_costs[*this];
 };
 
-
 Variable &Fact::variable() const
 {
     return facts_variables[*this];
@@ -69,7 +74,6 @@ mpz_class &Fact::hash() const
 {
     return facts_hashes[*this];
 };
-
 
 State &Policy::state() const
 {
@@ -88,7 +92,6 @@ Policy &Policy::parent_policy() const
     while (policies_parents_policies.size() <= this->id) {policies_parents_policies.emplace_back();}
     return policies_parents_policies[this->id];
 };
-
 
 vec<Variable> &Task::variables() const
 {
@@ -120,8 +123,6 @@ vec<Action> &Task::actions() const
     return tasks_actionss[*this];
 };
 
-
-
 str &Variable::name() const
 {
     return variables_names[*this];
@@ -130,4 +131,19 @@ str &Variable::name() const
 vec<Fact> &Variable::facts() const
 {
     return variables_factss[*this];
+};
+
+int &Sample::non_deterministic_value() const
+{
+    return samples_non_deterministic_values[*this];
+};
+
+int &Sample::deterministic_value() const
+{
+    return samples_deterministic_values[*this];
+};
+
+State &Sample::state() const
+{
+    return samples_states[*this];
 };

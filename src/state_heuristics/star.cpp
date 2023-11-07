@@ -80,14 +80,13 @@ int Star::operator[](const State &state) const
     }
 };
 
-vec<State> Star::get_concrete_states_from_pdb(const PartialState &partial_state) const
+vec<State> Star::get_concrete_states(const PartialState &partial_state) const
 {
-    // std::cout<<"LOG::Star::get_concrete_states_from_pdb()::begin\n";
     if (not partial_state_to_concrete_state.contains(partial_state.id))
     {
-        auto &pdb = functions_storage[Function{&Star::operator[], *this}];
+        auto &data_base = functions_storage[Function{&Star::operator[], *this}];
         vec<State> concrete_states;
-        for(std::pair<Object, int64_t> pair : pdb)
+        for(std::pair<Object, int64_t> pair : data_base)
         {
             State state;
             state.id = pair.first.id;
@@ -98,7 +97,5 @@ vec<State> Star::get_concrete_states_from_pdb(const PartialState &partial_state)
         }
         partial_state_to_concrete_state[partial_state.id] = concrete_states;
     }
-    // std::cout<<"LOG::Star::get_concrete_states_from_pdb()::end\n";
     return partial_state_to_concrete_state[partial_state.id];
 }
-map<int64_t, vec<State>> Star::partial_state_to_concrete_state;

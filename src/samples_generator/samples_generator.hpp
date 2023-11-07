@@ -1,20 +1,21 @@
 #pragma once
+#include "sample.hpp"
 #include "../task.hpp"
 #include "../state_heuristics/star.hpp"
 #include "../task_solvers/and_star.hpp"
 #include "../policy_heuristics/delta_nearest.hpp"
-#define SAMPLE std::tuple<State, int, int, Policy>
 
-class SamplesGenerator : public Object
+class SamplesGenerator
 {
-    using Object::Object;
     public:
-        vec<SAMPLE> samples;
-        Task task;
-        SamplesGenerator(Task task);
+        vec<Sample> samples;
+        const Task& task;
+        const State::Heuristic &state_heuristic;
+        int number_of_samples;
+        SamplesGenerator(const Task& task, const State::Heuristic &state_heuristic, int number_of_samples);
         virtual void generate_samples() = 0;
         void print_samples() const;
-        SAMPLE get_sample(State new_initial_state);
+        bool add_sample(State new_initial_state);
 };
 
 extern int number_of_samples;

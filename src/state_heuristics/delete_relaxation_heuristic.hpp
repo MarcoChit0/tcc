@@ -19,4 +19,6 @@ public:
     static Fact final_fact;
     static Action start_action;
     static Action final_action;
+
+    vec<State> get_concrete_states(const PartialState &partial_state) const override;
 };

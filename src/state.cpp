@@ -69,4 +69,6 @@ State::Heuristic::Heuristic(const Task &task) : task(task)
 {
 }
 
+map<int64_t, vec<State>> State::Heuristic::partial_state_to_concrete_state;
+
 // TODO: Filter successors repetitions

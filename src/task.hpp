@@ -21,6 +21,7 @@ public:
     PartialState &goal_condition() const;
     vec<str> &action_classes() const;
     vec<Action> &actions() const;
+    // set<set<Fact>> &mutex_groups() const;
 
     Task(const str &domain_file_name, const str &task_file_name);
 };

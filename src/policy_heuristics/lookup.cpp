@@ -6,9 +6,9 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, Sample
 {
     this->samples_generator = samples_generator;
     this->samples_generator->generate_samples();
-    for (SAMPLE sample : this->samples_generator->samples)
+    for (Sample sample : this->samples_generator->samples)
     {
-        this->table[std::get<0>(sample).id] = std::get<1>(sample);
+        this->table[sample.state().id] = sample.non_deterministic_value();
     }
 };
 

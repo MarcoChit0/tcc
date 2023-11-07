@@ -65,3 +65,23 @@ int Max::operator[](const State &state) const
     }
     return cache[state];
 };
+
+vec<State> Max::get_concrete_states(const PartialState &partial_state) const
+{
+    if (not partial_state_to_concrete_state.contains(partial_state.id))
+    {
+        auto &data_base = functions_storage[Function{&Max::operator[], *this}];
+        vec<State> concrete_states;
+        for(std::pair<Object, int64_t> pair : data_base)
+        {
+            State state;
+            state.id = pair.first.id;
+            if (partial_state.does_model(state) and state.does_model(partial_state))
+            {
+                concrete_states.push_back(state);
+            }
+        }
+        partial_state_to_concrete_state[partial_state.id] = concrete_states;
+    }
+    return partial_state_to_concrete_state[partial_state.id];
+}

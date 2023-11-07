@@ -16,17 +16,11 @@
 #include "./samples_generator/random_walk.hpp"
 #include "./samples_generator/breadth_first_search.hpp"
 #include "./samples_generator/samples_generator.hpp"
-#include "./samples_generator/union.hpp"
+#include "./samples_generator/fsm.hpp"
 
-#define HEURISTIC std::pair<Policy::Heuristic *, State::Heuristic *>
-
-int number_of_samples = 0;
-int random_walk_length = 0;
-int breadth_first_search_depth = 0;
-
-void print_end(const str& domain, const str& problem, const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic* policy_heuristic)
+void print_end(const str& domain, const str& problem, const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic* policy_heuristic, int number_of_samples, int length, float percentage)
 {
-    std::cout << "domain,problem,termination,memory,time,generated,inserted,removed,expanded,solution_size,policy_heuristic,state_heuristic,number_of_samples,random_walk_length,breadth_first_search_depth,number_of_lookups" << std::endl;
+    std::cout << "domain,problem,termination,memory,time,generated,inserted,removed,expanded,solution_size,policy_heuristic,state_heuristic,number_of_samples,length,percentage,number_of_lookups" << std::endl;
     std::cout << domain;
     std::cout << "," << problem; 
     std::cout << "," << termination;
@@ -40,8 +34,8 @@ void print_end(const str& domain, const str& problem, const str &termination, co
     std::cout << "," << policy_heuristic_string;
     std::cout << "," << state_heuristic_string;
     std::cout << "," << number_of_samples;
-    std::cout << "," << random_walk_length;
-    std::cout << "," << breadth_first_search_depth;
+    std::cout << "," << length;
+    std::cout << "," << percentage;
     std::cout << "," << (policy_heuristic_string == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1;
     std::cout << std::endl;
 }
@@ -107,19 +101,19 @@ State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_
     }
 }
 
-SamplesGenerator *parse_samples_generator(const Task &task, str sample_generator)
+SamplesGenerator *parse_samples_generator(str sample_generator, const Task &task, const State::Heuristic &state_heuristic, int number_of_samples, int length, float porcentage)
 {
-    if (sample_generator == "random-walk")
+    if (sample_generator == "rw")
     {
-        return new RandomWalk(task);
+        return new RandomWalk(task, state_heuristic, number_of_samples, length);
     }
-    else if (sample_generator == "breadth-first-search")
+    else if (sample_generator == "bfs")
     {
-        return new BreadthFirstSearch(task);
+        return new BreadthFirstSearch(task, state_heuristic, number_of_samples);
     }
-    else if (sample_generator == "union")
+    else if (sample_generator == "fsm")
     {
-        return new Union(task);
+        return new Fsm(task, state_heuristic, number_of_samples, length, porcentage);
     }
     else
     {
@@ -129,18 +123,17 @@ SamplesGenerator *parse_samples_generator(const Task &task, str sample_generator
 
 int main(int argc, char **argv)
 {
-    assert(get_memory_limit() <= 8);
+    // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
-    number_of_samples = std::atoi(argv[5]);
-    random_walk_length = std::atoi(argv[6]);
-    breadth_first_search_depth = std::atoi(argv[7]);
+    int number_of_samples = std::atoi(argv[5]);
+    int length = std::atoi(argv[6]);
+    float porcentage = std::atof(argv[7]);
     Task task = Task(str(argv[1]), str(argv[2]));
-    SamplesGenerator *samples_generator = parse_samples_generator(task, str(argv[8]));
     State::Heuristic* state_heuristic = parse_states_heuristics(task, str(argv[4]));
+    SamplesGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, number_of_samples, length, porcentage);
     Policy::Heuristic* policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator);
-    // run
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     opt<Policy> opt_solution = and_star.get_solution(task);
-    print_end(str(argv[1]), str(argv[2]), "optimal", opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic);
+    print_end(str(argv[1]), str(argv[2]), "optimal", opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic, number_of_samples, length, porcentage);
     return 0;
 }

@@ -2,7 +2,7 @@
 
 Task::Task(const str &domain_file_name, const str &task_file_name)
 {
-    std::stringstream sas {get_output("translate", "python3 ./dep/translate/translate.py " + domain_file_name + " " + task_file_name)};
+    std::stringstream sas{get_output("translate", "python3 ./dep/translate/translate.py " + domain_file_name + " " + task_file_name)};
     str buffer;
 
     sas >> buffer;
@@ -55,7 +55,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name)
         int number_of_mutexes_in_group;
         sas >> number_of_mutexes_in_group;
         set<Fact> mutex_group;
-        for(int mutex_index = 0; mutex_index < number_of_mutexes_in_group; mutex_index++)
+        for (int mutex_index = 0; mutex_index < number_of_mutexes_in_group; mutex_index++)
         {
             int variable, value;
             sas >> variable;
@@ -174,18 +174,17 @@ Task::Task(const str &domain_file_name, const str &task_file_name)
     assert(buffer == "0");
 };
 
-
 bool Task::violate_mutex(const PartialState &partial_state) const
 {
-    for(set<Fact> mutex_group : this->mutex_groups())
+    for (set<Fact> mutex_group : this->mutex_groups())
     {
         bool mutex_group_violated = true;
-        for(Fact fact : mutex_group)
+        for (Fact fact : mutex_group)
         {
             bool fact_is_none = true;
-            for(Fact true_fact : partial_state.true_facts())
+            for (Fact true_fact : partial_state.true_facts())
             {
-                if(fact == true_fact)
+                if (fact == true_fact)
                 {
                     fact_is_none = false;
                     break;
@@ -205,50 +204,68 @@ bool Task::violate_mutex(const PartialState &partial_state) const
     return false;
 }
 
-vec<PartialState> Task::get_regressed_partial_states(const PartialState& partial_state) const
+vec<PartialState> Task::get_regressed_partial_states(const PartialState &partial_state) const
 {
-    if(not regressed_partial_states.contains(partial_state.id))
+    if (not regressed_partial_states.contains(partial_state.id))
     {
-        if(this->violate_mutex(partial_state))
+        if (this->violate_mutex(partial_state))
         {
-            std::cout << "Mutex violation" << std::endl;
-            for(auto s : this->mutex_groups())
+            // TODO: Leave comments until verified that violate_mutex method is correct
+            std::cout << "Mutex violation #1:" << std::endl;
+            for (auto s : this->mutex_groups())
             {
                 std::cout << "\nMutex group begin" << std::endl;
-                for(auto f : s)
+                for (auto f : s)
                 {
-                    std::cout << "\tfact: " << f << std::endl; 
+                    std::cout << "\tfact: " << f << std::endl;
                 }
-                std::cout << "Mutex group end\n" << std::endl;
+                std::cout << "Mutex group end\n"
+                          << std::endl;
             }
             std::cout << "Partial state: " << partial_state << std::endl;
             return vec<PartialState>();
         }
         vec<PartialState> predecessors;
         set<int64_t> predecessors_ids;
-        for(auto action : this->actions())
+        for (auto action : this->actions())
         {
             for (auto effect : action.effects())
             {
                 if (partial_state.does_model(effect))
                 {
                     vec<Fact> predecessor_facts = partial_state.true_facts();
-                    for(int i = 0; i < effect.true_facts().size(); i++)
+                    for (int i = 0; i < effect.true_facts().size(); i++)
                     {
-                        if(not effect.true_facts()[i].is_none())
+                        if (not effect.true_facts()[i].is_none())
                         {
                             predecessor_facts[i].id = NONE;
                         }
                     }
-                    for(int i = 0; i < action.precondition().true_facts().size(); i++)
+                    for (int i = 0; i < action.precondition().true_facts().size(); i++)
                     {
-                        if(not action.precondition().true_facts()[i].is_none())
+                        if (not action.precondition().true_facts()[i].is_none())
                         {
                             predecessor_facts[i].id = action.precondition().true_facts()[i].id;
                         }
                     }
                     PartialState predecessor = PartialState(predecessor_facts);
-                    if(not predecessors_ids.contains(predecessor.id))
+                    // TODO: Leave comments until verified that violate_mutex method is correct
+                    if (this->violate_mutex(predecessor_facts))
+                    {
+                        std::cout << "Mutex violation #2:" << std::endl;
+                        for (auto s : this->mutex_groups())
+                        {
+                            std::cout << "\nMutex group begin" << std::endl;
+                            for (auto f : s)
+                            {
+                                std::cout << "\tfact: " << f << std::endl;
+                            }
+                            std::cout << "Mutex group end\n"
+                                      << std::endl;
+                        }
+                        std::cout << "Partial state: " << partial_state << std::endl;
+                    }
+                    if (not predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor_facts))
                     {
                         predecessors_ids.insert(predecessor.id);
                         predecessors.push_back(predecessor);

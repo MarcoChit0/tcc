@@ -1,1 +1,3 @@
 blocksworld-original,p2
+acrobatics,p4
+blocksworld-advanced,p3

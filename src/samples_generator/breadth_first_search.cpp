@@ -32,7 +32,7 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs()
         }
         visited.insert(partial_state);
         bfs_return.explored(partial_state);
-        for(PartialState regressed_state : partial_state.get_regressed_partial_states(this->task.actions()))
+        for(PartialState regressed_state : this->task.get_regressed_partial_states(partial_state))
         {
             if (not visited.contains(regressed_state))
             {

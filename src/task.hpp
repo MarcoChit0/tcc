@@ -23,7 +23,11 @@ public:
     vec<Action> &actions() const;
     set<set<Fact>> &mutex_groups() const;
 
+    bool violate_mutex(const PartialState &partial_state) const;
+    vec<PartialState> get_regressed_partial_states(const PartialState& partial_state) const;
     Task(const str &domain_file_name, const str &task_file_name);
+
+    static map<int64_t, vec<PartialState>> regressed_partial_states;
 };
 
 DEFINE_OBJECT_HASH(Task);

@@ -173,3 +173,92 @@ Task::Task(const str &domain_file_name, const str &task_file_name)
     sas >> buffer;
     assert(buffer == "0");
 };
+
+
+bool Task::violate_mutex(const PartialState &partial_state) const
+{
+    for(set<Fact> mutex_group : this->mutex_groups())
+    {
+        bool mutex_group_violated = true;
+        for(Fact fact : mutex_group)
+        {
+            bool fact_is_none = true;
+            for(Fact true_fact : partial_state.true_facts())
+            {
+                if(fact == true_fact)
+                {
+                    fact_is_none = false;
+                    break;
+                }
+            }
+            if (fact_is_none)
+            {
+                mutex_group_violated = false;
+                break;
+            }
+        }
+        if (mutex_group_violated)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+vec<PartialState> Task::get_regressed_partial_states(const PartialState& partial_state) const
+{
+    if(not regressed_partial_states.contains(partial_state.id))
+    {
+        if(this->violate_mutex(partial_state))
+        {
+            std::cout << "Mutex violation" << std::endl;
+            for(auto s : this->mutex_groups())
+            {
+                std::cout << "\nMutex group begin" << std::endl;
+                for(auto f : s)
+                {
+                    std::cout << "\tfact: " << f << std::endl; 
+                }
+                std::cout << "Mutex group end\n" << std::endl;
+            }
+            std::cout << "Partial state: " << partial_state << std::endl;
+            return vec<PartialState>();
+        }
+        vec<PartialState> predecessors;
+        set<int64_t> predecessors_ids;
+        for(auto action : this->actions())
+        {
+            for (auto effect : action.effects())
+            {
+                if (partial_state.does_model(effect))
+                {
+                    vec<Fact> predecessor_facts = partial_state.true_facts();
+                    for(int i = 0; i < effect.true_facts().size(); i++)
+                    {
+                        if(not effect.true_facts()[i].is_none())
+                        {
+                            predecessor_facts[i].id = NONE;
+                        }
+                    }
+                    for(int i = 0; i < action.precondition().true_facts().size(); i++)
+                    {
+                        if(not action.precondition().true_facts()[i].is_none())
+                        {
+                            predecessor_facts[i].id = action.precondition().true_facts()[i].id;
+                        }
+                    }
+                    PartialState predecessor = PartialState(predecessor_facts);
+                    if(not predecessors_ids.contains(predecessor.id))
+                    {
+                        predecessors_ids.insert(predecessor.id);
+                        predecessors.push_back(predecessor);
+                    }
+                }
+            }
+        }
+        regressed_partial_states[partial_state.id] = predecessors;
+    }
+    return regressed_partial_states[partial_state.id];
+}
+
+map<int64_t, vec<PartialState>> Task::regressed_partial_states;

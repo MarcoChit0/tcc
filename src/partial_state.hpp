@@ -20,9 +20,6 @@ public:
     PartialState(const vec<Fact> &true_facts, const mpz_class &hash);
     PartialState(const vec<Fact> &true_facts);
 
-    vec<PartialState> get_regressed_partial_states(const vec<Action> &actions) const;
-    static map<Id, vec<PartialState>> regressed_partial_states; 
-
     bool does_model(const PartialState &other) const;
     friend std::ostream& operator<<(std::ostream &out, const PartialState &self);
 };

@@ -29,7 +29,7 @@ vec<PartialState> RandomWalk::perform_random_walk(PartialState partial_state)
     vec<PartialState> partial_states_by_depth = vec<PartialState>{partial_state};
     for (int i = 0; i < this->length; i++)
     {
-        vec<PartialState> regressed_states = partial_state.get_regressed_partial_states(this->task.actions());
+        vec<PartialState> regressed_states = this->task.get_regressed_partial_states(partial_state);
         if (not regressed_states.empty())
         {
             std::uniform_int_distribution<int> distribution(0, regressed_states.size() - 1);

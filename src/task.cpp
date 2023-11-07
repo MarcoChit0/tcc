@@ -46,13 +46,25 @@ Task::Task(const str &domain_file_name, const str &task_file_name)
         current_variable_hash *= variable_domain_size + 1;
     }
 
-    int number_of_mutexes;
-    sas >> number_of_mutexes;
-    for (int _ = 0; _ < number_of_mutexes; _++)
+    int number_of_mutexes_groups;
+    sas >> number_of_mutexes_groups;
+    for (int group = 0; group < number_of_mutexes_groups; group++)
     {
         sas >> buffer;
         assert(buffer == "begin_mutex_group");
-        while (sas >> buffer, buffer != "end_mutex_group");
+        int number_of_mutexes_in_group;
+        sas >> number_of_mutexes_in_group;
+        set<Fact> mutex_group;
+        for(int mutex_index = 0; mutex_index < number_of_mutexes_in_group; mutex_index++)
+        {
+            int variable, value;
+            sas >> variable;
+            sas >> value;
+            mutex_group.insert(this->variables()[variable].facts()[value]);
+        }
+        sas >> buffer;
+        assert(buffer == "end_mutex_group");
+        this->mutex_groups().insert(mutex_group);
     }
 
     sas >> buffer;

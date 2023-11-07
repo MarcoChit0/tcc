@@ -30,7 +30,7 @@ map<Task, State> tasks_initial_states;
 map<Task, PartialState> tasks_goal_conditions;
 map<Task, vec<str>> tasks_action_classess;
 map<Task, vec<Action>> tasks_actionss;
-// map<Task, set<set<Fact>>> tasks_mutex_groupss;
+map<Task, set<set<Fact>>> tasks_mutex_groupss;
 
 map<Variable, str> variables_names;
 map<Variable, vec<Fact>> variables_factss;
@@ -121,6 +121,11 @@ vec<str> &Task::action_classes() const
 vec<Action> &Task::actions() const
 {
     return tasks_actionss[*this];
+};
+
+set<set<Fact>> &Task::mutex_groups() const
+{
+    return tasks_mutex_groupss[*this];
 };
 
 str &Variable::name() const

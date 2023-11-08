@@ -136,3 +136,33 @@ str get_output(const str &label, const str &command, const str &input, const opt
 
 FunctionsCache functions_cache;
 FunctionsCache functions_storage;
+
+bool enough_time()
+{
+    double time_limit = get_time_limit();
+    double ellapsed_time = get_ellapsed_time();
+    if (ellapsed_time < 0.90 * time_limit)
+    {
+        return true;
+    }
+    else
+    {
+        std::cout << "Not enough time\n";
+        return false;
+    }
+}
+
+bool enough_memory()
+{
+    double memory_limit = get_memory_limit();
+    double memory_usage = get_memory_usage();
+    if (memory_usage < 0.90 * memory_limit)
+    {
+        return true;
+    }
+    else
+    {
+        std::cout << "Not enough memory\n";
+        return false;
+    }
+}

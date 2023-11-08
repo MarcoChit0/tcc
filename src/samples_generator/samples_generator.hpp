@@ -12,6 +12,7 @@ class SamplesGenerator
         const Task& task;
         const State::Heuristic &state_heuristic;
         int number_of_samples;
+        
         SamplesGenerator(const Task& task, const State::Heuristic &state_heuristic, int number_of_samples);
         virtual void generate_samples() = 0;
         void print_samples() const;

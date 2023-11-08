@@ -28,6 +28,7 @@ public:
     Task(const str &domain_file_name, const str &task_file_name);
 
     static map<int64_t, vec<PartialState>> regressed_partial_states;
+    static map<int64_t, int64_t> variable_to_index;
 };
 
 DEFINE_OBJECT_HASH(Task);

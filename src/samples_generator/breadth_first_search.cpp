@@ -45,7 +45,7 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs()
                     queue.push(regressed_state); // add partial state to bfs queue
                     bfs_return.update(regressed_state, concrete_state); // update bfs return
                     this->add_sample(concrete_state); // add sample to samples
-                    if(++generated_samples >= this->number_of_samples)
+                    if(++generated_samples >= this->number_of_samples or not enough_memory() or not enough_time())
                     {
                         return bfs_return;
                     }

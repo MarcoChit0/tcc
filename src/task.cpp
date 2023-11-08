@@ -30,6 +30,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name)
         sas >> buffer;
         str variable_name = buffer;
         Variable variable = Variable(variable_name);
+        this->variable_to_index[variable.id] = i;
         this->variables().push_back(variable);
         sas >> buffer;
         int variable_domain_size;
@@ -176,29 +177,17 @@ Task::Task(const str &domain_file_name, const str &task_file_name)
 
 bool Task::violate_mutex(const PartialState &partial_state) const
 {
+    int count = -1;
     for (set<Fact> mutex_group : this->mutex_groups())
     {
-        bool mutex_group_violated = true;
+        count ++;
+        int number_of_violated_mutexes = 0;
         for (Fact fact : mutex_group)
         {
-            bool fact_is_none = true;
-            for (Fact true_fact : partial_state.true_facts())
+            if(partial_state.contains(fact, this->variable_to_index[fact.variable().id]) and ++number_of_violated_mutexes >= 2)
             {
-                if (fact == true_fact)
-                {
-                    fact_is_none = false;
-                    break;
-                }
+                return true;
             }
-            if (fact_is_none)
-            {
-                mutex_group_violated = false;
-                break;
-            }
-        }
-        if (mutex_group_violated)
-        {
-            return true;
         }
     }
     return false;
@@ -210,19 +199,6 @@ vec<PartialState> Task::get_regressed_partial_states(const PartialState &partial
     {
         if (this->violate_mutex(partial_state))
         {
-            // TODO: Leave comments until verified that violate_mutex method is correct
-            std::cout << "Mutex violation #1:" << std::endl;
-            for (auto s : this->mutex_groups())
-            {
-                std::cout << "\nMutex group begin" << std::endl;
-                for (auto f : s)
-                {
-                    std::cout << "\tfact: " << f << std::endl;
-                }
-                std::cout << "Mutex group end\n"
-                          << std::endl;
-            }
-            std::cout << "Partial state: " << partial_state << std::endl;
             return vec<PartialState>();
         }
         vec<PartialState> predecessors;
@@ -249,23 +225,7 @@ vec<PartialState> Task::get_regressed_partial_states(const PartialState &partial
                         }
                     }
                     PartialState predecessor = PartialState(predecessor_facts);
-                    // TODO: Leave comments until verified that violate_mutex method is correct
-                    if (this->violate_mutex(predecessor_facts))
-                    {
-                        std::cout << "Mutex violation #2:" << std::endl;
-                        for (auto s : this->mutex_groups())
-                        {
-                            std::cout << "\nMutex group begin" << std::endl;
-                            for (auto f : s)
-                            {
-                                std::cout << "\tfact: " << f << std::endl;
-                            }
-                            std::cout << "Mutex group end\n"
-                                      << std::endl;
-                        }
-                        std::cout << "Partial state: " << partial_state << std::endl;
-                    }
-                    if (not predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor_facts))
+                    if (not predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor))
                     {
                         predecessors_ids.insert(predecessor.id);
                         predecessors.push_back(predecessor);
@@ -279,3 +239,4 @@ vec<PartialState> Task::get_regressed_partial_states(const PartialState &partial
 }
 
 map<int64_t, vec<PartialState>> Task::regressed_partial_states;
+map<int64_t, int64_t> Task::variable_to_index;

@@ -127,6 +127,9 @@ double get_memory_usage();
 double get_time_limit();
 double get_memory_limit();
 
+bool enough_time();
+bool enough_memory();
+
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 
 template<typename ReturnType, typename... Args>

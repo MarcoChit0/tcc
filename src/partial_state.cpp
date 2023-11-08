@@ -81,3 +81,8 @@ std::ostream& operator<<(std::ostream &out, const PartialState &self)
 
 vec<vec<Fact>> PartialState::partial_states_true_factss;
 boost::bimap<PartialState::Id, mpz_class> PartialState::partial_states_hashes;
+
+bool PartialState::contains(const Fact &fact, const int variable_index) const
+{
+    return this->true_facts()[variable_index] == fact;
+};

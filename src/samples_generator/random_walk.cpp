@@ -14,7 +14,7 @@ void RandomWalk::generate_samples()
     }
     set<int64_t> states_ids;
     int generated_samples = 0;
-    while (generated_samples < this->number_of_samples)
+    while (generated_samples < this->number_of_samples and enough_memory() and enough_time())
     {
         State state = this->select_state(this->task.goal_condition(), &states_ids);
         if(this->add_sample(state))

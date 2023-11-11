@@ -41,10 +41,12 @@ Task::Task(const str &domain_file_name, const str &task_file_name)
             std::getline(sas, buffer);
             this->facts().emplace_back(variable, buffer, (j + 1) * current_variable_hash);
             variable.facts().push_back(this->facts().back());
+            this->fact_to_fact_offset[this->facts().back().id] = j;
         }
         sas >> buffer;
         assert(buffer == "end_variable");
         current_variable_hash *= variable_domain_size + 1;
+        this->variable_to_variable_domain_size[variable.id] = variable_domain_size;
     }
 
     int number_of_mutexes_groups;
@@ -240,3 +242,5 @@ vec<PartialState> Task::get_regressed_partial_states(const PartialState &partial
 
 map<int64_t, vec<PartialState>> Task::regressed_partial_states;
 map<int64_t, int64_t> Task::variable_to_index;
+map<int64_t, int64_t> Task::variable_to_variable_domain_size;
+map<int64_t, int64_t> Task::fact_to_fact_offset;

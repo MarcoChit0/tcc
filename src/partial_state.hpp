@@ -21,11 +21,12 @@ public:
     PartialState(const vec<Fact> &true_facts);
 
     bool does_model(const PartialState &other) const;
-    friend std::ostream& operator<<(std::ostream &out, const PartialState &self);
+    friend std::ostream &operator<<(std::ostream &out, const PartialState &self);
 
     bool contains(const Fact &fact, const int variable_index) const;
 };
 DEFINE_OBJECT_HASH(PartialState);
-
 #include "./task.hpp"
 #include "./fact.hpp"
+
+

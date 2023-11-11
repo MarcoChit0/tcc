@@ -29,6 +29,8 @@ public:
 
     static map<int64_t, vec<PartialState>> regressed_partial_states;
     static map<int64_t, int64_t> variable_to_index;
+    static map<int64_t, int64_t> variable_to_variable_domain_size;
+    static map<int64_t, int64_t> fact_to_fact_offset;
 };
 
 DEFINE_OBJECT_HASH(Task);

@@ -147,7 +147,7 @@ bool enough_time()
     }
     else
     {
-        std::cout << "Not enough time\n";
+        // std::cout << "Not enough time\n";
         return false;
     }
 }
@@ -162,7 +162,7 @@ bool enough_memory()
     }
     else
     {
-        std::cout << "Not enough memory\n";
+        // std::cout << "Not enough memory\n";
         return false;
     }
 }

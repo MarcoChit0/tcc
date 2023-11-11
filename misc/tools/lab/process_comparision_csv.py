@@ -5,7 +5,7 @@ import numpy as np
 import os
 import csv
 
-header = "domain,problem,termination,memory,time,generated,inserted,removed,expanded,solution_size,policy_heuristic,state_heuristic,number_of_samples,random_walk_length,breadth_first_search_depth,number_of_lookups"
+header = "domain,problem,termination,memory,time,generated,inserted,removed,expanded,solution_size,policy_heuristic,state_heuristic,number_of_samples,length,percentage,number_of_lookups"
 path = './misc/data/raw_results/'
 dirs = os.listdir(path)
 dfs = pd.DataFrame()
@@ -17,4 +17,16 @@ for dir in dirs:
             df = pd.read_csv(csv_path)
             dfs = dfs._append(df, ignore_index=True)
 
-print(dfs.groupby(['state_heuristic']).count())
+dfs['domain'] = dfs['domain'].str.replace('./res/benchmarks/', '')
+dfs['domain'] = dfs['domain'].str.replace('/domain.pddl', '')
+
+dfs['problem'] = dfs['problem'].str.replace('./res/benchmarks/', '')
+dfs['problem'] = dfs['problem'].str.split('/').str[1]
+
+del dfs['termination']
+groups = dfs.groupby(['domain', 'problem', 'policy_heuristic', 'state_heuristic']).sum()
+with pd.option_context('display.max_rows', None,
+                       'display.max_columns', None,
+                       'display.precision', 3,
+                       ):
+    print(groups)

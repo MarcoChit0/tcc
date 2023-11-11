@@ -65,6 +65,18 @@ Star::Star(const Task &task) : Heuristic(task)
             }
         }
     }
+    std::cout << "LOG PDB GENERATED!!!" << std::endl;
+    set<State> states;
+    for(std::pair<Object, int64_t> pair : pdb)
+    {
+        State state;
+        state.id = pair.first.id;
+        states.insert(state);
+    }
+    this->trie = Trie(states);
+    this->trie.print();
+    std::cout << "LOG::Star::trie generated\n";
+    exit(1);
 }
 
 int Star::operator[](const State &state) const
@@ -82,20 +94,27 @@ int Star::operator[](const State &state) const
 
 vec<State> Star::get_concrete_states(const PartialState &partial_state) const
 {
-    if (not partial_state_to_concrete_state.contains(partial_state.id))
-    {
-        auto &data_base = functions_storage[Function{&Star::operator[], *this}];
-        vec<State> concrete_states;
-        for(std::pair<Object, int64_t> pair : data_base)
-        {
-            State state;
-            state.id = pair.first.id;
-            if (partial_state.does_model(state) and state.does_model(partial_state))
-            {
-                concrete_states.push_back(state);
-            }
-        }
-        partial_state_to_concrete_state[partial_state.id] = concrete_states;
-    }
-    return partial_state_to_concrete_state[partial_state.id];
+    // if (not partial_state_to_concrete_state.contains(partial_state.id))
+    // {
+    //     auto &data_base = functions_storage[Function{&Star::operator[], *this}];
+    //     vec<State> concrete_states;
+    //     for(std::pair<Object, int64_t> pair : data_base)
+    //     {
+    //         State state;
+    //         state.id = pair.first.id;
+    //         if (partial_state.does_model(state) and state.does_model(partial_state))
+    //         {
+    //             concrete_states.push_back(state);
+    //         }
+    //     }
+    //     partial_state_to_concrete_state[partial_state.id] = concrete_states;
+    // }
+    // return partial_state_to_concrete_state[partial_state.id];
+    // set<State> states = trie->get_states(partial_state);
+    vec<State> _states;
+    // for(State state : states)
+    // {
+    //     _states.push_back(state);
+    // }
+    return _states;
 }

@@ -18,19 +18,19 @@
 #include "./samples_generator/samples_generator.hpp"
 #include "./samples_generator/fsm.hpp"
 
-void print_end(const str& domain, const str& problem, const str &termination, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic* policy_heuristic, int number_of_samples, int length, float percentage)
+void print_end(const str& domain, const str& problem, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic* policy_heuristic, int number_of_samples, int length, float percentage)
 {
     std::cout << "domain,problem,termination,memory,time,generated,inserted,removed,expanded,solution_size,policy_heuristic,state_heuristic,number_of_samples,length,percentage,number_of_lookups" << std::endl;
     std::cout << domain;
     std::cout << "," << problem; 
-    std::cout << "," << termination;
+    std::cout << "," << (opt_solution.has_value() ? "optimal" : "suboptimal");
     std::cout << "," << get_memory_usage();
     std::cout << "," << get_ellapsed_time();
     std::cout << "," << and_star.number_of_generated_policies;
     std::cout << "," << and_star.number_of_inserted_policies;
     std::cout << "," << and_star.number_of_removed_policies;
     std::cout << "," << and_star.number_of_expanded_policies;
-    std::cout << "," << opt_solution.has_value() ? opt_solution->size() : -1;
+    std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1);
     std::cout << "," << policy_heuristic_string;
     std::cout << "," << state_heuristic_string;
     std::cout << "," << number_of_samples;
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
     SamplesGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, number_of_samples, length, porcentage);
     Policy::Heuristic* policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
-    opt<Policy> opt_solution = and_star.get_solution(task);
-    print_end(str(argv[1]), str(argv[2]), "optimal", opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic, number_of_samples, length, porcentage);
+    Policy opt_solution = and_star.get_solution(task);
+    print_end(str(argv[1]), str(argv[2]), opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic, number_of_samples, length, porcentage);
     return 0;
 }

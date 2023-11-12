@@ -4,16 +4,16 @@ class TrieNode
 {
 public:
     TrieNode& operator=(const TrieNode& other);
-    Variable variable;
+    Fact fact;
     vec<TrieNode> children;
     set<State> states;
     int depth;
 
-    TrieNode() : depth(-1), variable(Variable()), children(), states() {}
+    TrieNode() : depth(-1), fact(Fact()), children(), states() {}
 
-    TrieNode(int depth, Variable variable) : depth(depth), variable(variable), children(Task::variable_to_variable_domain_size[variable.id], TrieNode()), states() {}
+    TrieNode(int depth, Fact fact, int next_variable_offset) : depth(depth), fact(fact), children(next_variable_offset, TrieNode()), states() {}
 
-    set<State> get_states(const PartialState &partial_state) const;
+    set<State> get_states(vec<Fact> fact) const;
     void add(vec<Fact> facts, const State &state);
     void print();
 };

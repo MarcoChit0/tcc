@@ -65,18 +65,14 @@ Star::Star(const Task &task) : Heuristic(task)
             }
         }
     }
-    std::cout << "LOG PDB GENERATED!!!" << std::endl;
-    set<State> states;
+    std::cout << "LOG::Star::pdb.size(): " << pdb.size() << std::endl;
     for(std::pair<Object, int64_t> pair : pdb)
     {
         State state;
         state.id = pair.first.id;
-        states.insert(state);
+        this->trie.add(state);
     }
-    this->trie = Trie(states);
-    this->trie.print();
     std::cout << "LOG::Star::trie generated\n";
-    exit(1);
 }
 
 int Star::operator[](const State &state) const
@@ -110,11 +106,12 @@ vec<State> Star::get_concrete_states(const PartialState &partial_state) const
     //     partial_state_to_concrete_state[partial_state.id] = concrete_states;
     // }
     // return partial_state_to_concrete_state[partial_state.id];
-    // set<State> states = trie->get_states(partial_state);
-    vec<State> _states;
-    // for(State state : states)
-    // {
-    //     _states.push_back(state);
-    // }
-    return _states;
+    std::cout << "LOG::Star::get_concrete_states::partial_state: " << partial_state << std::endl;
+    set<State> states = this->trie.get_states(partial_state);
+    for(State state : states)
+    {
+        std::cout << "LOG::Star::get_concrete_states::state: " << state << std::endl;
+    }
+    exit(1);
+    return vec<State>(states.begin(), states.end());
 }

@@ -5,7 +5,7 @@
 class Trie
 {
     public:
-        TrieNode root;
+        vec<TrieNode> roots;
         Trie& operator=(const Trie& other);
         Trie();
         Trie(set<State> states);

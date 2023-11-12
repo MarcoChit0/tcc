@@ -10,7 +10,7 @@ Trie::Trie(set<State> states)
 {
     std::cout << "LOG::Trie::trying to generate trie" << std::endl;
     auto it = states.begin();
-    this->root = TrieNode(0, (*it).true_facts()[0]);
+    this->root = TrieNode(0, (*it).true_facts()[0].variable());
     std::cout << "LOG::Trie::generated trie " << std::endl;
     std::cout << "LOG::Trie::adding state\n";
     this->add(*it);

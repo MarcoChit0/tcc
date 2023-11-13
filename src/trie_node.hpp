@@ -6,12 +6,12 @@ public:
     TrieNode& operator=(const TrieNode& other);
     Fact fact;
     vec<TrieNode> children;
-    set<State> states;
+    State state;
     int depth;
 
-    TrieNode() : depth(-1), fact(Fact()), children(), states() {}
+    TrieNode() : depth(-1), fact(Fact()), children(), state(State()) {}
 
-    TrieNode(int depth, Fact fact, int next_variable_offset) : depth(depth), fact(fact), children(next_variable_offset, TrieNode()), states() {}
+    TrieNode(int depth, Fact fact, int next_variable_offset) : depth(depth), fact(fact), children(next_variable_offset, TrieNode()), state(State()) {}
 
     set<State> get_states(vec<Fact> fact) const;
     void add(vec<Fact> facts, const State &state);

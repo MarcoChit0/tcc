@@ -7,28 +7,31 @@ void TrieNode::print()
         return;
     }
     str ident = "";
-    for(int i = 0; i < this->depth; i++) { ident += " "; }
+    for(int i = 0; i <= this->depth; i++) { ident += " "; }
     std::cout << "variable: " << this->fact.variable();
     std::cout << ", fact: " << this->fact;
-    std::cout << ", states: [ ";
-    for (State state : this->states)
+    if(this->children.size() > 0)
     {
-        std::cout << state.id << ", ";
+        std::cout << ", children:\n";
+        for(int i = 0; i < this->children.size(); i++)
+        {
+            std::cout << ident << i << ": ";
+            this->children[i].print();
+            std::cout << std::endl;
+        }
     }
-    std::cout << " ], children:\n";
-    for(int i = 0; i < this->children.size(); i++)
+    else
     {
-        std::cout << ident << i << ": ";
-        this->children[i].print();
-        std::cout << std::endl;
+        std::cout << ", state: " << this->state;
     }
+
 }
 
 TrieNode &TrieNode::operator=(const TrieNode &other)
 {
     this->fact = other.fact;
     this->children = other.children;
-    this->states = other.states;
+    this->state = other.state;
     this->depth = other.depth;
     return *this;
 }
@@ -41,7 +44,7 @@ void TrieNode::add(vec<Fact> facts, const State &state)
     }
     if(facts.size() == 0)
     {
-        this->states.insert(state);
+        this->state = state;
         return;
     }
     int offset = Task::fact_to_fact_offset[facts[0].id];
@@ -71,7 +74,7 @@ set<State> TrieNode::get_states(vec<Fact> facts) const
     }
     if(facts.size() == 0)
     {
-        return this->states;
+        return set<State>{this->state};
     }
     if(facts[0].is_none())
     {

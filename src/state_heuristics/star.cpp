@@ -72,6 +72,7 @@ Star::Star(const Task &task) : Heuristic(task)
         state.id = pair.first.id;
         this->trie.add(state);
     }
+    this->trie.print();
     std::cout << "LOG::Star::trie generated\n";
 }
 

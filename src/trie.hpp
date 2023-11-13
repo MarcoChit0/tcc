@@ -8,10 +8,9 @@ class Trie
         vec<TrieNode> roots;
         Trie& operator=(const Trie& other);
         Trie();
-        Trie(set<State> states);
-        Trie(const State &state);
+        Trie(const State &state, const int &heuristic);
         
         set<State> get_states(const PartialState &partial_state) const;
-        void add(const State &state);
+        void add(const State &state, const int &heuristic);
         void print();
 };

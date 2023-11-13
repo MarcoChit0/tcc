@@ -6,27 +6,13 @@ Trie& Trie::operator=(const Trie& other)
     return *this;
 }
 
-Trie::Trie(set<State> states)
-{
-    std::cout << "LOG::Trie::trying to generate trie" << std::endl;
-    auto it = states.begin();
-    this->roots = vec<TrieNode>(Task::variable_to_variable_domain_size[(*it).true_facts()[0].variable().id], TrieNode());
-    std::cout << "LOG::Trie::generated trie " << std::endl;
-    std::cout << "LOG::Trie::adding states\n";
-    for(; it != states.end(); it++)
-    {
-        this->add(*it);
-        std::cout << "LOG::Trie::added state: " << (*it) << " to the trie" << std::endl;
-    }
-}
-
 Trie::Trie() : roots() {}
 
-Trie::Trie(const State &state)
+Trie::Trie(const State &state, const int &heuristic)
 {
     std::cout << "LOG::Trie::trying to generate trie" << std::endl;
     this->roots = vec<TrieNode>(Task::variable_to_variable_domain_size[state.true_facts()[0].variable().id], TrieNode());
-    this->add(state);
+    this->add(state, heuristic);
     std::cout << "LOG::Trie::generated trie with one only state" << std::endl;
 }
 
@@ -41,7 +27,7 @@ void Trie::print()
     std::cout << "LOG::Trie::print::end" << std::endl;
 }
 
-void Trie::add(const State& state)
+void Trie::add(const State& state, const int &heuristic)
 {
     if(state.true_facts().size() <= 0)
     {
@@ -49,7 +35,7 @@ void Trie::add(const State& state)
     }    
     if(this->roots.size() == 0)
     {
-        *this = Trie(state);
+        this->roots = vec<TrieNode>(Task::variable_to_variable_domain_size[state.true_facts()[0].variable().id], TrieNode());
     }
     int offset = Task::fact_to_fact_offset[state.true_facts()[0].id];
     if(0 > offset or offset > this->roots.size())
@@ -67,7 +53,7 @@ void Trie::add(const State& state)
             this->roots[offset] = TrieNode(0, state.true_facts()[0], Task::variable_to_variable_domain_size[state.true_facts()[1].variable().id]);
         }
     }
-    this->roots[offset].add(vec<Fact>(state.true_facts().begin() + 1, state.true_facts().end()) , state);
+    this->roots[offset].add(vec<Fact>(state.true_facts().begin() + 1, state.true_facts().end()), state, heuristic);
 }
 
 set<State> Trie::get_states(const PartialState &partial_state) const

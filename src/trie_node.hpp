@@ -7,13 +7,14 @@ public:
     Fact fact;
     vec<TrieNode> children;
     State state;
+    int heuristic;
     int depth;
 
-    TrieNode() : depth(-1), fact(Fact()), children(), state(State()) {}
+    TrieNode() : depth(-1), fact(Fact()), children(), state(State()), heuristic(-1) {}
 
-    TrieNode(int depth, Fact fact, int next_variable_offset) : depth(depth), fact(fact), children(next_variable_offset, TrieNode()), state(State()) {}
+    TrieNode(int depth, Fact fact, int next_variable_offset) : depth(depth), fact(fact), children(next_variable_offset, TrieNode()), state(State()), heuristic(-1) {}
 
     set<State> get_states(vec<Fact> fact) const;
-    void add(vec<Fact> facts, const State &state);
+    void add(vec<Fact> facts, const State &state, const int &heuristic);
     void print();
 };

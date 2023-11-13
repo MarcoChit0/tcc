@@ -23,6 +23,8 @@ void TrieNode::print()
     else
     {
         std::cout << ", state: " << this->state;
+        std::cout << ", heuristic: " << this->heuristic;
+        std::cout << std::endl;
     }
 
 }
@@ -36,7 +38,7 @@ TrieNode &TrieNode::operator=(const TrieNode &other)
     return *this;
 }
 
-void TrieNode::add(vec<Fact> facts, const State &state)
+void TrieNode::add(vec<Fact> facts, const State &state, const int &heuristic)
 {
     if(this->depth == -1)
     {
@@ -45,6 +47,7 @@ void TrieNode::add(vec<Fact> facts, const State &state)
     if(facts.size() == 0)
     {
         this->state = state;
+        this->heuristic = heuristic;
         return;
     }
     int offset = Task::fact_to_fact_offset[facts[0].id];
@@ -63,7 +66,7 @@ void TrieNode::add(vec<Fact> facts, const State &state)
             this->children[offset] = TrieNode(this->depth + 1, facts[0], Task::variable_to_variable_domain_size[facts[1].variable().id]);
         }
     }
-    this->children[offset].add(vec<Fact>(facts.begin() + 1, facts.end()), state);
+    this->children[offset].add(vec<Fact>(facts.begin() + 1, facts.end()), state, heuristic);
 }
 
 set<State> TrieNode::get_states(vec<Fact> facts) const

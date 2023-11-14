@@ -86,3 +86,21 @@ set<State> Trie::get_states(const PartialState &partial_state) const
         return this->roots[offset].get_states(vec<Fact>(partial_state.true_facts().begin() + 1, partial_state.true_facts().end()));
     }
 }
+
+int Trie::operator[](const State& state) const
+{
+    if(state.true_facts().size() <= 0)
+    {
+        throw std::runtime_error("LOG::Trie::operator[]::state.true_facts().size() <= 0");
+    }
+    int offset = Task::fact_to_fact_offset[state.true_facts()[0].id];
+    if(0 > offset or offset > this->roots.size())
+    {
+        throw std::runtime_error("LOG::Trie::operator[]::fact offset out of bounds");
+    }
+    if(this->roots.size() == 0 or this->roots[offset].depth == -1)
+    {
+        return +INFTY;
+    }
+    return this->roots[offset][vec<Fact>(state.true_facts().begin() + 1, state.true_facts().end())];
+}

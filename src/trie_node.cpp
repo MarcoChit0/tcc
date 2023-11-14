@@ -99,3 +99,21 @@ set<State> TrieNode::get_states(vec<Fact> facts) const
         return this->children[offset].get_states(vec<Fact>(facts.begin() + 1, facts.end()));        
     }
 }
+
+int TrieNode::operator[](vec<Fact> facts) const
+{
+    if((facts.size() > 0 and facts[0].is_none())  or  this->depth == -1)
+    {
+        return +INFTY;
+    }
+    if(facts.size() == 0)
+    {
+        return this->heuristic;
+    }    
+    int offset = Task::fact_to_fact_offset[facts[0].id];
+    if(0 > offset or offset > this->children.size())
+    {
+        throw std::runtime_error("LOG::TrieNode::operator[]::offset out of bounds");
+    }
+    return this->children[offset][vec<Fact>(facts.begin() + 1, facts.end())];
+}

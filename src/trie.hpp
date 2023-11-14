@@ -7,6 +7,7 @@ class Trie
     public:
         vec<TrieNode> roots;
         Trie& operator=(const Trie& other);
+        int operator[](const State& state) const;
         Trie();
         Trie(const State &state, const int &heuristic);
         

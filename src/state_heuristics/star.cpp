@@ -73,21 +73,31 @@ Star::Star(const Task &task) : Heuristic(task)
         int heuristic = pair.second;
         this->trie.add(state, heuristic);
     }
-    this->trie.print();
     std::cout << "LOG::Star::trie generated\n";
+    
 }
 
 int Star::operator[](const State &state) const
 {
+    std::cout << "LOG::Star::operator[]::state: " << state << std::endl;
     auto &pdb = functions_storage[Function{&Star::operator[], *this}];
+    int trie_value = this->trie[state];
+    std::cout << "trie_value: " << trie_value << std::endl;    
+    int pdb_value = -1;
     if (pdb.contains(state))
     {
-        return pdb[state];
+        pdb_value = pdb[state];
     }
     else
     {
-        return +INFTY;
+        pdb_value = +INFTY;
     }
+
+    std::cout << "pdb_value: " << pdb_value << std::endl;
+    assert(pdb_value == trie_value);
+    std::cout << " equals trie value!" << std::endl;
+    exit(1);
+    return pdb_value;
 };
 
 vec<State> Star::get_concrete_states(const PartialState &partial_state) const
@@ -113,7 +123,7 @@ vec<State> Star::get_concrete_states(const PartialState &partial_state) const
     for(State state : states)
     {
         std::cout << "LOG::Star::get_concrete_states::state: " << state << std::endl;
+        this->operator[](state);
     }
-    exit(1);
     return vec<State>(states.begin(), states.end());
 }

@@ -65,7 +65,6 @@ Star::Star(const Task &task) : Heuristic(task)
             }
         }
     }
-    std::cout << "LOG::Star::pdb.size(): " << pdb.size() << std::endl;
     for(std::pair<Object, int64_t> pair : pdb)
     {
         State state;
@@ -73,57 +72,15 @@ Star::Star(const Task &task) : Heuristic(task)
         int heuristic = pair.second;
         this->trie.add(state, heuristic);
     }
-    std::cout << "LOG::Star::trie generated\n";
-    
 }
 
 int Star::operator[](const State &state) const
 {
-    std::cout << "LOG::Star::operator[]::state: " << state << std::endl;
-    auto &pdb = functions_storage[Function{&Star::operator[], *this}];
-    int trie_value = this->trie[state];
-    std::cout << "trie_value: " << trie_value << std::endl;    
-    int pdb_value = -1;
-    if (pdb.contains(state))
-    {
-        pdb_value = pdb[state];
-    }
-    else
-    {
-        pdb_value = +INFTY;
-    }
-
-    std::cout << "pdb_value: " << pdb_value << std::endl;
-    assert(pdb_value == trie_value);
-    std::cout << " equals trie value!" << std::endl;
-    exit(1);
-    return pdb_value;
+    return this->trie[state];
 };
 
 vec<State> Star::get_concrete_states(const PartialState &partial_state) const
 {
-    // if (not partial_state_to_concrete_state.contains(partial_state.id))
-    // {
-    //     auto &data_base = functions_storage[Function{&Star::operator[], *this}];
-    //     vec<State> concrete_states;
-    //     for(std::pair<Object, int64_t> pair : data_base)
-    //     {
-    //         State state;
-    //         state.id = pair.first.id;
-    //         if (partial_state.does_model(state) and state.does_model(partial_state))
-    //         {
-    //             concrete_states.push_back(state);
-    //         }
-    //     }
-    //     partial_state_to_concrete_state[partial_state.id] = concrete_states;
-    // }
-    // return partial_state_to_concrete_state[partial_state.id];
-    std::cout << "LOG::Star::get_concrete_states::partial_state: " << partial_state << std::endl;
     set<State> states = this->trie.get_states(partial_state);
-    for(State state : states)
-    {
-        std::cout << "LOG::Star::get_concrete_states::state: " << state << std::endl;
-        this->operator[](state);
-    }
     return vec<State>(states.begin(), states.end());
 }

@@ -1,30 +1,27 @@
 #include "./random_walk.hpp"
 
-RandomWalk::RandomWalk(const Task& task, const State::Heuristic &state_heuristic, int number_of_samples, int length) : SamplesGenerator(task, state_heuristic, number_of_samples), length(length) {}
+RandomWalk::RandomWalk(const Task& task, const State::Heuristic &state_heuristic, const int number_of_samples, const int length) : SampleGenerator(task, state_heuristic, number_of_samples), length(length) {}
 
-void RandomWalk::generate_samples()
+set<Sample> RandomWalk::generate_samples() const
 {
-    if (this->samples != vec<Sample>{})
+    set<Sample> samples = set<Sample>{};
+    if (not (this->state_heuristic[this->task.initial_state()] == +INFTY))
     {
-        return;
-    }
-    if (this->state_heuristic[this->task.initial_state()] == +INFTY)
-    {
-        return;
-    }
-    set<int64_t> states_ids;
-    int generated_samples = 0;
-    while (generated_samples < this->number_of_samples and enough_memory() and enough_time())
-    {
-        State state = this->select_state(this->task.goal_condition(), &states_ids);
-        if(this->add_sample(state))
+        set<int64_t> states_ids;
+        while (samples.size() < this->number_of_samples and enough_memory() and enough_time())
         {
-            generated_samples++;
+            State state = this->select_state(this->task.goal_condition(), &states_ids);
+            Sample sample = this->get_sample(state);
+            if(not sample.is_none())
+            {
+                samples.insert(sample);
+            }
         }
     }
+    return samples;
 }
 
-vec<PartialState> RandomWalk::perform_random_walk(PartialState partial_state)
+vec<PartialState> RandomWalk::perform_random_walk(PartialState partial_state) const
 {
     vec<PartialState> partial_states_by_depth = vec<PartialState>{partial_state};
     for (int i = 0; i < this->length; i++)
@@ -45,7 +42,7 @@ vec<PartialState> RandomWalk::perform_random_walk(PartialState partial_state)
     return partial_states_by_depth;
 }
 
-State RandomWalk::select_state(PartialState partial_state_to_be_regressed, set<int64_t>* states_ids)
+State RandomWalk::select_state(PartialState partial_state_to_be_regressed, set<int64_t>* states_ids) const
 {
     State state;
     bool match = false;

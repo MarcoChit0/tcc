@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../state.hpp"
-#include "../trie.hpp"
 class Star : public State::Heuristic
 {
 public:
@@ -11,6 +10,4 @@ public:
     int operator[](const State &state) const;
 
     vec<State> get_concrete_states(const PartialState &partial_state) const override;
-
-    Trie trie;
 };

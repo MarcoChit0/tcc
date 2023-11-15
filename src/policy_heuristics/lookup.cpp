@@ -2,15 +2,14 @@
 
 map<int64_t, int> LookUp::table = map<int64_t, int>{};
 
-LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, SamplesGenerator* samples_generator) : Heuristic(task), state_heuristic(state_heuristic)
+LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator& samples_generator, const Sample::Treatment& sample_treatment) : Heuristic(task), state_heuristic(state_heuristic), samples_generator(samples_generator), sample_treatment(sample_treatment)
 {
-    this->samples_generator = samples_generator;
-    this->samples_generator->generate_samples();
-    // std::cout << "Samples:\n";
-    for (Sample sample : this->samples_generator->samples)
+    set<Sample> samples = this->samples_generator.generate_samples();
+    std::cout << "Samples:\n";
+    for (Sample sample : samples)
     {
         this->table[sample.state().id] = sample.non_deterministic_value();
-        // std::cout << "\tsample: " << sample.state() << ", value: " << sample.non_deterministic_value() << std::endl;
+        std::cout << "\tsample: " << sample.state() << ", value: " << sample.non_deterministic_value() << std::endl;
     }
 };
 

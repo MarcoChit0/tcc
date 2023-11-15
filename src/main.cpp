@@ -1,6 +1,7 @@
 #include "./general.hpp"
 
 #include "./task.hpp"
+#include "./trie.hpp"
 #include "./policy_heuristics/count.hpp"
 #include "./policy_heuristics/nearest.hpp"
 #include "./policy_heuristics/delta.hpp"
@@ -11,12 +12,16 @@
 #include "./state_heuristics/delete_relaxation_heuristics/add.hpp"
 #include "./state_heuristics/delete_relaxation_heuristics/ff.hpp"
 #include "./state_heuristics/delete_relaxation_heuristics/lmcut.hpp"
+#include "./state_heuristics/trie_based_implementations/trie_star.hpp"
 #include "./state_heuristics/star.hpp"
 #include "./task_solvers/and_star.hpp"
+#include "./samples_generator/sample_generator.hpp"
 #include "./samples_generator/random_walk.hpp"
 #include "./samples_generator/breadth_first_search.hpp"
-#include "./samples_generator/samples_generator.hpp"
 #include "./samples_generator/fsm.hpp"
+#include "./samples_generator/sample.hpp"
+
+static Trie trie = Trie();
 
 void print_end(const str& domain, const str& problem, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic* policy_heuristic, int number_of_samples, int length, float percentage)
 {
@@ -40,7 +45,7 @@ void print_end(const str& domain, const str& problem, const opt<Policy> &opt_sol
     std::cout << std::endl;
 }
 
-Policy::Heuristic *parse_policies_heuristics(const Task &task, const State::Heuristic *state_heuristic, str policy_heuristic, SamplesGenerator *samples_generator)
+Policy::Heuristic *parse_policies_heuristics(const Task &task, const State::Heuristic *state_heuristic, str policy_heuristic, SampleGenerator *samples_generator)
 {
     if (policy_heuristic == "count")
     {
@@ -60,7 +65,7 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, const State::Heur
     }
     else if (policy_heuristic == "lookup")
     {
-        return new LookUp(task, *state_heuristic, samples_generator);
+        return new LookUp(task, *state_heuristic, *samples_generator, Destroy());
     }
     else
     {
@@ -95,13 +100,17 @@ State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_
     {
         return new Star(task);
     }
+    else if (state_heuristic_string == "trie-star")
+    {
+        return new TrieStar(task);
+    }
     else
     {
         throw std::domain_error("Invalid state heuristic.");
     }
 }
 
-SamplesGenerator *parse_samples_generator(str sample_generator, const Task &task, const State::Heuristic &state_heuristic, int number_of_samples, int length, float porcentage)
+SampleGenerator *parse_samples_generator(str sample_generator, const Task &task, const State::Heuristic &state_heuristic, int number_of_samples, int length, float porcentage)
 {
     if (sample_generator == "rw")
     {
@@ -130,7 +139,9 @@ int main(int argc, char **argv)
     float porcentage = std::atof(argv[7]);
     Task task = Task(str(argv[1]), str(argv[2]));
     State::Heuristic* state_heuristic = parse_states_heuristics(task, str(argv[4]));
-    SamplesGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, number_of_samples, length, porcentage);
+    SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, number_of_samples, length, porcentage);
+    Sample sample = samples_generator->get_sample(task.initial_state());
+    std::cout << "sample state: " << sample.state() << std::endl;
     Policy::Heuristic* policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);

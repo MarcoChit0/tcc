@@ -1,8 +1,8 @@
 #pragma once
-#include "samples_generator.hpp"
+#include "sample_generator.hpp"
 #include <queue>
 
-class BreadthFirstSearch: virtual public SamplesGenerator
+class BreadthFirstSearch: virtual public SampleGenerator
 {
 public:
     class BFSReturn
@@ -10,11 +10,13 @@ public:
     public:
         set<State> sampled;
         set<PartialState> border;
-        BFSReturn(set<PartialState> border, set<State> sampled) : sampled(sampled), border(border) {}
-        void update(PartialState partial_state, State state)
+        set<Sample> samples;
+        BFSReturn(set<PartialState> border, set<State> sampled, set<Sample> samples) : sampled(sampled), border(border), samples(samples) {}
+        void update(PartialState partial_state, State state, Sample sample)
         {
             sampled.insert(state);
             border.insert(partial_state);
+            samples.insert(sample);
         }
         void explored(PartialState partial_state)
         {
@@ -22,8 +24,6 @@ public:
         }
     };
     BreadthFirstSearch(const Task& task, const State::Heuristic &state_heuristic, int number_of_samples);
-    void generate_samples();
-    BFSReturn bfs();
+    set<Sample> generate_samples() const;
+    BFSReturn bfs() const;
 };
-
-extern int breadth_first_search_depth;

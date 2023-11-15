@@ -38,6 +38,7 @@ map<Variable, vec<Fact>> variables_factss;
 map<Sample, int> samples_non_deterministic_values;
 map<Sample, int> samples_deterministic_values;
 map<Sample, State> samples_states;
+map<Sample, int> samples_policy_types;
 
 
 str &Action::name() const
@@ -151,4 +152,9 @@ int &Sample::deterministic_value() const
 State &Sample::state() const
 {
     return samples_states[*this];
+};
+
+int &Sample::policy_type() const
+{
+    return samples_policy_types[*this];
 };

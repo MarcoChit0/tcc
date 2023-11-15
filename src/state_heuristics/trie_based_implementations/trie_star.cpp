@@ -1,6 +1,6 @@
-#include "./star.hpp"
+#include "./trie_star.hpp"
 
-Star::Star(const Task &task) : Heuristic(task)
+TrieStar::TrieStar(const Task &task) : TrieStateHeuristic(task)
 {
     map<State, vec<State>> reverse_edges;
     vec<State> stack;
@@ -39,12 +39,13 @@ Star::Star(const Task &task) : Heuristic(task)
     vec<State> states_at_next_depth;
     int current_depth = 0;
 
-    auto &pdb = functions_storage[Function{&Star::operator[], *this}];
+    set<int64_t> added_states;
 
     for (const State &state: goal_states)
     {
         states_at_current_depth.push_back(state);
-        pdb[state] = 0;
+        trie.add(state, 0);
+        added_states.insert(state.id);
     }
 
     while (not (states_at_current_depth.empty() and states_at_next_depth.empty()))
@@ -58,44 +59,12 @@ Star::Star(const Task &task) : Heuristic(task)
         states_at_current_depth.pop_back();
         for (const State &successor_state: reverse_edges[state])
         {
-            if (not pdb.contains(successor_state))
+            if (not added_states.contains(successor_state.id))
             {
                 states_at_next_depth.push_back(successor_state);
-                pdb[successor_state] = current_depth + 1;
+                trie.add(successor_state, current_depth+1);
+                added_states.insert(successor_state.id);
             }
         }
     }
-}
-
-int Star::operator[](const State &state) const
-{
-    auto &pdb = functions_storage[Function{&Star::operator[], *this}];
-    if (pdb.contains(state))
-    {
-        return pdb[state];
-    }
-    else
-    {
-        return +INFTY;
-    }
-};
-
-vec<State> Star::get_concrete_states(const PartialState &partial_state) const
-{
-    if (not partial_state_to_concrete_state.contains(partial_state.id))
-    {
-        auto &data_base = functions_storage[Function{&Star::operator[], *this}];
-        vec<State> concrete_states;
-        for(std::pair<Object, int64_t> pair : data_base)
-        {
-            State state;
-            state.id = pair.first.id;
-            if (partial_state.does_model(state) and state.does_model(partial_state))
-            {
-                concrete_states.push_back(state);
-            }
-        }
-        partial_state_to_concrete_state[partial_state.id] = concrete_states;
-    }
-    return partial_state_to_concrete_state[partial_state.id];
 }

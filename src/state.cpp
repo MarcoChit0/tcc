@@ -61,14 +61,11 @@ State State::get_successor(const PartialState &effect) const
     return State(successor_true_facts, successor_hash);
 }
 
-map<State::Id, bool> State::are_states_goal;
-map<State::Id, vec<Action>> State::states_applicable_actionss;
-map<State::Id, map<int64_t, vec<State>>> State::states_actions_successor_statess;
-
 State::Heuristic::Heuristic(const Task &task) : task(task)
 {
 }
 
 map<int64_t, vec<State>> State::Heuristic::partial_state_to_concrete_state;
-
-// TODO: Filter successors repetitions
+map<State::Id, bool> State::are_states_goal;
+map<State::Id, vec<Action>> State::states_applicable_actionss;
+map<State::Id, map<int64_t, vec<State>>> State::states_actions_successor_statess;

@@ -1,23 +1,22 @@
 #include "breadth_first_search.hpp"
 
-BreadthFirstSearch::BreadthFirstSearch(const Task& task, const State::Heuristic &state_heuristic, int number_of_samples) : SamplesGenerator(task, state_heuristic, number_of_samples) {}
+BreadthFirstSearch::BreadthFirstSearch(const Task& task, const State::Heuristic &state_heuristic, const int number_of_samples) : SampleGenerator(task, state_heuristic, number_of_samples) {}
 
-void BreadthFirstSearch::generate_samples()
+set<Sample> BreadthFirstSearch::generate_samples() const
 {
-    if (this->samples != vec<Sample>{})
+    if (not (this->state_heuristic[this->task.initial_state()] == +INFTY))
     {
-        return;
-    }   
-    if (this->state_heuristic[this->task.initial_state()] == +INFTY)
-    {
-        return;
+        return this->bfs().samples;  
     }
-    BFSReturn bfs_return = this->bfs();
+    else
+    {
+        return set<Sample>{};
+    }
 }
 
-BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs()
+BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs() const
 {
-    BreadthFirstSearch::BFSReturn bfs_return = BreadthFirstSearch::BFSReturn(set<PartialState>{}, set<State>{});
+    BreadthFirstSearch::BFSReturn bfs_return = BreadthFirstSearch::BFSReturn(set<PartialState>{}, set<State>{}, set<Sample>{});
     set<PartialState> visited = set<PartialState>{};
     std::queue<PartialState> queue; 
     queue.push(this->task.goal_condition());
@@ -42,10 +41,13 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs()
                     {
                         continue;
                     }
-                    queue.push(regressed_state); // add partial state to bfs queue
-                    bfs_return.update(regressed_state, concrete_state); // update bfs return
-                    this->add_sample(concrete_state); // add sample to samples
-                    if(++generated_samples >= this->number_of_samples or not enough_memory() or not enough_time())
+                    queue.push(regressed_state);
+                    Sample sample = this->get_sample(concrete_state);
+                    if(not sample.is_none())
+                    {
+                        bfs_return.update(regressed_state, concrete_state, sample);
+                    }
+                    if(bfs_return.samples.size() >= this->number_of_samples or not enough_memory() or not enough_time())
                     {
                         return bfs_return;
                     }

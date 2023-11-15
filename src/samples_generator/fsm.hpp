@@ -1,14 +1,14 @@
 #pragma once
 
-#include "samples_generator.hpp"
+#include "sample_generator.hpp"
 #include "random_walk.hpp"
 #include "breadth_first_search.hpp"
 
-class Fsm: virtual public SamplesGenerator
+class Fsm: virtual public SampleGenerator
 {
     public:
-        int length;
-        float porcentage;
-        Fsm(const Task& task, const State::Heuristic &state_heuristic, int number_of_samples, int length, float porcentage);
-        void generate_samples();
+        const int length;
+        const float porcentage;
+        Fsm(const Task& task, const State::Heuristic &state_heuristic, const int number_of_samples, const int length, const float porcentage);
+        set<Sample> generate_samples() const;
 };

@@ -1,14 +1,12 @@
 #pragma once
-#include "samples_generator.hpp"
+#include "sample_generator.hpp"
 
-class RandomWalk: virtual public SamplesGenerator
+class RandomWalk: virtual public SampleGenerator
 {
 public:
-    int length;
-    RandomWalk(const Task& task, const State::Heuristic &state_heuristic, int number_of_samples, int length);
-    void generate_samples();
-    vec<PartialState> perform_random_walk(PartialState partial_state);
-    State select_state(PartialState initial_partial_state, set<int64_t>* states_ids);
+    const int length;
+    RandomWalk(const Task& task, const State::Heuristic &state_heuristic, const int number_of_samples, const int length);
+    set<Sample> generate_samples() const;
+    vec<PartialState> perform_random_walk(PartialState partial_state) const;
+    State select_state(PartialState initial_partial_state, set<int64_t>* states_ids) const;
 };
-
-extern int random_walk_length;

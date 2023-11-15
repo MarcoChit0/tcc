@@ -4,6 +4,10 @@ std::default_random_engine rng;
 
 Object::Id Object::last_used_id = NONE;
 
+static double timer = get_time_limit();
+static double step = 0.1 * (get_time_limit() - get_ellapsed_time());
+static int policy_type = 0;
+
 static std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
 
 double get_ellapsed_time()
@@ -165,4 +169,24 @@ bool enough_memory()
         // std::cout << "Not enough memory\n";
         return false;
     }
+}
+
+void set_timer()
+{
+    timer = get_ellapsed_time() + step;
+}
+
+bool timer_expired()
+{
+    return get_ellapsed_time() < timer;
+}
+
+int get_policy_type()
+{
+    return policy_type;
+}
+
+void set_policy_type(int new_policy_type)
+{
+    policy_type = new_policy_type;
 }

@@ -64,6 +64,13 @@ Policy AndStar::get_solution(const Task &task)
 
         if (policy.outgoing_non_goal_states(task.goal_condition()).empty())
         {
+            set_policy_type(OPTIMAL_POLICY);
+            return policy;
+        }
+
+        if(timer_expired())
+        {
+            set_policy_type(SUBOPTIMAL_POLICY);
             return policy;
         }
 

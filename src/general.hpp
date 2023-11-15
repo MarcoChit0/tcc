@@ -130,6 +130,19 @@ double get_memory_limit();
 bool enough_time();
 bool enough_memory();
 
+bool timer_expired();
+void set_timer();
+
+void set_policy_type(int policy_type);
+
+int get_policy_type();
+
+enum policy_types{
+    OPTIMAL_POLICY = 0,
+    SUBOPTIMAL_POLICY = 1,
+};
+
+
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 
 template<typename ReturnType, typename... Args>
@@ -213,3 +226,5 @@ map<Function<ReturnType, Args...>, map<Object, ReturnType>> FunctionsCache::data
 
 extern FunctionsCache functions_cache;
 extern FunctionsCache functions_storage;
+
+

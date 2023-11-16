@@ -142,6 +142,11 @@ enum policy_types{
     SUBOPTIMAL_POLICY = 1,
 };
 
+static map<int, str> policy_types_names = {
+    {OPTIMAL_POLICY, "optimal"},
+    {SUBOPTIMAL_POLICY, "suboptimal"},
+};
+
 
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 

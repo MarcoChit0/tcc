@@ -65,7 +65,7 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, const State::Heur
     }
     else if (policy_heuristic == "lookup")
     {
-        return new LookUp(task, *state_heuristic, *samples_generator, Destroy());
+        return new LookUp(task, *state_heuristic, *samples_generator, Ignore());
     }
     else
     {
@@ -112,6 +112,7 @@ State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_
 
 SampleGenerator *parse_samples_generator(str sample_generator, const Task &task, const State::Heuristic &state_heuristic, int number_of_samples, int length, float porcentage)
 {
+    std::cout << "sample_generator: " << sample_generator << std::endl;
     if (sample_generator == "rw")
     {
         return new RandomWalk(task, state_heuristic, number_of_samples, length);

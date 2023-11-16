@@ -8,9 +8,13 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const 
     std::cout << "Samples:\n";
     for (Sample sample : samples)
     {
-        this->table[sample.state().id] = sample.non_deterministic_value();
-        std::cout << "\tsample: " << sample.state() << ", value: " << sample.non_deterministic_value() << std::endl;
-    }
+        std::cout << sample << std::endl;
+        this->sample_treatment(sample);
+        if(sample.is_valid())
+        {
+            this->table[sample.state().id] = sample.non_deterministic_value();
+        }
+    }   
 };
 
 int LookUp::number_of_lookups = 0;

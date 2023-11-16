@@ -11,19 +11,21 @@ set<Sample> RandomWalk::generate_samples() const
         while (samples.size() < this->number_of_samples and enough_memory() and enough_time())
         {
             State state = this->select_state(this->task.goal_condition(), &states_ids);
-            Sample sample = this->get_sample(state);
-            if(not sample.is_none())
+            if(enough_memory() and enough_time())
             {
-                samples.insert(sample);
+                Sample sample = this->get_sample(state);
+                if(not sample.is_none())
+                {
+                    samples.insert(sample);
+                }                
             }
         }
     }
     return samples;
 }
 
-vec<PartialState> RandomWalk::perform_random_walk(PartialState partial_state) const
+PartialState RandomWalk::perform_random_walk(PartialState partial_state) const
 {
-    vec<PartialState> partial_states_by_depth = vec<PartialState>{partial_state};
     for (int i = 0; i < this->length; i++)
     {
         vec<PartialState> regressed_states = this->task.get_regressed_partial_states(partial_state);
@@ -32,14 +34,13 @@ vec<PartialState> RandomWalk::perform_random_walk(PartialState partial_state) co
             std::uniform_int_distribution<int> distribution(0, regressed_states.size() - 1);
             int random_index = distribution(rng);
             partial_state = regressed_states[random_index];
-            partial_states_by_depth.push_back(partial_state);
         }
         else
         {
             break;
         }
     }
-    return partial_states_by_depth;
+    return partial_state;
 }
 
 State RandomWalk::select_state(PartialState partial_state_to_be_regressed, set<int64_t>* states_ids) const
@@ -49,12 +50,9 @@ State RandomWalk::select_state(PartialState partial_state_to_be_regressed, set<i
     while (not match)
     {
         PartialState partial_state = partial_state_to_be_regressed;
-        vec<PartialState> partial_states_by_depth;
         do
-        { partial_states_by_depth = this->perform_random_walk(partial_state); } 
-        while (partial_states_by_depth.size() <= 1);
-        
-        partial_state = partial_states_by_depth[partial_states_by_depth.size() - 1];
+        { partial_state = this->perform_random_walk(partial_state_to_be_regressed); } 
+        while (partial_state == partial_state_to_be_regressed);
         vec<State> concrete_states = this->state_heuristic.get_concrete_states(partial_state);
         if (not concrete_states.empty())
         {   

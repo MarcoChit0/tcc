@@ -5,6 +5,7 @@ Sample::Sample(const State &state, int non_deterministic_value, int deterministi
     if(non_deterministic_value <= 0)
     {
         this->id = NONE;
+        this->is_valid() = false;
     }
     else
     {
@@ -12,16 +13,38 @@ Sample::Sample(const State &state, int non_deterministic_value, int deterministi
         this->deterministic_value() = deterministic_value;
         this->non_deterministic_value() = non_deterministic_value;
         this->state() = state;
-        this->policy_type() = policy_type;        
+        this->policy_type() = policy_type;   
+        this->is_valid() = true;     
+    }
+    std::cout << "Sample created: " << *this << std::endl;
+}
+
+void Ignore::operator()(Sample& sample) const
+{
+    if(sample.policy_type() == SUBOPTIMAL_POLICY)
+    {
+        sample.id = NONE;
+        sample.is_valid() = false;
     }
 }
 
-void Destroy::operator()(const Sample &sample) const
+
+void Keep::operator()(Sample& sample) const
 {
-    delete &sample;
+    // Do nothing
 }
 
-void Keep::operator()(const Sample &sample) const
+std::ostream& operator<<(std::ostream &out, const Sample &self)
 {
-    // do nothing
+
+    str valid = self.is_valid() ? "valid" : "invalid";
+    out 
+    << "Sample(" 
+    << self.id << "," 
+    << self.state() << ","
+    << self.non_deterministic_value() << "," 
+    << self.deterministic_value() << "," 
+    << policy_types_names[self.policy_type()] << "," 
+    << valid << ")";
+    return out;
 }

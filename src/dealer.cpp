@@ -39,6 +39,7 @@ map<Sample, int> samples_non_deterministic_values;
 map<Sample, int> samples_deterministic_values;
 map<Sample, State> samples_states;
 map<Sample, int> samples_policy_types;
+map<Sample, bool> samples_are_valid;
 
 
 str &Action::name() const
@@ -157,4 +158,9 @@ State &Sample::state() const
 int &Sample::policy_type() const
 {
     return samples_policy_types[*this];
+};
+
+bool &Sample::is_valid() const
+{
+    return samples_are_valid[*this];
 };

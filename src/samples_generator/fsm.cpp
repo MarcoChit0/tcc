@@ -1,6 +1,6 @@
 #include "fsm.hpp"
 
-Fsm::Fsm(const Task& task, const State::Heuristic &state_heuristic, const int number_of_samples, const int length, const float porcentage) : SampleGenerator(task, state_heuristic, number_of_samples), length(length), porcentage(porcentage) {}
+Fsm::Fsm(const Task& task, const State::Heuristic &state_heuristic, const RandomWalk::Walker& walker, const int number_of_samples, const int length, const float porcentage) : SampleGenerator(task, state_heuristic, number_of_samples), walker(walker), length(length), porcentage(porcentage) {}
 
 set<Sample> Fsm::generate_samples() const
 {
@@ -25,11 +25,11 @@ set<Sample> Fsm::generate_samples() const
                 Task new_task = this->task;
                 const PartialState goal_condition = this->task.goal_condition();
                 new_task.goal_condition() = partial_state;
-                RandomWalk random_walk_sample_generator = RandomWalk(new_task, this->state_heuristic, number_of_samples_to_be_generated_by_rw, this->length);
+                RandomWalk random_walk_sample_generator = RandomWalk(new_task, this->state_heuristic, this->walker, 1, this->length);
                 State state = random_walk_sample_generator.select_state(partial_state, &states_ids);
                 this->task.goal_condition() = goal_condition;
                 Sample sample = this->get_sample(state);
-                if(not sample.is_none())
+                if(sample.is_valid())
                 {
                     samples.insert(sample);
                 }

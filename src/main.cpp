@@ -110,12 +110,12 @@ State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_
     }
 }
 
-SampleGenerator *parse_samples_generator(str sample_generator, const Task &task, const State::Heuristic &state_heuristic, int number_of_samples, int length, float porcentage)
+SampleGenerator *parse_samples_generator(str sample_generator, const Task &task, const State::Heuristic &state_heuristic, const RandomWalk::Walker& walker,int number_of_samples, int length, float porcentage)
 {
     std::cout << "sample_generator: " << sample_generator << std::endl;
     if (sample_generator == "rw")
     {
-        return new RandomWalk(task, state_heuristic, number_of_samples, length);
+        return new RandomWalk(task, state_heuristic, walker, number_of_samples, length);
     }
     else if (sample_generator == "bfs")
     {
@@ -123,7 +123,7 @@ SampleGenerator *parse_samples_generator(str sample_generator, const Task &task,
     }
     else if (sample_generator == "fsm")
     {
-        return new Fsm(task, state_heuristic, number_of_samples, length, porcentage);
+        return new Fsm(task, state_heuristic, walker, number_of_samples, length, porcentage);
     }
     else
     {
@@ -147,21 +147,21 @@ Sample::Treatment* parse_sample_treatment(str sample_treatment)
     }
 }
 
-bool isNumber(const std::string& str) {
+bool is_number(const std::string& str) {
     try {
         size_t pos;
         std::stoi(str, &pos);
-        return pos == str.length(); // Successfully converted entire string to an integer
+        return pos == str.length();
     } catch (const std::invalid_argument&) {
-        return false; // Conversion failed (not a number)
+        return false;
     } catch (const std::out_of_range&) {
-        return false; // Conversion resulted in an overflow
+        return false;
     }
 }
 
 int parse_length_data(str length, const Task& task)
 {
-    if (isNumber(length))
+    if (is_number(length))
     {
         return std::atoi(length.c_str());
     }
@@ -189,7 +189,25 @@ int parse_length_data(str length, const Task& task)
     }
 }
 
-
+RandomWalk::Walker *parse_random_walk_walker(str walker)
+{
+    if (walker == "backtracking")
+    {
+        return new BackTracking();
+    }
+    else if (walker == "stop")
+    {
+        return new Stop();
+    }
+    else if (walker == "restart")
+    {
+        return new Restart();
+    }
+    else
+    {
+        throw std::domain_error("Invalid walker.");
+    }
+}
 
 double percentage_timer = 0.1;
 double percentage_time_limit = 0.9;
@@ -207,8 +225,9 @@ int main(int argc, char **argv)
     percentage_timer = std::atof(argv[10]);
     percentage_time_limit = std::atof(argv[11]);
     percentage_memory_limit = std::atof(argv[12]);
+    RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));
     State::Heuristic* state_heuristic = parse_states_heuristics(task, str(argv[4]));
-    SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, number_of_samples, length, porcentage);
+    SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
     Sample::Treatment* sample_treatment = parse_sample_treatment(str(argv[9]));
     Policy::Heuristic* policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);

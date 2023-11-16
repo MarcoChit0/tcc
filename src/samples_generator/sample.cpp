@@ -16,7 +16,6 @@ Sample::Sample(const State &state, int non_deterministic_value, int deterministi
         this->policy_type() = policy_type;   
         this->is_valid() = true;     
     }
-    std::cout << "Sample created: " << *this << std::endl;
 }
 
 void Ignore::operator()(Sample& sample) const

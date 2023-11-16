@@ -5,7 +5,7 @@ std::default_random_engine rng;
 Object::Id Object::last_used_id = NONE;
 
 static double timer = get_time_limit();
-static double step = 0.1 * (get_time_limit() - get_ellapsed_time());
+static double step = percentage_timer * (get_time_limit() - get_ellapsed_time());
 static int policy_type = 0;
 
 static std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
@@ -145,13 +145,12 @@ bool enough_time()
 {
     double time_limit = get_time_limit();
     double ellapsed_time = get_ellapsed_time();
-    if (ellapsed_time < 0.90 * time_limit)
+    if (ellapsed_time < percentage_time_limit * time_limit)
     {
         return true;
     }
     else
     {
-        // std::cout << "Not enough time\n";
         return false;
     }
 }
@@ -160,13 +159,12 @@ bool enough_memory()
 {
     double memory_limit = get_memory_limit();
     double memory_usage = get_memory_usage();
-    if (memory_usage < 0.90 * memory_limit)
+    if (memory_usage < percentage_memory_limit * memory_limit)
     {
         return true;
     }
     else
     {
-        // std::cout << "Not enough memory\n";
         return false;
     }
 }

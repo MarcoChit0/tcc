@@ -133,8 +133,11 @@ bool enough_memory();
 bool timer_expired();
 void set_timer();
 
-void set_policy_type(int policy_type);
+extern double percentage_timer;
+extern double percentage_memory_limit;
+extern double percentage_time_limit;
 
+void set_policy_type(int policy_type);
 int get_policy_type();
 
 enum policy_types{

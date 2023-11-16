@@ -35,9 +35,14 @@ class ArgParsingNamespace(tap.Tap):
     policy_heuristic: str
     number_of_samples: str
     length: str
-    percentage: str
+    percentage_fsm: str
     sample_generator: str
     sample_treatment_class: str
+    percentage_timer: str
+    percentage_time_limit: str
+    percentage_memory_limit: str
+
+    
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=7)
@@ -51,9 +56,12 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-ph", "--policy-heuristic", type=str, default='delta-nearest')
         self.add_argument("-ns", "--number-of-samples", type=str, default="100")
         self.add_argument("-l", "--length", type=str, default="10")
-        self.add_argument("-pfsm", "--percentage", type=str, default="0.2")
+        self.add_argument("-pfsm", "--percentage-fsm", type=str, default="0.2")
         self.add_argument("-sg", "--sample-generator", type=str, default='fsm')
         self.add_argument("-stc", "--sample-treatment-class", type=str, default='keep')
+        self.add_argument("-pt", "--percentage-timer", type=str, default="0.1")
+        self.add_argument("-ptl", "--percentage-time-limit", type=str, default="0.9")
+        self.add_argument("-pml", "--percentage-memory-limit", type=str, default="0.9")
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
@@ -76,7 +84,19 @@ class TaskInfo:
     domain_file_path: str
     task_file_path: str
 
-def get_splitted_command(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples: str, length: str, percentage: str, sample_generator: str, sample_treatment_class: str) -> list[str]:
+def get_splitted_command(
+        task_info: TaskInfo, 
+        policy_heuristic: str, 
+        state_heuristic: str, 
+        number_of_samples: str, 
+        length: str, 
+        percentage_fsm: str, 
+        sample_generator: str, 
+        sample_treatment_class: str,
+        percentage_timer: str,
+        percentage_time_limit: str,
+        percentage_memory_limit: str
+        ) -> list[str]:
     return [
         f'./and_star',
         f'{task_info.domain_file_path}',
@@ -85,15 +105,18 @@ def get_splitted_command(task_info: TaskInfo, policy_heuristic: str, state_heuri
         f'{state_heuristic}',
         f'{number_of_samples}',
         f'{length}',
-        f'{percentage}',
+        f'{percentage_fsm}',
         f'{sample_generator}',
-        f'{sample_treatment_class}'
+        f'{sample_treatment_class}',
+        f'{percentage_timer}',
+        f'{percentage_time_limit}',
+        f'{percentage_memory_limit}'
     ]
 
-def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage: str, sample_generator: str, sample_treatment_class: str) -> None:
+def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str) -> None:
     global apn, threads_semaphore, folder_creation_lock, process_creation_lock, print_lock
 
-    save_folder_path = f'./misc/data/raw_results/{apn.save_folder_name_prefix},{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage},{sample_generator},{sample_treatment_class}'
+    save_folder_path = f'./misc/data/raw_results/{apn.save_folder_name_prefix},{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit}'
     save_file_name = f'{task_info.domain_label},{task_info.task_label}.txt'
 
     if os.path.exists(f'{save_folder_path}/{save_file_name}') and not apn.run_again_if_done: threads_semaphore.release(); return
@@ -104,7 +127,7 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
 
     process_creation_lock.acquire(); time.sleep(0.1)
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage, sample_generator, sample_treatment_class), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0
@@ -112,7 +135,7 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
     result = stdout + stderr
 
     print_lock.acquire(); time.sleep(0.1)
-    print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %: {percentage}, generator: {sample_generator}, treatment: {sample_treatment_class}')
+    print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %fsm: {percentage_fsm}, generator: {sample_generator}, treatment: {sample_treatment_class}, %timer: {percentage_timer}, %tlimit: {percentage_time_limit}, %mlimit: {percentage_memory_limit}')
     open(f'{save_folder_path}/{save_file_name}', 'w').write(result)
     print_lock.release()
 
@@ -154,10 +177,13 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
         for state_heuristic in apn.state_heuristic.split(','):
             for number_of_samples in apn.number_of_samples.split(','):
                 for length in apn.length.split(','):
-                    for percentage in apn.percentage.split(','):
+                    for percentage_fsm in apn.percentage_fsm.split(','):
                         for sample_generator in apn.sample_generator.split(','):
                             for sample_treatment_class in apn.sample_treatment_class.split(','):
-                                yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage, sample_generator, sample_treatment_class))
+                                for percentage_timer in apn.percentage_timer.split(','):
+                                    for percentage_time_limit in apn.percentage_time_limit.split(','):
+                                        for percentage_memory_limit in apn.percentage_memory_limit.split(','):
+                                            yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit))
 
 lock_file = open('/tmp/and-star-lab.lock', 'w')
 fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)

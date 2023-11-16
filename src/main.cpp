@@ -147,6 +147,50 @@ Sample::Treatment* parse_sample_treatment(str sample_treatment)
     }
 }
 
+bool isNumber(const std::string& str) {
+    try {
+        size_t pos;
+        std::stoi(str, &pos);
+        return pos == str.length(); // Successfully converted entire string to an integer
+    } catch (const std::invalid_argument&) {
+        return false; // Conversion failed (not a number)
+    } catch (const std::out_of_range&) {
+        return false; // Conversion resulted in an overflow
+    }
+}
+
+int parse_length_data(str length, const Task& task)
+{
+    if (isNumber(length))
+    {
+        return std::atoi(length.c_str());
+    }
+    else
+    if(length == "facts")
+    {
+        return task.facts().size();
+    }
+    else
+    if(length == "facts-over-mean")
+    {
+        // TODO: conferir se no artigo realmente era o valor de lf médio
+        int number_of_facts = task.facts().size();
+        int mean_of_effects = 0;
+        for(auto action : task.actions())
+        {
+            mean_of_effects += action.effects().size();
+        }
+        mean_of_effects /= task.actions().size();
+        return std::ceil(number_of_facts / mean_of_effects);
+    }
+    else
+    {
+        throw std::domain_error("Invalid length.");
+    }
+}
+
+
+
 double percentage_timer = 0.1;
 double percentage_time_limit = 0.9;
 double percentage_memory_limit = 0.9;
@@ -155,13 +199,14 @@ int main(int argc, char **argv)
 {
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
+    Task task = Task(str(argv[1]), str(argv[2]));
     int number_of_samples = std::atoi(argv[5]);
-    int length = std::atoi(argv[6]);
+    int length = parse_length_data(argv[6], task);
+    std::cout << "length: " << length << std::endl;
     float porcentage = std::atof(argv[7]);
     percentage_timer = std::atof(argv[10]);
     percentage_time_limit = std::atof(argv[11]);
     percentage_memory_limit = std::atof(argv[12]);
-    Task task = Task(str(argv[1]), str(argv[2]));
     State::Heuristic* state_heuristic = parse_states_heuristics(task, str(argv[4]));
     SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, number_of_samples, length, porcentage);
     Sample::Treatment* sample_treatment = parse_sample_treatment(str(argv[9]));

@@ -33,8 +33,7 @@ public:
 
     virtual int operator[](const State &state) const = 0;
 
-    virtual vec<State> get_concrete_states(const PartialState &partial_state) const = 0;
-    static map<int64_t, vec<State>> partial_state_to_concrete_state;
+    virtual set<State> get_concrete_states(const PartialState &partial_state) const = 0;
 };
 
 #include "./task.hpp"

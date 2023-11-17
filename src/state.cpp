@@ -65,7 +65,6 @@ State::Heuristic::Heuristic(const Task &task) : task(task)
 {
 }
 
-map<int64_t, vec<State>> State::Heuristic::partial_state_to_concrete_state;
 map<State::Id, bool> State::are_states_goal;
 map<State::Id, vec<Action>> State::states_applicable_actionss;
 map<State::Id, map<int64_t, vec<State>>> State::states_actions_successor_statess;

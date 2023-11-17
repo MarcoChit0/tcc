@@ -2,7 +2,7 @@
 
 int Lmcut::operator[](const State &state) const
 {
-    Function this_function {&Lmcut::operator[], *this};
+    Function this_function{&Lmcut::operator[], *this};
     auto &cache = functions_cache[this_function];
     if (not cache.contains(state))
     {
@@ -43,7 +43,7 @@ int Lmcut::operator[](const State &state) const
                         // TODO: Do we really need to continue?
                     }
 
-                    for (const Action &action: facts_successor_actions[fact])
+                    for (const Action &action : facts_successor_actions[fact])
                     {
                         actions_achieved_number_of_facts[action]++;
                         if (actions_achieved_number_of_facts[action] == actions_predecessor_facts[action].size())
@@ -51,7 +51,7 @@ int Lmcut::operator[](const State &state) const
                             actions_h_max_values[action] = current_value;
                             actions_critical_predecessor[action] = fact;
                             facts_kept_successor_actions[fact].insert(action);
-                            for (const Fact successor_fact: actions_successor_facts[action])
+                            for (const Fact successor_fact : actions_successor_facts[action])
                             {
                                 if (freed_actions.contains(action))
                                 {
@@ -90,7 +90,7 @@ int Lmcut::operator[](const State &state) const
                 if (not goal_zone.contains(fact))
                 {
                     goal_zone.insert(fact);
-                    for (const Action &action: facts_predecessor_actions[fact])
+                    for (const Action &action : facts_predecessor_actions[fact])
                     {
                         if (freed_actions.contains(action))
                         {
@@ -109,9 +109,9 @@ int Lmcut::operator[](const State &state) const
                 if (not initial_zone.contains(fact))
                 {
                     initial_zone.insert(fact);
-                    for (const Action &action: facts_kept_successor_actions[fact])
+                    for (const Action &action : facts_kept_successor_actions[fact])
                     {
-                        for (const Fact &successor_fact: actions_successor_facts[action])
+                        for (const Fact &successor_fact : actions_successor_facts[action])
                         {
                             if (goal_zone.contains(successor_fact))
                             {
@@ -126,7 +126,7 @@ int Lmcut::operator[](const State &state) const
                 }
             }
 
-            for (const Action &action: landmark)
+            for (const Action &action : landmark)
             {
                 freed_actions.insert(action);
             }
@@ -135,22 +135,18 @@ int Lmcut::operator[](const State &state) const
     return cache[state];
 };
 
-vec<State> Lmcut::get_concrete_states(const PartialState &partial_state) const
+set<State> Lmcut::get_concrete_states(const PartialState &partial_state) const
 {
-    if (not partial_state_to_concrete_state.contains(partial_state.id))
+    auto &data_base = functions_storage[Function{&Lmcut::operator[], *this}];
+    set<State> concrete_states;
+    for (std::pair<Object, int64_t> pair : data_base)
     {
-        auto &data_base = functions_storage[Function{&Lmcut::operator[], *this}];
-        vec<State> concrete_states;
-        for(std::pair<Object, int64_t> pair : data_base)
+        State state;
+        state.id = pair.first.id;
+        if (partial_state.does_model(state) and state.does_model(partial_state))
         {
-            State state;
-            state.id = pair.first.id;
-            if (partial_state.does_model(state) and state.does_model(partial_state))
-            {
-                concrete_states.push_back(state);
-            }
+            concrete_states.insert(state);
         }
-        partial_state_to_concrete_state[partial_state.id] = concrete_states;
     }
-    return partial_state_to_concrete_state[partial_state.id];
+    return concrete_states;
 }

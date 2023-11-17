@@ -16,6 +16,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <tuple>
+#include <stack>
 
 #include <boost/heap/pairing_heap.hpp>
 #include <boost/bimap.hpp>

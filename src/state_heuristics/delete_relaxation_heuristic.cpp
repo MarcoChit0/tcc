@@ -2,13 +2,13 @@
 
 void DeleteRelaxationHeuristic::set_start_action(const State &state)
 {
-    for (const Fact &fact: actions_successor_facts[start_action])
+    for (const Fact &fact : actions_successor_facts[start_action])
     {
         facts_predecessor_actions[fact].erase(start_action);
     }
     actions_successor_facts[start_action].clear();
 
-    for (const Fact &fact: state.true_facts())
+    for (const Fact &fact : state.true_facts())
     {
         facts_predecessor_actions[fact].insert(start_action);
         actions_successor_facts[start_action].insert(fact);
@@ -27,9 +27,9 @@ DeleteRelaxationHeuristic::DeleteRelaxationHeuristic(const Task &task) : Heurist
     actions_successor_facts[final_action].insert(final_fact);
     actions_predecessor_facts[start_action].insert(start_fact);
 
-    for (const Action &action: task.actions())
+    for (const Action &action : task.actions())
     {
-        for (const Fact &fact: action.precondition().true_facts())
+        for (const Fact &fact : action.precondition().true_facts())
         {
             if (not fact.is_none())
             {
@@ -43,9 +43,9 @@ DeleteRelaxationHeuristic::DeleteRelaxationHeuristic(const Task &task) : Heurist
             actions_predecessor_facts[action].insert(start_fact);
         }
 
-        for (const PartialState &effect: action.effects())
+        for (const PartialState &effect : action.effects())
         {
-            for (const Fact &fact: effect.true_facts())
+            for (const Fact &fact : effect.true_facts())
             {
                 if (not fact.is_none())
                 {
@@ -56,7 +56,7 @@ DeleteRelaxationHeuristic::DeleteRelaxationHeuristic(const Task &task) : Heurist
         }
     }
 
-    for (const Fact &fact: task.goal_condition().true_facts())
+    for (const Fact &fact : task.goal_condition().true_facts())
     {
         if (not fact.is_none())
         {
@@ -75,22 +75,18 @@ Fact DeleteRelaxationHeuristic::final_fact;
 Action DeleteRelaxationHeuristic::start_action;
 Action DeleteRelaxationHeuristic::final_action;
 
-vec<State> DeleteRelaxationHeuristic::get_concrete_states(const PartialState &partial_state) const
+set<State> DeleteRelaxationHeuristic::get_concrete_states(const PartialState &partial_state) const
 {
-    if (not partial_state_to_concrete_state.contains(partial_state.id))
+    auto &data_base = functions_storage[Function{&DeleteRelaxationHeuristic::operator[], *this}];
+    set<State> concrete_states;
+    for (std::pair<Object, int64_t> pair : data_base)
     {
-        auto &data_base = functions_storage[Function{&DeleteRelaxationHeuristic::operator[], *this}];
-        vec<State> concrete_states;
-        for(std::pair<Object, int64_t> pair : data_base)
+        State state;
+        state.id = pair.first.id;
+        if (partial_state.does_model(state) and state.does_model(partial_state))
         {
-            State state;
-            state.id = pair.first.id;
-            if (partial_state.does_model(state) and state.does_model(partial_state))
-            {
-                concrete_states.push_back(state);
-            }
+            concrete_states.insert(state);
         }
-        partial_state_to_concrete_state[partial_state.id] = concrete_states;
     }
-    return partial_state_to_concrete_state[partial_state.id];
+    return concrete_states;
 }

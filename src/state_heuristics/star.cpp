@@ -12,9 +12,9 @@ Star::Star(const Task &task) : Heuristic(task)
     {
         State state = stack.back();
         stack.pop_back();
-        for (const Action &action: state.get_applicable_actions(task.actions()))
+        for (const Action &action : state.get_applicable_actions(task.actions()))
         {
-            for (const State &succesor_state: state.get_successors(action))
+            for (const State &succesor_state : state.get_successors(action))
             {
                 reverse_edges[succesor_state].push_back(state);
                 if (succesor_state.is_goal(task.goal_condition()))
@@ -41,13 +41,13 @@ Star::Star(const Task &task) : Heuristic(task)
 
     auto &pdb = functions_storage[Function{&Star::operator[], *this}];
 
-    for (const State &state: goal_states)
+    for (const State &state : goal_states)
     {
         states_at_current_depth.push_back(state);
         pdb[state] = 0;
     }
 
-    while (not (states_at_current_depth.empty() and states_at_next_depth.empty()))
+    while (not(states_at_current_depth.empty() and states_at_next_depth.empty()))
     {
         if (states_at_current_depth.empty())
         {
@@ -56,7 +56,7 @@ Star::Star(const Task &task) : Heuristic(task)
         }
         State state = states_at_current_depth.back();
         states_at_current_depth.pop_back();
-        for (const State &successor_state: reverse_edges[state])
+        for (const State &successor_state : reverse_edges[state])
         {
             if (not pdb.contains(successor_state))
             {
@@ -80,22 +80,18 @@ int Star::operator[](const State &state) const
     }
 };
 
-vec<State> Star::get_concrete_states(const PartialState &partial_state) const
+set<State> Star::get_concrete_states(const PartialState &partial_state) const
 {
-    if (not partial_state_to_concrete_state.contains(partial_state.id))
+    auto &data_base = functions_storage[Function{&Star::operator[], *this}];
+    set<State> concrete_states;
+    for (std::pair<Object, int64_t> pair : data_base)
     {
-        auto &data_base = functions_storage[Function{&Star::operator[], *this}];
-        vec<State> concrete_states;
-        for(std::pair<Object, int64_t> pair : data_base)
+        State state;
+        state.id = pair.first.id;
+        if (partial_state.does_model(state) and state.does_model(partial_state))
         {
-            State state;
-            state.id = pair.first.id;
-            if (partial_state.does_model(state) and state.does_model(partial_state))
-            {
-                concrete_states.push_back(state);
-            }
+            concrete_states.insert(state);
         }
-        partial_state_to_concrete_state[partial_state.id] = concrete_states;
     }
-    return partial_state_to_concrete_state[partial_state.id];
+    return concrete_states;
 }

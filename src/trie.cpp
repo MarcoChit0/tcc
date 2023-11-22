@@ -62,6 +62,38 @@ set<State> Trie::get_states(const PartialState &partial_state) const
     {
         throw std::runtime_error("LOG::Trie::get_states::partial_state.true_facts().size() <= 0");
     }
+    switch(concrete_states_generator)
+    {
+        case ConcreteStatesGenerator::ALL:
+            return this->all(partial_state);
+        case ConcreteStatesGenerator::RANDOM:
+            return this->random(partial_state);
+        default:
+            throw std::runtime_error("LOG::Trie::get_states::concrete_states_generator not recognized");
+    }
+
+}
+
+int Trie::operator[](const State& state) const
+{
+    if(state.true_facts().size() <= 0)
+    {
+        throw std::runtime_error("LOG::Trie::operator[]::state.true_facts().size() <= 0");
+    }
+    int offset = Task::fact_to_fact_offset[state.true_facts()[0].id];
+    if(0 > offset or offset > this->roots.size())
+    {
+        throw std::runtime_error("LOG::Trie::operator[]::fact offset out of bounds");
+    }
+    if(this->roots.size() == 0 or this->roots[offset].depth == -1)
+    {
+        return +INFTY;
+    }
+    return this->roots[offset][vec<Fact>(state.true_facts().begin() + 1, state.true_facts().end())];
+}
+
+set<State> Trie::all(const PartialState& partial_state) const
+{
     if(partial_state.true_facts()[0].is_none())
     {
         set<State> states;
@@ -87,20 +119,52 @@ set<State> Trie::get_states(const PartialState &partial_state) const
     }
 }
 
-int Trie::operator[](const State& state) const
+set<State> Trie::random(const PartialState& partial_state) const
 {
-    if(state.true_facts().size() <= 0)
+    if(partial_state.true_facts()[0].is_none())
     {
-        throw std::runtime_error("LOG::Trie::operator[]::state.true_facts().size() <= 0");
+        set<State> states;
+        set<int> offsets;
+        do
+        {
+            int sum = 0;
+            for(int i = 0; i < this->roots.size(); i++)
+            {
+                if(this->roots[i].depth != -1 and offsets.find(i) == offsets.end())
+                {
+                    sum += this->roots[i].number_of_states;
+                }
+            }
+            int random_offset = rand() % sum;
+            int offset = 0;
+            for(int i = 0; i < this->roots.size(); i++)
+            {
+                if(this->roots[i].depth != -1 and offsets.find(i) == offsets.end())
+                {
+                    offset += this->roots[i].number_of_states;
+                    if(offset > random_offset)
+                    {
+                        offsets.insert(i);
+                        states = this->roots[i].get_states(vec<Fact>(partial_state.true_facts().begin() + 1, partial_state.true_facts().end()));
+                        break;
+                    }
+                }
+            }
+        }
+        while(states.empty() and offsets.size() < this->roots.size());
+        return states;
     }
-    int offset = Task::fact_to_fact_offset[state.true_facts()[0].id];
-    if(0 > offset or offset > this->roots.size())
+    else
     {
-        throw std::runtime_error("LOG::Trie::operator[]::fact offset out of bounds");
+        int offset = Task::fact_to_fact_offset[partial_state.true_facts()[0].id];
+        if(0 > offset or offset > this->roots.size())
+        {
+            throw std::runtime_error("LOG::Trie::get_states::fact offset out of bounds");
+        }
+        if(this->roots[offset].depth == -1)
+        {
+            return set<State>();
+        }    
+        return this->roots[offset].get_states(vec<Fact>(partial_state.true_facts().begin() + 1, partial_state.true_facts().end()));
     }
-    if(this->roots.size() == 0 or this->roots[offset].depth == -1)
-    {
-        return +INFTY;
-    }
-    return this->roots[offset][vec<Fact>(state.true_facts().begin() + 1, state.true_facts().end())];
 }

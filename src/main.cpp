@@ -22,6 +22,7 @@
 #include "./samples_generator/sample.hpp"
 
 static Trie trie = Trie();
+int concrete_states_generator = ConcreteStatesGenerator::ALL;
 
 void print_end(const str& domain, const str& problem, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic* policy_heuristic, int number_of_samples, int length, float percentage)
 {
@@ -209,6 +210,22 @@ RandomWalk::Walker *parse_random_walk_walker(str walker)
     }
 }
 
+void parse_concrete_states_generator(str concrete_states_generator_string)
+{
+    if (concrete_states_generator_string == "all")
+    {
+        concrete_states_generator = ConcreteStatesGenerator::ALL;
+    }
+    else if (concrete_states_generator_string == "random")
+    {
+        concrete_states_generator = ConcreteStatesGenerator::RANDOM;
+    }
+    else
+    {
+        throw std::domain_error("Invalid concrete states generator.");
+    }
+}
+
 double percentage_timer = 0.1;
 double percentage_time_limit = 0.9;
 double percentage_memory_limit = 0.9;
@@ -225,6 +242,7 @@ int main(int argc, char **argv)
     percentage_timer = std::atof(argv[10]);
     percentage_time_limit = std::atof(argv[11]);
     percentage_memory_limit = std::atof(argv[12]);
+    parse_concrete_states_generator(str(argv[14]));
     RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));
     State::Heuristic* state_heuristic = parse_states_heuristics(task, str(argv[4]));
     SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);

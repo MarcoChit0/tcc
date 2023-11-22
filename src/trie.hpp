@@ -4,6 +4,9 @@
 
 class Trie
 {
+    private:
+        set<State> all(const PartialState& partial_state) const;
+        set<State> random(const PartialState& partial_state) const;
     public:
         vec<TrieNode> roots;
         Trie& operator=(const Trie& other);

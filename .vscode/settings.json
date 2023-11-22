@@ -78,7 +78,13 @@
         "source_location": "cpp",
         "shared_mutex": "cpp",
         "*.ipp": "cpp",
-        "version": "cpp"
+        "version": "cpp",
+        "cassert": "cpp",
+        "cerrno": "cpp",
+        "cfloat": "cpp",
+        "climits": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

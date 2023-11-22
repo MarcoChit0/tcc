@@ -19,8 +19,9 @@ set<Sample> Fsm::generate_samples() const
         }
         while (samples.size() < number_of_samples and enough_time() and enough_memory())
         {
-            // todo: change this to randomly select bfs states
-            for (PartialState partial_state : bfs_return.border)
+            vec<PartialState> bfs_border = vec<PartialState>(bfs_return.border.begin(), bfs_return.border.end());
+            std::shuffle(bfs_border.begin(), bfs_border.end(), rng);
+            for (PartialState partial_state : bfs_border)
             {
                 Task new_task = this->task;
                 const PartialState goal_condition = this->task.goal_condition();

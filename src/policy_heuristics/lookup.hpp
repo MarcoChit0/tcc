@@ -12,6 +12,7 @@ public:
     const SampleGenerator& samples_generator;
     const Sample::Treatment& sample_treatment;
 
-    LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator& samples_generator, const Sample::Treatment& sample_treatment);
+    LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator& samples_generator, const Sample::Treatment& sample_treatment, str file_name);
     int operator[](const Policy &policy) const;
+    int compute_score(set<Sample> samples) const;
 };

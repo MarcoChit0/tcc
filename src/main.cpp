@@ -46,7 +46,7 @@ void print_end(const str& domain, const str& problem, const opt<Policy> &opt_sol
     std::cout << std::endl;
 }
 
-Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic *state_heuristic, str policy_heuristic, SampleGenerator *samples_generator, Sample::Treatment* sample_treatment)
+Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic *state_heuristic, str policy_heuristic, SampleGenerator *samples_generator, Sample::Treatment* sample_treatment, str file_name)
 {
     if (policy_heuristic == "count")
     {
@@ -66,7 +66,7 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic 
     }
     else if (policy_heuristic == "lookup")
     {
-        return new LookUp(task, *state_heuristic, *samples_generator, *sample_treatment);
+        return new LookUp(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
     }
     else
     {
@@ -113,7 +113,6 @@ State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_
 
 SampleGenerator *parse_samples_generator(str sample_generator, const Task &task, const State::Heuristic &state_heuristic, const RandomWalk::Walker& walker,int number_of_samples, int length, float porcentage)
 {
-    std::cout << "sample_generator: " << sample_generator << std::endl;
     if (sample_generator == "rw")
     {
         return new RandomWalk(task, state_heuristic, walker, number_of_samples, length);
@@ -174,15 +173,23 @@ int parse_length_data(str length, const Task& task)
     else
     if(length == "facts-over-mean")
     {
-        // TODO: conferir se no artigo realmente era o valor de lf médio
-        int number_of_facts = task.facts().size();
-        int mean_of_effects = 0;
+        int counter = 0;
+        int number_of_effects = 0;
         for(auto action : task.actions())
         {
-            mean_of_effects += action.effects().size();
+            for(auto effect : action.effects())
+            {
+                number_of_effects++;
+                for(auto fact : effect.facts())
+                {
+                    if(not fact.is_none())
+                    {
+                        counter++;
+                    }
+                }
+            }
         }
-        mean_of_effects /= task.actions().size();
-        return std::ceil(number_of_facts / mean_of_effects);
+        return std::ceil(counter / number_of_effects);
     }
     else
     {
@@ -226,6 +233,50 @@ void parse_concrete_states_generator(str concrete_states_generator_string)
     }
 }
 
+std::vector<std::string> split(const std::string& s, char delimiter) {
+    std::vector<std::string> tokens;
+    std::istringstream ss(s);
+    std::string token;
+
+    while (std::getline(ss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
+
+str get_domain(str domain_path)
+{
+    vec<str> tokens = split(domain_path, '/');
+    tokens = split(tokens[tokens.size() - 2], '.');
+    return tokens[0];
+}
+
+str get_problem(str problem_path)
+{
+    vec<str> tokens = split(problem_path, '/');
+    tokens = split(tokens[tokens.size() - 1], '.');
+    return tokens[0];
+}
+
+str get_samples_file_name(int argc, char** argv)
+{
+    str file_name = "misc/data/samples/samples_";
+    str domain = get_domain(str(argv[1]));
+    str problem = get_problem(str(argv[2]));
+    file_name += domain + "_" + problem + "_";
+    for(int i = 3; i < argc; i++)
+    {
+        file_name += str(argv[i]);
+        if(i < argc - 1)
+        {
+            file_name += "_";
+        }
+    }
+    file_name += ".csv";
+    return file_name;
+}
+
 double percentage_timer = 0.1;
 double percentage_time_limit = 0.9;
 double percentage_memory_limit = 0.9;
@@ -237,7 +288,6 @@ int main(int argc, char **argv)
     Task task = Task(str(argv[1]), str(argv[2]));
     int number_of_samples = std::atoi(argv[5]);
     int length = parse_length_data(argv[6], task);
-    std::cout << "length: " << length << std::endl;
     float porcentage = std::atof(argv[7]);
     percentage_timer = std::atof(argv[10]);
     percentage_time_limit = std::atof(argv[11]);
@@ -247,10 +297,11 @@ int main(int argc, char **argv)
     State::Heuristic* state_heuristic = parse_states_heuristics(task, str(argv[4]));
     SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
     Sample::Treatment* sample_treatment = parse_sample_treatment(str(argv[9]));
-    Policy::Heuristic* policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);
+    str samples_file_name = get_samples_file_name(argc, argv);
+    Policy::Heuristic* policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment, samples_file_name);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);
-    print_end(str(argv[1]), str(argv[2]), opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic, number_of_samples, length, porcentage);
+    print_end(get_domain(str(argv[1])), get_problem(str(argv[2])), opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic, number_of_samples, length, porcentage);
     return 0;
 }
 

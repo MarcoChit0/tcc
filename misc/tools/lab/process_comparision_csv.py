@@ -17,11 +17,6 @@ for dir in dirs:
             df = pd.read_csv(csv_path)
             dfs = dfs._append(df, ignore_index=True)
 
-dfs['domain'] = dfs['domain'].str.replace('./res/benchmarks/', '')
-dfs['domain'] = dfs['domain'].str.replace('/domain.pddl', '')
-
-dfs['problem'] = dfs['problem'].str.replace('./res/benchmarks/', '')
-dfs['problem'] = dfs['problem'].str.split('/').str[1]
 
 del dfs['termination']
 groups = dfs.groupby(['domain', 'problem', 'policy_heuristic', 'state_heuristic']).sum()

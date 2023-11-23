@@ -18,17 +18,17 @@ def plot_data(data, domain, minimum_point, maximum_point, number_of_points=100):
     plt.clf()
 
 
-files = os.listdir('./misc/data/csv_results/')
+files = os.listdir('./misc/data/samples/')
 dfs = pd.DataFrame()
 min_h = float('inf')
 max_h = float('-inf')
 last_domain = None
 
 for file in sorted(files):
-    f = open('./misc/data/csv_results/' + file, 'r')
+    f = open('./misc/data/samples/' + file, 'r')
     if 'state_id,h_nd,h_d' in f.readline():
-        df = pd.read_csv('./misc/data/csv_results/' + file)
-        current_domain, instance = file.split(',')
+        df = pd.read_csv('./misc/data/samples/' + file)
+        current_domain, instance = file.split('_')[1], file.split('_')[2]
         if last_domain is None:
             last_domain = current_domain
         
@@ -39,8 +39,7 @@ for file in sorted(files):
             max_h = float('-inf')
             min_h = float('inf')
             last_domain = current_domain
-        
-        df['instance'] = instance.replace(".txt", "")
+        df['instance'] = instance
         max_h = max(max_h, max(df['h_d'].max(), df['h_nd'].max()))
         min_h = min(min_h, min(df['h_d'].min(), df['h_nd'].min()))
         dfs = dfs._append(df, ignore_index=True)

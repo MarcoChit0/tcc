@@ -5,7 +5,6 @@ std::default_random_engine rng;
 Object::Id Object::last_used_id = NONE;
 
 static double timer = get_time_limit();
-static double step = percentage_timer * (get_time_limit() - get_ellapsed_time());
 static int policy_type = 0;
 
 static std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
@@ -141,11 +140,19 @@ str get_output(const str &label, const str &command, const str &input, const opt
 FunctionsCache functions_cache;
 FunctionsCache functions_storage;
 
-bool enough_time()
+bool enough_time(int alarm_type = ALARM_TYPE_SAMPLE_GENERATION)
 {
     double time_limit = get_time_limit();
     double ellapsed_time = get_ellapsed_time();
-    if (ellapsed_time < percentage_time_limit * time_limit)
+    if (alarm_type == ALARM_TYPE_SAMPLE_GENERATION)
+    {
+        time_limit *= sample_generation_alarm;
+    }
+    else // ALARM_TYPE_POLICY
+    {
+        time_limit *= policy_alarm;
+    }
+    if (ellapsed_time < time_limit)
     {
         return true;
     }
@@ -171,12 +178,15 @@ bool enough_memory()
 
 void set_timer()
 {
+    std::cout << "at time " << get_ellapsed_time();
     timer = get_ellapsed_time() + step;
+    std::cout << " timer was set to " << timer;
+    std::cout << " with step " << step << std::endl;
 }
 
 bool timer_expired()
 {
-    return get_ellapsed_time() < timer;
+    return get_ellapsed_time() > timer;
 }
 
 int get_policy_type()

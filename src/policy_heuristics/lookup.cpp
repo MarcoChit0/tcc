@@ -2,7 +2,7 @@
 
 map<int64_t, int> LookUp::table = map<int64_t, int>{};
 
-LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator& samples_generator, const Sample::Treatment& sample_treatment, str file_name) : Heuristic(task), state_heuristic(state_heuristic), samples_generator(samples_generator), sample_treatment(sample_treatment)
+LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : Heuristic(task), state_heuristic(state_heuristic), samples_generator(samples_generator), sample_treatment(sample_treatment)
 {
     set<Sample> samples = this->samples_generator.generate_samples();
     std::fstream file;
@@ -15,7 +15,7 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const 
     for (Sample sample : samples)
     {
         this->sample_treatment(sample);
-        if(sample.is_valid())
+        if (sample.is_valid())
         {
             file << sample.state().id << "," << sample.non_deterministic_value() << "," << sample.deterministic_value() << "," << policy_types_names[sample.policy_type()] << "\n";
             this->table[sample.state().id] = sample.non_deterministic_value();
@@ -80,8 +80,8 @@ int LookUp::operator[](const Policy &policy) const
             delta = std::max(delta, state_heuristic_value + i++);
         }
 
-        cache[policy] = std::max(delta, count + std::max(0, minimal_outgoing_state_h_value - 1));   // delta-nearest
-        cache[policy] = std::max(cache[policy], table_look_up);                                     // lookup
+        cache[policy] = std::max(delta, count + std::max(0, minimal_outgoing_state_h_value - 1)); // delta-nearest
+        cache[policy] = std::max(cache[policy], table_look_up);                                   // lookup
     }
     return cache[policy];
 };

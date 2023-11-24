@@ -17,7 +17,7 @@ set<Sample> Fsm::generate_samples() const
             states_ids.insert(sample.state().id);
             samples.insert(sample);
         }
-        while (samples.size() < number_of_samples and enough_time() and enough_memory())
+        while (samples.size() < number_of_samples and enough_time(ALARM_TYPE_SAMPLE_GENERATION) and enough_memory())
         {
             vec<PartialState> bfs_border = vec<PartialState>(bfs_return.border.begin(), bfs_return.border.end());
             std::shuffle(bfs_border.begin(), bfs_border.end(), rng);
@@ -34,7 +34,7 @@ set<Sample> Fsm::generate_samples() const
                 {
                     samples.insert(sample);
                 }
-                if (samples.size() >= number_of_samples or not enough_time() or not enough_memory())
+                if (samples.size() >= number_of_samples or not enough_time(ALARM_TYPE_SAMPLE_GENERATION) or not enough_memory())
                 {
                     break;
                 }

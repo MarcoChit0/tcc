@@ -55,7 +55,7 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs() const
                         {
                             bfs_return.update(regressed_partial_state, concrete_state, sample);
                         }
-                        if (bfs_return.samples.size() >= this->number_of_samples or not enough_memory() or not enough_time())
+                        if (bfs_return.samples.size() >= this->number_of_samples or not enough_memory() or not enough_time(ALARM_TYPE_SAMPLE_GENERATION))
                         {
                             return bfs_return;
                         }

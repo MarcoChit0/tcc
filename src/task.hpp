@@ -8,13 +8,6 @@ class PartialState;
 class State;
 class Policy;
 
-extern int regressor;
-enum Regressor
-{
-    equality = 0,
-    action_proportionality,
-};
-
 class Task : public Object
 {
 private:
@@ -24,7 +17,7 @@ public:
     using Object::Object;
 
     class Solver;
-
+    class Regressor;
     vec<Variable> &variables() const;
     vec<Fact> &facts() const;
     State &initial_state() const;
@@ -32,10 +25,11 @@ public:
     vec<str> &action_classes() const;
     vec<Action> &actions() const;
     set<set<Fact>> &mutex_groups() const;
+    const Regressor& regressor;
 
     bool violate_mutex(const PartialState &partial_state) const;
     vec<vec<PartialState>> get_regressed_partial_states(const PartialState& partial_state) const;
-    Task(const str &domain_file_name, const str &task_file_name);
+    Task(const str &domain_file_name, const str &task_file_name, const Regressor& regressor);
 
     static map<int64_t, int64_t> variable_to_index;
     static map<int64_t, int64_t> variable_to_variable_domain_size;
@@ -43,6 +37,25 @@ public:
 };
 
 DEFINE_OBJECT_HASH(Task);
+
+class Task::Regressor
+{
+public:
+    virtual vec<vec<PartialState>> operator()(const PartialState &partial_state, const Task& task) const = 0;
+};
+
+class Equality : public Task::Regressor
+{
+public:
+    vec<vec<PartialState>> operator()(const PartialState &partial_state, const Task& task) const;
+};
+
+class ActionProportionality : public Task::Regressor
+{
+public:
+    vec<vec<PartialState>> operator()(const PartialState &partial_state, const Task& task) const;
+};
+
 
 class Task::Solver
 {

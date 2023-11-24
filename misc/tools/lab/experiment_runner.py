@@ -63,7 +63,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-sg", "--sample-generator", type=str, default='fsm')
         self.add_argument("-stc", "--sample-treatment-class", type=str, default='keep')
         self.add_argument("-pt", "--percentage-timer", type=str, default="0.1")
-        self.add_argument("-ptl", "--percentage-time-limit", type=str, default="0.9")
+        self.add_argument("-ptl", "--percentage-time-limit", type=str, default="0.7")
         self.add_argument("-pml", "--percentage-memory-limit", type=str, default="0.9")
         self.add_argument("-w", "--walker", type=str, default="stop")
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")

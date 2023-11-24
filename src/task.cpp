@@ -1,6 +1,6 @@
 #include "./task.hpp"
 
-Task::Task(const str &domain_file_name, const str &task_file_name)
+Task::Task(const str &domain_file_name, const str &task_file_name, const Regressor& regressor) : regressor(regressor)
 {
     std::stringstream sas{get_output("translate", "python3 ./dep/translate/translate.py " + domain_file_name + " " + task_file_name)};
     str buffer;
@@ -197,27 +197,18 @@ bool Task::violate_mutex(const PartialState &partial_state) const
 
 vec<vec<PartialState>> Task::get_regressed_partial_states(const PartialState& partial_state) const
 {
-    switch(regressor)
-    {
-        case Regressor::equality:
-            return this->equality(partial_state);
-        case Regressor::action_proportionality:
-            return this->action_proportionality(partial_state);
-        default:
-            throw std::runtime_error("LOG::Task::get_regressed_partial_states::unknown regressor");
-    }
+    return this->regressor(partial_state, *this);
 }
 
-
-vec<vec<PartialState>> Task::equality(const PartialState &partial_state) const
+vec<vec<PartialState>> Equality::operator()(const PartialState &partial_state, const Task& task) const
 {
-    if (this->violate_mutex(partial_state))
+    if (task.violate_mutex(partial_state))
     {
         return {};
     }
     vec<vec<PartialState>> predecessors;
     set<int64_t> predecessors_ids;
-    for (auto action : this->actions())
+    for (auto action : task.actions())
     {
         for (auto effect : action.effects())
         {
@@ -239,7 +230,7 @@ vec<vec<PartialState>> Task::equality(const PartialState &partial_state) const
                     }
                 }
                 PartialState predecessor = PartialState(predecessor_facts);
-                if (not predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor))
+                if (not predecessors_ids.contains(predecessor.id) and not task.violate_mutex(predecessor))
                 {
                     predecessors_ids.insert(predecessor.id);
                     predecessors.push_back({predecessor});
@@ -250,14 +241,14 @@ vec<vec<PartialState>> Task::equality(const PartialState &partial_state) const
     return predecessors;
 }
 
-vec<vec<PartialState>> Task::action_proportionality(const PartialState &partial_state) const
+vec<vec<PartialState>> ActionProportionality::operator()(const PartialState &partial_state, const Task& task) const
 {
-    if (this->violate_mutex(partial_state))
+    if (task.violate_mutex(partial_state))
     {
         return {};
     }
     vec<vec<PartialState>> predecessors;
-    for (auto action : this->actions())
+    for (auto action : task.actions())
     {
         set<int64_t> action_predecessors_ids = {};
         vec<PartialState> action_predecessors = {};
@@ -281,7 +272,7 @@ vec<vec<PartialState>> Task::action_proportionality(const PartialState &partial_
                     }
                 }
                 PartialState predecessor = PartialState(predecessor_facts);
-                if (not action_predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor))
+                if (not action_predecessors_ids.contains(predecessor.id) and not task.violate_mutex(predecessor))
                 {
                     action_predecessors_ids.insert(predecessor.id);
                     action_predecessors.push_back(predecessor);

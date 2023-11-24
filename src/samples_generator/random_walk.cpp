@@ -8,10 +8,10 @@ set<Sample> RandomWalk::generate_samples() const
     if (not(this->state_heuristic[this->task.initial_state()] == +INFTY))
     {
         set<int64_t> states_ids;
-        while (samples.size() < this->number_of_samples and enough_memory() and enough_time())
+        while (samples.size() < this->number_of_samples and enough_memory() and enough_time(ALARM_TYPE_SAMPLE_GENERATION))
         {
             State state = this->select_state(this->task.goal_condition(), &states_ids);
-            if (enough_memory() and enough_time())
+            if (enough_memory() and enough_time(ALARM_TYPE_SAMPLE_GENERATION))
             {
                 Sample sample = this->get_sample(state);
                 if (not sample.is_none())

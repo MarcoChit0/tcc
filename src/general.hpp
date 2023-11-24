@@ -128,7 +128,14 @@ double get_memory_usage();
 double get_time_limit();
 double get_memory_limit();
 
-bool enough_time();
+double get_step();
+
+enum AlarmType
+{
+    ALARM_TYPE_SAMPLE_GENERATION = 0,
+    ALARM_TYPE_POLICY = 1,
+};
+bool enough_time(int alarm_type);
 bool enough_memory();
 
 bool timer_expired();
@@ -136,7 +143,10 @@ void set_timer();
 
 extern double percentage_timer;
 extern double percentage_memory_limit;
-extern double percentage_time_limit;
+extern double sample_generation_alarm;
+extern double policy_alarm;
+// maximum percentage of time that can be allocated to generate one sample
+extern double step;
 
 void set_policy_type(int policy_type);
 int get_policy_type();

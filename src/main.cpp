@@ -23,7 +23,6 @@
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
-int regressor = Regressor::equality;
 
 void print_end(const str &domain, const str &problem, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic *policy_heuristic, int number_of_samples, int length, float percentage)
 {
@@ -304,16 +303,16 @@ str get_samples_file_name(int argc, char **argv)
     return file_name;
 }
 
-void parse_regressor(str regressor_string)
+Task::Regressor* parse_regressor(str regressor_string)
 {
     if(regressor_string == "equality")
     {
-        regressor = Regressor::equality;
+        return new Equality();
     }
     else
     if (regressor_string == "action-proportionality")
     {
-        regressor = Regressor::action_proportionality;
+        return new ActionProportionality();
     }
     else
     {
@@ -322,20 +321,30 @@ void parse_regressor(str regressor_string)
 }
 
 double percentage_timer = 0.1;
-double percentage_time_limit = 0.9;
 double percentage_memory_limit = 0.9;
+double sample_generation_alarm = 0.7;
+double policy_alarm;
+double step;
+
+void set_step_and_policy_alarm()
+{
+    assert (0 <= sample_generation_alarm and sample_generation_alarm <= 1);
+    step = percentage_timer * sample_generation_alarm * (get_time_limit() - get_ellapsed_time());
+    policy_alarm = 1 - sample_generation_alarm;
+}
 
 int main(int argc, char **argv)
 {
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
-    parse_regressor(str(argv[15]));
-    Task task = Task(str(argv[1]), str(argv[2]));
+    Task::Regressor *regressor = parse_regressor(str(argv[15]));
+    Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     int number_of_samples = std::atoi(argv[5]);
     int length = parse_length_data(argv[6], task);
     float porcentage = std::atof(argv[7]);
     percentage_timer = std::atof(argv[10]);
-    percentage_time_limit = std::atof(argv[11]);
+    sample_generation_alarm = std::atof(argv[11]);
+    set_step_and_policy_alarm();
     percentage_memory_limit = std::atof(argv[12]);
     parse_concrete_states_generator(str(argv[14]));
     RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));

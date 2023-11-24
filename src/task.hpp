@@ -8,8 +8,18 @@ class PartialState;
 class State;
 class Policy;
 
+extern int regressor;
+enum Regressor
+{
+    equality = 0,
+    action_proportionality,
+};
+
 class Task : public Object
 {
+private:
+    vec<vec<PartialState>> equality(const PartialState &partial_state) const;
+    vec<vec<PartialState>> action_proportionality(const PartialState &partial_state) const;
 public:
     using Object::Object;
 
@@ -24,10 +34,9 @@ public:
     set<set<Fact>> &mutex_groups() const;
 
     bool violate_mutex(const PartialState &partial_state) const;
-    vec<PartialState> get_regressed_partial_states(const PartialState& partial_state) const;
+    vec<vec<PartialState>> get_regressed_partial_states(const PartialState& partial_state) const;
     Task(const str &domain_file_name, const str &task_file_name);
 
-    static map<int64_t, vec<PartialState>> regressed_partial_states;
     static map<int64_t, int64_t> variable_to_index;
     static map<int64_t, int64_t> variable_to_variable_domain_size;
     static map<int64_t, int64_t> fact_to_fact_offset;

@@ -182,11 +182,11 @@ bool Task::violate_mutex(const PartialState &partial_state) const
     int count = -1;
     for (set<Fact> mutex_group : this->mutex_groups())
     {
-        count ++;
+        count++;
         int number_of_violated_mutexes = 0;
         for (Fact fact : mutex_group)
         {
-            if(partial_state.contains(fact, this->variable_to_index[fact.variable().id]) and ++number_of_violated_mutexes >= 2)
+            if (partial_state.contains(fact, this->variable_to_index[fact.variable().id]) and ++number_of_violated_mutexes >= 2)
             {
                 return true;
             }
@@ -195,52 +195,107 @@ bool Task::violate_mutex(const PartialState &partial_state) const
     return false;
 }
 
-vec<PartialState> Task::get_regressed_partial_states(const PartialState &partial_state) const
+vec<vec<PartialState>> Task::get_regressed_partial_states(const PartialState& partial_state) const
 {
-    if (not regressed_partial_states.contains(partial_state.id))
+    switch(regressor)
     {
-        if (this->violate_mutex(partial_state))
+        case Regressor::equality:
+            return this->equality(partial_state);
+        case Regressor::action_proportionality:
+            return this->action_proportionality(partial_state);
+        default:
+            throw std::runtime_error("LOG::Task::get_regressed_partial_states::unknown regressor");
+    }
+}
+
+
+vec<vec<PartialState>> Task::equality(const PartialState &partial_state) const
+{
+    if (this->violate_mutex(partial_state))
+    {
+        return {};
+    }
+    vec<vec<PartialState>> predecessors;
+    set<int64_t> predecessors_ids;
+    for (auto action : this->actions())
+    {
+        for (auto effect : action.effects())
         {
-            return vec<PartialState>();
-        }
-        vec<PartialState> predecessors;
-        set<int64_t> predecessors_ids;
-        for (auto action : this->actions())
-        {
-            for (auto effect : action.effects())
+            if (partial_state.does_model(effect))
             {
-                if (partial_state.does_model(effect))
+                vec<Fact> predecessor_facts = partial_state.true_facts();
+                for (int i = 0; i < effect.true_facts().size(); i++)
                 {
-                    vec<Fact> predecessor_facts = partial_state.true_facts();
-                    for (int i = 0; i < effect.true_facts().size(); i++)
+                    if (not effect.true_facts()[i].is_none())
                     {
-                        if (not effect.true_facts()[i].is_none())
-                        {
-                            predecessor_facts[i].id = NONE;
-                        }
+                        predecessor_facts[i].id = NONE;
                     }
-                    for (int i = 0; i < action.precondition().true_facts().size(); i++)
+                }
+                for (int i = 0; i < action.precondition().true_facts().size(); i++)
+                {
+                    if (not action.precondition().true_facts()[i].is_none())
                     {
-                        if (not action.precondition().true_facts()[i].is_none())
-                        {
-                            predecessor_facts[i].id = action.precondition().true_facts()[i].id;
-                        }
+                        predecessor_facts[i].id = action.precondition().true_facts()[i].id;
                     }
-                    PartialState predecessor = PartialState(predecessor_facts);
-                    if (not predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor))
-                    {
-                        predecessors_ids.insert(predecessor.id);
-                        predecessors.push_back(predecessor);
-                    }
+                }
+                PartialState predecessor = PartialState(predecessor_facts);
+                if (not predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor))
+                {
+                    predecessors_ids.insert(predecessor.id);
+                    predecessors.push_back({predecessor});
                 }
             }
         }
-        regressed_partial_states[partial_state.id] = predecessors;
     }
-    return regressed_partial_states[partial_state.id];
+    return predecessors;
 }
 
-map<int64_t, vec<PartialState>> Task::regressed_partial_states;
+vec<vec<PartialState>> Task::action_proportionality(const PartialState &partial_state) const
+{
+    if (this->violate_mutex(partial_state))
+    {
+        return {};
+    }
+    vec<vec<PartialState>> predecessors;
+    for (auto action : this->actions())
+    {
+        set<int64_t> action_predecessors_ids = {};
+        vec<PartialState> action_predecessors = {};
+        for (auto effect : action.effects())
+        {
+            if (partial_state.does_model(effect))
+            {
+                vec<Fact> predecessor_facts = partial_state.true_facts();
+                for (int i = 0; i < effect.true_facts().size(); i++)
+                {
+                    if (not effect.true_facts()[i].is_none())
+                    {
+                        predecessor_facts[i].id = NONE;
+                    }
+                }
+                for (int i = 0; i < action.precondition().true_facts().size(); i++)
+                {
+                    if (not action.precondition().true_facts()[i].is_none())
+                    {
+                        predecessor_facts[i].id = action.precondition().true_facts()[i].id;
+                    }
+                }
+                PartialState predecessor = PartialState(predecessor_facts);
+                if (not action_predecessors_ids.contains(predecessor.id) and not this->violate_mutex(predecessor))
+                {
+                    action_predecessors_ids.insert(predecessor.id);
+                    action_predecessors.push_back(predecessor);
+                }
+            }
+        }
+        if (not action_predecessors.empty())
+        {
+            predecessors.push_back(action_predecessors);
+        }
+    }
+    return predecessors;
+}
+
 map<int64_t, int64_t> Task::variable_to_index;
 map<int64_t, int64_t> Task::variable_to_variable_domain_size;
 map<int64_t, int64_t> Task::fact_to_fact_offset;

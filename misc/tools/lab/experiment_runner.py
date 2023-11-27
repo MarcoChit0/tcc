@@ -130,7 +130,7 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
 
     samples_folder_path = f'./misc/data/samples/' 
     save_folder_path = f'./misc/data/raw_results/{apn.save_folder_name_prefix},{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor}'
-    save_file_name = f'{task_info.domain_label},{task_info.task_label}.txt'
+    save_file_name = f'{task_info.domain_label},{task_info.task_label}.csv'
 
     if not os.path.exists(samples_folder_path): os.makedirs(samples_folder_path)
 

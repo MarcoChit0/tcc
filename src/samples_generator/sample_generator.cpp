@@ -20,6 +20,7 @@ Sample SampleGenerator::get_sample(State new_initial_state) const
     DeltaNearest delta_nearest = DeltaNearest(this->task, this->state_heuristic);
     set_timer();
     Policy policy = AndStar(delta_nearest, this->state_heuristic).get_solution(this->task);
+    unset_timer();
     this->task.initial_state() = original_task_initial_state;
     return Sample(new_initial_state, policy.size(), this->state_heuristic[new_initial_state], get_policy_type());
 }

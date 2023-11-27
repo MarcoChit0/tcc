@@ -140,6 +140,7 @@ bool enough_memory();
 
 bool timer_expired();
 void set_timer();
+void unset_timer();
 
 extern double percentage_timer;
 extern double percentage_memory_limit;

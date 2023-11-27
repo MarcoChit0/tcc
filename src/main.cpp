@@ -24,28 +24,6 @@
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
 
-void print_end(const str &domain, const str &problem, const opt<Policy> &opt_solution, const AndStar &and_star, str policy_heuristic_string, str state_heuristic_string, Policy::Heuristic *policy_heuristic, int number_of_samples, int length, float percentage)
-{
-    std::cout << "domain,problem,termination,memory,time,generated,inserted,removed,expanded,solution_size,policy_heuristic,state_heuristic,number_of_samples,length,percentage,number_of_lookups" << std::endl;
-    std::cout << domain;
-    std::cout << "," << problem;
-    std::cout << "," << (opt_solution.has_value() ? "optimal" : "suboptimal");
-    std::cout << "," << get_memory_usage();
-    std::cout << "," << get_ellapsed_time();
-    std::cout << "," << and_star.number_of_generated_policies;
-    std::cout << "," << and_star.number_of_inserted_policies;
-    std::cout << "," << and_star.number_of_removed_policies;
-    std::cout << "," << and_star.number_of_expanded_policies;
-    std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1);
-    std::cout << "," << policy_heuristic_string;
-    std::cout << "," << state_heuristic_string;
-    std::cout << "," << number_of_samples;
-    std::cout << "," << length;
-    std::cout << "," << percentage;
-    std::cout << "," << (policy_heuristic_string == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1;
-    std::cout << std::endl;
-}
-
 Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic *state_heuristic, str policy_heuristic, SampleGenerator *samples_generator, Sample::Treatment *sample_treatment, str file_name)
 {
     if (policy_heuristic == "count")
@@ -320,6 +298,35 @@ Task::Regressor* parse_regressor(str regressor_string)
     }
 }
 
+void print_end(char** argv, const Task& task, Policy::Heuristic* policy_heuristic, AndStar& and_star, opt<Policy> opt_solution)
+{
+    std::cout << "domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups" << std::endl;
+    std::cout << get_domain(str(argv[1])); // domain
+    std::cout << "," << get_problem(str(argv[2])); // problem
+    std::cout << "," << str(argv[3]); // policy_heuristic
+    std::cout << "," << str(argv[4]); // state_heuristic
+    std::cout << "," << std::atoi(argv[5]); // number_of_samples
+    std::cout << "," << parse_length_data(argv[6], task); // length
+    std::cout << "," << std::atof(argv[7]); // percentage_fsm
+    std::cout << "," << str(argv[8]); // sample_generator
+    std::cout << "," << str(argv[9]); // sample_treatment_class
+    std::cout << "," << std::atof(argv[10]); // percentage_timer
+    std::cout << "," << std::atof(argv[11]); // percentage_time_limit
+    std::cout << "," << std::atof(argv[12]); // percentage_memory_limit
+    std::cout << "," << str(argv[13]); // walker
+    std::cout << "," << str(argv[14]); // concrete_states_generator
+    std::cout << "," << str(argv[15]); // regressor
+    std::cout << "," << (opt_solution.has_value() ? "optimal" : "suboptimal"); // termination
+    std::cout << "," << get_memory_usage(); // memory_usage
+    std::cout << "," << get_ellapsed_time(); // time
+    std::cout << "," << and_star.number_of_generated_policies; // number_of_generated_policies
+    std::cout << "," << and_star.number_of_inserted_policies; // number_of_inserted_policies
+    std::cout << "," << and_star.number_of_removed_policies; // number_of_removed_policies
+    std::cout << "," << and_star.number_of_expanded_policies; // number_of_expanded_policies
+    std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1); // solution_length
+    std::cout << "," << (str(argv[3]) == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1; // number_of_lookups
+}
+
 double percentage_timer = 0.1;
 double percentage_memory_limit = 0.9;
 double sample_generation_alarm = 0.7;
@@ -355,6 +362,6 @@ int main(int argc, char **argv)
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment, samples_file_name);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);
-    print_end(get_domain(str(argv[1])), get_problem(str(argv[2])), opt_solution, and_star, str(argv[3]), str(argv[4]), policy_heuristic, number_of_samples, length, porcentage);
+    print_end(argv, task, policy_heuristic, and_star, opt_solution);
     return 0;
 }

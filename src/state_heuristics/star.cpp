@@ -95,3 +95,9 @@ set<State> Star::get_concrete_states(const PartialState &partial_state) const
     }
     return concrete_states;
 }
+
+int Star::size() const
+{
+    auto &data_base = functions_storage[Function{&Star::operator[], *this}];
+    return data_base.size();
+}

@@ -11,4 +11,6 @@ public:
     int operator[](const State &state) const;
 
     set<State> get_concrete_states(const PartialState &partial_state) const;
+
+    int size() const;
 };

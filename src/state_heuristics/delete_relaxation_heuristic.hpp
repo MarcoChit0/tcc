@@ -21,4 +21,6 @@ public:
     static Action final_action;
 
     set<State> get_concrete_states(const PartialState &partial_state) const override;
+
+    int size() const;
 };

@@ -13,3 +13,13 @@ set<State> TrieStateHeuristic::get_concrete_states(const PartialState &partial_s
 {
     return this->trie.get_states(partial_state);
 };
+
+int TrieStateHeuristic::size() const
+{
+    int states = 0;
+    for(auto root : this->trie.roots)
+    {
+        states += root.number_of_states;
+    }
+    return states;
+};

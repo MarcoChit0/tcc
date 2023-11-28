@@ -125,3 +125,9 @@ set<State> Ff::get_concrete_states(const PartialState &partial_state) const
     }
     return concrete_states;
 }
+
+int Ff::size() const
+{
+    auto &data_base = functions_storage[Function{&Ff::operator[], *this}];
+    return data_base.size();
+}

@@ -90,3 +90,9 @@ set<State> DeleteRelaxationHeuristic::get_concrete_states(const PartialState &pa
     }
     return concrete_states;
 }
+
+int DeleteRelaxationHeuristic::size() const
+{
+    auto &data_base = functions_storage[Function{&DeleteRelaxationHeuristic::operator[], *this}];
+    return data_base.size();
+}

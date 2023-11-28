@@ -55,8 +55,8 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-wl", "--white-list-file-path", type=str, default='./white-list.txt')
         self.add_argument("-bl", "--black-list-file-path", type=str, default='./black-list.txt')
         self.add_argument("-p", "--save-folder-name-prefix", type=str, default=f'test,v{datetime.date.today().isoformat()}')
-        self.add_argument("-sh", "--state-heuristic", type=str, default='lmcut')
-        self.add_argument("-ph", "--policy-heuristic", type=str, default='delta-nearest')
+        self.add_argument("-sh", "--state-heuristic", type=str, default='trie-star')
+        self.add_argument("-ph", "--policy-heuristic", type=str, default='max-lookup-delta-nearest')
         self.add_argument("-ns", "--number-of-samples", type=str, default="100")
         self.add_argument("-l", "--length", type=str, default="10")
         self.add_argument("-pfsm", "--percentage-fsm", type=str, default="0.2")
@@ -104,7 +104,8 @@ def get_splitted_command(
         percentage_memory_limit: str,
         walker: str,
         concrete_states_generator: str,
-        regressor: str
+        regressor: str,
+        samples_file_path: str,
         ) -> list[str]:
     return [
         f'./and_star',
@@ -122,17 +123,19 @@ def get_splitted_command(
         f'{percentage_memory_limit}',
         f'{walker}',
         f'{concrete_states_generator}',
-        f'{regressor}'
+        f'{regressor}',
+        f'{samples_file_path}',
     ]
 
 def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str, walker: str, concrete_states_generator: str, regressor: str) -> None:
     global apn, threads_semaphore, folder_creation_lock, process_creation_lock, print_lock
 
-    samples_folder_path = f'./misc/data/samples/' 
-    save_folder_path = f'./misc/data/raw_results/{apn.save_folder_name_prefix},{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor}'
-    save_file_name = f'{task_info.domain_label},{task_info.task_label}.csv'
-
-    if not os.path.exists(samples_folder_path): os.makedirs(samples_folder_path)
+    basic_dir_structure = f'./misc/data/raw_results/{apn.save_folder_name_prefix}/'
+    params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor}"
+    task = f'{task_info.domain_label}/{task_info.task_label}'
+    save_folder_path = f'{basic_dir_structure}/{params}/{task}'
+    save_file_name = f'results.csv'
+    samples_file_path = f"{save_folder_path}/samples.csv"
 
     if os.path.exists(f'{save_folder_path}/{save_file_name}') and not apn.run_again_if_done: threads_semaphore.release(); return
 
@@ -142,7 +145,7 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
 
     process_creation_lock.acquire(); time.sleep(0.1)
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, samples_file_path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0

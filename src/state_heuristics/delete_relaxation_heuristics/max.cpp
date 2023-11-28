@@ -81,3 +81,10 @@ set<State> Max::get_concrete_states(const PartialState &partial_state) const
     }
     return concrete_states;
 }
+
+int Max::size() const
+{
+    Function this_function{&Max::operator[], *this};
+    auto &cache = functions_cache[this_function];
+    return cache.size();
+}

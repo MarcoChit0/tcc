@@ -150,3 +150,8 @@ set<State> Lmcut::get_concrete_states(const PartialState &partial_state) const
     }
     return concrete_states;
 }
+
+int Lmcut::size() const
+{
+    return functions_storage[Function{&Lmcut::operator[], *this}].size();
+}

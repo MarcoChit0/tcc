@@ -7,6 +7,8 @@
 #include "./policy_heuristics/delta.hpp"
 #include "./policy_heuristics/delta_nearest.hpp"
 #include "./policy_heuristics/lookup.hpp"
+#include "./policy_heuristics/lookup_heuristics/lookup_on_delta_nearest.hpp"
+#include "./policy_heuristics/lookup_heuristics/max_lookup_delta_nearest.hpp"
 #include "./state_heuristics/blind.hpp"
 #include "./state_heuristics/delete_relaxation_heuristics/max.hpp"
 #include "./state_heuristics/delete_relaxation_heuristics/add.hpp"
@@ -42,9 +44,13 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic 
     {
         return new DeltaNearest(task, *state_heuristic);
     }
-    else if (policy_heuristic == "lookup")
+    else if (policy_heuristic == "lookup-on-delta-nearest")
     {
-        return new LookUp(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
+        return new LookUpOnDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
+    }
+    else if (policy_heuristic == "max-lookup-delta-nearest")
+    {
+        return new MaxLookUpDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
     }
     else
     {
@@ -263,24 +269,6 @@ str get_problem(str problem_path)
     return tokens[0];
 }
 
-str get_samples_file_name(int argc, char **argv)
-{
-    str file_name = "misc/data/samples/samples_";
-    str domain = get_domain(str(argv[1]));
-    str problem = get_problem(str(argv[2]));
-    file_name += domain + "_" + problem + "_";
-    for (int i = 3; i < argc; i++)
-    {
-        file_name += str(argv[i]);
-        if (i < argc - 1)
-        {
-            file_name += "_";
-        }
-    }
-    file_name += ".csv";
-    return file_name;
-}
-
 Task::Regressor* parse_regressor(str regressor_string)
 {
     if(regressor_string == "equality")
@@ -298,9 +286,9 @@ Task::Regressor* parse_regressor(str regressor_string)
     }
 }
 
-void print_end(char** argv, const Task& task, Policy::Heuristic* policy_heuristic, AndStar& and_star, opt<Policy> opt_solution)
+void print_end(char** argv, const Task& task, Policy::Heuristic* policy_heuristic, AndStar& and_star, opt<Policy> opt_solution, int number_of_states_generated_on_state_heuristic_table = -1)
 {
-    std::cout << "domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups" << std::endl;
+    std::cout << "domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups,number_of_states_generated_on_state_heuristic_table" << std::endl;
     std::cout << get_domain(str(argv[1])); // domain
     std::cout << "," << get_problem(str(argv[2])); // problem
     std::cout << "," << str(argv[3]); // policy_heuristic
@@ -316,7 +304,7 @@ void print_end(char** argv, const Task& task, Policy::Heuristic* policy_heuristi
     std::cout << "," << str(argv[13]); // walker
     std::cout << "," << str(argv[14]); // concrete_states_generator
     std::cout << "," << str(argv[15]); // regressor
-    std::cout << "," << (opt_solution.has_value() ? "optimal" : "suboptimal"); // termination
+    std::cout << "," << policy_types_names[get_policy_type()]; // termination
     std::cout << "," << get_memory_usage(); // memory_usage
     std::cout << "," << get_ellapsed_time(); // time
     std::cout << "," << and_star.number_of_generated_policies; // number_of_generated_policies
@@ -325,6 +313,7 @@ void print_end(char** argv, const Task& task, Policy::Heuristic* policy_heuristi
     std::cout << "," << and_star.number_of_expanded_policies; // number_of_expanded_policies
     std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1); // solution_length
     std::cout << "," << (str(argv[3]) == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1; // number_of_lookups
+    std::cout << "," << number_of_states_generated_on_state_heuristic_table; // number_of_states_generated_on_state_heuristic_table
 }
 
 double percentage_timer = 0.1;
@@ -342,8 +331,8 @@ void set_step_and_policy_alarm()
 
 int main(int argc, char **argv)
 {
-    // assert(get_memory_limit() <= 8);
-    // assert(get_time_limit() <= 1800);
+    assert(get_memory_limit() <= 8);
+    assert(get_time_limit() <= 1800);
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     int number_of_samples = std::atoi(argv[5]);
@@ -358,10 +347,10 @@ int main(int argc, char **argv)
     State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]));
     SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
     Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
-    str samples_file_name = get_samples_file_name(argc, argv);
+    str samples_file_name = argv[argc - 1]; // the last argument is the samples file name
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment, samples_file_name);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);
-    print_end(argv, task, policy_heuristic, and_star, opt_solution);
+    print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
     return 0;
 }

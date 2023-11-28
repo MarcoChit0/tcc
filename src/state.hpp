@@ -34,6 +34,8 @@ public:
     virtual int operator[](const State &state) const = 0;
 
     virtual set<State> get_concrete_states(const PartialState &partial_state) const = 0;
+
+    virtual int size() const=0;
 };
 
 #include "./task.hpp"

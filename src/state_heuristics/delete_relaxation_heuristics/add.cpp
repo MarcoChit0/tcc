@@ -93,3 +93,9 @@ set<State> Add::get_concrete_states(const PartialState &partial_state) const
     }
     return concrete_states;
 }
+
+int Add::size() const
+{
+    auto &data_base = functions_storage[Function{&Add::operator[], *this}];
+    return data_base.size();
+}

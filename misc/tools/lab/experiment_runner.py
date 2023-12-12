@@ -58,7 +58,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-sh", "--state-heuristic", type=str, default='trie-star')
         self.add_argument("-ph", "--policy-heuristic", type=str, default='max-lookup-delta-nearest')
         self.add_argument("-ns", "--number-of-samples", type=str, default="100")
-        self.add_argument("-l", "--length", type=str, default="10")
+        self.add_argument("-l", "--length", type=str, default="facts-over-effects-mean-over-actions-mean")
         self.add_argument("-pfsm", "--percentage-fsm", type=str, default="0.2")
         self.add_argument("-sg", "--sample-generator", type=str, default='fsm')
         self.add_argument("-stc", "--sample-treatment-class", type=str, default='keep')
@@ -67,7 +67,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-pml", "--percentage-memory-limit", type=str, default="0.9")
         self.add_argument("-w", "--walker", type=str, default="stop")
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")
-        self.add_argument("-r", "--regressor", type=str, default="equality")
+        self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)

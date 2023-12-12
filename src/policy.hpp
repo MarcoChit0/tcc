@@ -19,6 +19,7 @@ public:
     Policy &parent_policy() const;
 
     Policy(const State &state, const Action &action, const Policy &parent_policy);
+    Policy();
 
     DomainIterator domain_iterator() const;
     Action &operator[](const State &state) const;

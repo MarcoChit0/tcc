@@ -8,7 +8,7 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const 
     set<Sample> samples = this->samples_generator.generate_samples();
     std::fstream file;
     file.open(file_name, std::ios::out);
-    file << "state_id,h_nd,h_d,policy_type\n";
+    file << "state_id,state,h_nd,h_d,policy_type\n";
     if (not file.is_open())
     {
         throw std::runtime_error("LOG::LookUp::LookUp::file not open");
@@ -18,9 +18,13 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const 
         this->sample_treatment(sample);
         if (sample.is_valid())
         {
-            file << sample.state().id << "," << sample.non_deterministic_value() << "," << sample.deterministic_value() << "," << policy_types_names[sample.policy_type()] << "\n";
+            file 
+            << sample.state().id << "," 
+            << this->task.bitset_representation_of_state(sample.state()) << "," 
+            << sample.non_deterministic_value() << "," 
+            << sample.deterministic_value() << "," 
+            << policy_types_names[sample.policy_type()] << "\n";
             this->table_nd[sample.state().id] = sample.non_deterministic_value();
-            // this->table_d[sample.state().id] = sample.deterministic_value();
         }
     }
     file.close();

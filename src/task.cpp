@@ -23,6 +23,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
     int number_of_variables;
     sas >> number_of_variables;
     mpz_class current_variable_hash = 1;
+    this->bitset_size = 0;
     for (int i = 0; i < number_of_variables; i++)
     {
         sas >> buffer;
@@ -36,6 +37,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
         int variable_domain_size;
         sas >> variable_domain_size;
         std::getline(sas, buffer);
+        this->bitset_size += variable_domain_size;
         for (int j = 0; j < variable_domain_size; j++)
         {
             std::getline(sas, buffer);
@@ -285,6 +287,22 @@ vec<vec<PartialState>> ActionProportionality::operator()(const PartialState &par
         }
     }
     return predecessors;
+}
+
+str Task::bitset_representation_of_state(const State& state) const
+{
+    str bitset_representation = str(this->bitset_size, '0');
+    int variable_offset = 0; 
+    for(auto fact : state.true_facts())
+    {
+        if(fact.id != NONE)
+        {
+            int fact_offset = this->fact_to_fact_offset[fact.id];
+            bitset_representation[variable_offset + fact_offset] = '1';
+        }
+        variable_offset += variable_to_variable_domain_size[fact.variable().id];
+    }
+    return bitset_representation;
 }
 
 map<int64_t, int64_t> Task::variable_to_index;

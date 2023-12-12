@@ -8,6 +8,11 @@ Policy::Policy(const State &state, const Action &action, const Policy &parent_po
     this->parent_policy() = parent_policy;
 }
 
+Policy::Policy()
+{
+    this->id = NONE;
+}
+
 Policy::DomainIterator Policy::domain_iterator() const
 {
     return DomainIterator(*this);

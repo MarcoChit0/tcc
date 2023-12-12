@@ -11,7 +11,7 @@ set<Sample> RandomWalk::generate_samples() const
         while (samples.size() < this->number_of_samples and enough_memory() and enough_time(ALARM_TYPE_SAMPLE_GENERATION))
         {
             State state = this->select_state(this->task.goal_condition(), &states_ids);
-            if (enough_memory() and enough_time(ALARM_TYPE_SAMPLE_GENERATION))
+            if (enough_memory() and enough_time(ALARM_TYPE_SAMPLE_GENERATION) and state.id != NONE)
             {
                 Sample sample = this->get_sample(state);
                 if (not sample.is_none())
@@ -33,24 +33,19 @@ State RandomWalk::select_state(PartialState partial_state_to_be_regressed, set<i
 {
     State state;
     bool match = false;
-    while (not match)
+    while (not match and enough_memory() and enough_time(ALARM_TYPE_SAMPLE_GENERATION))
     {
-        PartialState partial_state = partial_state_to_be_regressed;
-        do
-        {
-            partial_state = this->perform_random_walk(partial_state_to_be_regressed);
-        } while (partial_state == partial_state_to_be_regressed);
-        set<State> concrete_states = this->state_heuristic.get_concrete_states(partial_state);
+        set<State> concrete_states = this->state_heuristic.get_concrete_states(this->perform_random_walk(partial_state_to_be_regressed));
         if (not concrete_states.empty())
         {
             std::uniform_int_distribution<int> distribution(0, concrete_states.size() - 1);
             int random_index = distribution(rng);
             auto it = std::next(concrete_states.begin(), random_index);
-            state = *it;
-            if (not states_ids->contains(state.id))
+            if (not states_ids->contains((*it).id))
             {
-                states_ids->insert(state.id);
+                states_ids->insert((*it).id);
                 match = true;
+                state = *it;
                 break;
             }
         }

@@ -9,6 +9,7 @@
 #include "./policy_heuristics/lookup.hpp"
 #include "./policy_heuristics/lookup_heuristics/lookup_on_delta_nearest.hpp"
 #include "./policy_heuristics/lookup_heuristics/max_lookup_delta_nearest.hpp"
+#include "./policy_heuristics/lookup_heuristics/neural_network_lookup.hpp"
 #include "./state_heuristics/blind.hpp"
 #include "./state_heuristics/delete_relaxation_heuristics/max.hpp"
 #include "./state_heuristics/delete_relaxation_heuristics/add.hpp"
@@ -51,6 +52,10 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic 
     else if (policy_heuristic == "max-lookup-delta-nearest")
     {
         return new MaxLookUpDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
+    }
+    else if(policy_heuristic == "neural-network-lookup")
+    {
+        return new NeuralNetworkLookUp(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
     }
     else
     {
@@ -239,20 +244,6 @@ void parse_concrete_states_generator(str concrete_states_generator_string)
     {
         throw std::domain_error("Invalid concrete states generator.");
     }
-}
-
-std::vector<std::string> split(const std::string &s, char delimiter)
-{
-    std::vector<std::string> tokens;
-    std::istringstream ss(s);
-    std::string token;
-
-    while (std::getline(ss, token, delimiter))
-    {
-        tokens.push_back(token);
-    }
-
-    return tokens;
 }
 
 str get_domain(str domain_path)

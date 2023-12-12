@@ -21,6 +21,15 @@ Sample SampleGenerator::get_sample(State new_initial_state) const
     set_timer();
     Policy policy = AndStar(delta_nearest, this->state_heuristic).get_solution(this->task);
     unset_timer();
+    int policy_size = 0;
+    if(get_policy_type() == UNSOLVABLE_POLICY)
+    {
+        policy_size = INFTY;
+    }
+    else
+    {
+        policy_size = policy.size();
+    }
     this->task.initial_state() = original_task_initial_state;
-    return Sample(new_initial_state, policy.size(), this->state_heuristic[new_initial_state], get_policy_type());
+    return Sample(new_initial_state, policy_size, this->state_heuristic[new_initial_state], get_policy_type());
 }

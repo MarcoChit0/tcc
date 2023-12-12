@@ -198,3 +198,17 @@ void set_policy_type(int new_policy_type)
 {
     policy_type = new_policy_type;
 }
+
+std::vector<std::string> split(const std::string &s, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::istringstream ss(s);
+    std::string token;
+
+    while (std::getline(ss, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}

@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <typeindex>
+#include <bitset>
 
 #include <iostream>
 #include <fstream>
@@ -155,13 +156,16 @@ int get_policy_type();
 enum policy_types{
     OPTIMAL_POLICY = 0,
     SUBOPTIMAL_POLICY = 1,
+    UNSOLVABLE_POLICY = 2,
 };
 
 static map<int, str> policy_types_names = {
     {OPTIMAL_POLICY, "optimal"},
     {SUBOPTIMAL_POLICY, "suboptimal"},
+    {UNSOLVABLE_POLICY, "unsolvable"},
 };
 
+vec<str> split(const str &s, char delimiter);
 
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 

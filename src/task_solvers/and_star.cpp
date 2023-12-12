@@ -144,5 +144,6 @@ Policy AndStar::get_solution(const Task &task)
         }
     }
 
-    throw std::domain_error("Unsolvable Task");
+    set_policy_type(UNSOLVABLE_POLICY);
+    return Policy();
 }

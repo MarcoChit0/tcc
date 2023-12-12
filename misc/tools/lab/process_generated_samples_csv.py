@@ -5,7 +5,7 @@ import numpy as np
 import os
 import csv
 
-header = 'state_id,h_nd,h_d,policy_type'
+header = 'state_id,state,h_nd,h_d,policy_type'
 raw_results_path = './misc/data/raw_results/'
 png_path = './misc/data/png_results/'
 

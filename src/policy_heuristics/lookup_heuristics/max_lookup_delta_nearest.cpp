@@ -5,14 +5,14 @@ MaxLookUpDeltaNearest::MaxLookUpDeltaNearest(const Task &task, const State::Heur
 {
 }
 
-int MaxLookUpDeltaNearest::operator[](const Policy &policy) const
+double MaxLookUpDeltaNearest::operator[](const Policy &policy) const
 {
     // if not found, return max(delta-nearest, random-walk-lookup)
     Function this_function{&MaxLookUpDeltaNearest::operator[], *this};
     auto &cache = functions_cache[this_function];
     if (not cache.contains(policy))
     {
-        int table_look_up = 0;
+        double table_look_up = 0.0f;
         Policy cursor_policy = policy;
         // look for State on DOMAIN
         for (const State &domain_state : cursor_policy.domain_iterator())

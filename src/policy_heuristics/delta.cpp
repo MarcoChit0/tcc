@@ -2,7 +2,7 @@
 
 Delta::Delta(const Task &task, const State::Heuristic &state_heuristic) : Heuristic(task), state_heuristic(state_heuristic) {}
 
-int Delta::operator[](const Policy &policy) const
+double Delta::operator[](const Policy &policy) const
 {
     Function this_function {&Delta::operator[], *this};
     auto &cache = functions_cache[this_function];

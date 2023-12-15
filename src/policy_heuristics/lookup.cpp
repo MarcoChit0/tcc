@@ -1,6 +1,6 @@
 #include "lookup.hpp"
 
-map<int64_t, int> LookUp::table_nd = map<int64_t, int>{};
+map<int64_t, double> LookUp::table_nd = map<int64_t, double>{};
 int LookUp::number_of_lookups = 0;
 
 LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : Heuristic(task), state_heuristic(state_heuristic), samples_generator(samples_generator), sample_treatment(sample_treatment)

@@ -2,7 +2,7 @@
 
 Nearest::Nearest(const Task &task, const State::Heuristic &state_heuristic) : Heuristic(task), state_heuristic(state_heuristic) {}
 
-int Nearest::operator[](const Policy &policy) const
+double Nearest::operator[](const Policy &policy) const
 {
     Function this_function {&Nearest::operator[], *this};
     auto &cache = functions_cache[this_function];

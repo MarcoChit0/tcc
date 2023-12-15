@@ -3,19 +3,22 @@
 NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : LookUp(task, state_heuristic, samples_generator, sample_treatment, file_name)
 {
     std::cout << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::START" << std::endl;
-    std::stringstream ss{get_output("build-and-train", "python3 ./misc/tools/lab/neural_network.py --samples_file=" + file_name + " --operation=train")};
+    str command =  "python3 ./misc/tools/lab/neural_network.py --operation=train --samples_file=" + file_name;
+    std::cout << "command: " << command << std::endl;
+    std::stringstream ss{get_output("build-and-train", command)};
+    std::cout << "samples file: " << file_name << std::endl;
     std::cout << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::END" << std::endl;
-    this->table_nd = map<int64_t, int>{};
+    this->table_nd = map<int64_t, double>{};
 }
 
-int NeuralNetworkLookUp::operator[](const Policy &policy) const
+double NeuralNetworkLookUp::operator[](const Policy &policy) const
 {
     // if not found, return max(delta-nearest, random-walk-lookup)
     Function this_function{&NeuralNetworkLookUp::operator[], *this};
     auto &cache = functions_cache[this_function];
     if (not cache.contains(policy))
     {
-        int table_look_up = 0;
+        double table_look_up = 0;
         Policy cursor_policy = policy;
         vec<State> states_to_consult;
         // look for State on DOMAIN
@@ -46,7 +49,7 @@ int NeuralNetworkLookUp::operator[](const Policy &policy) const
             }
         }
         // consult neural network
-        int maximum_consulted_value = this->consult_neural_network(states_to_consult);
+        double maximum_consulted_value = this->consult_neural_network(states_to_consult);
         table_look_up = std::max(table_look_up, maximum_consulted_value);
 
         // compute delta-nearest
@@ -81,7 +84,7 @@ int NeuralNetworkLookUp::operator[](const Policy &policy) const
     return cache[policy];
 }
 
-int NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) const
+double NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) const
 {
     str states_string = "";
     for(auto state : states)
@@ -93,11 +96,21 @@ int NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) const
     std::stringstream ss{get_output("lookup", "python3 ./misc/tools/lab/neural_network.py --operation=predict --states=" + states_string)};
     std::cout << "LOG::NeuralNetworkLookUp::consult_neural_network::END" << std::endl;
     vec<str> states_values = split(ss.str(), ',');
+    std::cout << "LOG::NeuralNetworkLookUp::consult_neural_network::states_string" << std::endl;
+    for(auto state : states)
+    {
+        std::cout << this->task.bitset_representation_of_state(state) << std::endl;
+    }
+    std::cout << "LOG::NeuralNetworkLookUp::consult_neural_network::states_values" << std::endl;
+    for(auto state_value : states_values)
+    {
+        std::cout << state_value << std::endl;
+    }
     assert (states_values.size() == states.size());
-    int maximum_value = -INFTY;
+    double maximum_value = -INFTY;
     for(int i = 0; i < states.size(); i++)
     {
-        int state_value = std::stoi(states_values[i]);
+        double state_value = std::stod(states_values[i]);
         this->table_nd[states[i].id] = state_value;
         maximum_value = std::max(maximum_value, state_value);
     }

@@ -51,7 +51,7 @@ public:
 
     Heuristic(const Task &task);
 
-    virtual int operator[](const Policy &policy) const = 0;
+    virtual double operator[](const Policy &policy) const = 0;
 };
 
 #include "./task.hpp"

@@ -7,6 +7,6 @@ class MaxLookUpDeltaNearest : public LookUp
 public:
     MaxLookUpDeltaNearest(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &sample_generator, const Sample::Treatment& sample_treatment, str filename);
 
-    int operator[](const Policy &policy) const;
+    double operator[](const Policy &policy) const;
     // double compute_score(int optimal_policy_size) const;
 };

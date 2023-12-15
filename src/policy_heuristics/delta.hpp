@@ -8,5 +8,5 @@ public:
 
     Delta(const Task &task, const State::Heuristic &state_heuristic);
 
-    int operator[](const Policy &policy) const;
+    double operator[](const Policy &policy) const;
 };

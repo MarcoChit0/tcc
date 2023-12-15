@@ -4,7 +4,7 @@ LookUpOnDeltaNearest::LookUpOnDeltaNearest(const Task &task, const State::Heuris
 {
 }
 
-int LookUpOnDeltaNearest::operator[](const Policy &policy) const
+double LookUpOnDeltaNearest::operator[](const Policy &policy) const
 {
     Function this_function {&LookUpOnDeltaNearest::operator[], *this};
     auto &cache = functions_cache[this_function];
@@ -14,13 +14,13 @@ int LookUpOnDeltaNearest::operator[](const Policy &policy) const
 
         int minimal_outgoing_state_h_value = policy.does_reach_the_goal(this->task.goal_condition())? 0: +INFTY;
 
-        vec<int> states_heuristic_values;
+        vec<double> states_heuristic_values;
         states_heuristic_values.reserve(count);
         for (const State &state: policy.domain_iterator())
         {
             if(this->table_nd.contains(state.id))
             {
-                int non_admissible_state_heuristic = std::max(this->state_heuristic[state], this->table_nd[state.id]);
+                double non_admissible_state_heuristic = std::max((double) this->state_heuristic[state], this->table_nd[state.id]);
                 states_heuristic_values.push_back(non_admissible_state_heuristic);                
             }
             else
@@ -32,7 +32,7 @@ int LookUpOnDeltaNearest::operator[](const Policy &policy) const
         {
             if(this->table_nd.contains(state.id))
             {
-                int non_admissible_state_heuristic = std::max(this->state_heuristic[state], this->table_nd[state.id]);
+                int non_admissible_state_heuristic = std::max((double) this->state_heuristic[state], this->table_nd[state.id]);
                 states_heuristic_values.push_back(non_admissible_state_heuristic);
                 minimal_outgoing_state_h_value = std::min(minimal_outgoing_state_h_value, non_admissible_state_heuristic);
             }

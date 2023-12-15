@@ -1,10 +1,22 @@
-from math import ceil
+from math import ceil, floor
+import os
+import sys
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import tap
 import argcomplete
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# run script only on CPU
+tf.config.set_visible_devices(tf.config.list_physical_devices('CPU'))
+# limit paralelism
+tf.config.threading.set_intra_op_parallelism_threads(1)
+tf.config.threading.set_inter_op_parallelism_threads(1)
+
+
 
 def build_model(input_shape, num_units=250):
     # Define the model
@@ -30,82 +42,120 @@ def build_model(input_shape, num_units=250):
     # Compile the model
     optimizer = keras.optimizers.Adam(learning_rate=1e-4)
     loss_function = keras.losses.MeanSquaredError()
+    metrics = tf.keras.metrics.MeanAbsoluteError()
     model = keras.Model(inputs=model_input, outputs=output)
-    model.compile(optimizer=optimizer, loss=loss_function)
+    model.compile(optimizer=optimizer, loss=loss_function, metrics=metrics)
 
     return model
 
-def train_model(model, x_train, y_train, x_val, y_val, epochs=10, batch_size=32):
-    # Train the model
+def train_model(model, train_data, train_labels, validation_data, validation_labels, epochs=20, batch_size=32):
     history = model.fit(
-        x_train,
-        y_train,
+        train_data,
+        train_labels,
         epochs=epochs,
         batch_size=batch_size,
-        validation_data=(x_val, y_val),
+        validation_data=(validation_data, validation_labels),
         verbose=0
     )
     return history
 
 def get_samples_data(samples_file):
-    ptrain = 0.8
+    ptrain = 0.9
     df = pd.read_csv(samples_file)
-    x_train = df[["state"]].to_numpy()
-    x_val = df[["h_nd"]].to_numpy()
-    assert len(x_train) == len(x_val)
-    samples_to_train = ceil(len(x_train) * ptrain)
-    y_train = x_train[samples_to_train + 1: len(x_train)]
-    x_train = x_train[0:samples_to_train]
-    y_val = x_val[samples_to_train + 1: len(x_train)]
-    x_val = x_val[0:samples_to_train]
+    
+    train_data = [[int(char) for char in word] for word in df["state"]]
+    train_data = np.array(train_data)
+    train_labels = df[["h_nd"]].to_numpy()
+    assert len(train_data) == len(train_labels)
+
+    maximum_character_length = len(df["state"].iloc[0])
+    
+    validation_data = train_data[ceil(len(train_data) * ptrain):]
+    validation_labels = train_labels[ceil(len(train_labels) * ptrain):]
+    train_data = train_data[:ceil(len(train_data) * ptrain)]
+    train_labels = train_labels[:ceil(len(train_labels) * ptrain)]
+    
+    input_shape = (maximum_character_length, )
     return {
-        'x_train': x_train,
-        'y_train': y_train,
-        'x_val': x_val,
-        'y_val': y_val,
-        'input_shape': x_train.shape[1:],
+        'input_shape': input_shape,
+        'train_data': train_data,
+        'train_labels': train_labels,
+        'validation_data': validation_data,
+        'validation_labels': validation_labels
     }
+
+
             
 def build_and_train_model(samples_file):
+    print("LOG::build_and_train_model::begin", file=sys.stderr)
+    print("LOG::build_and_train_model::Samples file:", samples_file, file=sys.stderr)
     samples_data = get_samples_data(samples_file)
+    print("LOG::build_and_train_model::Building model", file=sys.stderr)
     model = build_model(samples_data['input_shape'])
-    history = train_model(model, samples_data['x_train'], samples_data['y_train'], samples_data['x_val'], samples_data['y_val'])
+    print("LOG::build_and_train_model::Training model", file=sys.stderr)
+    history = train_model(model, samples_data['train_data'], samples_data['train_labels'], samples_data['validation_data'], samples_data['validation_labels'])
+    print("LOG::build_and_train_model::end", file=sys.stderr)
     return model, history
+
+def plot_history(history):
+    acc = history.history["mean_absolute_error"]
+    val_acc = history.history["val_mean_absolute_error"]
+    loss = history.history["loss"]
+    val_loss = history.history["val_loss"]
+    epochs = range(1, len(acc) + 1)
+    plt.plot(epochs, acc, "bo", label="Training MAE")
+    plt.plot(epochs, val_acc, "b", label="Validation MAE")
+    plt.title("Training and validation Mean Absolute Error (MAE)")
+    plt.legend()
+    plt.figure()
+    plt.plot(epochs, loss, "bo", label="Training MSE")
+    plt.plot(epochs, val_loss, "b", label="Validation MSE")
+    plt.title("Training and validation Mean Squared Error (MSE)")
+    plt.legend()
+    plt.show()
 
 class ArgParsingNamespace(tap.Tap):
     states: str
     samples_file: str
     operation: str
+    plot: bool
 
     def configure(self) -> None:
         self.add_argument('--states', help='states file', default='')
         self.add_argument('--samples_file', help='samples file', default='')
         self.add_argument('--operation', help='train, predict', default=False)
+        self.add_argument('--plot', help='plot history', default=False)
 
-parser = ArgParsingNamespace()
-argcomplete.autocomplete(parser)
-parser.parse_args()
-print(parser)
-if parser.operation == 'train':
-    if parser.samples_file == '':
-        print("You must specify --samples_file to train the model")
+if __name__ == '__main__':
+    parser = ArgParsingNamespace()
+    argcomplete.autocomplete(parser)
+    parser.parse_args()
+    if parser.operation == 'train':
+        if parser.samples_file == '' or os.path.isfile(parser.samples_file) == False:
+            print("You must specify --samples_file to train the model", file=sys.stderr)
+        else:
+            model, history = build_and_train_model(parser.samples_file)
+            model.save('model.h5')
+            if parser.plot:
+                plot_history(history)
+
+    elif parser.operation == 'predict':
+        if parser.states == '':
+            print("You must specify --states to predict the model", file=sys.stderr)
+        else:
+            model = keras.models.load_model('model.h5')
+            states = parser.states.split(',')
+            input_states = []
+            for state in states:
+                input_states.append([int(char) for char in state])
+            input_states = np.array(input_states)
+            print(input_states, file=sys.stderr)
+            values_str = ""
+            for value_array in model.predict(input_states):
+                values_str += f"{str(value_array[0]) + ','}"
+                
+            print(values_str[:-1])
+
     else:
-        model, history = build_and_train_model(parser.samples_file)
-        model.save('model.h5')
-        print(history.history)
-
-elif parser.predict == 'predict':
-    if parser.states == '':
-        print("You must specify --states to predict the model")
-    else:
-        model = keras.models.load_model('model.h5')
-        states = parser.states.split(',')
-        values = []
-        for state in states:
-            values.append(model.predict([[float(state)]]))
-        values_str = [str(value[0][0]) + "," for value in values]
-        print(values_str[:-1])
-
-else:
-    print("You must specify --operation to train or predict the model")
-    exit()
+        print("You must specify --operation to train or predict the model", file=sys.stderr)
+        exit()

@@ -9,20 +9,16 @@ def get_array_from_image(image):
 domains = [
     'acrobatics',
     'beam-walk',
-    'blocksworld-original',
     'blocksworld-advanced',
+    'blocksworld-original',
     'chain-of-rooms',
     'doors',
     'earth-observation',
-    'elevators',
     'faults',
     'first-responders',
     'islands',
-    'miner',
-    'tireworld-spiky',
     'tireworld-triangle',
     'tireworld-truck',
-    'zenotravel',
 ]
 
 input_path = "./misc/data/metrics/"

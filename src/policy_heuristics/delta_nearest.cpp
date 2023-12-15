@@ -2,7 +2,7 @@
 
 DeltaNearest::DeltaNearest(const Task &task, const State::Heuristic &state_heuristic) : Heuristic(task), state_heuristic(state_heuristic) {}
 
-int DeltaNearest::operator[](const Policy &policy) const
+double DeltaNearest::operator[](const Policy &policy) const
 {
     Function this_function {&DeltaNearest::operator[], *this};
     auto &cache = functions_cache[this_function];

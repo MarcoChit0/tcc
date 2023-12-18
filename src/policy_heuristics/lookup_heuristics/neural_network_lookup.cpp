@@ -2,12 +2,15 @@
 
 NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : LookUp(task, state_heuristic, samples_generator, sample_treatment, file_name)
 {
-    std::cout << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::START" << std::endl;
+    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::START" << std::endl;
     str command =  "python3 ./misc/tools/lab/neural_network.py --operation=train --samples_file=" + file_name;
-    std::cout << "command: " << command << std::endl;
+    std::cerr << "command: " << command << std::endl;
+    auto start = std::chrono::high_resolution_clock::now();
     std::stringstream ss{get_output("build-and-train", command)};
-    std::cout << "samples file: " << file_name << std::endl;
-    std::cout << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::END" << std::endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    auto difference = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    decrease_itimer(difference.count()/1000000LL, difference.count()%1000000LL);
+    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::END::" << difference << std::endl;
     this->table_nd = map<int64_t, double>{};
 }
 
@@ -86,25 +89,33 @@ double NeuralNetworkLookUp::operator[](const Policy &policy) const
 
 double NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) const
 {
-    str states_string = "";
+    str input_string = "";
     for(auto state : states)
     {
-        states_string += this->task.bitset_representation_of_state(state) + ",";
+        input_string += this->task.bitset_representation_of_state(state) + ",";
     }
-    states_string.pop_back();
-    std::cout << "LOG::NeuralNetworkLookUp::consult_neural_network::START" << std::endl;
-    std::stringstream ss{get_output("lookup", "python3 ./misc/tools/lab/neural_network.py --operation=predict --states=" + states_string)};
-    std::cout << "LOG::NeuralNetworkLookUp::consult_neural_network::END" << std::endl;
-    vec<str> states_values = split(ss.str(), ',');
-    std::cout << "LOG::NeuralNetworkLookUp::consult_neural_network::states_string" << std::endl;
-    for(auto state : states)
+    input_string.pop_back();
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::input = [" << input_string << "]" << std::endl;
+    std::cerr << get_memory_usage() << "/" << get_memory_limit() << std::endl;
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::START" << std::endl;
+    auto start = std::chrono::high_resolution_clock::now();
+    std::stringstream ss{get_output("lookup", "python3 ./misc/tools/lab/neural_network.py --operation=predict --states=" + input_string)};
+    auto end = std::chrono::high_resolution_clock::now();
+    auto difference = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    decrease_itimer(difference.count()/1000000LL, difference.count()%1000000LL);
+    str output_string = ss.str();
+    size_t pos = output_string.find('\n');
+    if(pos != std::string::npos)
     {
-        std::cout << this->task.bitset_representation_of_state(state) << std::endl;
+        output_string.erase(pos);
     }
-    std::cout << "LOG::NeuralNetworkLookUp::consult_neural_network::states_values" << std::endl;
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::END::"<< difference << std::endl;
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::output = [" << output_string << "]" << std::endl;
+    vec<str> states_values = split(output_string, ',');
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::states_values:" << std::endl;
     for(auto state_value : states_values)
     {
-        std::cout << state_value << std::endl;
+        std::cerr << state_value << std::endl;
     }
     assert (states_values.size() == states.size());
     double maximum_value = -INFTY;
@@ -112,6 +123,7 @@ double NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) con
     {
         double state_value = std::stod(states_values[i]);
         this->table_nd[states[i].id] = state_value;
+        std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::state_value = " << state_value << std::endl;
         maximum_value = std::max(maximum_value, state_value);
     }
     return maximum_value;

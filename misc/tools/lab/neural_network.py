@@ -1,6 +1,9 @@
 from math import ceil, floor
 import os
 import sys
+from tabnanny import verbose
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -15,6 +18,8 @@ tf.config.set_visible_devices(tf.config.list_physical_devices('CPU'))
 # limit paralelism
 tf.config.threading.set_intra_op_parallelism_threads(1)
 tf.config.threading.set_inter_op_parallelism_threads(1)
+# only see fatal errors
+tf.get_logger().setLevel(tf._logging.FATAL)
 
 
 
@@ -49,13 +54,14 @@ def build_model(input_shape, num_units=250):
     return model
 
 def train_model(model, train_data, train_labels, validation_data, validation_labels, epochs=20, batch_size=32):
+    print_training_process = 0 # change to 1 to see training progress
     history = model.fit(
         train_data,
         train_labels,
         epochs=epochs,
         batch_size=batch_size,
         validation_data=(validation_data, validation_labels),
-        verbose=0
+        verbose=print_training_process
     )
     return history
 
@@ -151,7 +157,7 @@ if __name__ == '__main__':
             input_states = np.array(input_states)
             print(input_states, file=sys.stderr)
             values_str = ""
-            for value_array in model.predict(input_states):
+            for value_array in model.predict(input_states, verbose=0):
                 values_str += f"{str(value_array[0]) + ','}"
                 
             print(values_str[:-1])

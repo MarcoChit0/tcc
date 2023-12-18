@@ -80,7 +80,7 @@ process_creation_lock = Lock()
 print_lock = Lock()
 
 def limit_virtual_memory(): resource.setrlimit(resource.RLIMIT_AS, (round(apn.memory_limit * 1000 * 1000 * 1000 / 8), round(apn.memory_limit * 1000 * 1000 * 1000 / 8)))
-def limit_cpu_time(): resource.setrlimit(resource.RLIMIT_CPU, (round(apn.time_limit * 60), round(apn.time_limit * 60)))
+def limit_cpu_time(): resource.setrlimit(resource.RLIMIT_RTTIME, (round(apn.time_limit * 60 * 1000 * 1000), round(apn.time_limit * 60 * 1000 * 1000)))
 def apply_limits(): limit_virtual_memory(); limit_cpu_time()
 
 @dataclasses.dataclass()
@@ -134,10 +134,11 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
     params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor}"
     task = f'{task_info.domain_label}/{task_info.task_label}'
     save_folder_path = f'{basic_dir_structure}/{params}/{task}'
-    save_file_name = f'results.csv'
+    results_file = f'results.csv'
+    exp_log_file = f'log.txt'
     samples_file_path = f"{save_folder_path}/samples.csv"
 
-    if os.path.exists(f'{save_folder_path}/{save_file_name}') and not apn.run_again_if_done: threads_semaphore.release(); return
+    if os.path.exists(f'{save_folder_path}/{results_file}') and not apn.run_again_if_done: threads_semaphore.release(); return
 
     folder_creation_lock.acquire()
     if not os.path.exists(f'{save_folder_path}'): os.makedirs(f'{save_folder_path}')
@@ -150,11 +151,11 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
 
     # process._sigint_wait_secs = 0
     stdout, stderr = process.communicate()
-    result = stdout + stderr
 
     print_lock.acquire(); time.sleep(0.1)
     print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %fsm: {percentage_fsm}, generator: {sample_generator}, treatment: {sample_treatment_class}, %timer: {percentage_timer}, %tlimit: {percentage_time_limit}, %mlimit: {percentage_memory_limit}, walker: {walker}, concrete states gen: {concrete_states_generator}, regressor: {regressor}')
-    open(f'{save_folder_path}/{save_file_name}', 'w').write(result)
+    open(f'{save_folder_path}/{results_file}', 'w').write(stdout)
+    open(f'{save_folder_path}/{exp_log_file}', 'w').write(stderr)
     print_lock.release()
 
     threads_semaphore.release()

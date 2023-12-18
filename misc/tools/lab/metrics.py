@@ -11,7 +11,7 @@ results_header = "domain,problem,policy_heuristic,state_heuristic,number_of_samp
 #samples_header = 'state_id,state,h_nd,h_d,policy_type'
 samples_header1 = 'state_id,h_nd,h_d,policy_type'
 samples_header2 = 'state_id,state,h_nd,h_d,policy_type'
-raw_results_path = './experiments/05/'
+raw_results_path = './experiments/06/'
 metrics_path = './misc/data/metrics/'
 policy_heuristics = ['lookup-on-delta-nearest', 'max-lookup-delta-nearest']
 
@@ -75,16 +75,17 @@ if __name__ == "__main__":
             if policy_heuristic == 'max-lookup-delta-nearest' or 'lookup-on-delta-nearest':
                 for domain_dir in os.listdir(raw_results_path + base_dir + '/' + param_dir):
                     metric = "max-lookup-delta-nearest-metric"
-                    if metric not in data:
-                        data[metric] = {}
-                    if domain_dir not in data[metric]:
-                        data[metric][domain_dir] = {}
-                        data[metric][domain_dir][param_dir] = {}
-                        data[metric][domain_dir]['min_h'] = float('inf')
-                        data[metric][domain_dir]['max_h'] = float('-inf')
-                        data[metric][domain_dir]['palette'] = {}
-                        data[metric][domain_dir]['x'] = 'n'
-                        data[metric][domain_dir]['y'] = 'k'
+                    if domain_dir not in data:
+                        data[domain_dir] = {}
+                        data[domain_dir]['palette'] = {}
+                    if metric not in data[domain_dir]:
+                        data[domain_dir][metric] = {}
+                        data[domain_dir][metric][param_dir] = {}
+                        data[domain_dir][metric]['min_h'] = float('inf')
+                        data[domain_dir][metric]['max_h'] = float('-inf')
+                        data[domain_dir][metric]['x'] = 'n'
+                        data[domain_dir][metric]['y'] = 'k'
+
                     df = pd.DataFrame([], columns=['n', 'k', 'instance'])
                     min_h = float('inf')
                     max_h = float('-inf')
@@ -97,9 +98,9 @@ if __name__ == "__main__":
                             results_df = pd.read_csv(results_csv_path)
                             if results_df['termination'][0] != 'optimal': 
                                 continue
-                            if problem_dir not in data[metric][domain_dir]['palette']:
+                            if problem_dir not in data[domain_dir]['palette']:
                                 # select a color to represent the problem
-                                data[metric][domain_dir]['palette'][problem_dir] = np.random.rand(3)
+                                data[domain_dir]['palette'][problem_dir] = np.random.rand(3)
                             samples_df = pd.read_csv(samples_csv_path)
                             k = 0
                             c:int = int(results_df['solution_length'].at[0])
@@ -114,9 +115,9 @@ if __name__ == "__main__":
                             min_h = min([min_h, k, n])
                             df = df._append(new_row, ignore_index=True)
                     # save data
-                    data[metric][domain_dir][param_dir] = df
-                    data[metric][domain_dir]['min_h'] = min(min_h, data[metric][domain_dir]['min_h'])
-                    data[metric][domain_dir]['max_h'] = max(max_h, data[metric][domain_dir]['max_h'])
+                    data[domain_dir][metric][param_dir] = df
+                    data[domain_dir][metric]['min_h'] = min(min_h, data[domain_dir][metric]['min_h'])
+                    data[domain_dir][metric]['max_h'] = max(max_h, data[domain_dir][metric]['max_h'])
             if policy_heuristic == 'lookup-on-delta-nearest':
                 delta_nearest_param = param_dir.replace('lookup-on-delta-nearest','delta-nearest')
                 if delta_nearest_param not in param_dirs:
@@ -128,16 +129,17 @@ if __name__ == "__main__":
                         print(f"LOG::lookup-on-delta-nearest::{domain_dir} not found on delta-nearest dir")
                         continue
                     metric = "lookup-on-delta-nearest-metric"
-                    if metric not in data:
-                        data[metric] = {}
-                    if domain_dir not in data[metric]:
-                        data[metric][domain_dir] = {}
-                        data[metric][domain_dir][param_dir] = {}
-                        data[metric][domain_dir]['min_h'] = float('inf')
-                        data[metric][domain_dir]['max_h'] = float('-inf')
-                        data[metric][domain_dir]['palette'] = {}
-                        data[metric][domain_dir]['x'] = 'policies-lookup-on-delta-nearest'
-                        data[metric][domain_dir]['y'] = 'policies-delta-nearest'
+                    if domain_dir not in data:
+                        data[domain_dir] = {}
+                        data[domain_dir]['palette'] = {}
+                    if metric not in data[domain_dir]:
+                        data[domain_dir][metric] = {}
+                        data[domain_dir][metric][param_dir] = {}
+                        data[domain_dir][metric]['min_h'] = float('inf')
+                        data[domain_dir][metric]['max_h'] = float('-inf')
+                        data[domain_dir][metric]['x'] = 'policies-lookup-on-delta-nearest'
+                        data[domain_dir][metric]['y'] = 'policies-delta-nearest'
+
                     df = pd.DataFrame([], columns=['policies-lookup-on-delta-nearest', 'policies-delta-nearest', 'instance'])
                     min_h = float('inf')
                     max_h = float('-inf')
@@ -150,9 +152,9 @@ if __name__ == "__main__":
                         if not (os.path.exists(results_csv_path) and os.path.exists(delta_nearest_csv_path)): 
                             continue
                         if check_if_csv_file_was_correctly_generated(results_csv_path, 'results') and check_if_csv_file_was_correctly_generated(delta_nearest_csv_path, 'results'):
-                            if problem_dir not in data[metric][domain_dir]['palette']:
+                            if problem_dir not in data[domain_dir]['palette']:
                                 # select a color to represent the problem
-                                data[metric][domain_dir]['palette'][problem_dir] = np.random.rand(3)
+                                data[domain_dir]['palette'][problem_dir] = np.random.rand(3)
                             results_df = pd.read_csv(results_csv_path)
                             delta_nearest_df = pd.read_csv(delta_nearest_csv_path)
                             policies_lookup_on_delta_nearest = int(results_df['number_of_generated_policies'].at[0])
@@ -167,26 +169,27 @@ if __name__ == "__main__":
                             min_h = min([min_h, policies_lookup_on_delta_nearest, policies_delta_nearest])
                             df = df._append(new_row, ignore_index=True)
                     # save data
-                    data[metric][domain_dir][param_dir] = df
-                    data[metric][domain_dir]['min_h'] = min(min_h, data[metric][domain_dir]['min_h'])
-                    data[metric][domain_dir]['max_h'] = max(max_h, data[metric][domain_dir]['max_h'])
-        for metric in data:
-            for domain_dir in data[metric]:
-                param_dirs = [key for key in data[metric][domain_dir] if key != 'min_h' and key != 'max_h' and key != 'palette' and key != 'x' and key != 'y']
+                    data[domain_dir][metric][param_dir] = df
+                    data[domain_dir][metric]['min_h'] = min(min_h, data[domain_dir][metric]['min_h'])
+                    data[domain_dir][metric]['max_h'] = max(max_h, data[domain_dir][metric]['max_h'])
+        for domain_dir in data:
+            metrics = [metric for metric in data[domain_dir] if metric != 'palette']
+            for metric in metrics:
+                param_dirs = [key for key in data[domain_dir][metric] if key != 'min_h' and key != 'max_h' and key != 'x' and key != 'y']
                 for param_dir in param_dirs:
                     print(f"{domain_dir}::{param_dir}")
-                    print(data[metric][domain_dir][param_dir])
                     if metric == "max-lookup-delta-nearest-metric":
                         params = param_dir.replace('lookup-on-delta-nearest', 'max-lookup-delta-nearest')
                     else:
                         params = param_dir
                     plot_data(
-                        data = data[metric][domain_dir][param_dir],
-                        domain = domain_dir,
-                        minimum_point = data[metric][domain_dir]['min_h'],
-                        maximum_point = data[metric][domain_dir]['max_h'],
-                        params = params,
-                        x=data[metric][domain_dir]['x'],
-                        y=data[metric][domain_dir]['y'],
-                        palette=data[metric][domain_dir]['palette'],)
+                        data=data[domain_dir][metric][param_dir],
+                        domain=domain_dir,
+                        minimum_point=data[domain_dir][metric]['min_h'],
+                        maximum_point=data[domain_dir][metric]['max_h'],
+                        params=params,
+                        x=data[domain_dir][metric]['x'],
+                        y=data[domain_dir][metric]['y'],
+                        palette=data[domain_dir]['palette']
+                    )
 

@@ -324,6 +324,10 @@ int main(int argc, char **argv)
 {
     assert(get_memory_limit() <= 8);
     assert(get_time_limit() <= 1800);
+    setup_signal_handler();
+    std::cerr << "LOG::main::setup signal handler" << std::endl;
+    setup_itimer(std::ceil(get_time_limit()));
+    std::cerr << "LOG::main::time limit: " << get_time_limit() << std::endl;
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     int number_of_samples = std::atoi(argv[5]);

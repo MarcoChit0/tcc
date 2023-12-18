@@ -7,6 +7,9 @@
 #include <map>
 #include <typeindex>
 #include <bitset>
+#include <csignal>
+#include <sys/time.h>
+#include <unistd.h>
 
 #include <iostream>
 #include <fstream>
@@ -129,7 +132,7 @@ double get_memory_usage();
 double get_time_limit();
 double get_memory_limit();
 
-double get_step();
+void signal_handler(int signum);
 
 enum AlarmType
 {
@@ -142,6 +145,14 @@ bool enough_memory();
 bool timer_expired();
 void set_timer();
 void unset_timer();
+
+extern struct sigaction sa;
+extern struct itimerval itimer;
+extern long long number_of_decreased_seconds;
+extern long long number_of_decreased_microseconds;
+void setup_signal_handler();
+void setup_itimer(int initial_time_limit_sec, int initial_time_limit_usec = 0);
+void decrease_itimer(int time_to_decrease_sec, int time_to_decrease_usec = 0);
 
 extern double percentage_timer;
 extern double percentage_memory_limit;

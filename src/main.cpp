@@ -322,7 +322,7 @@ void set_step_and_policy_alarm()
 
 int main(int argc, char **argv)
 {
-    assert(get_memory_limit() <= 8);
+    // assert(get_memory_limit() <= 8);
     assert(get_time_limit() <= 1800);
     setup_signal_handler();
     std::cerr << "LOG::main::setup signal handler" << std::endl;

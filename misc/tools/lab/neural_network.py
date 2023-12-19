@@ -2,7 +2,9 @@ from math import ceil, floor
 import os
 import sys
 from tabnanny import verbose
+# run script only on CPU
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
+# limit comments
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 from tensorflow import keras
@@ -120,28 +122,34 @@ def plot_history(history):
     plt.legend()
     plt.show()
 
+
 class ArgParsingNamespace(tap.Tap):
     states: str
     samples_file: str
     operation: str
     plot: bool
+    path: str
 
     def configure(self) -> None:
         self.add_argument('--states', help='states file', default='')
         self.add_argument('--samples_file', help='samples file', default='')
         self.add_argument('--operation', help='train, predict', default=False)
         self.add_argument('--plot', help='plot history', default=False)
+        self.add_argument('--path', help='path to save model', default='')
+
 
 if __name__ == '__main__':
     parser = ArgParsingNamespace()
     argcomplete.autocomplete(parser)
     parser.parse_args()
+    model_name = "model.keras"
+    model_path = os.path.join(parser.path, model_name)
     if parser.operation == 'train':
         if parser.samples_file == '' or os.path.isfile(parser.samples_file) == False:
             print("You must specify --samples_file to train the model", file=sys.stderr)
         else:
             model, history = build_and_train_model(parser.samples_file)
-            model.save('model.h5')
+            model.save(model_path)
             if parser.plot:
                 plot_history(history)
 
@@ -149,7 +157,7 @@ if __name__ == '__main__':
         if parser.states == '':
             print("You must specify --states to predict the model", file=sys.stderr)
         else:
-            model = keras.models.load_model('model.h5')
+            model = keras.models.load_model(model_path)
             states = parser.states.split(',')
             input_states = []
             for state in states:

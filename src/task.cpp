@@ -292,6 +292,7 @@ vec<vec<PartialState>> ActionProportionality::operator()(const PartialState &par
 str Task::bitset_representation_of_state(const State& state) const
 {
     str bitset_representation = str(this->bitset_size, '0');
+
     int variable_offset = 0; 
     for(auto fact : state.true_facts())
     {

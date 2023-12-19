@@ -35,8 +35,8 @@ double get_memory_usage()
 double get_time_limit()
 {
     struct rlimit lim;
-    getrlimit(RLIMIT_RTTIME, &lim);                    // microseconds
-    return (double) (double(lim.rlim_max) / double(1000 * 1000)) - number_of_decreased_seconds; // seconds
+    getrlimit(RLIMIT_RTTIME, &lim);                                                            // microseconds
+    return (double)(double(lim.rlim_max) / double(1000 * 1000)) - number_of_decreased_seconds; // seconds
 }
 
 double get_memory_limit()
@@ -56,54 +56,72 @@ void signal_handler(int signum)
 }
 
 struct sigaction sa;
-
 void setup_signal_handler()
 {
     sa.sa_handler = signal_handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
-    sigaction(SIGALRM, &sa, NULL);
+    if (sigaction(SIGALRM, &sa, NULL) == -1)
+    {
+        std::cerr << "Error setting signal handler\n";
+        exit(1);
+    }
 }
 
 struct itimerval itimer;
-long long number_of_decreased_seconds = 0;
 long long number_of_decreased_microseconds = 0;
+long long number_of_decreased_seconds = 0;
 
 void setup_itimer(int initial_time_limit_sec, int initial_time_limit_usec)
 {
-    itimer.it_value.tv_sec = initial_time_limit_sec / 1000000LL;
-    itimer.it_value.tv_usec = (initial_time_limit_sec % 1000000LL) + initial_time_limit_usec;
+    itimer.it_value.tv_sec = initial_time_limit_sec;
+    itimer.it_value.tv_usec = initial_time_limit_usec;
     itimer.it_interval.tv_sec = 0;
     itimer.it_interval.tv_usec = 0;
+
     std::cerr << "LOG::setup_itimer::initial_time_limit_sec = " << initial_time_limit_sec << std::endl;
     std::cerr << "LOG::setup_itimer::initial_time_limit_usec = " << initial_time_limit_usec << std::endl;
-    setitimer(ITIMER_REAL, &itimer, NULL);
+
+    if (setitimer(ITIMER_REAL, &itimer, NULL) == -1)
+    {
+        std::cerr << "Error setting timer\n";
+        exit(1);
+    }
 }
 
 void decrease_itimer(int time_to_decrease_sec, int time_to_decrease_usec)
 {
-    long long total_microseconds = (itimer.it_value.tv_sec * 1000000LL + itimer.it_value.tv_usec) - (time_to_decrease_sec * 1000000LL + time_to_decrease_usec);
+    long long total_microseconds = (itimer.it_value.tv_sec * 1000000LL + itimer.it_value.tv_usec) -
+                                   (time_to_decrease_sec * 1000000LL + time_to_decrease_usec);
 
-    if (total_microseconds <= 0) {
+    if (total_microseconds <= 0)
+    {
         // If the timer has expired or is set to expire immediately
         signal(SIGALRM, signal_handler);
-    } else {
+    }
+    else
+    {
         // Update the timer with the remaining time
         itimer.it_value.tv_sec = total_microseconds / 1000000LL;
         itimer.it_value.tv_usec = total_microseconds % 1000000LL;
-
-        number_of_decreased_seconds += total_microseconds / 1000000LL;
-        number_of_decreased_microseconds += total_microseconds % 1000000LL;
-        if(number_of_decreased_microseconds >= 1000000LL) 
+        
+        // Update the number of decreased seconds and microseconds
+        number_of_decreased_seconds += time_to_decrease_sec;
+        number_of_decreased_microseconds += time_to_decrease_usec;
+        if(number_of_decreased_microseconds >= 1000000LL)
         {
             number_of_decreased_seconds += number_of_decreased_microseconds / 1000000LL;
-            number_of_decreased_microseconds = number_of_decreased_microseconds % 1000000LL;
+            number_of_decreased_microseconds %= 1000000LL;
         }
 
-        setitimer(ITIMER_REAL, &itimer, NULL);
+        // Decrease the timer
+        if (setitimer(ITIMER_REAL, &itimer, NULL) == -1)
+        {
+            std::cerr << "Error setting decreased timer\n";
+            exit(1);
+        }
     }
 }
-
 
 #include <future>
 #include <boost/process.hpp>

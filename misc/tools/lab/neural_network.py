@@ -1,5 +1,6 @@
 from math import ceil, floor
 import os
+from sqlite3 import Time
 import sys
 from tabnanny import verbose
 # run script only on CPU
@@ -14,6 +15,10 @@ import argcomplete
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import socket
+import time
+import signal
+
 
 # run script only on CPU
 tf.config.set_visible_devices(tf.config.list_physical_devices('CPU'))
@@ -124,18 +129,79 @@ def plot_history(history):
 
 
 class ArgParsingNamespace(tap.Tap):
-    states: str
     samples_file: str
-    operation: str
     plot: bool
     path: str
+    port: int
+    timeout: int
 
     def configure(self) -> None:
-        self.add_argument('--states', help='states file', default='')
         self.add_argument('--samples_file', help='samples file', default='')
-        self.add_argument('--operation', help='train, predict', default=False)
         self.add_argument('--plot', help='plot history', default=False)
         self.add_argument('--path', help='path to save model', default='')
+        self.add_argument('--port', help='port to listen')
+        self.add_argument('--timeout', help='timeout to listen', default=None)
+
+def create_client_socket(host, port):
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((host, port))
+    return client_socket
+
+def send(client_socket, message):
+    client_socket.sendall(message.encode())
+
+def receive_message(client_socket, buffer_size=1024):
+    message = client_socket.recv(buffer_size)
+    return message.decode()
+
+def is_messge_complete(message): return '<BEGIN>' in message and '<END>' in message
+def get_message_content(message): return message.replace("<BEGIN>", "").replace("<END>", "")
+def build_message(content): return f"<BEGIN>{content}<END>"
+
+def receive(client_socket, buffer_size=1024):
+    buffer = ''
+    while True:
+        buffer += receive_message(client_socket, buffer_size)
+        if is_messge_complete(buffer):
+            break
+    return buffer
+
+def handle_timeout(signum, frame):
+    raise TimeoutError("Timeout!")
+
+def main(model, client_socket):
+    while True:
+        print("LOG::main::waiting for cpp messages!", file=sys.stderr)
+        line = receive(client_socket)
+        print(f"LOG::main::message [{line}] received!", file=sys.stderr)
+        line = get_message_content(line)
+        if line == 'close':
+            client_socket.close()
+            break
+        states = line.split(',')
+        input_states = []
+        for state in states:
+            input_states.append([int(char) for char in state])
+        input_states = np.array(input_states)
+        print(input_states, file=sys.stderr)
+
+        output_message = ''
+        for value_array in model.predict(input_states, verbose=0):
+            output_message += f"{str(value_array[0]) + ','}"
+        output_message = build_message(output_message[:-1])
+        print(output_message, file=sys.stderr)
+        send(client_socket, output_message)
+        print(f"LOG::main::message [{output_message}] sent!", file=sys.stderr)
+
+def init(path, plot=False):
+    if path == '' or os.path.isfile(path) == False:
+        print("You must specify --samples_file to train the model", file=sys.stderr)
+    else:
+        model, history = build_and_train_model(path)
+        model.save(model_path)
+        if plot:
+            plot_history(history)
+        return model
 
 
 if __name__ == '__main__':
@@ -143,33 +209,22 @@ if __name__ == '__main__':
     argcomplete.autocomplete(parser)
     parser.parse_args()
     model_name = "model.keras"
-    model_path = os.path.join(parser.path, model_name)
-    if parser.operation == 'train':
-        if parser.samples_file == '' or os.path.isfile(parser.samples_file) == False:
-            print("You must specify --samples_file to train the model", file=sys.stderr)
-        else:
-            model, history = build_and_train_model(parser.samples_file)
-            model.save(model_path)
-            if parser.plot:
-                plot_history(history)
 
-    elif parser.operation == 'predict':
-        if parser.states == '':
-            print("You must specify --states to predict the model", file=sys.stderr)
-        else:
-            model = keras.models.load_model(model_path)
-            states = parser.states.split(',')
-            input_states = []
-            for state in states:
-                input_states.append([int(char) for char in state])
-            input_states = np.array(input_states)
-            print(input_states, file=sys.stderr)
-            values_str = ""
-            for value_array in model.predict(input_states, verbose=0):
-                values_str += f"{str(value_array[0]) + ','}"
-                
-            print(values_str[:-1])
+    if parser.timeout != None:
+        signal.signal(signal.SIGALRM, handle_timeout)
+        signal.alarm(parser.timeout)
 
-    else:
-        print("You must specify --operation to train or predict the model", file=sys.stderr)
-        exit()
+    try:
+        model_path = os.path.join(parser.path, model_name)
+        model = init(parser.samples_file, parser.plot)
+        print("LOG::main::Model ready", file=sys.stderr)
+
+        host = 'localhost'
+        port = parser.port
+        client_socket = create_client_socket(host, port)
+        print("LOG::main::Client socket ready", file=sys.stderr)
+
+        main(model, client_socket)
+
+    except Exception as e:
+        print(f"LOG::main::Exception {e}", file=sys.stderr)

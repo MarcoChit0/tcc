@@ -24,25 +24,42 @@
 
 #include <boost/heap/pairing_heap.hpp>
 #include <boost/bimap.hpp>
+#include <boost/process.hpp>
+
+#include <thread>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
 extern std::default_random_engine rng;
 
 #define NONE -1
 #define INFTY INT_MAX
 
-                                 using str = std::string;
-template<typename T>             using opt = std::optional<T>;
-template<typename T>             using vec = std::vector<T>;
-template<typename T>             using set = std::unordered_set<T>;
-template<typename T, typename U> using map = std::unordered_map<T, U>;
+using str = std::string;
+template <typename T>
+using opt = std::optional<T>;
+template <typename T>
+using vec = std::vector<T>;
+template <typename T>
+using set = std::unordered_set<T>;
+template <typename T, typename U>
+using map = std::unordered_map<T, U>;
 
-template<typename T>
+template <typename T>
 struct std::hash<std::unordered_set<T>>
 {
     size_t operator()(const std::unordered_set<T> &unordered_set) const
     {
         size_t hash = 0;
-        for (const T &v: unordered_set)
+        for (const T &v : unordered_set)
         {
             size_t x = std::hash<T>()(v);
             x = ((x >> 16) ^ x) * 0x45d9f3b;
@@ -54,13 +71,13 @@ struct std::hash<std::unordered_set<T>>
     }
 };
 
-template<typename T>
+template <typename T>
 struct std::hash<std::vector<T>>
 {
     size_t operator()(const std::vector<T> &vector) const
     {
         size_t hash = 0;
-        for (const T &v: vector)
+        for (const T &v : vector)
         {
             size_t x = std::hash<T>()(v);
             x = ((x >> 16) ^ x) * 0x45d9f3b;
@@ -71,7 +88,6 @@ struct std::hash<std::vector<T>>
         return hash;
     }
 };
-
 
 class Object
 {
@@ -101,23 +117,23 @@ public:
     }
 };
 
-#define DEFINE_OBJECT_HASH(Object)\
-namespace std\
-{\
-    template<>\
-    struct hash<Object>\
-    {\
-        std::size_t operator()(const Object& object) const\
-        {\
-            return object.id;\
-        }\
-    };\
-}
+#define DEFINE_OBJECT_HASH(Object)                             \
+    namespace std                                              \
+    {                                                          \
+        template <>                                            \
+        struct hash<Object>                                    \
+        {                                                      \
+            std::size_t operator()(const Object &object) const \
+            {                                                  \
+                return object.id;                              \
+            }                                                  \
+        };                                                     \
+    }
 
 DEFINE_OBJECT_HASH(Object);
 
 #include <gmpxx.h>
-template<>
+template <>
 struct std::hash<mpz_class>
 {
     size_t operator()(const mpz_class &x) const
@@ -146,14 +162,6 @@ bool timer_expired();
 void set_timer();
 void unset_timer();
 
-extern struct sigaction sa;
-extern struct itimerval itimer;
-extern long long number_of_decreased_seconds;
-extern long long number_of_decreased_microseconds;
-void setup_signal_handler();
-void setup_itimer(int initial_time_limit_sec, int initial_time_limit_usec = 0);
-void decrease_itimer(int time_to_decrease_sec, int time_to_decrease_usec = 0);
-
 extern double percentage_timer;
 extern double percentage_memory_limit;
 extern double sample_generation_alarm;
@@ -164,7 +172,9 @@ extern double step;
 void set_policy_type(int policy_type);
 int get_policy_type();
 
-enum policy_types{
+
+enum policy_types
+{
     OPTIMAL_POLICY = 0,
     SUBOPTIMAL_POLICY = 1,
     UNSOLVABLE_POLICY = 2,
@@ -177,66 +187,67 @@ static map<int, str> policy_types_names = {
 };
 
 vec<str> split(const str &s, char delimiter);
+void signal_handler(int signal);
+void timer_function(int duration);
 
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 
-template<typename ReturnType, typename... Args>
+template <typename ReturnType, typename... Args>
 class Function
 {
 public:
-    const void* ptr;
+    const void *ptr;
     std::type_index return_type;
     vec<std::type_index> return_args;
     opt<std::type_index> opt_class;
     opt<Object> opt_object;
 
     Function(ReturnType (*f)(Args...));
-    template<typename Class> Function(ReturnType (Class::*f)(Args...) const);
-    template<typename Class> Function(ReturnType (Class::*f)(Args...) const, const Class &object);
+    template <typename Class>
+    Function(ReturnType (Class::*f)(Args...) const);
+    template <typename Class>
+    Function(ReturnType (Class::*f)(Args...) const, const Class &object);
 
     bool operator==(const Function &other) const;
 };
 
-template<typename ReturnType, typename... Args>
+template <typename ReturnType, typename... Args>
 struct std::hash<Function<ReturnType, Args...>>
 {
     size_t operator()(const Function<ReturnType, Args...> &function) const
     {
-        return reinterpret_cast<size_t>(function.ptr) + (function.opt_object.has_value()? function.opt_object->id: 0);
+        return reinterpret_cast<size_t>(function.ptr) + (function.opt_object.has_value() ? function.opt_object->id : 0);
     }
 };
 
-template<typename ReturnType, typename... Args>
-Function<ReturnType, Args...>::Function(ReturnType (*f)(Args...)) :
-    ptr((void*)(*f)),
-    return_type(typeid(ReturnType))
+template <typename ReturnType, typename... Args>
+Function<ReturnType, Args...>::Function(ReturnType (*f)(Args...)) : ptr((void *)(*f)),
+                                                                    return_type(typeid(ReturnType))
 {
     return_args.insert(return_args.end(), {typeid(Args)...});
 }
 
-template<typename ReturnType, typename... Args>
-template<typename Class>
-Function<ReturnType, Args...>::Function(ReturnType (Class::*f)(Args...) const) :
-    ptr((void*)(f)),
-    return_type(typeid(ReturnType)),
-    opt_class(typeid(Class))
+template <typename ReturnType, typename... Args>
+template <typename Class>
+Function<ReturnType, Args...>::Function(ReturnType (Class::*f)(Args...) const) : ptr((void *)(f)),
+                                                                                 return_type(typeid(ReturnType)),
+                                                                                 opt_class(typeid(Class))
 {
     return_args.insert(return_args.end(), {typeid(Args)...});
 }
 
-template<typename ReturnType, typename... Args>
-template<typename Class>
-Function<ReturnType, Args...>::Function(ReturnType (Class::*f)(Args...) const, const Class &object) :
-    ptr((void*)(f)),
-    return_type(typeid(ReturnType)),
-    opt_class(typeid(Class)),
-    opt_object(object)
+template <typename ReturnType, typename... Args>
+template <typename Class>
+Function<ReturnType, Args...>::Function(ReturnType (Class::*f)(Args...) const, const Class &object) : ptr((void *)(f)),
+                                                                                                      return_type(typeid(ReturnType)),
+                                                                                                      opt_class(typeid(Class)),
+                                                                                                      opt_object(object)
 {
     static_assert(std::is_base_of<Object, Class>::value);
     return_args.insert(return_args.end(), {typeid(Args)...});
 }
 
-template<typename ReturnType, typename... Args>
+template <typename ReturnType, typename... Args>
 bool Function<ReturnType, Args...>::operator==(const Function &other) const
 {
     return this->ptr == other.ptr and this->opt_class == other.opt_class and this->opt_object == other.opt_object;
@@ -245,21 +256,23 @@ bool Function<ReturnType, Args...>::operator==(const Function &other) const
 class FunctionsCache
 {
 public:
-    template<typename ReturnType, typename... Args> static map<Function<ReturnType, Args...>, map<Object, ReturnType>> data;
+    template <typename ReturnType, typename... Args>
+    static map<Function<ReturnType, Args...>, map<Object, ReturnType>> data;
 
-    template<typename ReturnType, typename... Args> map<Object, ReturnType> &operator[](const Function<ReturnType, Args...> &function) const;
+    template <typename ReturnType, typename... Args>
+    map<Object, ReturnType> &operator[](const Function<ReturnType, Args...> &function) const;
 };
 
-template<typename ReturnType, typename... Args>
+template <typename ReturnType, typename... Args>
 map<Object, ReturnType> &FunctionsCache::operator[](const Function<ReturnType, Args...> &function) const
 {
     return data<ReturnType, Args...>[function];
 }
 
-template<typename ReturnType, typename... Args>
+template <typename ReturnType, typename... Args>
 map<Function<ReturnType, Args...>, map<Object, ReturnType>> FunctionsCache::data;
 
 extern FunctionsCache functions_cache;
 extern FunctionsCache functions_storage;
 
-
+static boost::process::child child_process;

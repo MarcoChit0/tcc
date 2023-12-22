@@ -324,10 +324,8 @@ int main(int argc, char **argv)
 {
     // assert(get_memory_limit() <= 8);
     assert(get_time_limit() <= 1800);
-    setup_signal_handler();
-    std::cerr << "LOG::main::setup signal handler" << std::endl;
-    setup_itimer(std::ceil(get_time_limit()));
-    std::cerr << "LOG::main::time limit: " << get_time_limit() << std::endl;
+    std::signal(SIGUSR1, signal_handler); // setup signal handler
+    std::thread timer_thread(timer_function, (int) get_time_limit()); // start timer thread
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     int number_of_samples = std::atoi(argv[5]);
@@ -347,5 +345,9 @@ int main(int argc, char **argv)
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);
     print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
+    if(typeid(*policy_heuristic) == typeid(NeuralNetworkLookUp))
+    {
+        static_cast<NeuralNetworkLookUp*>(policy_heuristic)->server.close();
+    }
     return 0;
 }

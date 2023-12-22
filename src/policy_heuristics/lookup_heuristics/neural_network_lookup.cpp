@@ -14,17 +14,18 @@ str get_directory_path(str file_path)
 
 NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : LookUp(task, state_heuristic, samples_generator, sample_treatment, file_name), model_path{get_directory_path(file_name)}
 {
-    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::START" << std::endl;
-    str command =  "python3 ./misc/tools/lab/neural_network.py --operation=train --samples_file=" + file_name + " --path=" + model_path;
-    std::cerr << "command: " << command << std::endl;
-    auto start = std::chrono::high_resolution_clock::now();
-    std::stringstream ss{get_output("build-and-train", command)};
-    auto end = std::chrono::high_resolution_clock::now();
-    auto difference = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    decrease_itimer(difference.count()/1000000LL, difference.count()%1000000LL);
-    std::cerr << "LOG::NeuralNetworkLookUp::output:: " << ss.str() << std::endl;
-    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::END::" << difference << std::endl;
     this->table_nd = map<int64_t, double>{};
+
+    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::start time:" << get_ellapsed_time() << std::endl;
+    this->server = Server();
+    str command = 
+        "python3 ./misc/tools/lab/neural_network.py --path=" + this->model_path 
+        + " --samples_file=" + file_name 
+        + " --port=" + std::to_string(this->server.get_port())
+        + " --timeout=" + std::to_string(int(std::floor(get_time_limit() - get_ellapsed_time())));
+    child_process = boost::process::child(command);
+    this->server.accept();
+    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::end time:" << get_ellapsed_time() << std::endl;
 }
 
 double NeuralNetworkLookUp::operator[](const Policy &policy) const
@@ -107,29 +108,29 @@ double NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) con
         return 0;
     }
     str input_string = "";
-    for(auto state : states)
+    for (auto state : states)
     {
         input_string += this->task.bitset_representation_of_state(state) + ",";
     }
     input_string.pop_back();
-    auto start = std::chrono::high_resolution_clock::now();
-    std::stringstream ss{get_output("lookup", "python3 ./misc/tools/lab/neural_network.py --operation=predict --states=" + input_string + " --path=" + this->model_path)};
-    auto end = std::chrono::high_resolution_clock::now();
-    auto difference = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    decrease_itimer(difference.count()/1000000LL, difference.count()%1000000LL);
-    vec<str> states_values = split(ss.str(), ',');
+    build_message(input_string);
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::start time:" << get_ellapsed_time() << std::endl;
+    this->server.send_message(input_string);
+    str buffer = this->server.receive_message();
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::buffer:" << buffer << std::endl;
+    get_message_content(buffer);
+    vec<str> states_values = split(buffer, ',');
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::end time:" << get_ellapsed_time() << std::endl;
+    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::message content:" << buffer << std::endl;
     std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::states_values:" << std::endl;
-    for(auto state_value : states_values)
-    {
-        std::cerr << state_value << std::endl;
-    }
-    assert (states_values.size() == states.size());
+    assert(states_values.size() == states.size());
     double maximum_value = -INFTY;
-    for(int i = 0; i < states.size(); i++)
+    for (int i = 0; i < states.size(); i++)
     {
         double state_value = std::stod(states_values[i]);
         this->table_nd[states[i].id] = state_value;
         maximum_value = std::max(maximum_value, state_value);
+        std::cerr << "state:" << states[i] << ", value:" << state_value << std::endl;
     }
     return maximum_value;
 }

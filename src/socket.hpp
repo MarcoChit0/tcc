@@ -21,13 +21,14 @@ private:
 public:
     Socket();
     Socket(int socket);
-    bool create_server(int port);
+    void create_server(int port);
     void bind();
     void listen();
     Socket *accept();
     std::string read();
     void write(const std::string &message);
     int close();
+    int get_sockfd() const;
     friend std::ostream& operator<<(std::ostream& os, const Socket& socket);
     friend bool operator==(const Socket& l, const Socket& r);
 };

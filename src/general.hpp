@@ -168,6 +168,7 @@ extern double sample_generation_alarm;
 extern double policy_alarm;
 // maximum percentage of time that can be allocated to generate one sample
 extern double step;
+extern int port;
 
 void set_policy_type(int policy_type);
 int get_policy_type();

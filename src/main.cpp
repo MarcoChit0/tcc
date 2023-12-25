@@ -312,6 +312,7 @@ double percentage_memory_limit = 0.9;
 double sample_generation_alarm = 0.7;
 double policy_alarm;
 double step;
+int port = 1024;
 
 void set_step_and_policy_alarm()
 {
@@ -340,7 +341,8 @@ int main(int argc, char **argv)
     State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]));
     SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
     Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
-    str samples_file_name = argv[argc - 1]; // the last argument is the samples file name
+    str samples_file_name = argv[argc - 2]; // second last argument is the samples file name
+    port = std::atoi(argv[argc - 1]); // last argument is the port
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment, samples_file_name);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);

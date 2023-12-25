@@ -11,14 +11,13 @@ Socket::Socket(int socket)
  * Creates a server socket and initializes the server address structure.
  * Throws a runtime_error if socket creation fails.
  */
-bool Socket::create_server(int port)
+void Socket::create_server(int port)
 {
     std::cerr << "LOG::Socket::create_server::begin"<< std::endl;
     this->sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (this->sockfd < 0)
     {
-        std::cerr << "LOG::Socket::create_server::Could not open socket\n";
-        return false;
+        throw std::runtime_error("Socket::create_server::Error opening socket\n");
     }
     this->serv_addr.sin_family = AF_INET;
     this->serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -26,7 +25,11 @@ bool Socket::create_server(int port)
     bzero((char *)&(this->serv_addr.sin_zero), 8);
     std::cerr << "LOG::Socket::create_server::sockfd:" << this->sockfd << std::endl;
     std::cerr << "LOG::Socket::create_server::end"<< std::endl;
-    return true;
+}
+
+int Socket::get_sockfd() const
+{
+    return this->sockfd;
 }
 
 

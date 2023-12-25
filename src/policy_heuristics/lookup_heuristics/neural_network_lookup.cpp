@@ -21,7 +21,7 @@ NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristi
     str command = 
         "python3 ./misc/tools/lab/neural_network.py --path=" + this->model_path 
         + " --samples_file=" + file_name 
-        + " --port=" + std::to_string(this->server.get_port())
+        + " --port=" + std::to_string(port)
         + " --timeout=" + std::to_string(int(std::floor(get_time_limit() - get_ellapsed_time())));
     child_process = boost::process::child(command);
     this->server.accept();

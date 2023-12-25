@@ -6,7 +6,6 @@ class Server
     private:
         Socket socket;
         Socket* client;
-        int port;
 
     public:
         Server();
@@ -14,5 +13,8 @@ class Server
         void send_message(const std::string& message) const;
         std::string receive_message() const;
         void accept();
-        int get_port() const;
 };
+
+static pthread_mutex_t socket_creation_mutex = PTHREAD_MUTEX_INITIALIZER;
+static set<int> used_sockets_fds;
+static set<int> used_sockets_ports;

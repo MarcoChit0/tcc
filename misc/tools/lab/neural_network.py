@@ -110,34 +110,48 @@ def build_and_train_model(samples_file):
     print("LOG::build_and_train_model::end", file=sys.stderr)
     return model, history
 
-def plot_history(history):
+def plot_history(history, path):
     acc = history.history["mean_absolute_error"]
     val_acc = history.history["val_mean_absolute_error"]
     loss = history.history["loss"]
     val_loss = history.history["val_loss"]
     epochs = range(1, len(acc) + 1)
-    plt.plot(epochs, acc, "bo", label="Training MAE")
-    plt.plot(epochs, val_acc, "b", label="Validation MAE")
-    plt.title("Training and validation Mean Absolute Error (MAE)")
-    plt.legend()
-    plt.figure()
-    plt.plot(epochs, loss, "bo", label="Training MSE")
-    plt.plot(epochs, val_loss, "b", label="Validation MSE")
-    plt.title("Training and validation Mean Squared Error (MSE)")
-    plt.legend()
-    plt.show()
+
+    # Create a figure and a set of subplots
+    fig, axs = plt.subplots(2, 1, figsize=(10, 8))  # 2 rows, 1 column
+
+    # Plot MAE
+    axs[0].plot(epochs, acc, "bo", label="Training MAE")
+    axs[0].plot(epochs, val_acc, "b", label="Validation MAE")
+    axs[0].set_title("Training and validation Mean Absolute Error (MAE)")
+    axs[0].legend()
+    axs[0].set_xlabel("Epochs")
+    axs[0].set_ylabel("MAE")
+
+    # Plot MSE
+    axs[1].plot(epochs, loss, "ro", label="Training MSE")
+    axs[1].plot(epochs, val_loss, "r", label="Validation MSE")
+    axs[1].set_title("Training and validation Mean Squared Error (MSE)")
+    axs[1].legend()
+    axs[1].set_xlabel("Epochs")
+    axs[1].set_ylabel("MSE")
+
+    # Adjust layout for better readability
+    plt.tight_layout()
+
+    # Save the figure
+    plt.savefig(os.path.join(path, "history.png"))
+
 
 
 class ArgParsingNamespace(tap.Tap):
     samples_file: str
-    plot: bool
     path: str
     port: int
     timeout: int
 
     def configure(self) -> None:
         self.add_argument('--samples_file', help='samples file', default='')
-        self.add_argument('--plot', help='plot history', default=False)
         self.add_argument('--path', help='path to save model', default='')
         self.add_argument('--port', help='port to listen')
         self.add_argument('--timeout', help='timeout to listen', default=None)
@@ -193,14 +207,13 @@ def main(model, client_socket):
         send(client_socket, output_message)
         print(f"LOG::main::message [{output_message}] sent!", file=sys.stderr)
 
-def init(path, plot=False):
-    if path == '' or os.path.isfile(path) == False:
+def init(samples_file, dir_path, model_name="model.keras"):
+    if samples_file == '' or os.path.isfile(samples_file) == False:
         print("You must specify --samples_file to train the model", file=sys.stderr)
     else:
-        model, history = build_and_train_model(path)
-        model.save(model_path)
-        if plot:
-            plot_history(history)
+        model, history = build_and_train_model(samples_file)
+        model.save(os.path.join(dir_path, model_name))
+        plot_history(history, dir_path)
         return model
 
 
@@ -208,15 +221,13 @@ if __name__ == '__main__':
     parser = ArgParsingNamespace()
     argcomplete.autocomplete(parser)
     parser.parse_args()
-    model_name = "model.keras"
 
     if parser.timeout != None:
         signal.signal(signal.SIGALRM, handle_timeout)
         signal.alarm(parser.timeout)
 
     try:
-        model_path = os.path.join(parser.path, model_name)
-        model = init(parser.samples_file, parser.plot)
+        model = init(parser.samples_file, parser.path)
         print("LOG::main::Model ready", file=sys.stderr)
 
         host = 'localhost'

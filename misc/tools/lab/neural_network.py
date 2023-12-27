@@ -1,3 +1,4 @@
+from email.policy import default
 from math import ceil, floor
 import os
 from sqlite3 import Time
@@ -10,14 +11,10 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-import tap
-import argcomplete
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import socket
-import time
-import signal
+
 
 
 # run script only on CPU
@@ -107,8 +104,12 @@ def build_and_train_model(samples_file):
     model = build_model(samples_data['input_shape'])
     print("LOG::build_and_train_model::Training model", file=sys.stderr)
     history = train_model(model, samples_data['train_data'], samples_data['train_labels'], samples_data['validation_data'], samples_data['validation_labels'])
+    print("LOG::build_and_train_model::Saving model", file=sys.stderr)
+    model.save(os.path.join(os.path.dirname(samples_file), "model.keras"))
+    print("LOG::build_and_train_model::Plotting history", file=sys.stderr)    
+    plot_history(history, os.path.dirname(samples_file))
     print("LOG::build_and_train_model::end", file=sys.stderr)
-    return model, history
+    return model
 
 def plot_history(history, path):
     acc = history.history["mean_absolute_error"]
@@ -144,98 +145,118 @@ def plot_history(history, path):
 
 
 
-class ArgParsingNamespace(tap.Tap):
-    samples_file: str
-    path: str
-    port: int
-    timeout: int
+# class ArgParsingNamespace(tap.Tap):
+#     host: str
+#     port: int
+#     num_connections: int
 
-    def configure(self) -> None:
-        self.add_argument('--samples_file', help='samples file', default='')
-        self.add_argument('--path', help='path to save model', default='')
-        self.add_argument('--port', help='port to listen')
-        self.add_argument('--timeout', help='timeout to listen', default=None)
+#     def configure(self) -> None:
+#         self.add_argument('--host', help='host to listen', default='0.0.0.0')
+#         self.add_argument('--port', help='port to listen', default=1024)
+#         self.add_argument('--num_connections', help='number of connections to listen', default=1)
 
-def create_client_socket(host, port):
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((host, port))
-    return client_socket
+# def receive_message(client_socket, buffer_size=1024): return client_socket.recv(buffer_size).decode("utf-8")
+# def is_messge_complete(buffer): return '<BEGIN>' in buffer and '<END>' in buffer
+# def build_message(type, content): return f"<BEGIN>{type}:{content}<END>"
+# def get_message(buffer): 
+#     msg = buffer.replace("<BEGIN>", "").replace("<END>", "")
+#     msg_type, msg_content = msg.split(':')
+#     return msg_type, msg_content
 
-def send(client_socket, message):
-    client_socket.sendall(message.encode())
+# def receive(client_socket, buffer_size=1024):
+#     buffer = ''
+#     while True:
+#         buffer += receive_message(client_socket, buffer_size)
+#         if is_messge_complete(buffer):
+#             break
+#     return get_message(buffer)
 
-def receive_message(client_socket, buffer_size=1024):
-    message = client_socket.recv(buffer_size)
-    return message.decode()
+# def send(client_socket, message_type, message_content):
+#     message = build_message(message_type, message_content)
+#     client_socket.send(message.encode())
 
-def is_messge_complete(message): return '<BEGIN>' in message and '<END>' in message
-def get_message_content(message): return message.replace("<BEGIN>", "").replace("<END>", "")
-def build_message(content): return f"<BEGIN>{content}<END>"
+# def consult(model, message_content):
+#         states = message_content.split(',')
+#         input_states = []
+#         for state in states:
+#             input_states.append([int(char) for char in state])
+#         input_states = np.array(input_states)
+#         print(input_states, file=sys.stderr)
 
-def receive(client_socket, buffer_size=1024):
-    buffer = ''
-    while True:
-        buffer += receive_message(client_socket, buffer_size)
-        if is_messge_complete(buffer):
-            break
-    return buffer
+#         output_message = ''
+#         for value_array in model.predict(input_states, verbose=0):
+#             output_message += f"{str(value_array[0]) + ','}"
+#         return output_message[:-1]
 
-def handle_timeout(signum, frame):
-    raise TimeoutError("Timeout!")
+# def handle_timeout(signum, frame):
+#     raise Exception("Timeout!")
 
-def main(model, client_socket):
-    while True:
-        print("LOG::main::waiting for cpp messages!", file=sys.stderr)
-        line = receive(client_socket)
-        print(f"LOG::main::message [{line}] received!", file=sys.stderr)
-        line = get_message_content(line)
-        if line == 'close':
-            client_socket.close()
-            break
-        states = line.split(',')
-        input_states = []
-        for state in states:
-            input_states.append([int(char) for char in state])
-        input_states = np.array(input_states)
-        print(input_states, file=sys.stderr)
+# def handle_client(client_socket, client_address):
+#     print(f"LOG::start_server::Connection from {client_address[0]}:{client_address[1]} has been established!", file=sys.stderr)
+#     try:
+#         model = None
+#         while True:
+#             print(f"LOG::handle_client::waiting for message from client {client_socket}", file=sys.stderr)
+#             msg_type, msg_content = receive(client_socket)
+#             print(f"LOG::handle_client::message [{msg_type}:{msg_content}] received!", file=sys.stderr)
+            
+#             if msg_type == 'build':
+#                 if msg_content == '' or os.path.isfile(msg_content) == False:
+#                     print("You must specify --samples_file to train the model", file=sys.stderr)
+#                     break
+#                 model = build_and_train_model(msg_content)
+#                 send(client_socket, 'build', 'ok')
+#                 print(f"LOG::main::message [build:ok] sent!", file=sys.stderr)
+           
+#             elif msg_type == 'consult':
+#                 response = consult(model, msg_content)
+#                 send(client_socket, 'consult', response)
 
-        output_message = ''
-        for value_array in model.predict(input_states, verbose=0):
-            output_message += f"{str(value_array[0]) + ','}"
-        output_message = build_message(output_message[:-1])
-        print(output_message, file=sys.stderr)
-        send(client_socket, output_message)
-        print(f"LOG::main::message [{output_message}] sent!", file=sys.stderr)
+#             elif msg_type == 'timelimit':
+#                 signal.signal(signal.SIGALRM, handle_timeout)
+#                 timelimit = ceil(float(msg_content))
+#                 signal.alarm(timelimit)
+#                 print("LOG::handle_client::timelimit set to ", timelimit, file=sys.stderr)
+#                 send(client_socket, 'timelimit', timelimit)
 
-def init(samples_file, dir_path, model_name="model.keras"):
-    if samples_file == '' or os.path.isfile(samples_file) == False:
-        print("You must specify --samples_file to train the model", file=sys.stderr)
-    else:
-        model, history = build_and_train_model(samples_file)
-        model.save(os.path.join(dir_path, model_name))
-        plot_history(history, dir_path)
-        return model
+            
+#             elif msg_type == 'exit':
+#                 print(f"LOG::handle_client::message [exit] received!", file=sys.stderr)
+#                 break
+
+#     finally:
+#         client_socket.close()
+
+# def start_server(host, port, num_connections):
+#     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#     if host == '0.0.0.0':
+#         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#     server.bind((host, port))
+#     server.listen(num_connections)
+
+#     print(f"LOG::start_server::Server listening on port {host}:{port}", file=sys.stderr)
+
+#     # TODO: add timeout to each thread
+#     try:
+#         while True:
+#             client_socket, address = server.accept()
+
+#             client_handler = threading.Thread(
+#                 target=handle_client, 
+#                 args=(client_socket, address,)
+#             )
+#             client_handler.start()
+#             print("LOG::start_server::Number of threads:", threading.active_count(), file=sys.stderr)
+#     except:
+#         print("LOG::start_server::Closing server", file=sys.stderr)
+#         server.close()
+#         print("LOG::start_server::Server closed", file=sys.stderr)
+#         exit(0)
 
 
-if __name__ == '__main__':
-    parser = ArgParsingNamespace()
-    argcomplete.autocomplete(parser)
-    parser.parse_args()
+# if __name__ == '__main__':
+#     parser = ArgParsingNamespace()
+#     argcomplete.autocomplete(parser)
+#     parser.parse_args()
 
-    if parser.timeout != None:
-        signal.signal(signal.SIGALRM, handle_timeout)
-        signal.alarm(parser.timeout)
-
-    try:
-        model = init(parser.samples_file, parser.path)
-        print("LOG::main::Model ready", file=sys.stderr)
-
-        host = 'localhost'
-        port = parser.port
-        client_socket = create_client_socket(host, port)
-        print("LOG::main::Client socket ready", file=sys.stderr)
-
-        main(model, client_socket)
-
-    except Exception as e:
-        print(f"LOG::main::Exception {e}", file=sys.stderr)
+#     start_server(parser.host, parser.port, parser.num_connections)

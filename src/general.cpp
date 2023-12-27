@@ -198,28 +198,15 @@ void set_policy_type(int new_policy_type)
     policy_type = new_policy_type;
 }
 
-std::vector<std::string> split(const std::string &s, char delimiter)
-{
-    std::vector<std::string> tokens;
-    std::istringstream ss(s);
-    std::string token;
-
-    while (std::getline(ss, token, delimiter))
-    {
-        tokens.push_back(token);
-    }
-
-    return tokens;
-}
-
 void signal_handler(int signal)
 {
     if (signal == SIGUSR1 or signal == SIGTERM)
     {
         std::cout << "Interrupt signal received. Terminating main thread." << std::endl;
-        std::cout << "LOG::get_ellapsed_time():" << get_ellapsed_time() << std::endl;
-        std::cout << "LOG::get_memory_usage():" << get_memory_usage() << std::endl;
-        child_process.terminate();
+        std::cout << "LOG::signal_handler::get_ellapsed_time():" << get_ellapsed_time() << std::endl;
+        std::cout << "LOG::signal_handler::get_memory_usage():" << get_memory_usage() << std::endl;
+        client.close();
+        std::cout << "LOG::signal_handler::connection with the server closed" << std::endl;
         exit(0);
     }
 }

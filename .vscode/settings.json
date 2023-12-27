@@ -85,7 +85,11 @@
         "climits": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "__config": "cpp",
+        "__functional_03": "cpp",
+        "locale": "cpp",
+        "coroutine": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "python.analysis.autoImportCompletions": true,

@@ -1,4 +1,5 @@
 import os
+from xml.etree.ElementInclude import include
 import tap
 import argcomplete
 import subprocess
@@ -45,7 +46,8 @@ class ArgParsingNamespace(tap.Tap):
     walker: str
     concrete_states_generator: str
     regressor: str
-
+    host: str
+    port: int
     
 
     def configure(self) -> None:
@@ -69,6 +71,8 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-w", "--walker", type=str, default="stop")
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")
         self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
+        self.add_argument("--host", type=str, default='0.0.0.0')
+        self.add_argument("--port", type=int, default=1024)
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
@@ -194,16 +198,13 @@ def get_tasks_infos() -> Generator[TaskInfo, None, None]:
             if is_in_white_list(f'{domain_label},{task_label}') and not is_in_black_list(f'{domain_label},{task_label}'):
                 yield TaskInfo(domain_label=domain_label, task_label=task_label, domain_file_path=sorted(domain_files_paths)[0 if len(domain_files_paths) == 1 else task_index], task_file_path=task_file_path)
 
-def initialize_port_queue(start=1024, end=65535) -> Queue:
-    port_queue = Queue()
-    for port in range(start, end + 1):
-        port_queue.put(port)
-    return port_queue
+import server
+def start_server_thread(host, port, num_connections):
+    server_thread = Thread(target=server.main, args=(host, port, num_connections))
+    server_thread.daemon = True
+    server_thread.start()
 
-port_queue = initialize_port_queue()
 
-def get_unique_port() -> int:
-    return port_queue.get()
 
 def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
     for policy_heuristic in apn.policy_heuristic.split(','):
@@ -219,12 +220,16 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                             for walker in apn.walker.split(','):
                                                 for concrete_states_generator in apn.concrete_states_generator.split(','):
                                                     for regressor in apn.regressor.split(','):
-                                                        port = get_unique_port()
-                                                        yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, port))
+                                                        yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, apn.port))
 
                                         
 lock_file = open('/tmp/and-star-lab.lock', 'w')
 fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+num_threads = apn.number_of_threads
+if 'neural-network-lookup' in apn.policy_heuristic:    
+    if num_threads > 1: num_threads -= 1
+    start_server_thread(apn.host, apn.port, num_threads) # allocate one of the threads to the server
 
 threads: list[Thread] = []
 for task_info in get_tasks_infos():
@@ -239,11 +244,11 @@ for i, thread in enumerate(threads):
     threads_semaphore.acquire()
     thread.start()
 
-    if i >= apn.number_of_threads:
+    if i >=num_threads:
         elapsed_time = datetime.datetime.now() - start_datetime
-        expected_end = datetime.datetime.now() + elapsed_time / (i + 1 - apn.number_of_threads) * (total_number_of_tasks - (i + 1 - apn.number_of_threads))
+        expected_end = datetime.datetime.now() + elapsed_time / (i + 1 -num_threads) * (total_number_of_tasks - (i + 1 -num_threads))
         print()
-        print(f'{TerminalColor.BOLD}( {i + 1 - apn.number_of_threads} / {total_number_of_tasks} ){TerminalColor.ENDC} | Expected end: {TerminalColor.BOLD}{expected_end}{TerminalColor.ENDC}')
+        print(f'{TerminalColor.BOLD}( {i + 1 -num_threads} / {total_number_of_tasks} ){TerminalColor.ENDC} | Expected end: {TerminalColor.BOLD}{expected_end}{TerminalColor.ENDC}')
         print()
 
 for thread in threads:

@@ -1,42 +1,6 @@
 #pragma once
 
-#include <cassert>
-#include <chrono>
-#include <random>
-#include <string>
-#include <map>
-#include <typeindex>
-#include <bitset>
-#include <csignal>
-#include <sys/time.h>
-#include <unistd.h>
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-#include <optional>
-#include <vector>
-#include <unordered_set>
-#include <unordered_map>
-#include <tuple>
-#include <stack>
-
-#include <boost/heap/pairing_heap.hpp>
-#include <boost/bimap.hpp>
-#include <boost/process.hpp>
-
-#include <thread>
-#include <mutex>
-#include <atomic>
-#include <condition_variable>
-
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
+#include "client.hpp"
 
 extern std::default_random_engine rng;
 
@@ -187,7 +151,6 @@ static map<int, str> policy_types_names = {
     {UNSOLVABLE_POLICY, "unsolvable"},
 };
 
-vec<str> split(const str &s, char delimiter);
 void signal_handler(int signal);
 void timer_function(int duration);
 
@@ -276,4 +239,5 @@ map<Function<ReturnType, Args...>, map<Object, ReturnType>> FunctionsCache::data
 extern FunctionsCache functions_cache;
 extern FunctionsCache functions_storage;
 
-static boost::process::child child_process;
+
+extern Client client;

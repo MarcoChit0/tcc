@@ -17,14 +17,26 @@ NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristi
     this->table_nd = map<int64_t, double>{};
 
     std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::start time:" << get_ellapsed_time() << std::endl;
-    this->server = Server();
-    str command = 
-        "python3 ./misc/tools/lab/neural_network.py --path=" + this->model_path 
-        + " --samples_file=" + file_name 
-        + " --port=" + std::to_string(port)
-        + " --timeout=" + std::to_string(int(std::floor(get_time_limit() - get_ellapsed_time())));
-    child_process = boost::process::child(command);
-    this->server.accept();
+
+    // client.write("timelimit", std::to_string(get_time_limit() - get_ellapsed_time()));
+    // std::pair<str, str> response = client.read();
+
+    // if(response.first != "timelimit")
+    // {
+    //     std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::response:" << response.first << ":" << response.second << std::endl;
+    //     throw std::runtime_error("NeuralNetworkLookUp::NeuralNetworkLookUp::response != OK");
+    // }
+    // std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::server timelimit set to " << response.second << " seconds" << std::endl;
+
+    client.write("build", file_name); // send samples file to the server so it could build the neural network
+    auto response = client.read(); // wait for the server to finish building the neural network
+
+    if(response.first != "build" and response.second != "OK")
+    {
+        std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::response:" << response.first << ":" << response.second << std::endl;
+        throw std::runtime_error("NeuralNetworkLookUp::NeuralNetworkLookUp::response != OK");
+    }
+
     std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::end time:" << get_ellapsed_time() << std::endl;
 }
 
@@ -107,23 +119,27 @@ double NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) con
     {
         return 0;
     }
-    str input_string = "";
+    str message_content = "";
     for (auto state : states)
     {
-        input_string += this->task.bitset_representation_of_state(state) + ",";
+        message_content += this->task.bitset_representation_of_state(state) + ",";
     }
-    input_string.pop_back();
-    build_message(input_string);
+    message_content.pop_back();
+    
+
     std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::start time:" << get_ellapsed_time() << std::endl;
-    this->server.send_message(input_string);
-    str buffer = this->server.receive_message();
-    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::buffer:" << buffer << std::endl;
-    get_message_content(buffer);
-    vec<str> states_values = split(buffer, ',');
+    client.write("consult",message_content);
+    std::pair<str, str> response = client.read();
+    if (response.first != "consult")
+    {
+        std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::response:" << response.first << ":" << response.second << std::endl;
+        throw std::runtime_error("NeuralNetworkLookUp::consult_neural_network::response != consult");
+    }
+    vec<str> states_values = split(response.second, ',');
     std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::end time:" << get_ellapsed_time() << std::endl;
-    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::message content:" << buffer << std::endl;
-    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::states_values:" << std::endl;
     assert(states_values.size() == states.size());
+
+
     double maximum_value = -INFTY;
     for (int i = 0; i < states.size(); i++)
     {

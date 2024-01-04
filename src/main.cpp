@@ -350,6 +350,7 @@ int main(int argc, char **argv)
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);
     print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
-    client.close();
+    std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" <<std::endl;
+    end_program();
     return 0;
 }

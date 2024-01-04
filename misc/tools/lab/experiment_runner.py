@@ -1,3 +1,6 @@
+import sys
+import faulthandler
+faulthandler.enable()
 import os
 from xml.etree.ElementInclude import include
 import tap
@@ -13,6 +16,13 @@ import re
 from queue import Queue
 from typing import Generator, Callable
 from threading import Thread, Lock, Semaphore
+import logging
+
+logging.basicConfig(
+    filename='experiment_runner.log', 
+    filemode='w',
+    format='%(asctime)s %(levelname)s: %(message)s',
+    level=logging.INFO)
 
 class TerminalColor:
     HEADER = '\033[95m'
@@ -76,10 +86,24 @@ class ArgParsingNamespace(tap.Tap):
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
-
 apn.parse_args()
 
-threads_semaphore = Semaphore(apn.number_of_threads)
+import server
+server_thread = Thread()
+server_flag = False
+def start_server_thread(host, port, num_connections):
+    global server_flag, server_thread
+    server_flag = True
+    server_thread = Thread(target=server.main, args=(host, port, num_connections), daemon=False)
+    server_thread.start()
+
+num_threads = apn.number_of_threads
+if 'neural-network-lookup' in apn.policy_heuristic:    
+    if num_threads > 1: num_threads -= 1
+    start_server_thread(apn.host, apn.port, num_threads) # allocate one of the threads to the server
+    logging.info(f"LOG::experiment_runner::server started on port {apn.port}")
+
+threads_semaphore = Semaphore(num_threads)
 folder_creation_lock = Lock()
 process_creation_lock = Lock()
 print_lock = Lock()
@@ -198,11 +222,6 @@ def get_tasks_infos() -> Generator[TaskInfo, None, None]:
             if is_in_white_list(f'{domain_label},{task_label}') and not is_in_black_list(f'{domain_label},{task_label}'):
                 yield TaskInfo(domain_label=domain_label, task_label=task_label, domain_file_path=sorted(domain_files_paths)[0 if len(domain_files_paths) == 1 else task_index], task_file_path=task_file_path)
 
-import server
-def start_server_thread(host, port, num_connections):
-    server_thread = Thread(target=server.main, args=(host, port, num_connections))
-    server_thread.daemon = True
-    server_thread.start()
 
 
 
@@ -225,11 +244,8 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                         
 lock_file = open('/tmp/and-star-lab.lock', 'w')
 fcntl.lockf(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+logging.info("LOG::experiment_runner::realiazing lock")
 
-num_threads = apn.number_of_threads
-if 'neural-network-lookup' in apn.policy_heuristic:    
-    if num_threads > 1: num_threads -= 1
-    start_server_thread(apn.host, apn.port, num_threads) # allocate one of the threads to the server
 
 threads: list[Thread] = []
 for task_info in get_tasks_infos():
@@ -238,20 +254,31 @@ for task_info in get_tasks_infos():
 random.shuffle(threads)
 
 start_datetime = datetime.datetime.now()
+logging.info(f"LOG::experiment_runner::start_datetime: {start_datetime}")
 total_number_of_tasks = len(threads)
+logging.info(f"LOG::experiment_runner::total_number_of_tasks: {total_number_of_tasks}")
 
 for i, thread in enumerate(threads):
     threads_semaphore.acquire()
     thread.start()
+    logging.info(f"LOG::experiment_runner::thread {i} started")
 
     if i >=num_threads:
         elapsed_time = datetime.datetime.now() - start_datetime
         expected_end = datetime.datetime.now() + elapsed_time / (i + 1 -num_threads) * (total_number_of_tasks - (i + 1 -num_threads))
-        print()
-        print(f'{TerminalColor.BOLD}( {i + 1 -num_threads} / {total_number_of_tasks} ){TerminalColor.ENDC} | Expected end: {TerminalColor.BOLD}{expected_end}{TerminalColor.ENDC}')
-        print()
+        logging.info(f"LOG::experiment_runner::( {i + 1 -num_threads} / {total_number_of_tasks} ) | Expected end: {expected_end}")
 
 for thread in threads:
-    thread.join()
+    thread.join(); logging.info("LOG::experiment_runner::Thread joined")
 
+if server_flag:
+    logging.info("LOG::experiment_runner::setting server event")
+    server.event.set()
+    logging.info(f"LOG::experiment_runner::server event: {server.event.is_set()}")
+    logging.info("LOG::experiment_runner::joining server thread")
+    server_thread.join()
+    logging.info("LOG::experiment_runner::server thread joined")
+
+logging.info("LOG::experiment_runner::releazing lock")
 fcntl.lockf(lock_file, fcntl.LOCK_UN)
+logging.info("LOG::experiment_runner::end")

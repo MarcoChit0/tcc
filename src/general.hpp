@@ -153,6 +153,7 @@ static map<int, str> policy_types_names = {
 
 void signal_handler(int signal);
 void timer_function(int duration);
+void end_program();
 
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 

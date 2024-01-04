@@ -198,21 +198,46 @@ void set_policy_type(int new_policy_type)
     policy_type = new_policy_type;
 }
 
+static std::condition_variable cv;
+static std::mutex cv_m;
+static bool stop_timer = false;
+
 void signal_handler(int signal)
 {
     if (signal == SIGUSR1 or signal == SIGTERM)
     {
-        std::cout << "Interrupt signal received. Terminating main thread." << std::endl;
-        std::cout << "LOG::signal_handler::get_ellapsed_time():" << get_ellapsed_time() << std::endl;
-        std::cout << "LOG::signal_handler::get_memory_usage():" << get_memory_usage() << std::endl;
-        client.close();
-        std::cout << "LOG::signal_handler::connection with the server closed" << std::endl;
-        exit(0);
+        std::cerr << "LOG::signal_handler::signal received: " << signal << std::endl;
+        end_program();
     }
 }
 
 void timer_function(int duration)
 {
-    std::this_thread::sleep_for(std::chrono::seconds(duration));
-    kill(getpid(), SIGUSR1);
+    std::unique_lock<std::mutex> lk(cv_m);
+    if(cv.wait_for(lk, std::chrono::seconds(duration), []{return stop_timer;}))
+    {
+        std::cerr << "LOG::timer_function::timer stopped early." << std::endl;
+    }
+    else
+    {
+        std::cerr << "LOG::timer_function::timer completed." << std::endl;
+        kill(getpid(), SIGUSR1);
+    }
+}
+
+void end_program()
+{
+    std::cerr << "LOG::end_program::begin" << std::endl;
+    std::cerr << "LOG::end_program::get_ellapsed_time():" << get_ellapsed_time() << std::endl;
+    std::cerr << "LOG::end_program::get_memory_usage():" << get_memory_usage() << std::endl;
+    {
+        std::lock_guard<std::mutex> lk(cv_m);
+        stop_timer = true;
+    }
+    cv.notify_one();
+    std::cerr << "LOG::end_program::timer stopped" << std::endl;
+    client.close();
+    std::cerr << "LOG::end_program::client socket closed" << std::endl;
+    std::cerr << "LOG::end_program::end" << std::endl;
+    exit(0);
 }

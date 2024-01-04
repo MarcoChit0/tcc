@@ -13,7 +13,9 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
+matplotlib.use('agg')
 
 
 
@@ -142,121 +144,3 @@ def plot_history(history, path):
 
     # Save the figure
     plt.savefig(os.path.join(path, "history.png"))
-
-
-
-# class ArgParsingNamespace(tap.Tap):
-#     host: str
-#     port: int
-#     num_connections: int
-
-#     def configure(self) -> None:
-#         self.add_argument('--host', help='host to listen', default='0.0.0.0')
-#         self.add_argument('--port', help='port to listen', default=1024)
-#         self.add_argument('--num_connections', help='number of connections to listen', default=1)
-
-# def receive_message(client_socket, buffer_size=1024): return client_socket.recv(buffer_size).decode("utf-8")
-# def is_messge_complete(buffer): return '<BEGIN>' in buffer and '<END>' in buffer
-# def build_message(type, content): return f"<BEGIN>{type}:{content}<END>"
-# def get_message(buffer): 
-#     msg = buffer.replace("<BEGIN>", "").replace("<END>", "")
-#     msg_type, msg_content = msg.split(':')
-#     return msg_type, msg_content
-
-# def receive(client_socket, buffer_size=1024):
-#     buffer = ''
-#     while True:
-#         buffer += receive_message(client_socket, buffer_size)
-#         if is_messge_complete(buffer):
-#             break
-#     return get_message(buffer)
-
-# def send(client_socket, message_type, message_content):
-#     message = build_message(message_type, message_content)
-#     client_socket.send(message.encode())
-
-# def consult(model, message_content):
-#         states = message_content.split(',')
-#         input_states = []
-#         for state in states:
-#             input_states.append([int(char) for char in state])
-#         input_states = np.array(input_states)
-#         print(input_states, file=sys.stderr)
-
-#         output_message = ''
-#         for value_array in model.predict(input_states, verbose=0):
-#             output_message += f"{str(value_array[0]) + ','}"
-#         return output_message[:-1]
-
-# def handle_timeout(signum, frame):
-#     raise Exception("Timeout!")
-
-# def handle_client(client_socket, client_address):
-#     print(f"LOG::start_server::Connection from {client_address[0]}:{client_address[1]} has been established!", file=sys.stderr)
-#     try:
-#         model = None
-#         while True:
-#             print(f"LOG::handle_client::waiting for message from client {client_socket}", file=sys.stderr)
-#             msg_type, msg_content = receive(client_socket)
-#             print(f"LOG::handle_client::message [{msg_type}:{msg_content}] received!", file=sys.stderr)
-            
-#             if msg_type == 'build':
-#                 if msg_content == '' or os.path.isfile(msg_content) == False:
-#                     print("You must specify --samples_file to train the model", file=sys.stderr)
-#                     break
-#                 model = build_and_train_model(msg_content)
-#                 send(client_socket, 'build', 'ok')
-#                 print(f"LOG::main::message [build:ok] sent!", file=sys.stderr)
-           
-#             elif msg_type == 'consult':
-#                 response = consult(model, msg_content)
-#                 send(client_socket, 'consult', response)
-
-#             elif msg_type == 'timelimit':
-#                 signal.signal(signal.SIGALRM, handle_timeout)
-#                 timelimit = ceil(float(msg_content))
-#                 signal.alarm(timelimit)
-#                 print("LOG::handle_client::timelimit set to ", timelimit, file=sys.stderr)
-#                 send(client_socket, 'timelimit', timelimit)
-
-            
-#             elif msg_type == 'exit':
-#                 print(f"LOG::handle_client::message [exit] received!", file=sys.stderr)
-#                 break
-
-#     finally:
-#         client_socket.close()
-
-# def start_server(host, port, num_connections):
-#     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#     if host == '0.0.0.0':
-#         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-#     server.bind((host, port))
-#     server.listen(num_connections)
-
-#     print(f"LOG::start_server::Server listening on port {host}:{port}", file=sys.stderr)
-
-#     # TODO: add timeout to each thread
-#     try:
-#         while True:
-#             client_socket, address = server.accept()
-
-#             client_handler = threading.Thread(
-#                 target=handle_client, 
-#                 args=(client_socket, address,)
-#             )
-#             client_handler.start()
-#             print("LOG::start_server::Number of threads:", threading.active_count(), file=sys.stderr)
-#     except:
-#         print("LOG::start_server::Closing server", file=sys.stderr)
-#         server.close()
-#         print("LOG::start_server::Server closed", file=sys.stderr)
-#         exit(0)
-
-
-# if __name__ == '__main__':
-#     parser = ArgParsingNamespace()
-#     argcomplete.autocomplete(parser)
-#     parser.parse_args()
-
-#     start_server(parser.host, parser.port, parser.num_connections)

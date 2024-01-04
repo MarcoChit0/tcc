@@ -19,10 +19,6 @@ Client::Client() : socket(std::make_unique<boost::asio::ip::tcp::socket>(io_cont
 
 Client::~Client()
 {
-    std::cerr << "LOG::Client::~Client::closing client at "
-              << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
-              << std::endl;
-    close();
 }
 
 void Client::connect(int port, const std::string &host)
@@ -53,6 +49,9 @@ void Client::write(const std::string &message_type, const std::string &message_c
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
 
+    std::cerr << "LOG::Client::write::message type: " << message_type << std::endl;
+    std::cerr << "LOG::Client::write::message content: " << message_content << std::endl;
+
     // Assuming build_message function exists and combines message_type and message_content
     std::string message = build_message(message_type, message_content);
     boost::asio::write(*socket, boost::asio::buffer(message));
@@ -64,6 +63,10 @@ void Client::write(const std::string &message_type, const std::string &message_c
 
 std::pair<std::string, std::string> Client::read() const
 {
+    std::cerr << "LOG::Client::read::reading message at "
+              << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
+              << std::endl;
+    
     std::string buffer;
     boost::system::error_code error; // Use boost::system::error_code
     while (!is_message_complete(buffer))
@@ -76,6 +79,13 @@ std::pair<std::string, std::string> Client::read() const
         }
         buffer.append(buf, len);
     }
+
+    std::cerr << "LOG::Client::read::message: " << buffer << std::endl;
+
+    std::cerr << "LOG::Client::read::message read at "
+              << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
+              << std::endl;
+
     return get_message(buffer); // Assuming get_message function exists
 }
 
@@ -91,6 +101,10 @@ int Client::close()
         std::cerr << "LOG::Client::close::error when closing the socket." << std::endl;
     }
     socket->close();
+    std::cerr << "LOG::Client::close::client closed at "
+              << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
+              << std::endl;
+    
     return 0; // Or appropriate return code
 }
 

@@ -30,7 +30,7 @@ logging.basicConfig(
     level=logging.INFO)
 
 # Client thread function
-def client_thread(conn, addr):
+def handle_client(conn, addr):
     try:
         model = None
         loop = True
@@ -44,8 +44,8 @@ def client_thread(conn, addr):
                 message_type, message_content = parse_message(message)
                 response = ''
 
-                logging.info(f"LOG::handle_client::client: {conn}")
-                logging.info(f"LOG::handle_client::request: [{message_type}:{message_content}]")
+                logging.info(f"LOG::server::handle_client::client: {conn}")
+                logging.info(f"LOG::server::handle_client::request: [{message_type}:{message_content}]")
 
                 if message_type == 'build':
                     message_type, response, model = handle_build(message_type, message_content)
@@ -63,13 +63,13 @@ def client_thread(conn, addr):
                 conn.sendall(f'<BEGIN>{message_type}:{response}<END>'.encode('utf-8'))
             else:
                 conn.sendall('<BEGIN>error:Invalid message format<END>'.encode('utf-8'))
-        logging.info(f"LOG::handle_client::event.is_set(): {event.is_set()}")
+        logging.info(f"LOG::server::handle_client::event.is_set(): {event.is_set()}")
     except Exception as e:
         # Handle exceptions
         logging.error("Exception occurred", exc_info=True)
         conn.sendall(f'<BEGIN>error:{str(e)}<END>'.encode('utf-8'))
     finally:
-        logging.info("LOG::handle_client::Closing connection")
+        logging.info("LOG::server::handle_client::Closing connection")
         conn.close()
 
 # Message parsing function
@@ -80,23 +80,23 @@ def parse_message(message):
 
 # Handlers for different message types
 def handle_build(message_type, message_content):
-    logging.info("LOG::handle_client::handle_build")
+    logging.info("LOG::server::handle_build")
     try:
         model = build_and_train_model(message_content)
         return message_type, 'ok', model
     except Exception as e:
-        logging.error("Model building exception", exc_info=True)
+        logging.error("LOG::server::handle_build::Model building exception", exc_info=True)
         return "error", str(e), None
 
 def handle_consult(message_content, model):
-    logging.info("LOG::handle_client::handle_consult")
+    logging.info("LOG::server::handle_consult")
     states = np.array([[int(char) for char in state] for state in message_content.split(',')])
     response = ','.join([str(value_array[0]) for value_array in model.predict(states, verbose=0)])
-    logging.info(f"LOG::handle_client::response: {response}")
+    logging.info(f"LOG::server::handle_consult::response: {response}")
     return response
 
 def handle_close():
-    logging.info("LOG::handle_client::handle_close")
+    logging.info("LOG::server::handle_close")
     return 'ok'
 
 # def handle_timeout(message_content):
@@ -118,7 +118,7 @@ def main(host, port, num_connections=1):
             while True:
                 try:
                     conn, addr = s.accept()
-                    thread = threading.Thread(target=client_thread, args=(conn, addr))
+                    thread = threading.Thread(target=handle_client, args=(conn, addr))
                     thread.start()
                     threads.append(thread)
                 except socket.timeout:

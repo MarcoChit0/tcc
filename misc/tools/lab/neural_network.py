@@ -1,9 +1,9 @@
 from email.policy import default
 from math import ceil, floor
 import os
-from sqlite3 import Time
 import sys
-from tabnanny import verbose
+
+
 # run script only on CPU
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 # limit comments
@@ -11,14 +11,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-import pandas as pd
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-matplotlib.use('agg')
-
-
-
 # run script only on CPU
 tf.config.set_visible_devices(tf.config.list_physical_devices('CPU'))
 # limit paralelism
@@ -27,6 +19,20 @@ tf.config.threading.set_inter_op_parallelism_threads(1)
 # only see fatal errors
 tf.get_logger().setLevel(tf._logging.FATAL)
 
+
+import pandas as pd
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('agg')
+
+
+import logging
+logging.basicConfig(
+    filename='neural_network.log', 
+    filemode='w',
+    format='%(asctime)s %(levelname)s: %(message)s',
+    level=logging.INFO)
 
 
 def build_model(input_shape, num_units=250):
@@ -96,21 +102,19 @@ def get_samples_data(samples_file):
         'validation_labels': validation_labels
     }
 
-
-            
 def build_and_train_model(samples_file):
-    print("LOG::build_and_train_model::begin", file=sys.stderr)
-    print("LOG::build_and_train_model::Samples file:", samples_file, file=sys.stderr)
+    logging.info("LOG::neural_network::build_and_train_model::start")
+    logging.info(f"LOG::neural_network::build_and_train_model::samples_file: {samples_file}")
     samples_data = get_samples_data(samples_file)
-    print("LOG::build_and_train_model::Building model", file=sys.stderr)
+    logging.info("LOG::neural_network::build_and_train_model::Building model")
     model = build_model(samples_data['input_shape'])
-    print("LOG::build_and_train_model::Training model", file=sys.stderr)
+    logging.info("LOG::neural_network::build_and_train_model::Training model")
     history = train_model(model, samples_data['train_data'], samples_data['train_labels'], samples_data['validation_data'], samples_data['validation_labels'])
-    print("LOG::build_and_train_model::Saving model", file=sys.stderr)
+    logging.info("LOG::neural_network::build_and_train_model::Saving model")
     model.save(os.path.join(os.path.dirname(samples_file), "model.keras"))
-    print("LOG::build_and_train_model::Plotting history", file=sys.stderr)    
+    logging.info("LOG::neural_network::build_and_train_model::Plotting history")
     plot_history(history, os.path.dirname(samples_file))
-    print("LOG::build_and_train_model::end", file=sys.stderr)
+    logging.info("LOG::neural_network::build_and_train_model::end")
     return model
 
 def plot_history(history, path):

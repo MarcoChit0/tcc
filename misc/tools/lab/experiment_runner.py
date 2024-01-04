@@ -19,7 +19,7 @@ from threading import Thread, Lock, Semaphore
 import logging
 
 logging.basicConfig(
-    filename='experiment_runner.log', 
+    filename='logs/backtrace.log', 
     filemode='w',
     format='%(asctime)s %(levelname)s: %(message)s',
     level=logging.INFO)

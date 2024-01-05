@@ -315,6 +315,7 @@ double step;
 int port = 1024;
 Client client = Client();
 
+
 void set_step_and_policy_alarm()
 {
     assert (0 <= sample_generation_alarm and sample_generation_alarm <= 1);
@@ -330,8 +331,10 @@ int main(int argc, char **argv)
     std::thread timer_thread(timer_function, (int) get_time_limit()); // start timer thread
     str samples_file_name = argv[argc - 2]; // second last argument is the samples file name
     port = std::atoi(argv[argc - 1]); // last argument is the port
-    client.connect(port);
-
+    if(str(argv[3]).find("neural-network") != std::string::npos)
+    {
+        client.connect(port);
+    }
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     int number_of_samples = std::atoi(argv[5]);

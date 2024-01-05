@@ -236,8 +236,11 @@ void end_program()
     }
     cv.notify_one();
     std::cerr << "LOG::end_program::timer stopped" << std::endl;
-    client.close();
-    std::cerr << "LOG::end_program::client socket closed" << std::endl;
+    if(client.is_connected())
+    {
+        client.close();
+        std::cerr << "LOG::end_program::client socket closed" << std::endl;
+    }
     std::cerr << "LOG::end_program::end" << std::endl;
     exit(0);
 }

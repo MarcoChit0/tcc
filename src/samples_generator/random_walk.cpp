@@ -35,7 +35,17 @@ State RandomWalk::select_state(PartialState partial_state_to_be_regressed, set<i
     bool match = false;
     while (not match and enough_memory() and enough_time(ALARM_TYPE_SAMPLE_GENERATION))
     {
-        set<State> concrete_states = this->state_heuristic.get_concrete_states(this->perform_random_walk(partial_state_to_be_regressed));
+        PartialState ps = this->perform_random_walk(partial_state_to_be_regressed);
+        set<State> concrete_states = this->state_heuristic.get_concrete_states(ps);
+        // TODO: remove this print after debugging
+        std::cerr << "##############################################" << std::endl;
+        std::cerr << "LOG::RandomWalk::select_state::partial_state::" << ps << std::endl;
+        int count = 0;
+        for (State s : concrete_states)
+        {
+            std::cerr << "LOG::RandomWalk::select_state::concrete_state::" << count++ << "\t--\t" << s << std::endl;
+        }
+        std::cerr << "##############################################" << std::endl;
         if (not concrete_states.empty())
         {
             std::uniform_int_distribution<int> distribution(0, concrete_states.size() - 1);
@@ -63,11 +73,11 @@ PartialState Stop::operator()(PartialState partial_state, const Task &task, cons
             std::uniform_int_distribution<int> distribution(0, vec_regressed_partial_states.size() - 1);
             int random_action_index = distribution(rng);
             vec<PartialState> regressed_partial_states = vec_regressed_partial_states[random_action_index];
-            if(regressed_partial_states.size() > 1)
+            if (regressed_partial_states.size() > 1)
             {
                 distribution = std::uniform_int_distribution<int>(0, regressed_partial_states.size() - 1);
                 int random_partial_state_index = distribution(rng);
-                partial_state = regressed_partial_states[random_partial_state_index];                
+                partial_state = regressed_partial_states[random_partial_state_index];
             }
             else
             {
@@ -102,9 +112,9 @@ PartialState BackTracking::operator()(PartialState partial_state, const Task &ta
             regressed_states[partial_state.id] = true;
             vec<vec<PartialState>> vec_regressed_partial_states = task.get_regressed_partial_states(partial_state);
             std::shuffle(vec_regressed_partial_states.begin(), vec_regressed_partial_states.end(), rng);
-            for(vec<PartialState> regressed_partial_states : vec_regressed_partial_states)
+            for (vec<PartialState> regressed_partial_states : vec_regressed_partial_states)
             {
-                if(regressed_partial_states.size() > 1)
+                if (regressed_partial_states.size() > 1)
                 {
                     std::shuffle(regressed_partial_states.begin(), regressed_partial_states.end(), rng);
                 }
@@ -112,9 +122,8 @@ PartialState BackTracking::operator()(PartialState partial_state, const Task &ta
                 {
                     partial_states.push(regressed_partial_state);
                     partial_state_to_depth[regressed_partial_state.id] = partial_state_to_depth[partial_state.id] + 1;
-                }                
+                }
             }
-
         }
     }
     return partial_state;
@@ -136,7 +145,7 @@ PartialState Restart::operator()(PartialState partial_state, const Task &task, c
                 std::uniform_int_distribution<int> distribution(0, vec_regressed_partial_states.size() - 1);
                 int random_action_index = distribution(rng);
                 vec<PartialState> regressed_partial_states = vec_regressed_partial_states[random_action_index];
-                if(regressed_partial_states.size() > 1)
+                if (regressed_partial_states.size() > 1)
                 {
                     distribution = std::uniform_int_distribution<int>(0, regressed_partial_states.size() - 1);
                     int random_partial_state_index = distribution(rng);

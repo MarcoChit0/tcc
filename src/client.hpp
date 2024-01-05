@@ -58,6 +58,7 @@ class Client
 private:
     boost::asio::io_context io_context;
     std::unique_ptr<boost::asio::ip::tcp::socket> socket;
+    bool connected;
 
 public:
     Client();
@@ -65,7 +66,8 @@ public:
     void connect(int port, const std::string& host = "localhost");
     void write(const std::string& message_type, const std::string& message_content) const;
     std::pair<std::string, std::string> read() const;
-    int close();
+    bool is_connected() const;
+    void close();
 };
 
 

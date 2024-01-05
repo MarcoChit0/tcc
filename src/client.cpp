@@ -12,6 +12,7 @@ std::string endpoint_to_string(const boost::asio::ip::tcp::endpoint &endpoint)
 
 Client::Client() : socket(std::make_unique<boost::asio::ip::tcp::socket>(io_context))
 {
+    this->connected = false;
     std::cerr << "LOG::Client::Client::creating client at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
@@ -41,6 +42,8 @@ void Client::connect(int port, const std::string &host)
     std::cerr << "LOG::Client::connect::client connected at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
+    
+    this->connected = true;
 }
 
 void Client::write(const std::string &message_type, const std::string &message_content) const
@@ -89,8 +92,14 @@ std::pair<std::string, std::string> Client::read() const
     return get_message(buffer); // Assuming get_message function exists
 }
 
-int Client::close()
+void Client::close()
 {
+    if (not this->is_connected())
+    {
+        std::cerr << "LOG::Client::close::client not connected" << std::endl;
+        return;
+    }
+
     std::cerr << "LOG::Client::close::closing client at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
@@ -104,8 +113,6 @@ int Client::close()
     std::cerr << "LOG::Client::close::client closed at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
-    
-    return 0; // Or appropriate return code
 }
 
 std::pair<std::string, std::string> get_message(const std::string &buffer)
@@ -149,4 +156,9 @@ std::vector<std::string> split(const std::string &s, char delimiter)
     }
 
     return tokens;
+}
+
+bool Client::is_connected() const
+{
+    return this->connected;
 }

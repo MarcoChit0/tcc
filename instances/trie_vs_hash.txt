@@ -1,0 +1,9 @@
+blocksworld-original,p1
+blocksworld-original,p2
+blocksworld-original,p3
+blocksworld-original,p4
+blocksworld-original,p5
+blocksworld-original,p7
+blocksworld-original,p8
+blocksworld-original,p9
+islands,p6

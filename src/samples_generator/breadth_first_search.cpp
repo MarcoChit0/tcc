@@ -35,7 +35,7 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs() const
         std::shuffle(vec_regressed_partial_states.begin(), vec_regressed_partial_states.end(), rng);
         for (vec<PartialState> regressed_partial_states : vec_regressed_partial_states)
         {
-            if(regressed_partial_states.size() > 1)
+            if (regressed_partial_states.size() > 1)
             {
                 std::shuffle(regressed_partial_states.begin(), regressed_partial_states.end(), rng);
             }
@@ -43,7 +43,17 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs() const
             {
                 if (not visited.contains(regressed_partial_state))
                 {
-                    for (State concrete_state : this->state_heuristic.get_concrete_states(regressed_partial_state))
+                    set<State> concrete_states = this->state_heuristic.get_concrete_states(regressed_partial_state);
+                    // TODO: remove this print after debugging
+                    std::cerr << "##############################################" << std::endl;
+                    std::cerr << "LOG::BreadthFirstSearch::select_state::partial_state::" << regressed_partial_state << std::endl;
+                    int count = 0;
+                    for (State s : concrete_states)
+                    {
+                        std::cerr << "LOG::BreadthFirstSearch::select_state::concrete_state::"<< count++ << "\t--\t" << s << std::endl;
+                    }
+                    std::cerr << "##############################################" << std::endl;
+                    for (State concrete_state : concrete_states)
                     {
                         if (bfs_return.sampled.contains(concrete_state))
                         {

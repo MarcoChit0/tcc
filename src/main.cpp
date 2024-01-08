@@ -312,9 +312,11 @@ double percentage_memory_limit = 0.9;
 double sample_generation_alarm = 0.7;
 double policy_alarm;
 double step;
-int port = 1024;
-Client client = Client();
 
+// clients to be connected with nn server
+Client nn_lookup = Client();
+Client nn_deadend_detector = Client();
+vec<Client*> clients = vec<Client*>{&nn_lookup, &nn_deadend_detector};
 
 void set_step_and_policy_alarm()
 {
@@ -329,12 +331,9 @@ int main(int argc, char **argv)
     assert(get_time_limit() <= 1800);
     std::signal(SIGUSR1, signal_handler); // setup signal handler
     std::thread timer_thread(timer_function, (int) get_time_limit()); // start timer thread
-    str samples_file_name = argv[argc - 2]; // second last argument is the samples file name
-    port = std::atoi(argv[argc - 1]); // last argument is the port
-    if(str(argv[3]).find("neural-network") != std::string::npos)
-    {
-        client.connect(port);
-    }
+    str samples_file_name = argv[argc - 3]; // third last argument is the samples file name
+    nn_deadend_detector.connect(std::atoi(argv[argc - 2])); // second last argument is the nn deadend detector port
+    nn_lookup.connect(std::atoi(argv[argc - 1]));   // last argument is the nn lookup port
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     int number_of_samples = std::atoi(argv[5]);
@@ -352,6 +351,7 @@ int main(int argc, char **argv)
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment, samples_file_name);
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
     Policy opt_solution = and_star.get_solution(task);
+    // std::cout << opt_solution << std::endl;
     print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" <<std::endl;
     end_program();

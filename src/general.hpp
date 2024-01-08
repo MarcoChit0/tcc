@@ -241,4 +241,6 @@ extern FunctionsCache functions_cache;
 extern FunctionsCache functions_storage;
 
 
-extern Client client;
+extern Client nn_lookup;
+extern Client nn_deadend_detector;
+extern vec<Client*> clients;

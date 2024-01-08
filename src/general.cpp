@@ -236,9 +236,9 @@ void end_program()
     }
     cv.notify_one();
     std::cerr << "LOG::end_program::timer stopped" << std::endl;
-    if(client.is_connected())
+    if(nn_lookup.is_connected())
     {
-        client.close();
+        nn_lookup.close();
         std::cerr << "LOG::end_program::client socket closed" << std::endl;
     }
     std::cerr << "LOG::end_program::end" << std::endl;

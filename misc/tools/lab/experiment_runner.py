@@ -57,8 +57,9 @@ class ArgParsingNamespace(tap.Tap):
     concrete_states_generator: str
     regressor: str
     host: str
-    port: int
-    
+    deadend_port: int
+    lookup_port: int
+    use_deadend_nn: bool
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=7)
@@ -82,7 +83,9 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")
         self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
         self.add_argument("--host", type=str, default='0.0.0.0')
-        self.add_argument("--port", type=int, default=1024)
+        self.add_argument("--deadend-port", type=int, default=-1)
+        self.add_argument("--lookup-port", type=int, default=-1)
+        self.add_argument("--use-deadend-nn", type=bool, default=False)
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
@@ -100,8 +103,15 @@ def start_server_thread(host, port, num_connections):
 num_threads = apn.number_of_threads
 if 'neural-network-lookup' in apn.policy_heuristic:    
     if num_threads > 1: num_threads -= 1
-    start_server_thread(apn.host, apn.port, num_threads) # allocate one of the threads to the server
-    logging.info(f"LOG::experiment_runner::server started on port {apn.port}")
+    lookup_port = 1024 if apn.lookup_port == -1 else apn.lookup_port
+    start_server_thread(apn.host, lookup_port, num_threads) # allocate one of the threads to the server
+    logging.info(f"LOG::experiment_runner::lookup server started on port {lookup_port}")
+
+if apn.use_deadend_nn:
+    if num_threads > 1: num_threads -= 1
+    deadend_port = 1025 if apn.deadend_port == -1 else apn.deadend_port
+    start_server_thread(apn.host, deadend_port, num_threads) # allocate one of the threads to the server
+    logging.info(f"LOG::experiment_runner::deadend server started on port {deadend_port}")
 
 threads_semaphore = Semaphore(num_threads)
 folder_creation_lock = Lock()

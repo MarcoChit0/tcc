@@ -24,26 +24,29 @@ Client::~Client()
 
 void Client::connect(int port, const std::string &host)
 {
-    std::cerr << "LOG::Client::connect::creating client at "
-              << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
-              << std::endl;
+    if(port != -1)
+    {
+        std::cerr << "LOG::Client::connect::creating client at "
+                << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
+                << std::endl;
 
-    boost::asio::ip::tcp::resolver resolver(io_context);
-    boost::asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
-    boost::asio::connect(*socket, endpoints);
+        boost::asio::ip::tcp::resolver resolver(io_context);
+        boost::asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
+        boost::asio::connect(*socket, endpoints);
 
-    auto local_endpoint = socket->local_endpoint();
-    auto remote_endpoint = socket->remote_endpoint();
+        auto local_endpoint = socket->local_endpoint();
+        auto remote_endpoint = socket->remote_endpoint();
 
-    std::cerr << "LOG::Client::connect::local endpoint: " << endpoint_to_string(local_endpoint) << std::endl;
-    std::cerr << "LOG::Client::connect::remote endpoint: " << endpoint_to_string(remote_endpoint) << std::endl;
+        std::cerr << "LOG::Client::connect::local endpoint: " << endpoint_to_string(local_endpoint) << std::endl;
+        std::cerr << "LOG::Client::connect::remote endpoint: " << endpoint_to_string(remote_endpoint) << std::endl;
 
-    std::cerr << "LOG::Client::connect::client connected to server" << std::endl;
-    std::cerr << "LOG::Client::connect::client connected at "
-              << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
-              << std::endl;
-    
-    this->connected = true;
+        std::cerr << "LOG::Client::connect::client connected to server" << std::endl;
+        std::cerr << "LOG::Client::connect::client connected at "
+                << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
+                << std::endl;
+        
+        this->connected = true;
+    }
 }
 
 void Client::write(const std::string &message_type, const std::string &message_content) const

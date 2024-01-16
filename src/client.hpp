@@ -30,6 +30,8 @@
 #include <boost/heap/pairing_heap.hpp>
 #include <boost/bimap.hpp>
 #include <boost/process.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <thread>
 #include <mutex>
@@ -59,15 +61,19 @@ private:
     boost::asio::io_context io_context;
     std::unique_ptr<boost::asio::ip::tcp::socket> socket;
     bool connected;
+    std::string host;
+    int port;
+    const std::string id;
 
 public:
-    Client();
+    Client(const std::string id);
     ~Client();
     void connect(int port, const std::string& host = "localhost");
     void write(const std::string& message_type, const std::string& message_content) const;
     std::pair<std::string, std::string> read() const;
     bool is_connected() const;
     void close();
+    friend std::ostream& operator<<(std::ostream &out, const Client &self); 
 };
 
 

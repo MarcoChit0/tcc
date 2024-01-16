@@ -23,6 +23,8 @@
 #include "./samples_generator/breadth_first_search.hpp"
 #include "./samples_generator/fsm.hpp"
 #include "./samples_generator/sample.hpp"
+#include "./deadend_detector.hpp"
+
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
@@ -313,11 +315,6 @@ double sample_generation_alarm = 0.7;
 double policy_alarm;
 double step;
 
-// clients to be connected with nn server
-Client nn_lookup = Client();
-Client nn_deadend_detector = Client();
-vec<Client*> clients = vec<Client*>{&nn_lookup, &nn_deadend_detector};
-
 void set_step_and_policy_alarm()
 {
     assert (0 <= sample_generation_alarm and sample_generation_alarm <= 1);
@@ -325,17 +322,47 @@ void set_step_and_policy_alarm()
     policy_alarm = 1 - sample_generation_alarm;
 }
 
+map<str, int> parse_ports(str ports_json)
+{
+    std::stringstream ss;
+    ss << ports_json;
+
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_json(ss, pt);
+
+    map<str, int> ports;
+    for (auto &p : pt)
+    {
+        ports[p.first] = p.second.get_value<int>();
+        std::cerr << "LOG::main::port " << p.first << " " << p.second.get_value<int>() << std::endl;
+    }
+    return ports;
+}
+
+
 int main(int argc, char **argv)
 {
     // assert(get_memory_limit() <= 8);
-    assert(get_time_limit() <= 1800);
+    // assert(get_time_limit() <= 1800);
     std::signal(SIGUSR1, signal_handler); // setup signal handler
     std::thread timer_thread(timer_function, (int) get_time_limit()); // start timer thread
-    str samples_file_name = argv[argc - 3]; // third last argument is the samples file name
-    nn_deadend_detector.connect(std::atoi(argv[argc - 2])); // second last argument is the nn deadend detector port
-    nn_lookup.connect(std::atoi(argv[argc - 1]));   // last argument is the nn lookup port
+    str samples_file_name = argv[argc - 2]; // second last argument is the samples file name
+    std::cerr << "LOG::main::start of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" <<std::endl;
+    std::cerr << "LOG::main::ports: " << str(argv[argc - 1]) << std::endl;
+    map<str, int> ports = parse_ports(str(argv[argc - 1])); // last argument is the ports json
+    // connect all the clients
+    for(auto &p : ports)
+    {
+        clients[p.first] = new Client(p.first);
+        clients[p.first]->connect(p.second);
+        if(clients[p.first]->is_connected())
+        {
+            std::cerr << "LOG::main::client " << p.first << " connected at port " << p.second << std::endl;
+        }
+    }
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
+    DeadEndDetector deadend_detector = DeadEndDetector(task);
     int number_of_samples = std::atoi(argv[5]);
     int length = parse_length_data(argv[6], task);
     float porcentage = std::atof(argv[7]);

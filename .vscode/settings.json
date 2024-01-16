@@ -89,7 +89,9 @@
         "__config": "cpp",
         "__functional_03": "cpp",
         "locale": "cpp",
-        "coroutine": "cpp"
+        "coroutine": "cpp",
+        "__locale": "cpp",
+        "filesystem": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "python.analysis.autoImportCompletions": true,

@@ -28,8 +28,8 @@ NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristi
     // }
     // std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::server timelimit set to " << response.second << " seconds" << std::endl;
 
-    nn_lookup.write("build", file_name); // send samples file to the server so it could build the neural network
-    auto response = nn_lookup.read(); // wait for the server to finish building the neural network
+    clients["lookup"]->write("build", file_name); // send samples file to the server so it could build the neural network
+    auto response = clients["lookup"]->read(); // wait for the server to finish building the neural network
 
     if(response.first != "build" and response.second != "OK")
     {
@@ -128,8 +128,8 @@ double NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) con
     
 
     std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::start time:" << get_ellapsed_time() << std::endl;
-    nn_lookup.write("consult",message_content);
-    std::pair<str, str> response = nn_lookup.read();
+    clients["lookup"]->write("consult",message_content);
+    std::pair<str, str> response = clients["lookup"]->read();
     if (response.first != "consult")
     {
         std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::response:" << response.first << ":" << response.second << std::endl;

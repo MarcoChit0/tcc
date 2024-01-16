@@ -236,10 +236,11 @@ void end_program()
     }
     cv.notify_one();
     std::cerr << "LOG::end_program::timer stopped" << std::endl;
-    if(nn_lookup.is_connected())
+    std::cerr << "LOG::end_program::closing clients:" << std::endl;
+    for(const auto &pair : clients)
     {
-        nn_lookup.close();
-        std::cerr << "LOG::end_program::client socket closed" << std::endl;
+        std::cerr << "LOG::end_program::closing client: " << pair.first << std::endl;
+        pair.second->close();
     }
     std::cerr << "LOG::end_program::end" << std::endl;
     exit(0);

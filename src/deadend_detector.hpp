@@ -1,18 +1,26 @@
 #pragma once
 
-#include "general.hpp"
-#include "./samples_generator/sample_generator.hpp"
+#include "task.hpp"
 
+enum StateLabel
+{
+    DEAD_END,
+    WEAK_ALIVE,
+    ALIVE,
+};
+
+static std::map<int, str> state_label_to_string = {
+    {DEAD_END, "deadend"},
+    {WEAK_ALIVE, "weak-alive"},
+    {ALIVE, "alive"},
+}; 
 
 class DeadEndDetector
 {
+    private:
+        const Task &task;
     public:
-        static map <int64_t, bool> has_non_deterministic_value;
-        static int number_of_lookups;
-        const SampleGenerator& samples_generator;
-        const Sample::Treatment& sample_treatment;
-        const State::Heuristic &state_heuristic;
-        
-        DeadEndDetector(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator& samples_generator, const Sample::Treatment& sample_treatment);
+        DeadEndDetector(const Task &task);
         bool operator[](const State &state) const;
+        static map<int64_t, int> labeled_states;
 };

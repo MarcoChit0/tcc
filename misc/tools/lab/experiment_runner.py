@@ -1,5 +1,7 @@
 import sys
 import faulthandler
+
+from matplotlib.font_manager import json_dump
 faulthandler.enable()
 import os
 from xml.etree.ElementInclude import include
@@ -17,6 +19,7 @@ from queue import Queue
 from typing import Generator, Callable
 from threading import Thread, Lock, Semaphore
 import logging
+import json
 
 logging.basicConfig(
     filename='logs/backtrace.log', 
@@ -101,6 +104,9 @@ def start_server_thread(host, port, num_connections):
     server_thread.start()
 
 num_threads = apn.number_of_threads
+lookup_port = -1
+deadend_port = -1
+
 if 'neural-network-lookup' in apn.policy_heuristic:    
     if num_threads > 1: num_threads -= 1
     lookup_port = 1024 if apn.lookup_port == -1 else apn.lookup_port
@@ -112,6 +118,9 @@ if apn.use_deadend_nn:
     deadend_port = 1025 if apn.deadend_port == -1 else apn.deadend_port
     start_server_thread(apn.host, deadend_port, num_threads) # allocate one of the threads to the server
     logging.info(f"LOG::experiment_runner::deadend server started on port {deadend_port}")
+
+ports = {'lookup': lookup_port, 'deadend': deadend_port}
+logging.info(f"LOG::experiment_runner::ports: {ports}")
 
 threads_semaphore = Semaphore(num_threads)
 folder_creation_lock = Lock()
@@ -145,7 +154,7 @@ def get_splitted_command(
         concrete_states_generator: str,
         regressor: str,
         samples_file_path: str,
-        port: int
+        ports: map
         ) -> list[str]:
     return [
         f'./and_star',
@@ -165,10 +174,10 @@ def get_splitted_command(
         f'{concrete_states_generator}',
         f'{regressor}',
         f'{samples_file_path}',
-        f'{port}'
+        f'{ports}'
     ]
 
-def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str, walker: str, concrete_states_generator: str, regressor: str, port:int) -> None:
+def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str, walker: str, concrete_states_generator: str, regressor: str, ports:map) -> None:
     global apn, threads_semaphore, folder_creation_lock, process_creation_lock, print_lock
 
     basic_dir_structure = f'./misc/data/raw_results/{apn.save_folder_name_prefix}/'
@@ -187,7 +196,7 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
 
     process_creation_lock.acquire(); time.sleep(0.1)
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, samples_file_path, port), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, samples_file_path, ports), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0
@@ -236,6 +245,7 @@ def get_tasks_infos() -> Generator[TaskInfo, None, None]:
 
 
 def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
+    global ports
     for policy_heuristic in apn.policy_heuristic.split(','):
         for state_heuristic in apn.state_heuristic.split(','):
             for number_of_samples in apn.number_of_samples.split(','):
@@ -249,7 +259,7 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                             for walker in apn.walker.split(','):
                                                 for concrete_states_generator in apn.concrete_states_generator.split(','):
                                                     for regressor in apn.regressor.split(','):
-                                                        yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, apn.port))
+                                                        yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, json.dumps(ports)))
 
                                         
 lock_file = open('/tmp/and-star-lab.lock', 'w')

@@ -10,10 +10,10 @@ std::string endpoint_to_string(const boost::asio::ip::tcp::endpoint &endpoint)
     return endpoint.address().to_string() + ":" + std::to_string(endpoint.port());
 }
 
-Client::Client() : socket(std::make_unique<boost::asio::ip::tcp::socket>(io_context))
+Client::Client(const std::string id) : socket(std::make_unique<boost::asio::ip::tcp::socket>(io_context)), id(id)
 {
     this->connected = false;
-    std::cerr << "LOG::Client::Client::creating client at "
+    std::cerr << "LOG::" << *this << "::Client::creating client at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
 }
@@ -26,7 +26,9 @@ void Client::connect(int port, const std::string &host)
 {
     if(port != -1)
     {
-        std::cerr << "LOG::Client::connect::creating client at "
+        this->port = port;
+        this->host = host;
+        std::cerr << "LOG::" << *this << "::connect::creating client at "
                 << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
                 << std::endl;
 
@@ -37,11 +39,11 @@ void Client::connect(int port, const std::string &host)
         auto local_endpoint = socket->local_endpoint();
         auto remote_endpoint = socket->remote_endpoint();
 
-        std::cerr << "LOG::Client::connect::local endpoint: " << endpoint_to_string(local_endpoint) << std::endl;
-        std::cerr << "LOG::Client::connect::remote endpoint: " << endpoint_to_string(remote_endpoint) << std::endl;
+        std::cerr << "LOG::" << *this << "::connect::local endpoint: " << endpoint_to_string(local_endpoint) << std::endl;
+        std::cerr << "LOG::" << *this << "::connect::remote endpoint: " << endpoint_to_string(remote_endpoint) << std::endl;
 
-        std::cerr << "LOG::Client::connect::client connected to server" << std::endl;
-        std::cerr << "LOG::Client::connect::client connected at "
+        std::cerr << "LOG::" << *this << "::connect::client connected to server" << std::endl;
+        std::cerr << "LOG::" << *this << "::connect::client connected at "
                 << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
                 << std::endl;
         
@@ -51,25 +53,25 @@ void Client::connect(int port, const std::string &host)
 
 void Client::write(const std::string &message_type, const std::string &message_content) const
 {
-    std::cerr << "LOG::Client::write::writing message at "
+    std::cerr << "LOG::" << *this << "::write::writing message at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
 
-    std::cerr << "LOG::Client::write::message type: " << message_type << std::endl;
-    std::cerr << "LOG::Client::write::message content: " << message_content << std::endl;
+    std::cerr << "LOG::" << *this << "::write::message type: " << message_type << std::endl;
+    std::cerr << "LOG::" << *this << "::write::message content: " << message_content << std::endl;
 
     // Assuming build_message function exists and combines message_type and message_content
     std::string message = build_message(message_type, message_content);
     boost::asio::write(*socket, boost::asio::buffer(message));
 
-    std::cerr << "LOG::Client::write::message written at "
+    std::cerr << "LOG::" << *this << "::write::message written at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
 }
 
 std::pair<std::string, std::string> Client::read() const
 {
-    std::cerr << "LOG::Client::read::reading message at "
+    std::cerr << "LOG::" << *this << "::read::reading message at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
     
@@ -86,9 +88,9 @@ std::pair<std::string, std::string> Client::read() const
         buffer.append(buf, len);
     }
 
-    std::cerr << "LOG::Client::read::message: " << buffer << std::endl;
+    std::cerr << "LOG::" << *this << "::read::message: " << buffer << std::endl;
 
-    std::cerr << "LOG::Client::read::message read at "
+    std::cerr << "LOG::" << *this << "::read::message read at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
 
@@ -99,21 +101,21 @@ void Client::close()
 {
     if (not this->is_connected())
     {
-        std::cerr << "LOG::Client::close::client not connected" << std::endl;
+        std::cerr << "LOG::" << *this << "::close::client not connected" << std::endl;
         return;
     }
 
-    std::cerr << "LOG::Client::close::closing client at "
+    std::cerr << "LOG::" << *this << "::close::closing client at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
     write("close", "");
     auto response = this->read();
     if(response.first != "close" and response.second != "ok")
     {
-        std::cerr << "LOG::Client::close::error when closing the socket." << std::endl;
+        std::cerr << "LOG::" << *this << "::close::error when closing the socket." << std::endl;
     }
     socket->close();
-    std::cerr << "LOG::Client::close::client closed at "
+    std::cerr << "LOG::" << *this << "::close::client closed at "
               << double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - st).count()) / 1e9
               << std::endl;
 }
@@ -164,4 +166,17 @@ std::vector<std::string> split(const std::string &s, char delimiter)
 bool Client::is_connected() const
 {
     return this->connected;
+}
+
+std::ostream& operator<<(std::ostream &out, const Client &self)
+{
+    if(self.is_connected())
+    {
+        out << "Client(" << self.id << ", " << self.host << ":" << self.port << ")";
+    }
+    else
+    {
+        out << "Client(" << self.id << ")";
+    }
+    return out;
 }

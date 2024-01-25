@@ -88,6 +88,7 @@ DeadEndDetector::DeadEndDetector(const Task &task) : task(task)
 
     // 3.
     set<State> weak_alive_states;
+    map<
     vec<State> states_at_next_depth;
     vec<State> states_at_current_depth = vec<State>(goal_states.begin(), goal_states.end());
     visited = goal_states;

@@ -21,7 +21,7 @@ void create_states(const Task &task, const vec<Fact> &facts, set<State> &states,
     }
 }
 
-void DeadEndDetector::find_weak_alive_states(const set<State> &goal_states, map<State, vec<State>> &reversed_edges, set<State> &weak_alive_states)
+void DeadEndDetector::find_weak_alive_states(const set<State> &goal_states, map<State, vec<std::pair<State, Action>>> &reversed_edges, set<State> &weak_alive_states, vec<std::pair<State, Action>>& bad_state_action_pairs)
 {
     vec<State> states_at_next_depth;
     vec<State> states_at_current_depth = vec<State>(goal_states.begin(), goal_states.end());
@@ -39,8 +39,23 @@ void DeadEndDetector::find_weak_alive_states(const set<State> &goal_states, map<
         {
             continue;
         }
-        for (const State &predecessor_state : reversed_edges[state])
+        for (auto state_action_pair : reversed_edges[state])
         {
+            bool is_bad = false;
+            for(auto bad_state_action_pair : bad_state_action_pairs)
+            {
+                if(state_action_pair == bad_state_action_pair)
+                {
+                    is_bad = true;
+                    break;
+                }
+            }
+            if(is_bad)
+            {
+                continue;
+            }
+            State predecessor_state = state_action_pair.first;
+            Action action = state_action_pair.second;
             if (visited.contains(predecessor_state))
             {
                 continue;
@@ -121,7 +136,7 @@ void DeadEndDetector::test_whether_weak_alive_states_are_dead_end_states(set<Sta
     // std::cerr << "LOG::DeadEndDetector::WeakAliveStates: " << weak_alive_states.size() << std::endl;
 }
 
-void DeadEndDetector::mark_goal_states_as_alive(const Task &task, const set<State> &states, map<State, vec<State>> &reversed_edges, set<State> &goal_states, set<State> &non_goal_states)
+void DeadEndDetector::mark_goal_states_as_alive(const Task &task, const set<State> &states, map<State, vec<std::pair<State, Action>>> &reversed_edges, set<State> &goal_states, set<State> &non_goal_states)
 {
     vec<State> stack;
     set<State> visited;
@@ -152,7 +167,7 @@ void DeadEndDetector::mark_goal_states_as_alive(const Task &task, const set<Stat
             {
                 for (const State &succesor_state : state.get_successors(action))
                 {
-                    reversed_edges[succesor_state].push_back(state);
+                    reversed_edges[succesor_state].push_back(std::make_pair(state, action));
                     stack.push_back(succesor_state);
                 }
             }
@@ -229,7 +244,7 @@ DeadEndDetector::DeadEndDetector(const Task &task) : task(task)
 
     // 2.
     map<int64_t, int64_t> predecessor;
-    map<State, vec<State>> reversed_edges;
+    map<State, vec<std::pair<State, Action>>> reversed_edges;
     set<State> goal_states;
     set<State> non_goal_states;
     this->mark_goal_states_as_alive(this->task, states, reversed_edges, goal_states, non_goal_states);
@@ -237,6 +252,7 @@ DeadEndDetector::DeadEndDetector(const Task &task) : task(task)
     // loop 3,4,5 until there is no change in the number of weak alive states
     set<State> weak_alive_states;
     set<State> dead_end_states;
+    vec<std::pair<State, Action>> bad_state_action_pairs;
     int number_of_weak_alive_states_on_previous_iteration = 0, it = 0;
     do
     {
@@ -249,8 +265,18 @@ DeadEndDetector::DeadEndDetector(const Task &task) : task(task)
                 this->labeled_states.erase(weak_alive_state.id);
             }
         }
+
+
+        for(auto dead_end_state : dead_end_states)
+        {
+            for (auto pair_state_action : reversed_edges[dead_end_state])
+            {
+                bad_state_action_pairs.push_back(pair_state_action);
+            }
+        }
+
         // 3.
-        this->find_weak_alive_states(goal_states, reversed_edges, weak_alive_states);
+        this->find_weak_alive_states(goal_states, reversed_edges, weak_alive_states, bad_state_action_pairs);
 
         // 4.
         this->find_dead_end_states(non_goal_states, dead_end_states);

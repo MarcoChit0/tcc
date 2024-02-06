@@ -4,7 +4,7 @@ from collections import defaultdict
 
 domain = {}
 # .sas file
-with open("./res/compiled_benchmarks/tireworld-spiky-2,p2.sas", "r") as file:
+with open("./res/compiled_benchmarks/tireworld-spiky-2,p4.sas", "r") as file:
     while True:
         if "end_metric" in file.readline():
             break

@@ -91,7 +91,11 @@
         "locale": "cpp",
         "coroutine": "cpp",
         "__locale": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "__bit_reference": "cpp",
+        "__hash_table": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "python.analysis.autoImportCompletions": true,

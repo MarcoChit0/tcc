@@ -1,6 +1,6 @@
 # Compiler and compiler flags
 CXX := g++
-CXXFLAGS := -std=c++23 -O3 -Wno-pmf-conversions
+CXXFLAGS := -std=c++23 -O3 -Wno-pmf-conversions -DIL_STD
 
 # Directories
 SRC_DIR := ./src
@@ -16,9 +16,13 @@ OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 TARGET := $(BIN_DIR)/and_star
 
 # External Dependencies
-INCLUDES :=
-LDFLAGS := 
-LDLIBS := -l gmpxx -l gmp
+INCLUDES := \
+    -I /home/macsilva/cplex/cplex/include -I /home/macsilva/cplex/concert/include
+LDFLAGS := \
+    -L /home/macsilva/cplex/cplex/lib/x86-64_linux/static_pic  -L /home/macsilva/cplex/concert/lib/x86-64_linux/static_pic
+LDLIBS := \
+    -l concert -l ilocplex -l cplex -l m -l pthread -l dl \
+    -l gmpxx -l gmp
 
 # Phony targets
 .PHONY: all clean

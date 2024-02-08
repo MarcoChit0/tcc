@@ -1,0 +1,4 @@
+[['Atom has-many-spares(0)', 'Atom vehicle-at(a)', 'NegatedAtom tire-at(a)', 'Atom flat-tire()']] -> deadend
+[['Atom has-many-spares(0)', 'NegatedAtom tire-at(b)', 'Atom vehicle-at(a)', 'NegatedAtom tire-at(a)']] -> deadend
+[['NegatedAtom tire-at(b)', 'Atom vehicle-at(a)', 'NegatedAtom tire-at(a)', 'Atom flat-tire()']] -> deadend
+[['Atom has-many-spares(0)', 'NegatedAtom tire-at(b)', 'Atom tire-at(a)', 'Atom vehicle-at(a)', 'Atom flat-tire()']] -> deadend

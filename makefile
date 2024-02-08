@@ -1,6 +1,6 @@
 # Compiler and compiler flags
 CXX := g++
-CXXFLAGS := -std=c++23 -O3 -Wno-pmf-conversions -DIL_STD
+CXXFLAGS := -std=c++23 -O3 -Wno-pmf-conversions -DIL_STD -g
 
 # Directories
 SRC_DIR := ./src

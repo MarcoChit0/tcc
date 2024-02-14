@@ -13,6 +13,7 @@ SRCS := $(shell find $(SRC_DIR) -name '*.cpp')
 OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 
 # Target binary
+# TARGET := $(BIN_DIR)/change_this_name_after_testing
 TARGET := $(BIN_DIR)/and_star
 
 # External Dependencies

@@ -1,3 +1,4 @@
+from functools import partial
 import time
 
 from attr import has
@@ -8,35 +9,55 @@ from collections import defaultdict
 
 # states.txt file
 
-def print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, mapping_state_to_facts, domain):
+def get_vehicle_at(domain, vehicle_at_variable, state, mapping_state_to_facts):
+    vehicle_at = None
+    for fact in domain[vehicle_at_variable]:
+        if fact in mapping_state_to_facts[state]:
+            vehicle_at = fact
+            break
+    if vehicle_at is None:
+        print(f"State {state} does not have a fact that represents its position.")
+        exit(1)
+    return vehicle_at
+
+def map_fact_to_int(fact:str, domain):
+    count = 0
+    for var in domain:
+        if fact in domain[var]:
+            return 10*count + domain[var][fact]
+        else:
+            count += 1    
+    return float('inf')
+
+def print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, map_state_to_facts, mapping_states_to_hash, domain):
     has_completed = False
     key_label = "deadend"
     output_str = ""
+    vehicle_at_variable = sorted([var for var in domain], key = lambda v : int(v.replace("var", "")))[-1]
+    mapping_vehicle_at_to_facts = {}
 
-    for y in range(1, len(mapping_label_to_states[key_label]) + 1):
+    for state in mapping_label_to_states[key_label]:
+        vehicle_at = get_vehicle_at(domain, vehicle_at_variable, state, map_state_to_facts)
+        if vehicle_at in mapping_vehicle_at_to_facts:
+            mapping_vehicle_at_to_facts[vehicle_at].update(mapping_state_to_facts[state])
+        else:
+            mapping_vehicle_at_to_facts[vehicle_at] = set(mapping_state_to_facts[state])
+
+
+    for y in range(100, len(mapping_label_to_states[key_label]) + 1):
         if has_completed:
             break
 
         # Create a PuLP problem
-        vehicle_at_variable = sorted([var for var in domain], key = lambda v : int(v.replace("var", "")))[-1]
-        models = {}
-        obj_expressions = {}
-        vehicle_at_dead_end_facts = set()
-        vehicle_at_alive_facts = set()
-        for fact in domain[vehicle_at_variable]:
-            if fact in mapping_label_to_facts[key_label]:
-                vehicle_at_dead_end_facts.add(fact)
-            else:
-                vehicle_at_alive_facts.add(fact)
-
-        for vehicle_at in vehicle_at_dead_end_facts:
-            models[vehicle_at] = pulp.LpProblem("DeadEndDetector", pulp.LpMinimize)
-            obj_expressions[vehicle_at] = pulp.LpAffineExpression()
+        problem = pulp.LpProblem("DeadEndDetector", pulp.LpMinimize)
 
         # Variables
         partial_states_facts_variables = []
         partial_states_states_variables = []
-        obj_expression = 0
+
+        objs = {}
+        for vehicle_at in mapping_vehicle_at_to_facts:
+            objs[vehicle_at] = pulp.LpAffineExpression()
 
         # Add constraints to the y partial states
         for i in range(y):
@@ -45,41 +66,28 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
             for fact in mapping_label_to_facts[key_label]:
                 var = pulp.LpVariable(f"fact_{fact}_{i}", 0, 1, pulp.LpBinary)
                 facts_variables[fact] = var
-                if fact in vehicle_at_dead_end_facts:
-                    continue
-                obj_expression += var
             partial_states_facts_variables.append(facts_variables)
 
-            for vehicle_at in vehicle_at_dead_end_facts:
-                obj_expressions[vehicle_at] += facts_variables[vehicle_at]
+            for vehicle_at in mapping_vehicle_at_to_facts:
+                for facts in mapping_vehicle_at_to_facts[vehicle_at]:
+                    objs[vehicle_at] += facts_variables[facts]
 
             states_variables = {}
             for state, label in mapping_state_to_label.items():
                 if label == key_label:
-                    var = pulp.LpVariable(f"state_{state}_{i}", 0, 1, pulp.LpBinary)
+                    var = pulp.LpVariable(f"{mapping_states_to_hash[state]}_{i}", 0, 1, pulp.LpBinary)
                     states_variables[state] = var
-
-                    vehicle_at = None
-                    for fact in vehicle_at_dead_end_facts:
-                        if fact in mapping_state_to_facts[state]:
-                            vehicle_at = fact
-                            break
-                    if vehicle_at is None:
-                        print(f"State {state} does not have a fact that represents the vehicle at the deadend state.")
-                        exit(1)
-
                     for fact in mapping_label_to_facts[key_label]:
-                        if fact not in mapping_state_to_facts[state]:
+                        if fact not in map_state_to_facts[state]:
                             # if deadend state does not have that fact, blocks the selection of that fact to the partial state that represents the deadend state
-                            models[vehicle_at] += facts_variables[fact] + states_variables[state] <= 1
+                            problem += facts_variables[fact] + states_variables[state] <= 1
                 else:
                     # limit that the partial state represents all the states using dont care
                     exp = pulp.LpAffineExpression()
                     for fact in mapping_label_to_facts[key_label]:
-                        if fact not in mapping_state_to_facts[state]:
+                        if fact not in map_state_to_facts[state]:
                             exp += facts_variables[fact]
-                    for vehicle_at in vehicle_at_dead_end_facts:
-                        models[vehicle_at] += (exp >= 1)
+                    problem += (exp >= 1)
             partial_states_states_variables.append(states_variables)
 
         # All deadend states must be covered by at least one partial state
@@ -91,29 +99,30 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
             expr = pulp.LpAffineExpression()
             for i in range(y):
                 expr += partial_states_states_variables[i][state]
-            for vehicle_at in vehicle_at_dead_end_facts:
-                models[vehicle_at] += (expr >= 1)
+            problem += (expr >= 1)
 
-        # Objective
-        for vehicle_at in vehicle_at_dead_end_facts:
-            models[vehicle_at] += obj_expressions[vehicle_at]
-
-        solver = pulp.getSolver('PULP_CBC_CMD')
-        # Solve the problem
+        problems = {}
         has_completed = True
-        for vehicle_at in vehicle_at_dead_end_facts:
-            status = models[vehicle_at].solve(solver)
+
+        for vehicle_at in mapping_vehicle_at_to_facts:
+            problems[vehicle_at] = problem
+            problems[vehicle_at] += objs[vehicle_at]
+            
+            # Solve the problem
+            status = problem.solve(pulp.GUROBI_CMD())
+            
             if pulp.LpStatus[status] is not 'Optimal':
                 has_completed = False
                 break
+        
 
         if has_completed:
             for i in range(y):
-                partial_state_true_facts = []
+                partial_state_true_facts: list[str] = []
                 for fact in mapping_label_to_facts[key_label]:
                     if pulp.value(partial_states_facts_variables[i][fact]) == 1:
                         partial_state_true_facts.append(fact)
-                # Output the partial state and its label
+                partial_state_true_facts = sorted(partial_state_true_facts, key=lambda f: map_fact_to_int(f, domain))
                 output_str += f"[{partial_state_true_facts}] -> {key_label}\n"
 
     assert has_completed, "The problem did not reach an optimal solution."
@@ -124,7 +133,7 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
 
 domain = {}
 # .sas file
-for p in [3]:
+for p in [2]:
     sas_file = f"./res/compiled_benchmarks/tireworld-spiky-2,p{p}.sas"
     states_file = f"./states_p{p}.txt"
     with open(sas_file, "r") as file:
@@ -164,6 +173,8 @@ for p in [3]:
     mapping_state_to_label = {}
     mapping_label_to_facts = defaultdict(set)
     mapping_state_to_facts = defaultdict(set)
+    mapping_states_to_hash = {}
+    num_states = 0
     with open(states_file, "r") as file:
         for line in file.readlines():
             state, label = line.replace("\n", "").split(" -> ")
@@ -177,6 +188,7 @@ for p in [3]:
             states.add(s)
             facts.update(v.values())
 
+            mapping_states_to_hash[s] = f"state_{num_states}"; num_states += 1
             mapping_label_to_states[label].add(s)
             mapping_state_to_label[s] = label
             if label in mapping_label_to_facts:
@@ -184,6 +196,6 @@ for p in [3]:
             else:
                 mapping_label_to_facts[label] = set(v.values())
             mapping_state_to_facts[s] = set(v.values())
-    output = print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, mapping_state_to_facts, domain)
+    output = print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, mapping_state_to_facts, mapping_states_to_hash, domain)
     with open(f"ip_p{p}", "w") as file:
         file.write(output)

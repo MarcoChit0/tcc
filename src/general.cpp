@@ -2,7 +2,7 @@
 
 std::default_random_engine rng;
 
-Object::Id Object::last_used_id = NONE;
+Object::Id Object::last_used_id = EMPTY_OBJECT;
 
 static double timer = get_time_limit();
 static bool timer_is_set = false;

@@ -157,7 +157,7 @@ def get_splitted_command(
         ports: map
         ) -> list[str]:
     return [
-        f'./and_star',
+        f'./build/and_star',
         f'{task_info.domain_file_path}',
         f'{task_info.task_file_path}',
         f'{policy_heuristic}',

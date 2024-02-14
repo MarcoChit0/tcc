@@ -30,7 +30,7 @@ void Ignore::operator()(Sample& sample) const
 {
     if(sample.policy_type() == SUBOPTIMAL_POLICY)
     {
-        sample.id = NONE;
+        sample.id = EMPTY_OBJECT;
         sample.is_valid() = false;
     }
 }

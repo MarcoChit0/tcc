@@ -25,6 +25,8 @@
 #include "./samples_generator/sample.hpp"
 #include "./deadend_detector.hpp"
 
+#include "./neural_networks/test.hpp"
+
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
@@ -342,6 +344,7 @@ map<str, int> parse_ports(str ports_json)
 
 int main(int argc, char **argv)
 {
+    test_pytorch();
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
     std::signal(SIGUSR1, signal_handler); // setup signal handler

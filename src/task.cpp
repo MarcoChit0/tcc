@@ -126,7 +126,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
             action_name = buffer;
             action_precondition_true_facts = vec<Fact>(number_of_variables);
             action_effects = vec<PartialState>();
-            action_cost = NONE;
+            action_cost = EMPTY_OBJECT;
         }
         vec<Fact> action_effect_true_facts = vec<Fact>(number_of_variables);
         int action_number_of_precondition_raw_facts;
@@ -149,7 +149,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
             sas >> i;
             int j;
             sas >> j;
-            if (j != NONE)
+            if (j != EMPTY_OBJECT)
             {
                 action_precondition_true_facts[i] = this->variables()[i].facts()[j];
             }
@@ -221,7 +221,7 @@ vec<vec<PartialState>> Equality::operator()(const PartialState &partial_state, c
                 {
                     if (not effect.true_facts()[i].is_none())
                     {
-                        predecessor_facts[i].id = NONE;
+                        predecessor_facts[i].id = EMPTY_OBJECT;
                     }
                 }
                 for (int i = 0; i < action.precondition().true_facts().size(); i++)
@@ -263,7 +263,7 @@ vec<vec<PartialState>> ActionProportionality::operator()(const PartialState &par
                 {
                     if (not effect.true_facts()[i].is_none())
                     {
-                        predecessor_facts[i].id = NONE;
+                        predecessor_facts[i].id = EMPTY_OBJECT;
                     }
                 }
                 for (int i = 0; i < action.precondition().true_facts().size(); i++)
@@ -296,7 +296,7 @@ str Task::bitset_representation_of_state(const State& state) const
     int variable_offset = 0; 
     for(auto fact : state.true_facts())
     {
-        if(fact.id != NONE)
+        if(fact.id != EMPTY_OBJECT)
         {
             int fact_offset = this->fact_to_fact_offset[fact.id];
             bitset_representation[variable_offset + fact_offset] = '1';

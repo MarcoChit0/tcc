@@ -10,7 +10,7 @@ Policy::Policy(const State &state, const Action &action, const Policy &parent_po
 
 Policy::Policy()
 {
-    this->id = NONE;
+    this->id = EMPTY_OBJECT;
 }
 
 Policy::DomainIterator Policy::domain_iterator() const

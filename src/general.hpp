@@ -4,7 +4,7 @@
 
 extern std::default_random_engine rng;
 
-#define NONE -1
+#define EMPTY_OBJECT -1
 #define INFTY INT_MAX
 
 using str = std::string;
@@ -62,12 +62,12 @@ public:
 
     Object()
     {
-        this->id = NONE;
+        this->id = EMPTY_OBJECT;
     }
 
     bool is_none() const
     {
-        return this->id == NONE;
+        return this->id == EMPTY_OBJECT;
     }
 
     bool operator==(const Object &other) const

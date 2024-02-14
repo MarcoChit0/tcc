@@ -18,7 +18,7 @@ Policy AndStar::get_solution(const Task &task)
 
     boost::heap::pairing_heap<Policy, boost::heap::stable<true>, boost::heap::compare<std::function<bool(const Policy &, const Policy &)>>> queue {is_policy_worse_than};
 
-    double last_recurrent_procedure_time = NONE;
+    double last_recurrent_procedure_time = EMPTY_OBJECT;
     auto recurrent_procedure = [*this, &queue]()
     {
         // std::cout << "Current f: " << policy_heuristic[queue.top()] << std::endl;

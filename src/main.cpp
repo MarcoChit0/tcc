@@ -23,10 +23,8 @@
 #include "./samples_generator/breadth_first_search.hpp"
 #include "./samples_generator/fsm.hpp"
 #include "./samples_generator/sample.hpp"
-#include "./deadend_detector.hpp"
-
-#include "./neural_networks/test.hpp"
-
+#include "./dead_end_detectors/dead_end_detector.hpp"
+#include "./dead_end_detectors/complete_dead_end_detector.hpp"
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
@@ -57,7 +55,7 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic 
     {
         return new MaxLookUpDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
     }
-    else if(policy_heuristic == "neural-network-lookup")
+    else if (policy_heuristic == "neural-network-lookup")
     {
         return new NeuralNetworkLookUp(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
     }
@@ -234,6 +232,18 @@ RandomWalk::Walker *parse_random_walk_walker(str walker)
     }
 }
 
+DeadEndDetector *parse_dead_end_detector(str dead_end_detector, const Task &task)
+{
+    if (dead_end_detector == "complete")
+    {
+        return new CompleteDeadEndDetector(task);
+    }
+    else
+    {
+        throw std::domain_error("Invalid dead end detector.");
+    }
+}
+
 void parse_concrete_states_generator(str concrete_states_generator_string)
 {
     if (concrete_states_generator_string == "all")
@@ -264,14 +274,13 @@ str get_problem(str problem_path)
     return tokens[0];
 }
 
-Task::Regressor* parse_regressor(str regressor_string)
+Task::Regressor *parse_regressor(str regressor_string)
 {
-    if(regressor_string == "equality")
+    if (regressor_string == "equality")
     {
         return new Equality();
     }
-    else
-    if (regressor_string == "action-proportionality")
+    else if (regressor_string == "action-proportionality")
     {
         return new ActionProportionality();
     }
@@ -281,34 +290,34 @@ Task::Regressor* parse_regressor(str regressor_string)
     }
 }
 
-void print_end(char** argv, const Task& task, Policy::Heuristic* policy_heuristic, AndStar& and_star, opt<Policy> opt_solution, int number_of_states_generated_on_state_heuristic_table = -1)
+void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristic, AndStar &and_star, opt<Policy> opt_solution, int number_of_states_generated_on_state_heuristic_table = -1)
 {
     std::cout << "domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups,number_of_states_generated_on_state_heuristic_table" << std::endl;
-    std::cout << get_domain(str(argv[1])); // domain
-    std::cout << "," << get_problem(str(argv[2])); // problem
-    std::cout << "," << str(argv[3]); // policy_heuristic
-    std::cout << "," << str(argv[4]); // state_heuristic
-    std::cout << "," << std::atoi(argv[5]); // number_of_samples
-    std::cout << "," << parse_length_data(argv[6], task); // length
-    std::cout << "," << std::atof(argv[7]); // percentage_fsm
-    std::cout << "," << str(argv[8]); // sample_generator
-    std::cout << "," << str(argv[9]); // sample_treatment_class
-    std::cout << "," << std::atof(argv[10]); // percentage_timer
-    std::cout << "," << std::atof(argv[11]); // percentage_time_limit
-    std::cout << "," << std::atof(argv[12]); // percentage_memory_limit
-    std::cout << "," << str(argv[13]); // walker
-    std::cout << "," << str(argv[14]); // concrete_states_generator
-    std::cout << "," << str(argv[15]); // regressor
-    std::cout << "," << policy_types_names[get_policy_type()]; // termination
-    std::cout << "," << get_memory_usage(); // memory_usage
-    std::cout << "," << get_ellapsed_time(); // time
-    std::cout << "," << and_star.number_of_generated_policies; // number_of_generated_policies
-    std::cout << "," << and_star.number_of_inserted_policies; // number_of_inserted_policies
-    std::cout << "," << and_star.number_of_removed_policies; // number_of_removed_policies
-    std::cout << "," << and_star.number_of_expanded_policies; // number_of_expanded_policies
-    std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1); // solution_length
+    std::cout << get_domain(str(argv[1]));                                                                            // domain
+    std::cout << "," << get_problem(str(argv[2]));                                                                    // problem
+    std::cout << "," << str(argv[3]);                                                                                 // policy_heuristic
+    std::cout << "," << str(argv[4]);                                                                                 // state_heuristic
+    std::cout << "," << std::atoi(argv[5]);                                                                           // number_of_samples
+    std::cout << "," << parse_length_data(argv[6], task);                                                             // length
+    std::cout << "," << std::atof(argv[7]);                                                                           // percentage_fsm
+    std::cout << "," << str(argv[8]);                                                                                 // sample_generator
+    std::cout << "," << str(argv[9]);                                                                                 // sample_treatment_class
+    std::cout << "," << std::atof(argv[10]);                                                                          // percentage_timer
+    std::cout << "," << std::atof(argv[11]);                                                                          // percentage_time_limit
+    std::cout << "," << std::atof(argv[12]);                                                                          // percentage_memory_limit
+    std::cout << "," << str(argv[13]);                                                                                // walker
+    std::cout << "," << str(argv[14]);                                                                                // concrete_states_generator
+    std::cout << "," << str(argv[15]);                                                                                // regressor
+    std::cout << "," << policy_types_names[get_policy_type()];                                                        // termination
+    std::cout << "," << get_memory_usage();                                                                           // memory_usage
+    std::cout << "," << get_ellapsed_time();                                                                          // time
+    std::cout << "," << and_star.number_of_generated_policies;                                                        // number_of_generated_policies
+    std::cout << "," << and_star.number_of_inserted_policies;                                                         // number_of_inserted_policies
+    std::cout << "," << and_star.number_of_removed_policies;                                                          // number_of_removed_policies
+    std::cout << "," << and_star.number_of_expanded_policies;                                                         // number_of_expanded_policies
+    std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1);                                       // solution_length
     std::cout << "," << (str(argv[3]) == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1; // number_of_lookups
-    std::cout << "," << number_of_states_generated_on_state_heuristic_table; // number_of_states_generated_on_state_heuristic_table
+    std::cout << "," << number_of_states_generated_on_state_heuristic_table;                                          // number_of_states_generated_on_state_heuristic_table
 }
 
 double percentage_timer = 0.1;
@@ -319,7 +328,7 @@ double step;
 
 void set_step_and_policy_alarm()
 {
-    assert (0 <= sample_generation_alarm and sample_generation_alarm <= 1);
+    assert(0 <= sample_generation_alarm and sample_generation_alarm <= 1);
     step = percentage_timer * sample_generation_alarm * (get_time_limit() - get_ellapsed_time());
     policy_alarm = 1 - sample_generation_alarm;
 }
@@ -341,31 +350,32 @@ map<str, int> parse_ports(str ports_json)
     return ports;
 }
 
-
 int main(int argc, char **argv)
 {
-    test_pytorch();
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
-    std::signal(SIGUSR1, signal_handler); // setup signal handler
-    std::thread timer_thread(timer_function, (int) get_time_limit()); // start timer thread
-    str samples_file_name = argv[argc - 2]; // second last argument is the samples file name
-    std::cerr << "LOG::main::start of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" <<std::endl;
+    std::signal(SIGUSR1, signal_handler);                            // setup signal handler
+    std::thread timer_thread(timer_function, (int)get_time_limit()); // start timer thread
+    str samples_file_name = argv[argc - 2];                          // second last argument is the samples file name
+    std::cerr << "LOG::main::start of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     std::cerr << "LOG::main::ports: " << str(argv[argc - 1]) << std::endl;
     map<str, int> ports = parse_ports(str(argv[argc - 1])); // last argument is the ports json
+    // TODO: remove client-server architecture
     // connect all the clients
-    for(auto &p : ports)
+    for (auto &p : ports)
     {
         clients[p.first] = new Client(p.first);
         clients[p.first]->connect(p.second);
-        if(clients[p.first]->is_connected())
+        if (clients[p.first]->is_connected())
         {
             std::cerr << "LOG::main::client " << p.first << " connected at port " << p.second << std::endl;
         }
     }
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
-    DeadEndDetector deadend_detector = DeadEndDetector(task);
+    std::shared_ptr<DeadEndDetector> dead_end_detector_ptr = std::make_shared<CompleteDeadEndDetector>(task, true);
+    std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector = dead_end_detector_ptr;
+    end_program();
     int number_of_samples = std::atoi(argv[5]);
     int length = parse_length_data(argv[6], task);
     float porcentage = std::atof(argv[7]);
@@ -379,11 +389,12 @@ int main(int argc, char **argv)
     SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
     Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment, samples_file_name);
-    AndStar and_star = AndStar(*policy_heuristic, *state_heuristic);
+
+    AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
     Policy opt_solution = and_star.get_solution(task);
     // std::cout << opt_solution << std::endl;
     print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
-    std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" <<std::endl;
+    std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     end_program();
     return 0;
 }

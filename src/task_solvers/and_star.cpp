@@ -1,6 +1,10 @@
 #include "./and_star.hpp"
 
-AndStar::AndStar(const Policy::Heuristic &policy_heuristic, const State::Heuristic &state_heuristic) : policy_heuristic(policy_heuristic), state_heuristic(state_heuristic) {}
+AndStar::AndStar(const Policy::Heuristic &policy_heuristic, const State::Heuristic &state_heuristic, const opt<std::shared_ptr<DeadEndDetector>>&dead_end_detector) : 
+    policy_heuristic(policy_heuristic), 
+    state_heuristic(state_heuristic), 
+    dead_end_detector(dead_end_detector) {}
+
 
 Policy AndStar::get_solution(const Task &task)
 {
@@ -100,7 +104,7 @@ Policy AndStar::get_solution(const Task &task)
             bool has_infinite_f_value = false;
             for (const State &successor_state: state.get_successors(action))
             {
-                if (state_heuristic[successor_state] == INFTY)
+                if ((this->dead_end_detector.has_value() && (*(this->dead_end_detector))->is_deadend(successor_state)) || state_heuristic[successor_state] == INFTY)
                 {
                     has_infinite_f_value = true;
                     break;

@@ -1,7 +1,5 @@
-#include "deadend_detector.hpp"
+#include "complete_dead_end_detector.hpp"
 #include <fstream>
-
-map<int64_t, int> DeadEndDetector::labeled_states;
 
 void create_states(const Task &task, const vec<Fact> &facts, set<State> &states, const int depth)
 {
@@ -21,7 +19,7 @@ void create_states(const Task &task, const vec<Fact> &facts, set<State> &states,
     }
 }
 
-void DeadEndDetector::find_weak_alive_states(const set<State> &goal_states, map<State, StateActionPairSet> &reversed_edges, set<State> &weak_alive_states, StateActionPairSet &bad_state_action_pairs)
+void CompleteDeadEndDetector::find_weak_alive_states(const set<State> &goal_states, map<State, StateActionPairSet> &reversed_edges, set<State> &weak_alive_states, StateActionPairSet &bad_state_action_pairs)
 {
     vec<State> states_at_next_depth;
     vec<State> states_at_current_depth = vec<State>(goal_states.begin(), goal_states.end());
@@ -65,7 +63,7 @@ void DeadEndDetector::find_weak_alive_states(const set<State> &goal_states, map<
     }
 }
 
-void DeadEndDetector::find_dead_end_states(const set<State> &states, set<State> &dead_end_states)
+void CompleteDeadEndDetector::find_dead_end_states(const set<State> &states, set<State> &dead_end_states)
 {
     for (const State &state : states)
     {
@@ -77,7 +75,7 @@ void DeadEndDetector::find_dead_end_states(const set<State> &states, set<State> 
     }
 }
 
-void DeadEndDetector::test_whether_weak_alive_states_are_dead_end_states(set<State> &weak_alive_states, set<State> &dead_end_states)
+void CompleteDeadEndDetector::test_whether_weak_alive_states_are_dead_end_states(set<State> &weak_alive_states, set<State> &dead_end_states)
 {
     bool all_actions_are_bad = true;
     do
@@ -117,7 +115,7 @@ void DeadEndDetector::test_whether_weak_alive_states_are_dead_end_states(set<Sta
     } while (all_actions_are_bad);
 }
 
-void DeadEndDetector::mark_goal_states_as_alive(const Task &task, const set<State> &states, map<State, StateActionPairSet> &reversed_edges, set<State> &goal_states, set<State> &non_goal_states)
+void CompleteDeadEndDetector::mark_goal_states_as_alive(const Task &task, const set<State> &states, map<State, StateActionPairSet> &reversed_edges, set<State> &goal_states, set<State> &non_goal_states)
 {
     vec<State> stack;
     set<State> states_to_explore = states;
@@ -159,7 +157,7 @@ void DeadEndDetector::mark_goal_states_as_alive(const Task &task, const set<Stat
     assert(states.size() == goal_states.size() + non_goal_states.size());
 }
 
-void DeadEndDetector::transform_weak_alive_states_into_alive_states(const set<State> &weak_alive_states)
+void CompleteDeadEndDetector::transform_weak_alive_states_into_alive_states(const set<State> &weak_alive_states)
 {
     for (auto weak_alive_state : weak_alive_states)
     {
@@ -174,7 +172,7 @@ void count_and_print(const set<State> &states, const set<State> &goal_states, co
     std::ofstream states_file("states.txt");
     if (not states_file.is_open())
     {
-        std::cerr << "LOG::DeadEndDetector::save_states::Error opening states file." << std::endl;
+        std::cerr << "LOG::CompleteDeadEndDetector::save_states::Error opening states file." << std::endl;
         return;
     }
 
@@ -204,7 +202,7 @@ void count_and_print(const set<State> &states, const set<State> &goal_states, co
     std::ofstream metadata_file("metadata.csv");
     if (not metadata_file.is_open())
     {
-        std::cerr << "LOG::DeadEndDetector::save_metadata::Error opening metadata file." << std::endl;
+        std::cerr << "LOG::CompleteDeadEndDetector::save_metadata::Error opening metadata file." << std::endl;
         return;
     }
     metadata_file << "Metric,Count\n";
@@ -221,7 +219,7 @@ void count_and_print(const set<State> &states, const set<State> &goal_states, co
     assert(states.size() == dead_end_states_count + alive_count);
 }
 
-void DeadEndDetector::unlabel_weak_alive_states_before_performing_loop(set<State> &weak_alive_states, int &number_of_weak_alive_states_on_previous_iteration)
+void CompleteDeadEndDetector::unlabel_weak_alive_states_before_performing_loop(set<State> &weak_alive_states, int &number_of_weak_alive_states_on_previous_iteration)
 {
     number_of_weak_alive_states_on_previous_iteration = weak_alive_states.size();
     if (not weak_alive_states.empty())
@@ -232,7 +230,7 @@ void DeadEndDetector::unlabel_weak_alive_states_before_performing_loop(set<State
         }
     }
 }
-void DeadEndDetector::find_bad_actions(map<State, StateActionPairSet> &reversed_edges, StateActionPairSet &bad_state_action_pairs, set<State>& dead_end_states)
+void CompleteDeadEndDetector::find_bad_actions(map<State, StateActionPairSet> &reversed_edges, StateActionPairSet &bad_state_action_pairs, set<State>& dead_end_states)
 {
     for (auto dead_end_state : dead_end_states)
     {
@@ -242,7 +240,13 @@ void DeadEndDetector::find_bad_actions(map<State, StateActionPairSet> &reversed_
         }
     }
 }
-DeadEndDetector::DeadEndDetector(const Task &task, const bool save_metadata) : task(task)
+
+bool CompleteDeadEndDetector::is_deadend(const State &state) const
+{
+    return this->labeled_states.at(state.id) == DEAD_END;
+}
+
+CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const bool save_metadata) : DeadEndDetector(task)
 {
     // 1.
     set<State> states;
@@ -284,11 +288,4 @@ DeadEndDetector::DeadEndDetector(const Task &task, const bool save_metadata) : t
     {
         count_and_print(states, goal_states, non_goal_states, this->labeled_states, it);
     }
-
-    end_program();
 };
-
-bool DeadEndDetector::operator[](const State &state) const
-{
-    return this->labeled_states[state.id] == ALIVE;
-}

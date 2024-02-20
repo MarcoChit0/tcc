@@ -10,6 +10,20 @@ static int policy_type = 0;
 
 static std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
 
+std::vector<std::string> split(const std::string &s, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::istringstream ss(s);
+    std::string token;
+
+    while (std::getline(ss, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
+
 double get_ellapsed_time()
 {
     return double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - start_time).count()) / double(1000) / double(1000) / double(1000);
@@ -196,52 +210,4 @@ int get_policy_type()
 void set_policy_type(int new_policy_type)
 {
     policy_type = new_policy_type;
-}
-
-static std::condition_variable cv;
-static std::mutex cv_m;
-static bool stop_timer = false;
-
-void signal_handler(int signal)
-{
-    if (signal == SIGUSR1 or signal == SIGTERM)
-    {
-        std::cerr << "LOG::signal_handler::signal received: " << signal << std::endl;
-        end_program();
-    }
-}
-
-void timer_function(int duration)
-{
-    std::unique_lock<std::mutex> lk(cv_m);
-    if(cv.wait_for(lk, std::chrono::seconds(duration), []{return stop_timer;}))
-    {
-        std::cerr << "LOG::timer_function::timer stopped early." << std::endl;
-    }
-    else
-    {
-        std::cerr << "LOG::timer_function::timer completed." << std::endl;
-        kill(getpid(), SIGUSR1);
-    }
-}
-
-void end_program()
-{
-    std::cerr << "LOG::end_program::begin" << std::endl;
-    std::cerr << "LOG::end_program::get_ellapsed_time():" << get_ellapsed_time() << std::endl;
-    std::cerr << "LOG::end_program::get_memory_usage():" << get_memory_usage() << std::endl;
-    {
-        std::lock_guard<std::mutex> lk(cv_m);
-        stop_timer = true;
-    }
-    cv.notify_one();
-    std::cerr << "LOG::end_program::timer stopped" << std::endl;
-    std::cerr << "LOG::end_program::closing clients:" << std::endl;
-    for(const auto &pair : clients)
-    {
-        std::cerr << "LOG::end_program::closing client: " << pair.first << std::endl;
-        pair.second->close();
-    }
-    std::cerr << "LOG::end_program::end" << std::endl;
-    exit(0);
 }

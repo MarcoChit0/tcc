@@ -20,7 +20,7 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const 
         {
             file 
             << sample.state().id << "," 
-            << this->task.bitset_representation_of_state(sample.state()) << "," 
+            << this->task.bitstring_representation_of_state(sample.state()) << "," 
             << sample.non_deterministic_value() << "," 
             << sample.deterministic_value() << "," 
             << policy_types_names[sample.policy_type()] << "\n";

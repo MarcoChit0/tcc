@@ -289,7 +289,7 @@ vec<vec<PartialState>> ActionProportionality::operator()(const PartialState &par
     return predecessors;
 }
 
-str Task::bitset_representation_of_state(const State& state) const
+str Task::bitstring_representation_of_state(const State& state) const
 {
     str bitset_representation = str(this->bitset_size, '0');
 
@@ -300,6 +300,23 @@ str Task::bitset_representation_of_state(const State& state) const
         {
             int fact_offset = this->fact_to_fact_offset[fact.id];
             bitset_representation[variable_offset + fact_offset] = '1';
+        }
+        variable_offset += variable_to_variable_domain_size[fact.variable().id];
+    }
+    return bitset_representation;
+}
+
+vec<double> Task::bitvector_representation_of_state(const State& state) const
+{
+    vec<double> bitset_representation(this->bitset_size, 0.0);
+
+    int variable_offset = 0; 
+    for(auto fact : state.true_facts())
+    {
+        if(fact.id != EMPTY_OBJECT)
+        {
+            int fact_offset = this->fact_to_fact_offset[fact.id];
+            bitset_representation[variable_offset + fact_offset] = 1.0;
         }
         variable_offset += variable_to_variable_domain_size[fact.variable().id];
     }

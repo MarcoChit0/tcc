@@ -35,5 +35,6 @@ class DeadEndDetector
         static map<int64_t, int> labeled_states;
     public:
         DeadEndDetector(const Task &task) : task(task) {};
+        // TODO: make this bool
         virtual bool is_deadend(const State &state) const = 0;
 };

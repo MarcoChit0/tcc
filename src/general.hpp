@@ -1,6 +1,43 @@
 #pragma once
 
-#include "client.hpp"
+
+#include <string>
+#include <utility>
+#include <cassert>
+#include <chrono>
+#include <random>
+#include <map>
+#include <typeindex>
+#include <bitset>
+#include <csignal>
+#include <sys/time.h>
+#include <unistd.h>
+#include <memory>
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+#include <vector>
+#include <tuple>
+#include <optional>
+#include <vector>
+#include <unordered_set>
+#include <unordered_map>
+#include <tuple>
+#include <stack>
+
+#include <boost/asio.hpp>
+#include <boost/heap/pairing_heap.hpp>
+#include <boost/bimap.hpp>
+#include <boost/process.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+#include <thread>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
 
 extern std::default_random_engine rng;
 
@@ -16,6 +53,8 @@ template <typename T>
 using set = std::unordered_set<T>;
 template <typename T, typename U>
 using map = std::unordered_map<T, U>;
+
+std::vector<std::string> split(const std::string &s, char delimiter);
 
 template <typename T>
 struct std::hash<std::unordered_set<T>>
@@ -112,8 +151,6 @@ double get_memory_usage();
 double get_time_limit();
 double get_memory_limit();
 
-void signal_handler(int signum);
-
 enum AlarmType
 {
     ALARM_TYPE_SAMPLE_GENERATION = 0,
@@ -150,10 +187,6 @@ static map<int, str> policy_types_names = {
     {SUBOPTIMAL_POLICY, "suboptimal"},
     {UNSOLVABLE_POLICY, "unsolvable"},
 };
-
-void signal_handler(int signal);
-void timer_function(int duration);
-void end_program();
 
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 
@@ -239,4 +272,3 @@ map<Function<ReturnType, Args...>, map<Object, ReturnType>> FunctionsCache::data
 
 extern FunctionsCache functions_cache;
 extern FunctionsCache functions_storage;
-static map<str, Client*> clients = {};

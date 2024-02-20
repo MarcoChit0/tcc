@@ -59,10 +59,7 @@ class ArgParsingNamespace(tap.Tap):
     walker: str
     concrete_states_generator: str
     regressor: str
-    host: str
-    deadend_port: int
-    lookup_port: int
-    use_deadend_nn: bool
+    dead_end_detection: str
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=7)
@@ -85,44 +82,13 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-w", "--walker", type=str, default="stop")
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")
         self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
-        self.add_argument("--host", type=str, default='0.0.0.0')
-        self.add_argument("--deadend-port", type=int, default=-1)
-        self.add_argument("--lookup-port", type=int, default=-1)
-        self.add_argument("--use-deadend-nn", type=bool, default=False)
+        self.add_argument("-ded", "--dead-end-detection", type=str, default="none")
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
 apn.parse_args()
 
-import server
-server_thread = Thread()
-server_flag = False
-def start_server_thread(host, port, num_connections):
-    global server_flag, server_thread
-    server_flag = True
-    server_thread = Thread(target=server.main, args=(host, port, num_connections), daemon=False)
-    server_thread.start()
-
-num_threads = apn.number_of_threads
-lookup_port = -1
-deadend_port = -1
-
-if 'neural-network-lookup' in apn.policy_heuristic:    
-    if num_threads > 1: num_threads -= 1
-    lookup_port = 1024 if apn.lookup_port == -1 else apn.lookup_port
-    start_server_thread(apn.host, lookup_port, num_threads) # allocate one of the threads to the server
-    logging.info(f"LOG::experiment_runner::lookup server started on port {lookup_port}")
-
-if apn.use_deadend_nn:
-    if num_threads > 1: num_threads -= 1
-    deadend_port = 1025 if apn.deadend_port == -1 else apn.deadend_port
-    start_server_thread(apn.host, deadend_port, num_threads) # allocate one of the threads to the server
-    logging.info(f"LOG::experiment_runner::deadend server started on port {deadend_port}")
-
-ports = {'lookup': lookup_port, 'deadend': deadend_port}
-logging.info(f"LOG::experiment_runner::ports: {ports}")
-
-threads_semaphore = Semaphore(num_threads)
+threads_semaphore = Semaphore(apn.number_of_threads)
 folder_creation_lock = Lock()
 process_creation_lock = Lock()
 print_lock = Lock()
@@ -153,8 +119,8 @@ def get_splitted_command(
         walker: str,
         concrete_states_generator: str,
         regressor: str,
+        dead_end_detection: str,
         samples_file_path: str,
-        ports: map
         ) -> list[str]:
     return [
         f'./build/and_star',
@@ -173,15 +139,15 @@ def get_splitted_command(
         f'{walker}',
         f'{concrete_states_generator}',
         f'{regressor}',
+        f'{dead_end_detection}',
         f'{samples_file_path}',
-        f'{ports}'
     ]
 
-def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str, walker: str, concrete_states_generator: str, regressor: str, ports:map) -> None:
+def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str, walker: str, concrete_states_generator: str, regressor: str, dead_end_detector: str) -> None:
     global apn, threads_semaphore, folder_creation_lock, process_creation_lock, print_lock
 
     basic_dir_structure = f'./misc/data/raw_results/{apn.save_folder_name_prefix}/'
-    params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor}"
+    params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor},{dead_end_detector}"
     task = f'{task_info.domain_label}/{task_info.task_label}'
     save_folder_path = f'{basic_dir_structure}/{params}/{task}'
     results_file = f'results.csv'
@@ -198,16 +164,16 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
 
     # # for debugging purposes only:
-    # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, samples_file_path, ports)))
+    # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, samples_file_path)))
     # exit(1)
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, samples_file_path, ports), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, samples_file_path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0
     stdout, stderr = process.communicate()
 
     print_lock.acquire(); time.sleep(0.1)
-    print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %fsm: {percentage_fsm}, generator: {sample_generator}, treatment: {sample_treatment_class}, %timer: {percentage_timer}, %tlimit: {percentage_time_limit}, %mlimit: {percentage_memory_limit}, walker: {walker}, concrete states gen: {concrete_states_generator}, regressor: {regressor}')
+    print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %fsm: {percentage_fsm}, generator: {sample_generator}, treatment: {sample_treatment_class}, %timer: {percentage_timer}, %tlimit: {percentage_time_limit}, %mlimit: {percentage_memory_limit}, walker: {walker}, concrete states gen: {concrete_states_generator}, regressor: {regressor}, dead end detector: {dead_end_detector}')
     open(f'{save_folder_path}/{results_file}', 'w').write(stdout)
     open(f'{save_folder_path}/{exp_log_file}', 'w').write(stderr)
     print_lock.release()
@@ -249,7 +215,6 @@ def get_tasks_infos() -> Generator[TaskInfo, None, None]:
 
 
 def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
-    global ports
     for policy_heuristic in apn.policy_heuristic.split(','):
         for state_heuristic in apn.state_heuristic.split(','):
             for number_of_samples in apn.number_of_samples.split(','):
@@ -263,7 +228,8 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                             for walker in apn.walker.split(','):
                                                 for concrete_states_generator in apn.concrete_states_generator.split(','):
                                                     for regressor in apn.regressor.split(','):
-                                                        yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, json.dumps(ports)))
+                                                        for dead_end_detector in apn.dead_end_detection.split(','):
+                                                            yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector))
 
                                         
 lock_file = open('/tmp/and-star-lab.lock', 'w')
@@ -287,21 +253,13 @@ for i, thread in enumerate(threads):
     thread.start()
     logging.info(f"LOG::experiment_runner::thread {i} started")
 
-    if i >=num_threads:
+    if i >=apn.number_of_threads:
         elapsed_time = datetime.datetime.now() - start_datetime
-        expected_end = datetime.datetime.now() + elapsed_time / (i + 1 -num_threads) * (total_number_of_tasks - (i + 1 -num_threads))
-        logging.info(f"LOG::experiment_runner::( {i + 1 -num_threads} / {total_number_of_tasks} ) | Expected end: {expected_end}")
+        expected_end = datetime.datetime.now() + elapsed_time / (i + 1 -apn.number_of_threads) * (total_number_of_tasks - (i + 1 -apn.number_of_threads))
+        logging.info(f"LOG::experiment_runner::( {i + 1 -apn.number_of_threads} / {total_number_of_tasks} ) | Expected end: {expected_end}")
 
 for thread in threads:
     thread.join(); logging.info("LOG::experiment_runner::Thread joined")
-
-if server_flag:
-    logging.info("LOG::experiment_runner::setting server event")
-    server.event.set()
-    logging.info(f"LOG::experiment_runner::server event: {server.event.is_set()}")
-    logging.info("LOG::experiment_runner::joining server thread")
-    server_thread.join()
-    logging.info("LOG::experiment_runner::server thread joined")
 
 logging.info("LOG::experiment_runner::releazing lock")
 fcntl.lockf(lock_file, fcntl.LOCK_UN)

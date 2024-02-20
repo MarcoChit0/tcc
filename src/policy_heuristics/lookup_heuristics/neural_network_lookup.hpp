@@ -1,13 +1,18 @@
 #pragma once
 
 #include "../lookup.hpp"
+#include "../../neural_networks/state_neural_network.hpp"
+#define NUMBER_OF_HIDDEN_UNITS 250
+#define NUMBER_OF_EPOCHS 20
+#define BATCH_SIZE 32
 
 class NeuralNetworkLookUp : public LookUp
 {
+private:
+    StateNetwork state_network;
 
 public:
     const str model_path;
     NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name);
     double operator[](const Policy &policy) const;
-    double consult_neural_network(const vec<State> &states) const;
 };

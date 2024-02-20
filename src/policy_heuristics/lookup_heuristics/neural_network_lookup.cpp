@@ -12,32 +12,31 @@ str get_directory_path(str file_path)
     return directory_path;
 }
 
-NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : LookUp(task, state_heuristic, samples_generator, sample_treatment, file_name), model_path{get_directory_path(file_name)}
+NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : LookUp(task, state_heuristic, samples_generator, sample_treatment, file_name),
+                                                                                                                                                                                                          state_network(task, NUMBER_OF_HIDDEN_UNITS),
+                                                                                                                                                                                                          model_path{get_directory_path(file_name)}
 {
-    this->table_nd = map<int64_t, double>{};
-
-    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::start time:" << get_ellapsed_time() << std::endl;
-
-    // client.write("timelimit", std::to_string(get_time_limit() - get_ellapsed_time()));
-    // std::pair<str, str> response = client.read();
-
-    // if(response.first != "timelimit")
-    // {
-    //     std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::response:" << response.first << ":" << response.second << std::endl;
-    //     throw std::runtime_error("NeuralNetworkLookUp::NeuralNetworkLookUp::response != OK");
-    // }
-    // std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::server timelimit set to " << response.second << " seconds" << std::endl;
-
-    clients["lookup"]->write("build", file_name); // send samples file to the server so it could build the neural network
-    auto response = clients["lookup"]->read(); // wait for the server to finish building the neural network
-
-    if(response.first != "build" and response.second != "OK")
+    str model_file_name = model_path + "model.pt";
+    vec<int64_t> states = {};
+    vec<double> targets = {};
+    for (auto pair : this->table_nd)
     {
-        std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::response:" << response.first << ":" << response.second << std::endl;
-        throw std::runtime_error("NeuralNetworkLookUp::NeuralNetworkLookUp::response != OK");
+        states.push_back(pair.first);
+        targets.push_back(pair.second);
     }
-
-    std::cerr << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::end time:" << get_ellapsed_time() << std::endl;
+    auto optimizer = torch::optim::Adam(state_network.parameters(), torch::optim::AdamOptions(1e-5));
+    state_network.train(
+        optimizer,
+        states,
+        targets,
+        NUMBER_OF_EPOCHS,
+        BATCH_SIZE);
+    for (auto pair : this->table_nd)
+    {
+        std::cout << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::"<< pair.first << " -> ("<< pair.second << ",";
+        this->table_nd[pair.first] = state_network.predict(pair.first);
+        std::cout << this->table_nd[pair.first] << ")" << "\n";
+    }
 }
 
 double NeuralNetworkLookUp::operator[](const Policy &policy) const
@@ -53,33 +52,24 @@ double NeuralNetworkLookUp::operator[](const Policy &policy) const
         // look for State on DOMAIN
         for (const State &domain_state : cursor_policy.domain_iterator())
         {
-            if (this->table_nd.contains(domain_state.id))
+            if (not this->table_nd.contains(domain_state.id))
             {
-                table_look_up = std::max(this->table_nd[domain_state.id], table_look_up);
-                this->number_of_lookups++;
+                this->table_nd[domain_state.id] = this->state_network.predict(domain_state.id);
             }
-            else
-            {
-                states_to_consult.push_back(domain_state);
-            }
+            table_look_up = std::max(this->table_nd[domain_state.id], table_look_up);
+            this->number_of_lookups++;
         }
         // look for state on OUT~
         cursor_policy = policy;
         for (const State &outgoing_non_goal_state : cursor_policy.outgoing_non_goal_states(this->task.goal_condition()))
         {
-            if (this->table_nd.contains(outgoing_non_goal_state.id))
+            if (not this->table_nd.contains(outgoing_non_goal_state.id))
             {
-                table_look_up = std::max(this->table_nd[outgoing_non_goal_state.id], table_look_up);
-                this->number_of_lookups++;
+                this->table_nd[outgoing_non_goal_state.id] = this->state_network.predict(outgoing_non_goal_state.id);
             }
-            else
-            {
-                states_to_consult.push_back(outgoing_non_goal_state);
-            }
+            table_look_up = std::max(this->table_nd[outgoing_non_goal_state.id], table_look_up);
+            this->number_of_lookups++;
         }
-        // consult neural network
-        double maximum_consulted_value = this->consult_neural_network(states_to_consult);
-        table_look_up = std::max(table_look_up, maximum_consulted_value);
 
         // compute delta-nearest
         int count = policy.size() + policy.outgoing_non_goal_states(this->task.goal_condition()).size();
@@ -111,42 +101,4 @@ double NeuralNetworkLookUp::operator[](const Policy &policy) const
         cache[policy] = std::max(cache[policy], table_look_up);                                   // lookup
     }
     return cache[policy];
-}
-
-double NeuralNetworkLookUp::consult_neural_network(const vec<State> &states) const
-{
-    if (states.empty())
-    {
-        return 0;
-    }
-    str message_content = "";
-    for (auto state : states)
-    {
-        message_content += this->task.bitset_representation_of_state(state) + ",";
-    }
-    message_content.pop_back();
-    
-
-    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::start time:" << get_ellapsed_time() << std::endl;
-    clients["lookup"]->write("consult",message_content);
-    std::pair<str, str> response = clients["lookup"]->read();
-    if (response.first != "consult")
-    {
-        std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::response:" << response.first << ":" << response.second << std::endl;
-        throw std::runtime_error("NeuralNetworkLookUp::consult_neural_network::response != consult");
-    }
-    vec<str> states_values = split(response.second, ',');
-    std::cerr << "LOG::NeuralNetworkLookUp::consult_neural_network::end time:" << get_ellapsed_time() << std::endl;
-    assert(states_values.size() == states.size());
-
-
-    double maximum_value = -INFTY;
-    for (int i = 0; i < states.size(); i++)
-    {
-        double state_value = std::stod(states_values[i]);
-        this->table_nd[states[i].id] = state_value;
-        maximum_value = std::max(maximum_value, state_value);
-        std::cerr << "state:" << states[i] << ", value:" << state_value << std::endl;
-    }
-    return maximum_value;
 }

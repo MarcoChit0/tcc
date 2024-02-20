@@ -33,7 +33,8 @@ public:
     Task(const str &domain_file_name, const str &task_file_name, const Regressor& regressor);
 
     int bitset_size;
-    str bitset_representation_of_state(const State& state) const;
+    str bitstring_representation_of_state(const State& state) const;
+    vec<double> bitvector_representation_of_state(const State& state) const;
     static map<int64_t, int64_t> variable_to_index;
     static map<int64_t, int64_t> variable_to_variable_domain_size;
     static map<int64_t, int64_t> fact_to_fact_offset;

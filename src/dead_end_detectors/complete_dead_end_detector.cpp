@@ -230,6 +230,7 @@ void CompleteDeadEndDetector::unlabel_weak_alive_states_before_performing_loop(s
         }
     }
 }
+// TODO: add only the new dead-ends to the bad_state_action_pairs instead of all the previous dead-ends
 void CompleteDeadEndDetector::find_bad_actions(map<State, StateActionPairSet> &reversed_edges, StateActionPairSet &bad_state_action_pairs, set<State>& dead_end_states)
 {
     for (auto dead_end_state : dead_end_states)
@@ -266,6 +267,7 @@ CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const bool sa
     int number_of_weak_alive_states_on_previous_iteration = 0, it = 0;
     do
     {   
+        // TODO: create a map[<state, action>] -> bool so that find_weak_alive_states is only processed to the new modified bad actions
         // prepare for the next iteration
         ++it;
         this->unlabel_weak_alive_states_before_performing_loop(weak_alive_states, number_of_weak_alive_states_on_previous_iteration);

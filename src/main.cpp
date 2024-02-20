@@ -333,49 +333,35 @@ void set_step_and_policy_alarm()
     policy_alarm = 1 - sample_generation_alarm;
 }
 
-map<str, int> parse_ports(str ports_json)
+opt<std::shared_ptr<DeadEndDetector>> select_dead_end_detector(const std::string &dead_end_detector, const Task &task)
 {
-    std::stringstream ss;
-    ss << ports_json;
-
-    boost::property_tree::ptree pt;
-    boost::property_tree::read_json(ss, pt);
-
-    map<str, int> ports;
-    for (auto &p : pt)
+    if (dead_end_detector == "complete")
     {
-        ports[p.first] = p.second.get_value<int>();
-        std::cerr << "LOG::main::port " << p.first << " " << p.second.get_value<int>() << std::endl;
+        return std::make_shared<CompleteDeadEndDetector>(task, true);
     }
-    return ports;
+    else if (dead_end_detector == "none")
+    {
+        return std::nullopt;
+    }
+    else
+    {
+        throw std::domain_error("Invalid dead end detector.");
+    }
 }
 
 int main(int argc, char **argv)
 {
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
-    std::signal(SIGUSR1, signal_handler);                            // setup signal handler
-    std::thread timer_thread(timer_function, (int)get_time_limit()); // start timer thread
-    str samples_file_name = argv[argc - 2];                          // second last argument is the samples file name
-    std::cerr << "LOG::main::start of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
-    std::cerr << "LOG::main::ports: " << str(argv[argc - 1]) << std::endl;
-    map<str, int> ports = parse_ports(str(argv[argc - 1])); // last argument is the ports json
-    // TODO: remove client-server architecture
-    // connect all the clients
-    for (auto &p : ports)
+    for (auto i = 0; i < argc; i++)
     {
-        clients[p.first] = new Client(p.first);
-        clients[p.first]->connect(p.second);
-        if (clients[p.first]->is_connected())
-        {
-            std::cerr << "LOG::main::client " << p.first << " connected at port " << p.second << std::endl;
-        }
+        std::cerr << "LOG::main::argv[" << i << "] = " << argv[i] << std::endl;
     }
+    str samples_file_name = argv[argc - 1]; // last argument is the samples file name
+    std::cerr << "LOG::main::start of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
-    std::shared_ptr<DeadEndDetector> dead_end_detector_ptr = std::make_shared<CompleteDeadEndDetector>(task, true);
-    std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector = dead_end_detector_ptr;
-    end_program();
+    std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector = select_dead_end_detector(str(argv[16]), task);
     int number_of_samples = std::atoi(argv[5]);
     int length = parse_length_data(argv[6], task);
     float porcentage = std::atof(argv[7]);
@@ -395,6 +381,5 @@ int main(int argc, char **argv)
     // std::cout << opt_solution << std::endl;
     print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
-    end_program();
     return 0;
 }

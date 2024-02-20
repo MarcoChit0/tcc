@@ -33,18 +33,8 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
     has_completed = False
     key_label = "deadend"
     output_str = ""
-    vehicle_at_variable = sorted([var for var in domain], key = lambda v : int(v.replace("var", "")))[-1]
-    mapping_vehicle_at_to_facts = {}
 
-    for state in mapping_label_to_states[key_label]:
-        vehicle_at = get_vehicle_at(domain, vehicle_at_variable, state, map_state_to_facts)
-        if vehicle_at in mapping_vehicle_at_to_facts:
-            mapping_vehicle_at_to_facts[vehicle_at].update(mapping_state_to_facts[state])
-        else:
-            mapping_vehicle_at_to_facts[vehicle_at] = set(mapping_state_to_facts[state])
-
-
-    for y in range(100, len(mapping_label_to_states[key_label]) + 1):
+    for y in range(0, len(mapping_label_to_states[key_label]) + 1):
         if has_completed:
             break
 
@@ -55,9 +45,7 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
         partial_states_facts_variables = []
         partial_states_states_variables = []
 
-        objs = {}
-        for vehicle_at in mapping_vehicle_at_to_facts:
-            objs[vehicle_at] = pulp.LpAffineExpression()
+        obj = pulp.LpAffineExpression()
 
         # Add constraints to the y partial states
         for i in range(y):
@@ -66,11 +54,8 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
             for fact in mapping_label_to_facts[key_label]:
                 var = pulp.LpVariable(f"fact_{fact}_{i}", 0, 1, pulp.LpBinary)
                 facts_variables[fact] = var
+                obj += var
             partial_states_facts_variables.append(facts_variables)
-
-            for vehicle_at in mapping_vehicle_at_to_facts:
-                for facts in mapping_vehicle_at_to_facts[vehicle_at]:
-                    objs[vehicle_at] += facts_variables[facts]
 
             states_variables = {}
             for state, label in mapping_state_to_label.items():
@@ -101,19 +86,14 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
                 expr += partial_states_states_variables[i][state]
             problem += (expr >= 1)
 
-        problems = {}
+        problem += obj
         has_completed = True
 
-        for vehicle_at in mapping_vehicle_at_to_facts:
-            problems[vehicle_at] = problem
-            problems[vehicle_at] += objs[vehicle_at]
-            
-            # Solve the problem
-            status = problem.solve(pulp.GUROBI_CMD())
-            
-            if pulp.LpStatus[status] is not 'Optimal':
-                has_completed = False
-                break
+        status = problem.solve(pulp.GUROBI_CMD())
+        
+        if pulp.LpStatus[status] is not 'Optimal':
+            has_completed = False
+            break
         
 
         if has_completed:

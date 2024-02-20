@@ -6,7 +6,11 @@ StateNetwork::StateNetwork(const Task &task, int hidden_size)
       linear2(register_module("linear2", torch::nn::Linear(hidden_size, hidden_size))),
       residual1(register_module("residual1", torch::nn::Linear(hidden_size, hidden_size))),
       residual2(register_module("residual2", torch::nn::Linear(hidden_size, hidden_size))),
-      final_layer(register_module("final_layer", torch::nn::Linear(hidden_size, 1)))
+      final_layer(register_module("final_layer", torch::nn::Linear(hidden_size, 1))),
+      batch_norm_linear1(register_module("batch_norm_linear1", torch::nn::BatchNorm1d(hidden_size))),
+      batch_norm_linear2(register_module("batch_norm_linear2", torch::nn::BatchNorm1d(hidden_size))),
+      batch_norm_residual1(register_module("batch_norm_residual1", torch::nn::BatchNorm1d(hidden_size))),
+      batch_norm_residual2(register_module("batch_norm_residual2", torch::nn::BatchNorm1d(hidden_size)))
 {
     // TODO: send device into the constructor
     // Tensorflow equivalent "kernel_initializer='he_normal'"
@@ -21,20 +25,15 @@ StateNetwork::StateNetwork(const Task &task, int hidden_size)
 
 torch::Tensor StateNetwork::forward(torch::Tensor x)
 {
+    x = torch::relu(batch_norm_linear1(linear1(x)));
+    x = torch::relu(batch_norm_linear2(linear2(x)));
     auto identity = x;
-    x = torch::relu(linear1->forward(x));
-    x = torch::relu(linear2->forward(x));
-
-    auto residual = torch::relu(residual1->forward(x));
-    residual = torch::relu(residual2->forward(residual));
-
-    x = torch::add(x, residual);
-    x = torch::relu(x);
-    x = final_layer->forward(x);
-
+    x = torch::relu(batch_norm_residual1(residual1(x)));
+    x = torch::relu(batch_norm_residual2(residual2(x)));
+    x = torch::add(x, identity);
+    x = final_layer(x);
     return x;
 }
-
 
 torch::Tensor StateNetwork::make_tensor(const long int &state_id) const
 {
@@ -45,13 +44,14 @@ torch::Tensor StateNetwork::make_tensor(const long int &state_id) const
     return tensor.clone();
 }
 
-void StateNetwork::train(torch::optim::Optimizer &optimizer, const vec<long int>& states_ids, vec<double> targets, int epochs, int batch_size)
+void StateNetwork::training(torch::optim::Optimizer &optimizer, const vec<long int> &states_ids, vec<double> targets, int epochs, int batch_size)
 {
-    int train_size =  std::ceil(states_ids.size() * 0.8);
+    int train_size = std::ceil(states_ids.size() * 0.8);
     int num_batches = std::max(static_cast<int>(std::ceil(train_size / batch_size)), 1);
 
     for (int epoch = 0; epoch < epochs; epoch++)
     {
+        this->train();
         float total_train_loss = 0.0;
         for (int i = 0; i < num_batches; i++)
         {
@@ -65,8 +65,8 @@ void StateNetwork::train(torch::optim::Optimizer &optimizer, const vec<long int>
                 states_tensors.push_back(state_tensor);
             }
             auto states_batch = torch::stack(states_tensors);
-            auto targets_batch = torch::from_blob(targets.data() + start_index, end_index - start_index, options).clone();
-            
+            auto targets_batch = torch::from_blob(targets.data() + start_index, {end_index - start_index, 1}, options).clone();
+
             optimizer.zero_grad();
             auto output = forward(states_batch);
             auto loss = torch::mse_loss(output, targets_batch);
@@ -74,19 +74,21 @@ void StateNetwork::train(torch::optim::Optimizer &optimizer, const vec<long int>
 
             torch::nn::utils::clip_grad_norm_(this->parameters(), 1.0);
             optimizer.step();
-            total_train_loss += loss.item().toFloat();;
+            total_train_loss += loss.item().toFloat();
         }
+        this->eval();
         float avg_train_loss = total_train_loss / num_batches;
 
         torch::NoGradGuard no_grad;
         vec<torch::Tensor> test_states_tensors = {};
-        for(int j = train_size; j < states_ids.size(); j++)
+        for (int j = train_size; j < states_ids.size(); j++)
         {
             torch::Tensor state_tensor = make_tensor(states_ids[j]);
             test_states_tensors.push_back(state_tensor);
         }
         auto test_states_tensor = torch::stack(test_states_tensors);
-        auto test_targets_tensor = torch::from_blob(targets.data() + train_size, targets.size() - train_size, options).clone();
+        auto test_targets_tensor = torch::from_blob(targets.data() + train_size, {static_cast<long int>(states_ids.size() - static_cast<std::size_t>(train_size)), 1}, options).clone();
+
         auto test_output = this->forward(test_states_tensor);
         auto test_loss = torch::mse_loss(test_output, test_targets_tensor).item().toFloat();
         std::cerr << "LOG::StateNetwork::train::Epoch: " << epoch
@@ -95,11 +97,16 @@ void StateNetwork::train(torch::optim::Optimizer &optimizer, const vec<long int>
     }
 }
 
-double StateNetwork::predict(const long int& state_id) const
+double StateNetwork::predict(const long int &state_id) const
 {
-    torch::Tensor input = make_tensor(state_id);
+
+    torch::Tensor input = make_tensor(state_id).unsqueeze(0);
+
     auto &non_constant_this = const_cast<StateNetwork &>(*this);
+    non_constant_this.eval();
+
     torch::Tensor output = non_constant_this.forward(input);
+
     double result = output.item<double>();
     return result;
 }

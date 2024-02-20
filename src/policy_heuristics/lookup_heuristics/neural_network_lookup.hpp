@@ -3,8 +3,8 @@
 #include "../lookup.hpp"
 #include "../../neural_networks/state_neural_network.hpp"
 #define NUMBER_OF_HIDDEN_UNITS 250
-#define NUMBER_OF_EPOCHS 20
-#define BATCH_SIZE 32
+#define NUMBER_OF_EPOCHS 100
+#define BATCH_SIZE 25
 
 class NeuralNetworkLookUp : public LookUp
 {

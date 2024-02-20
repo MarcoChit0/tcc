@@ -16,7 +16,6 @@ NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristi
                                                                                                                                                                                                           state_network(task, NUMBER_OF_HIDDEN_UNITS),
                                                                                                                                                                                                           model_path{get_directory_path(file_name)}
 {
-    str model_file_name = model_path + "model.pt";
     vec<int64_t> states = {};
     vec<double> targets = {};
     for (auto pair : this->table_nd)
@@ -25,7 +24,7 @@ NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristi
         targets.push_back(pair.second);
     }
     auto optimizer = torch::optim::Adam(state_network.parameters(), torch::optim::AdamOptions(1e-5));
-    state_network.train(
+    state_network.training(
         optimizer,
         states,
         targets,

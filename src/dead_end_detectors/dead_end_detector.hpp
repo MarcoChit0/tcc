@@ -26,8 +26,8 @@ struct hash_StateActionPair
     }
 };
 
-typedef std::unordered_set<std::pair<State, Action>, hash_StateActionPair> StateActionPairSet;
-
+typedef std::unordered_set<StateActionPair, hash_StateActionPair> StateActionPairSet;
+typedef std::unordered_map<StateActionPair, bool, hash_StateActionPair> StateActionPairToBoolMap;
 class DeadEndDetector
 {
     protected:

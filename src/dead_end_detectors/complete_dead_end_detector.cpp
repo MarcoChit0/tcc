@@ -1,9 +1,9 @@
 #include "complete_dead_end_detector.hpp"
 #include <fstream>
 
-bool have_good_actions(const Task &task, const State &state, const StateActionPairToBoolMap &is_bad_state_action_pair)
+bool CompleteDeadEndDetector::have_good_actions(const State &state, const StateActionPairToBoolMap &is_bad_state_action_pair)
 {
-    for (const Action &action : state.get_applicable_actions(task.actions()))
+    for (const Action &action : state.get_applicable_actions(this->task.actions()))
     {
         if (not is_bad_state_action_pair.at(std::make_pair(state, action)))
         {
@@ -31,7 +31,11 @@ void create_states(const Task &task, const vec<Fact> &facts, set<State> &states,
     }
 }
 
-void CompleteDeadEndDetector::find_weak_alive_states(const set<State> &goal_states, map<State, StateActionPairSet> &reversed_edges, set<State> &weak_alive_states, const StateActionPairToBoolMap &is_bad_state_action_pair)
+void CompleteDeadEndDetector::find_weak_alive_states(
+    map<State, StateActionPairSet> &reversed_edges,
+    const set<State> &goal_states,
+    set<State> &weak_alive_states,
+    const StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     vec<State> states_at_next_depth;
     vec<State> states_at_current_depth = vec<State>(goal_states.begin(), goal_states.end());
@@ -75,7 +79,11 @@ void CompleteDeadEndDetector::find_weak_alive_states(const set<State> &goal_stat
     }
 }
 
-void CompleteDeadEndDetector::find_dead_end_states(const set<State> &states, set<State> &dead_end_states, map<State, StateActionPairSet> &reversed_edges, StateActionPairToBoolMap &is_bad_state_action_pair)
+void CompleteDeadEndDetector::find_dead_end_states(
+    map<State, StateActionPairSet> &reversed_edges,
+    const set<State> &states,
+    set<State> &dead_end_states,
+    StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     for (const State &state : states)
     {
@@ -83,32 +91,41 @@ void CompleteDeadEndDetector::find_dead_end_states(const set<State> &states, set
         {
             this->labeled_states[state.id] = DEAD_END;
             dead_end_states.insert(state);
-            mark_bad_state_action_pairs(reversed_edges, is_bad_state_action_pair, state);
+            mark_bad_state_action_pairs(reversed_edges, state ,is_bad_state_action_pair);
         }
     }
 }
 
-void CompleteDeadEndDetector::test_whether_weak_alive_states_are_dead_end_states(const Task &task, set<State> &weak_alive_states, set<State> &dead_end_states, StateActionPairToBoolMap &is_bad_state_action_pair, map<State, StateActionPairSet> &reversed_edges)
+void CompleteDeadEndDetector::test_whether_weak_alive_states_are_dead_end_states(
+    map<State, StateActionPairSet> &reversed_edges,
+    set<State> &dead_end_states,
+    set<State> &weak_alive_states,
+    StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     for (auto it = weak_alive_states.begin(); it != weak_alive_states.end();)
     {
         auto state = *it;
         it++;
-        if (not have_good_actions(task, state, is_bad_state_action_pair))
+        if (not have_good_actions(state, is_bad_state_action_pair))
         {
             this->labeled_states[state.id] = DEAD_END;
             dead_end_states.insert(state);
-            mark_bad_state_action_pairs(reversed_edges, is_bad_state_action_pair, state);
+            mark_bad_state_action_pairs(reversed_edges, state, is_bad_state_action_pair);
             weak_alive_states.erase(state);
         }
     }
 }
 
-void CompleteDeadEndDetector::mark_goal_states_as_alive(const Task &task, const set<State> &states, map<State, StateActionPairSet> &reversed_edges, set<State> &goal_states, set<State> &non_goal_states, StateActionPairToBoolMap &is_bad_state_action_pair)
+void CompleteDeadEndDetector::mark_goal_states_as_alive(
+    map<State, StateActionPairSet> &reversed_edges,
+    const set<State> &states,
+    set<State> &goal_states,
+    set<State> &non_goal_states,
+    StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     vec<State> stack;
     set<State> states_to_explore = states;
-    stack.push_back(task.initial_state());
+    stack.push_back(this->task.initial_state());
     while (not states_to_explore.empty() or not stack.empty())
     {
         while (not stack.empty())
@@ -117,7 +134,7 @@ void CompleteDeadEndDetector::mark_goal_states_as_alive(const Task &task, const 
             stack.pop_back();
             states_to_explore.erase(state);
 
-            if (state.is_goal(task.goal_condition()))
+            if (state.is_goal(this->task.goal_condition()))
             {
                 this->labeled_states[state.id] = ALIVE;
                 goal_states.insert(state);
@@ -125,7 +142,7 @@ void CompleteDeadEndDetector::mark_goal_states_as_alive(const Task &task, const 
             }
 
             non_goal_states.insert(state);
-            for (const Action &action : state.get_applicable_actions(task.actions()))
+            for (const Action &action : state.get_applicable_actions(this->task.actions()))
             {
                 is_bad_state_action_pair[std::make_pair(state, action)] = false;
                 for (const State &succesor_state : state.get_successors(action))
@@ -209,7 +226,9 @@ void count_and_print(const set<State> &states, const set<State> &goal_states, co
     assert(states.size() == dead_end_states_count + alive_count);
 }
 
-void CompleteDeadEndDetector::unlabel_weak_alive_states_before_performing_loop(set<State> &weak_alive_states, int &number_of_weak_alive_states_on_previous_iteration)
+void CompleteDeadEndDetector::unlabel_weak_alive_states_before_performing_loop(
+    int &number_of_weak_alive_states_on_previous_iteration,
+    set<State> &weak_alive_states)
 {
     number_of_weak_alive_states_on_previous_iteration = weak_alive_states.size();
     if (not weak_alive_states.empty())
@@ -221,7 +240,10 @@ void CompleteDeadEndDetector::unlabel_weak_alive_states_before_performing_loop(s
     }
 }
 // TODO: add only the new dead-ends to the bad_state_action_pairs instead of all the previous dead-ends
-void CompleteDeadEndDetector::mark_bad_state_action_pairs(map<State, StateActionPairSet> &reversed_edges, StateActionPairToBoolMap &is_bad_state_action_pair, const State &dead_end_state)
+void CompleteDeadEndDetector::mark_bad_state_action_pairs(
+    map<State, StateActionPairSet> &reversed_edges,
+    const State &dead_end_state,
+    StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     for (auto pair_state_action : reversed_edges[dead_end_state])
     {
@@ -234,7 +256,9 @@ bool CompleteDeadEndDetector::is_deadend(const State &state) const
     return this->labeled_states.at(state.id) == DEAD_END;
 }
 
-bool CompleteDeadEndDetector::forward_search(const Task &task, const State &initial_state, StateActionPairToBoolMap&  is_bad_state_action_pair)
+bool CompleteDeadEndDetector::forward_search(
+    const State &initial_state,
+    StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     vec<State> stack;
     set<State> explored;
@@ -245,14 +269,14 @@ bool CompleteDeadEndDetector::forward_search(const Task &task, const State &init
         stack.pop_back();
         explored.insert(state);
 
-        if (state.is_goal(task.goal_condition()))
+        if (state.is_goal(this->task.goal_condition()))
         {
             return true;
         }
 
-        for (const Action &action : state.get_applicable_actions(task.actions()))
+        for (const Action &action : state.get_applicable_actions(this->task.actions()))
         {
-            if(not is_bad_state_action_pair.at(std::make_pair(state, action)))
+            if (not is_bad_state_action_pair.at(std::make_pair(state, action)))
             {
                 for (const State &succesor_state : state.get_successors(action))
                 {
@@ -267,6 +291,33 @@ bool CompleteDeadEndDetector::forward_search(const Task &task, const State &init
     return false;
 }
 
+void CompleteDeadEndDetector::loop_until_there_is_no_more_dead_ends_on_weak_alive_set(
+    map<State, StateActionPairSet> &reversed_edges,
+    set<State> &dead_end_states,
+    set<State> &weak_alive_states,
+    StateActionPairToBoolMap &is_bad_state_action_pair)
+{
+    int number_of_dead_end_states_on_previous_iteration;
+    do
+    {
+        number_of_dead_end_states_on_previous_iteration = dead_end_states.size();
+        this->test_whether_weak_alive_states_are_dead_end_states(reversed_edges, dead_end_states, weak_alive_states, is_bad_state_action_pair);
+
+        for (auto it = weak_alive_states.begin(); it != weak_alive_states.end();)
+        {
+            auto state = *it;
+            it++;
+            if (not this->forward_search(state, is_bad_state_action_pair))
+            {
+                weak_alive_states.erase(state);
+                dead_end_states.insert(state);
+                this->labeled_states[state.id] = DEAD_END;
+                mark_bad_state_action_pairs(reversed_edges, state, is_bad_state_action_pair);
+            }
+        }
+    } while (not(number_of_dead_end_states_on_previous_iteration == dead_end_states.size()));
+}
+
 CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const bool save_metadata) : DeadEndDetector(task)
 {
     // 1.
@@ -279,7 +330,7 @@ CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const bool sa
     set<State> goal_states;
     set<State> non_goal_states;
     StateActionPairToBoolMap is_bad_state_action_pair;
-    this->mark_goal_states_as_alive(this->task, states, reversed_edges, goal_states, non_goal_states, is_bad_state_action_pair);
+    this->mark_goal_states_as_alive(reversed_edges, states, goal_states, non_goal_states, is_bad_state_action_pair);
 
     // loop 3,4,5 until there is no change in the number of weak alive states
     set<State> weak_alive_states;
@@ -290,73 +341,13 @@ CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const bool sa
     // this->unlabel_weak_alive_states_before_performing_loop(weak_alive_states, number_of_weak_alive_states_on_previous_iteration);
 
     // 3.
-    this->find_weak_alive_states(goal_states, reversed_edges, weak_alive_states, is_bad_state_action_pair);
-    std::cout << "3.Weak alive states: " << weak_alive_states.size() << std::endl;
-    for(auto state : weak_alive_states)
-    {
-        std::cout << "\tWeak alive state: "<< state << std::endl;
-    }
+    this->find_weak_alive_states(reversed_edges, goal_states, weak_alive_states, is_bad_state_action_pair);
 
     // 4.
-    this->find_dead_end_states(states, dead_end_states, reversed_edges, is_bad_state_action_pair);
-    std::cout << "4.Dead end states: " << dead_end_states.size() << std::endl;
-    for(auto state : dead_end_states)
-    {
-        std::cout << "\tDead end state: "<< state << std::endl;
-    }
-    int c = 0;
-    for(auto [state, action] : is_bad_state_action_pair)
-    {
-        if(action)
-        {
-            c++;
-        }
-    }
-    std::cout << "4.Bad state action pairs: " << c << std::endl;
+    this->find_dead_end_states(reversed_edges, states, dead_end_states, is_bad_state_action_pair);
 
     // 5.
-    do
-    {
-        std::cout << "5.Counter:" << ++counter << std::endl;
-        number_of_dead_end_states_on_previous_iteration = dead_end_states.size();
-        std::cout << "\tNumber of dead end states on previous iteration: " << number_of_dead_end_states_on_previous_iteration << std::endl;
-        this->test_whether_weak_alive_states_are_dead_end_states(task, weak_alive_states, dead_end_states, is_bad_state_action_pair, reversed_edges);
-        std::cout << "\tWeak alive states before: " << weak_alive_states.size() << std::endl;
-        std::cout << "\tDead end states before: " << dead_end_states.size() << std::endl;
-        int c = 0;
-        for(auto [state, action] : is_bad_state_action_pair)
-        {
-            if(action)
-            {
-                c++;
-            }
-        }
-        std::cout << "\tBad state action pairs before: " << c << std::endl;
-
-        for(auto it = weak_alive_states.begin(); it != weak_alive_states.end();)
-        {
-            auto state = *it;
-            it++;
-            if (not this->forward_search(task, state, is_bad_state_action_pair))
-            {
-                weak_alive_states.erase(state);
-                dead_end_states.insert(state);
-                mark_bad_state_action_pairs(reversed_edges, is_bad_state_action_pair, state);
-            }
-        }
-        std::cout << "\tWeak alive states after: " << weak_alive_states.size() << std::endl;
-        std::cout << "\tDead end states after: " << dead_end_states.size() << std::endl;
-        c = 0;
-        for(auto [state, action] : is_bad_state_action_pair)
-        {
-            if(action)
-            {
-                c++;
-            }
-        }
-        std::cout << "\tBad state action pairs after: " << c << std::endl;
-    } while (not(number_of_dead_end_states_on_previous_iteration == dead_end_states.size()));
-    
+    this->loop_until_there_is_no_more_dead_ends_on_weak_alive_set(reversed_edges, dead_end_states, weak_alive_states, is_bad_state_action_pair);
 
     // 6.
     this->transform_weak_alive_states_into_alive_states(weak_alive_states);

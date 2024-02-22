@@ -12,6 +12,7 @@ public:
     void transform_weak_alive_states_into_alive_states(const set<State> &weak_alive_states);
     void unlabel_weak_alive_states_before_performing_loop(set<State> &weak_alive_states, int &number_of_weak_alive_states_on_previous_iteration);
     void mark_bad_state_action_pairs(map<State, StateActionPairSet> &reversed_edges, StateActionPairToBoolMap &is_bad_state_action_pair, const State &dead_end_state);
+    bool forward_search(const Task &task, const State &initial_state, StateActionPairToBoolMap&  is_bad_state_action_pair);
     bool is_deadend(const State &state) const;
     CompleteDeadEndDetector(const Task &task, const bool save_metadata = false);
 };

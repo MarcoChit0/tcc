@@ -1,0 +1,221 @@
+1. Creating states
+1. States created: 16777216
+1. Ended at 37.1587
+2. Creating reversed edges
+2. Reversed edges created
+2. Goal states: 1048576
+2. Non goal states: 15728640
+2. Ended at 270.909
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 0
+3. Finding weak alive states
+3. Weak alive states found: 15237120
+3. Ended at 306.536
+4. Finding dead end states
+4. Dead end states found: 491520
+4. Ended at 308.566
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 491520
+	5.1. Number of weak alive states before = 15237120
+	5.1 Number of dead end states after = 520192
+	5.1 Number of weak alive states after = 15208448
+	5.1 Ended at 319.844
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 520192
+	5.2. Number of weak alive states before = 15208448
+	5.2 Number of dead end states after = 520192
+	5.2 Number of weak alive states after = 15208448
+	5.2 Ended at 330.988
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 15208448
+3. Finding weak alive states
+3. Weak alive states found: 15101952
+3. Ended at 370.436
+4. Finding dead end states
+4. Dead end states found: 626688
+4. Ended at 371.832
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 626688
+	5.1. Number of weak alive states before = 15101952
+	5.1 Number of dead end states after = 643840
+	5.1 Number of weak alive states after = 15084800
+	5.1 Ended at 382.633
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 643840
+	5.2. Number of weak alive states before = 15084800
+	5.2 Number of dead end states after = 643840
+	5.2 Number of weak alive states after = 15084800
+	5.2 Ended at 393.381
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 15084800
+3. Finding weak alive states
+3. Weak alive states found: 15009216
+3. Ended at 431.148
+4. Finding dead end states
+4. Dead end states found: 719424
+4. Ended at 432.545
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 719424
+	5.1. Number of weak alive states before = 15009216
+	5.1 Number of dead end states after = 729180
+	5.1 Number of weak alive states after = 14999460
+	5.1 Ended at 443.605
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 729180
+	5.2. Number of weak alive states before = 14999460
+	5.2 Number of dead end states after = 729180
+	5.2 Number of weak alive states after = 14999460
+	5.2 Ended at 455.384
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14999460
+3. Finding weak alive states
+3. Weak alive states found: 14948780
+3. Ended at 493.344
+4. Finding dead end states
+4. Dead end states found: 779860
+4. Ended at 494.743
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 779860
+	5.1. Number of weak alive states before = 14948780
+	5.1 Number of dead end states after = 781402
+	5.1 Number of weak alive states after = 14947238
+	5.1 Ended at 505.576
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 781402
+	5.2. Number of weak alive states before = 14947238
+	5.2 Number of dead end states after = 781402
+	5.2 Number of weak alive states after = 14947238
+	5.2 Ended at 517.01
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14947238
+3. Finding weak alive states
+3. Weak alive states found: 14880922
+3. Ended at 560.163
+4. Finding dead end states
+4. Dead end states found: 847718
+4. Ended at 561.733
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 847718
+	5.1. Number of weak alive states before = 14880922
+	5.1 Number of dead end states after = 849748
+	5.1 Number of weak alive states after = 14878892
+	5.1 Ended at 573.044
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 849748
+	5.2. Number of weak alive states before = 14878892
+	5.2 Number of dead end states after = 849748
+	5.2 Number of weak alive states after = 14878892
+	5.2 Ended at 583.841
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14878892
+3. Finding weak alive states
+3. Weak alive states found: 14794676
+3. Ended at 622.496
+4. Finding dead end states
+4. Dead end states found: 933964
+4. Ended at 624.126
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 933964
+	5.1. Number of weak alive states before = 14794676
+	5.1 Number of dead end states after = 937048
+	5.1 Number of weak alive states after = 14791592
+	5.1 Ended at 635.629
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 937048
+	5.2. Number of weak alive states before = 14791592
+	5.2 Number of dead end states after = 937048
+	5.2 Number of weak alive states after = 14791592
+	5.2 Ended at 647.264
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14791592
+3. Finding weak alive states
+3. Weak alive states found: 14643916
+3. Ended at 688.496
+4. Finding dead end states
+4. Dead end states found: 1084724
+4. Ended at 690.164
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 1084724
+	5.1. Number of weak alive states before = 14643916
+	5.1 Number of dead end states after = 1089724
+	5.1 Number of weak alive states after = 14638916
+	5.1 Ended at 702.164
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 1089724
+	5.2. Number of weak alive states before = 14638916
+	5.2 Number of dead end states after = 1089724
+	5.2 Number of weak alive states after = 14638916
+	5.2 Ended at 713.819
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14638916
+3. Finding weak alive states
+3. Weak alive states found: 14550680
+3. Ended at 752.651
+4. Finding dead end states
+4. Dead end states found: 1177960
+4. Ended at 754.348
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 1177960
+	5.1. Number of weak alive states before = 14550680
+	5.1 Number of dead end states after = 1180828
+	5.1 Number of weak alive states after = 14547812
+	5.1 Ended at 765.545
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 1180828
+	5.2. Number of weak alive states before = 14547812
+	5.2 Number of dead end states after = 1180828
+	5.2 Number of weak alive states after = 14547812
+	5.2 Ended at 776.485
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14547812
+3. Finding weak alive states
+3. Weak alive states found: 14531208
+3. Ended at 815.365
+4. Finding dead end states
+4. Dead end states found: 1197432
+4. Ended at 816.78
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 1197432
+	5.1. Number of weak alive states before = 14531208
+	5.1 Number of dead end states after = 1198832
+	5.1 Number of weak alive states after = 14529808
+	5.1 Ended at 827.661
+5. Loop iteration = 2
+	5.2 Number of dead end states before = 1198832
+	5.2. Number of weak alive states before = 14529808
+	5.2 Number of dead end states after = 1198832
+	5.2 Number of weak alive states after = 14529808
+	5.2 Ended at 838.889
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14529808
+3. Finding weak alive states
+3. Weak alive states found: 14526720
+3. Ended at 878.943
+4. Finding dead end states
+4. Dead end states found: 1201920
+4. Ended at 880.326
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 1201920
+	5.1. Number of weak alive states before = 14526720
+	5.1 Number of dead end states after = 1201920
+	5.1 Number of weak alive states after = 14526720
+	5.1 Ended at 891.242
+3. Unlabeling weak alive states before performing loop
+3. Number of weak alive states = 14526720
+3. Finding weak alive states
+3. Weak alive states found: 14526720
+3. Ended at 930.959
+4. Finding dead end states
+4. Dead end states found: 1201920
+4. Ended at 932.383
+5. Loop iteration = 1
+	5.1 Number of dead end states before = 1201920
+	5.1. Number of weak alive states before = 14526720
+	5.1 Number of dead end states after = 1201920
+	5.1 Number of weak alive states after = 14526720
+	5.1 Ended at 943.421
+6. Transforming weak alive states into alive states
+6. Weak alive states transformed into alive states
+6. Alive states: 14526720
+6. Dead end states: 1201920
+6. Ended at 947.758

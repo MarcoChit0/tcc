@@ -5,6 +5,7 @@
 
 enum StateLabel
 {
+    NO_LABEL,
     DEAD_END,
     WEAK_ALIVE,
     ALIVE,

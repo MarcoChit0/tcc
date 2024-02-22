@@ -49,7 +49,7 @@ public:
         const State &initial_state,
         StateActionPairToBoolMap &is_bad_state_action_pair);
 
-    bool is_deadend(const State &state) const;
+    double is_deadend(const State &state) const;
 
     bool have_good_actions(
         const State &state,

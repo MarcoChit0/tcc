@@ -246,9 +246,16 @@ void CompleteDeadEndDetector::mark_bad_state_action_pairs(
     }
 }
 
-bool CompleteDeadEndDetector::is_deadend(const State &state) const
+double CompleteDeadEndDetector::is_deadend(const State &state) const
 {
-    return this->labeled_states.at(state.id) == DEAD_END;
+    if(this->labeled_states.at(state.id) == DEAD_END)
+    {
+        return 1.0f;
+    }
+    else
+    {
+        return 0.0f;
+    }
 }
 
 bool CompleteDeadEndDetector::forward_search(

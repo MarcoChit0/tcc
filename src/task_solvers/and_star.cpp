@@ -104,7 +104,7 @@ Policy AndStar::get_solution(const Task &task)
             bool has_infinite_f_value = false;
             for (const State &successor_state: state.get_successors(action))
             {
-                if ((this->dead_end_detector.has_value() && (*(this->dead_end_detector))->is_deadend(successor_state)) || state_heuristic[successor_state] == INFTY)
+                if ((this->dead_end_detector.has_value() && (*(this->dead_end_detector))->is_deadend(successor_state) == 1.0f) || state_heuristic[successor_state] == INFTY)
                 {
                     has_infinite_f_value = true;
                     break;

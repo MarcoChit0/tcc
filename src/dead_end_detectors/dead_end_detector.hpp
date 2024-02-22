@@ -37,5 +37,5 @@ class DeadEndDetector
     public:
         DeadEndDetector(const Task &task) : task(task) {};
         // TODO: make this bool
-        virtual bool is_deadend(const State &state) const = 0;
+        virtual double is_deadend(const State &state) const = 0;
 };

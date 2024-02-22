@@ -65,3 +65,5 @@
 (datetime.datetime(2024, 2, 22, 13, 33, 40, 389232), ('tireworld-spiky-2', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-02-22'))
 (datetime.datetime(2024, 2, 22, 14, 16, 50, 191691), ('tireworld-spiky-2', 'p2', 'delta-nearest', 'trie-star', 'test,v2024-02-22'))
 (datetime.datetime(2024, 2, 22, 14, 18, 0, 139087), ('tireworld-spiky-2', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-02-22'))
+(datetime.datetime(2024, 2, 22, 14, 40, 57, 462440), ('tireworld-spiky-2', 'p2', 'delta-nearest', 'trie-star', 'test,v2024-02-22'))
+(datetime.datetime(2024, 2, 22, 14, 48, 22, 116714), ('tireworld-spiky-2', 'p2', 'delta-nearest', 'trie-star', 'test,v2024-02-22'))

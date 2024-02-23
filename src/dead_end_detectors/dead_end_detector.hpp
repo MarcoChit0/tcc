@@ -3,6 +3,9 @@
 #include "../task.hpp"
 #include <unordered_set>
 
+#define DEAD_END_FILE_NAME "log.txt"
+#define DEAD_END_DIR "dead-end/"
+
 enum StateLabel
 {
     NO_LABEL,
@@ -34,8 +37,15 @@ class DeadEndDetector
     protected:
         const Task &task;
         static map<int64_t, int> labeled_states;
+        const str dead_end_directory = default_directory + DEAD_END_DIR;
+        const str file_name = DEAD_END_FILE_NAME;
     public:
-        DeadEndDetector(const Task &task) : task(task) {};
+        DeadEndDetector(const Task &task) : task(task) {
+            if(not directory_created_successfully(DEAD_END_DIR))
+            {
+                throw std::runtime_error("LOG::DeadEndDetector::DeadEndDetector::directory not created");
+            }
+        };
         // TODO: make this bool
         virtual double is_deadend(const State &state) const = 0;
 };

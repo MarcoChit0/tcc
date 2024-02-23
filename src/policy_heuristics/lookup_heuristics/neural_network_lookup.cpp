@@ -1,20 +1,8 @@
 #include "neural_network_lookup.hpp"
 
-str get_directory_path(str file_path)
-{
-    vec<str> splitted_file_path = split(file_path, '/');
-    splitted_file_path.pop_back();
-    str directory_path = "";
-    for (auto directory : splitted_file_path)
-    {
-        directory_path += directory + "/";
-    }
-    return directory_path;
-}
-
-NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : LookUp(task, state_heuristic, samples_generator, sample_treatment, file_name),
-                                                                                                                                                                                                          state_network(task, NUMBER_OF_HIDDEN_UNITS),
-                                                                                                                                                                                                          model_path{get_directory_path(file_name)}
+NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment) : 
+LookUp(task, state_heuristic, samples_generator, sample_treatment),
+state_network(task, NUMBER_OF_HIDDEN_UNITS)
 {
     vec<int64_t> states = {};
     vec<double> targets = {};

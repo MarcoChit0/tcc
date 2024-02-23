@@ -1,6 +1,6 @@
 #include "lookup_on_delta_nearest.hpp"
 
-LookUpOnDeltaNearest::LookUpOnDeltaNearest(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &sample_generator, const Sample::Treatment &sample_treatment, str file_name) : LookUp(task, state_heuristic, sample_generator, sample_treatment, file_name)
+LookUpOnDeltaNearest::LookUpOnDeltaNearest(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &sample_generator, const Sample::Treatment &sample_treatment) : LookUp(task, state_heuristic, sample_generator, sample_treatment)
 {
 }
 

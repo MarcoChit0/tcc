@@ -3,7 +3,13 @@
 map<int64_t, double> LookUp::table_nd = map<int64_t, double>{};
 int LookUp::number_of_lookups = 0;
 
-LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name) : Heuristic(task), state_heuristic(state_heuristic), samples_generator(samples_generator), sample_treatment(sample_treatment)
+LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment) : 
+    Heuristic(task), 
+    state_heuristic(state_heuristic), 
+    samples_generator(samples_generator), 
+    sample_treatment(sample_treatment),
+    file_name(default_directory + SAMPLES_FILE_NAME)
+
 {
     set<Sample> samples = this->samples_generator.generate_samples();
     std::fstream file;

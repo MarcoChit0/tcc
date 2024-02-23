@@ -1,6 +1,9 @@
 #pragma once
 
 #include "dead_end_detector.hpp"
+#define DEAD_END_LABELS_FILE "labels.txt"
+#define DEAD_END_METADATA_FILE "metadata.txt"
+
 
 class CompleteDeadEndDetector : public DeadEndDetector
 {
@@ -39,6 +42,12 @@ public:
     bool have_good_actions(
         const State &state,
         const StateActionPairToBoolMap &is_bad_state_action_pair);
+
+    void count_and_print(
+        const set<State> &goal_states, 
+        const set<State> &non_goal_states, 
+        const set<State> &states
+    );
 
     CompleteDeadEndDetector(
         const Task &task,

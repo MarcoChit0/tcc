@@ -13,6 +13,6 @@ private:
 
 public:
     const str model_path;
-    NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment, str file_name);
+    NeuralNetworkLookUp(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &samples_generator, const Sample::Treatment &sample_treatment);
     double operator[](const Policy &policy) const;
 };

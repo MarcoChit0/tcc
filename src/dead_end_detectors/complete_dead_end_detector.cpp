@@ -153,22 +153,26 @@ void CompleteDeadEndDetector::transform_weak_alive_states_into_alive_states(cons
     }
 }
 
-void count_and_print(const set<State> &states, const set<State> &goal_states, const set<State> &non_goal_states, const map<int64_t, int> &labeled_states)
+void CompleteDeadEndDetector::count_and_print(
+    const set<State> &goal_states,
+    const set<State> &non_goal_states,
+    const set<State> &states)
 {
     int dead_end_states_count = 0, alive_count = 0, weak_alive_count = 0;
 
-    std::ofstream states_file("states.txt");
-    if (not states_file.is_open())
-    {
-        std::cerr << "LOG::CompleteDeadEndDetector::save_states::Error opening states file." << std::endl;
-        return;
-    }
+    // commented for not to exceed memory limit on server
+    // std::ofstream labels_file(dead_end_directory+DEAD_END_LABELS_FILE);
+    // if (not labels_file.is_open())
+    // {
+    //     std::cerr << "LOG::CompleteDeadEndDetector::save_states::Error opening states file." << std::endl;
+    //     return;
+    // }
 
     for (auto [state_id, label] : labeled_states)
     {
         State state;
         state.id = state_id;
-        states_file << state << " -> " << state_label_to_string[label] << std::endl;
+        // labels_file << state << " -> " << state_label_to_string[label] << std::endl;
 
         switch (label)
         {
@@ -185,9 +189,9 @@ void count_and_print(const set<State> &states, const set<State> &goal_states, co
             break;
         }
     }
-    states_file.close();
+    // labels_file.close();
 
-    std::ofstream metadata_file("metadata.csv");
+    std::ofstream metadata_file(dead_end_directory + DEAD_END_METADATA_FILE);
     if (not metadata_file.is_open())
     {
         std::cerr << "LOG::CompleteDeadEndDetector::save_metadata::Error opening metadata file." << std::endl;
@@ -210,7 +214,7 @@ void CompleteDeadEndDetector::unlabel_weak_alive_states_before_performing_loop(s
 {
     for (auto weak_alive_state : weak_alive_states)
     {
-        if(this->labeled_states[weak_alive_state.id] == WEAK_ALIVE)
+        if (this->labeled_states[weak_alive_state.id] == WEAK_ALIVE)
         {
             this->labeled_states[weak_alive_state.id] = NO_LABEL;
         }
@@ -242,7 +246,7 @@ void CompleteDeadEndDetector::mark_bad_state_action_pairs(
 
 double CompleteDeadEndDetector::is_deadend(const State &state) const
 {
-    if(this->labeled_states.at(state.id) == DEAD_END)
+    if (this->labeled_states.at(state.id) == DEAD_END)
     {
         return 1.0f;
     }
@@ -252,11 +256,9 @@ double CompleteDeadEndDetector::is_deadend(const State &state) const
     }
 }
 
-
-
 CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const bool save_metadata) : DeadEndDetector(task)
 {
-    std::ofstream log_file("dead-end-log.txt");
+    std::ofstream log_file(dead_end_directory +  this->file_name);
     // 1.
     log_file << "1. Creating states\n";
     set<State> states;
@@ -311,6 +313,6 @@ CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const bool sa
 
     if (save_metadata)
     {
-        count_and_print(states, goal_states, non_goal_states, this->labeled_states);
+        count_and_print(goal_states, non_goal_states, states);
     }
 };

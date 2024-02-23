@@ -29,7 +29,7 @@
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
 
-Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic *state_heuristic, str policy_heuristic, SampleGenerator *samples_generator, Sample::Treatment *sample_treatment, str file_name)
+Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic *state_heuristic, str policy_heuristic, SampleGenerator *samples_generator, Sample::Treatment *sample_treatment)
 {
     if (policy_heuristic == "count")
     {
@@ -49,15 +49,15 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic 
     }
     else if (policy_heuristic == "lookup-on-delta-nearest")
     {
-        return new LookUpOnDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
+        return new LookUpOnDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment);
     }
     else if (policy_heuristic == "max-lookup-delta-nearest")
     {
-        return new MaxLookUpDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
+        return new MaxLookUpDeltaNearest(task, *state_heuristic, *samples_generator, *sample_treatment);
     }
     else if (policy_heuristic == "neural-network-lookup")
     {
-        return new NeuralNetworkLookUp(task, *state_heuristic, *samples_generator, *sample_treatment, file_name);
+        return new NeuralNetworkLookUp(task, *state_heuristic, *samples_generator, *sample_treatment);
     }
     else
     {
@@ -325,6 +325,7 @@ double percentage_memory_limit = 0.9;
 double sample_generation_alarm = 0.7;
 double policy_alarm;
 double step;
+str default_directory;
 
 void set_step_and_policy_alarm()
 {
@@ -349,37 +350,35 @@ opt<std::shared_ptr<DeadEndDetector>> select_dead_end_detector(const std::string
     }
 }
 
+
 int main(int argc, char **argv)
 {
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
-    for (auto i = 0; i < argc; i++)
-    {
-        std::cerr << "LOG::main::argv[" << i << "] = " << argv[i] << std::endl;
-    }
-    str samples_file_name = argv[argc - 1]; // last argument is the samples file name
+    default_directory = argv[argc - 1]; 
     std::cerr << "LOG::main::start of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector = select_dead_end_detector(str(argv[16]), task);
-    int number_of_samples = std::atoi(argv[5]);
-    int length = parse_length_data(argv[6], task);
-    float porcentage = std::atof(argv[7]);
-    percentage_timer = std::atof(argv[10]);
-    sample_generation_alarm = std::atof(argv[11]);
-    set_step_and_policy_alarm();
-    percentage_memory_limit = std::atof(argv[12]);
-    parse_concrete_states_generator(str(argv[14]));
-    RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));
-    State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]));
-    SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
-    Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
-    Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment, samples_file_name);
+    // // commented for running only dead-end detector on server 
+    // int number_of_samples = std::atoi(argv[5]);
+    // int length = parse_length_data(argv[6], task);
+    // float porcentage = std::atof(argv[7]);
+    // percentage_timer = std::atof(argv[10]);
+    // sample_generation_alarm = std::atof(argv[11]);
+    // set_step_and_policy_alarm();
+    // percentage_memory_limit = std::atof(argv[12]);
+    // parse_concrete_states_generator(str(argv[14]));
+    // RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));
+    // State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]));
+    // SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
+    // Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
+    // Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);
 
-    AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
-    Policy opt_solution = and_star.get_solution(task);
-    // std::cout << opt_solution << std::endl;
-    print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
+    // AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
+    // Policy opt_solution = and_star.get_solution(task);
+    // // std::cout << opt_solution << std::endl;
+    // print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     return 0;
 }

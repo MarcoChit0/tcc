@@ -120,7 +120,7 @@ def get_splitted_command(
         concrete_states_generator: str,
         regressor: str,
         dead_end_detection: str,
-        samples_file_path: str,
+        save_folder_path: str,
         ) -> list[str]:
     return [
         f'./build/and_star',
@@ -140,7 +140,7 @@ def get_splitted_command(
         f'{concrete_states_generator}',
         f'{regressor}',
         f'{dead_end_detection}',
-        f'{samples_file_path}',
+        f'{save_folder_path}',
     ]
 
 def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str, walker: str, concrete_states_generator: str, regressor: str, dead_end_detector: str) -> None:
@@ -149,24 +149,23 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
     basic_dir_structure = f'./misc/data/raw_results/{apn.save_folder_name_prefix}/'
     params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor},{dead_end_detector}"
     task = f'{task_info.domain_label}/{task_info.task_label}'
-    save_folder_path = f'{basic_dir_structure}/{params}/{task}'
+    save_folder_path = f'{basic_dir_structure}/{params}/{task}/'
     results_file = f'results.csv'
     exp_log_file = f'log.txt'
-    samples_file_path = f"{save_folder_path}/samples.csv"
 
-    if os.path.exists(f'{save_folder_path}/{results_file}') and not apn.run_again_if_done: threads_semaphore.release(); return
+    if os.path.exists(os.path.join(save_folder_path, results_file)) and not apn.run_again_if_done: threads_semaphore.release(); return
 
     folder_creation_lock.acquire()
-    if not os.path.exists(f'{save_folder_path}'): os.makedirs(f'{save_folder_path}')
+    if not os.path.exists(save_folder_path): os.makedirs(save_folder_path)
     folder_creation_lock.release()
 
     process_creation_lock.acquire(); time.sleep(0.1)
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
 
     # # for debugging purposes only:
-    # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, samples_file_path)))
+    # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, save_folder_path)))
     # exit(1)
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, samples_file_path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, save_folder_path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0
@@ -174,8 +173,8 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
 
     print_lock.acquire(); time.sleep(0.1)
     print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %fsm: {percentage_fsm}, generator: {sample_generator}, treatment: {sample_treatment_class}, %timer: {percentage_timer}, %tlimit: {percentage_time_limit}, %mlimit: {percentage_memory_limit}, walker: {walker}, concrete states gen: {concrete_states_generator}, regressor: {regressor}, dead end detector: {dead_end_detector}')
-    open(f'{save_folder_path}/{results_file}', 'w').write(stdout)
-    open(f'{save_folder_path}/{exp_log_file}', 'w').write(stderr)
+    open(os.path.join(save_folder_path, results_file), 'w').write(stdout)
+    open(os.path.join(save_folder_path, exp_log_file), 'w').write(stderr)
     print_lock.release()
 
     threads_semaphore.release()

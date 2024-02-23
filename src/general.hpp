@@ -39,7 +39,6 @@
 #include <atomic>
 #include <condition_variable>
 
-extern std::default_random_engine rng;
 
 #define EMPTY_OBJECT -1
 #define INFTY INT_MAX
@@ -55,6 +54,8 @@ template <typename T, typename U>
 using map = std::unordered_map<T, U>;
 
 std::vector<std::string> split(const std::string &s, char delimiter);
+extern std::default_random_engine rng;
+extern std::string default_directory;
 
 template <typename T>
 struct std::hash<std::unordered_set<T>>
@@ -91,6 +92,8 @@ struct std::hash<std::vector<T>>
         return hash;
     }
 };
+
+bool directory_created_successfully(const str &directory);
 
 class Object
 {

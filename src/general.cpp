@@ -24,6 +24,23 @@ std::vector<std::string> split(const std::string &s, char delimiter)
     return tokens;
 }
 
+bool directory_created_successfully(const str &directory)
+{
+    str full_path = default_directory + directory;
+    struct stat info;
+    if (stat(full_path.c_str(), &info) != 0)
+    {
+        str command = "mkdir -p " + full_path;
+        int status = system(command.c_str());
+        if (status != 0)
+        {
+            std::cout << "Failed to create directory: " << full_path << std::endl;
+            return false;
+        }
+    }
+    return true;
+}
+
 double get_ellapsed_time()
 {
     return double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - start_time).count()) / double(1000) / double(1000) / double(1000);

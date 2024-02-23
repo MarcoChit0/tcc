@@ -1,7 +1,7 @@
 #include "max_lookup_delta_nearest.hpp"
 
-MaxLookUpDeltaNearest::MaxLookUpDeltaNearest(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &sample_generator, const Sample::Treatment& sample_treatment, str filename)
-    : LookUp(task, state_heuristic, sample_generator, sample_treatment, filename)
+MaxLookUpDeltaNearest::MaxLookUpDeltaNearest(const Task &task, const State::Heuristic &state_heuristic, const SampleGenerator &sample_generator, const Sample::Treatment& sample_treatment)
+    : LookUp(task, state_heuristic, sample_generator, sample_treatment)
 {
 }
 

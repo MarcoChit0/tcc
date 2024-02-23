@@ -17,12 +17,6 @@ public:
         set<State> &dead_end_states,
         StateActionPairToBoolMap &is_bad_state_action_pair);
 
-    void test_whether_weak_alive_states_are_dead_end_states(
-        map<State, StateActionPairSet> &reversed_edges,
-        set<State> &dead_end_states,
-        set<State> &weak_alive_states,
-        StateActionPairToBoolMap &is_bad_state_action_pair);
-
     void mark_goal_states_as_alive(
         map<State, StateActionPairSet> &reversed_edges,
         const set<State> &states,
@@ -37,16 +31,7 @@ public:
     void mark_bad_state_action_pairs(
         map<State, StateActionPairSet> &reversed_edges,
         const State &dead_end_state,
-        StateActionPairToBoolMap &is_bad_state_action_pair);
-
-    void loop_until_there_is_no_more_dead_ends_on_weak_alive_set(
-        map<State, StateActionPairSet> &reversed_edges,
-        set<State> &dead_end_states,
-        set<State> &weak_alive_states,
-        StateActionPairToBoolMap &is_bad_state_action_pair);
-
-    bool forward_search(
-        const State &initial_state,
+        set<State>& dead_end_states,
         StateActionPairToBoolMap &is_bad_state_action_pair);
 
     double is_deadend(const State &state) const;

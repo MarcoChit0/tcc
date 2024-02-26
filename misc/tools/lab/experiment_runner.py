@@ -163,9 +163,20 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
 
     # # for debugging purposes only:
-    # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, save_folder_path)))
+    # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor,dead_end_detector ,save_folder_path)))
     # exit(1)
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, save_folder_path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+
+    python_executable_path = os.path.join(os.environ['CONDA_PREFIX'], 'bin', 'python')
+    env = os.environ.copy()
+    env['PATH'] = os.path.join(os.environ['CONDA_PREFIX'], 'bin') + ':' + env['PATH']
+    process = subprocess.Popen(
+        get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, save_folder_path),
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        preexec_fn=apply_limits,
+        env=env,
+        text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0

@@ -1,0 +1,17 @@
+name: and-star
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - gxx_linux-64=12  # For g++ version 12
+  - cmake
+  - matplotlib
+  - seaborn
+  - pandas
+  - boost-cpp  # This is the Boost C++ Libraries package
+  - gmp  # This package provides the GMP library
+  - pip
+  - pip:
+      - typed-argument-parser
+      - argcomplete

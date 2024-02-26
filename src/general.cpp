@@ -66,8 +66,11 @@ double get_memory_usage()
 double get_time_limit()
 {
     struct rlimit lim;
-    getrlimit(RLIMIT_RTTIME, &lim);                              // microseconds
-    return (double)(double(lim.rlim_max) / double(1000 * 1000)); // seconds
+    getrlimit(RLIMIT_CPU, &lim); // Get the CPU time limit in seconds
+    if (lim.rlim_max == RLIM_INFINITY) {
+        return -1; // Return -1 or some other indication for 'unlimited'
+    }
+    return static_cast<double>(lim.rlim_max); // Return the limit in seconds
 }
 
 double get_memory_limit()

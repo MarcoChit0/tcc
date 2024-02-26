@@ -12,6 +12,7 @@ enum StateLabel
     DEAD_END,
     WEAK_ALIVE,
     ALIVE,
+    ND_DEAD_END
 };
 
 static std::map<int, str> state_label_to_string = {

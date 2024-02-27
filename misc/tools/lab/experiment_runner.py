@@ -94,8 +94,8 @@ process_creation_lock = Lock()
 print_lock = Lock()
 
 def limit_virtual_memory(): resource.setrlimit(resource.RLIMIT_AS, (round(apn.memory_limit * 1000 * 1000 * 1000 / 8), round(apn.memory_limit * 1000 * 1000 * 1000 / 8)))
-def limit_cpu_time(): resource.setrlimit(resource.RLIMIT_RTTIME, (round(apn.time_limit * 60 * 1000 * 1000), round(apn.time_limit * 60 * 1000 * 1000)))
-def apply_limits(): limit_virtual_memory(); limit_cpu_time()
+def limit_cpu_time(): resource.setrlimit(resource.RLIMIT_CPU, (round(apn.time_limit * 60 ), round(apn.time_limit * 60 )))
+def apply_limits(): limit_virtual_memory()
 
 @dataclasses.dataclass()
 class TaskInfo:
@@ -165,22 +165,18 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
     # # for debugging purposes only:
     # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor,dead_end_detector ,save_folder_path)))
     # exit(1)
-
-    python_executable_path = os.path.join(os.environ['CONDA_PREFIX'], 'bin', 'python')
-    env = os.environ.copy()
-    env['PATH'] = os.path.join(os.environ['CONDA_PREFIX'], 'bin') + ':' + env['PATH']
-    process = subprocess.Popen(
-        get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, save_folder_path),
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        preexec_fn=apply_limits,
-        env=env,
-        text=True)
+    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, save_folder_path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0
-    stdout, stderr = process.communicate()
+    try:
+        stdout, stderr = process.communicate(timeout=apn.time_limit * 60)
+    except subprocess.TimeoutExpired:
+        # give some time to terminate procedure
+        process.terminate(); time.sleep(0.25)
+        # kill the process
+        process.kill()
+        stdout, stderr = process.communicate()
 
     print_lock.acquire(); time.sleep(0.1)
     print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %fsm: {percentage_fsm}, generator: {sample_generator}, treatment: {sample_treatment_class}, %timer: {percentage_timer}, %tlimit: {percentage_time_limit}, %mlimit: {percentage_memory_limit}, walker: {walker}, concrete states gen: {concrete_states_generator}, regressor: {regressor}, dead end detector: {dead_end_detector}')

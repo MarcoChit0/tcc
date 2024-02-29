@@ -1,55 +1,26 @@
 #pragma once
 
-#include "dead_end_detector.hpp"
-#define DEAD_END_LABELS_FILE "labels.txt"
-#define DEAD_END_METADATA_FILE "metadata.txt"
+#include "reachable_dead_end_detector.hpp"
 
-
-class CompleteDeadEndDetector : public DeadEndDetector
+class CompleteDeadEndDetector : public ReachableDeadEndDetector
 {
-public:
-    void find_weak_alive_states(
-        map<State, StateActionPairSet> &reversed_edges,
-        const set<State> &goal_states,
-        set<State> &weak_alive_states,
-        const StateActionPairToBoolMap &is_bad_state_action_pair);
+protected:
+    void create_states(
+        const vec<Fact> &facts,
+        set<State> &states) override;
 
-    void find_dead_end_states(
-        map<State, StateActionPairSet> &reversed_edges,
-        const set<State> &states,
-        set<State> &dead_end_states,
-        StateActionPairToBoolMap &is_bad_state_action_pair);
+    void create_states_recursive_procedure(
+        const int depth, 
+        const vec<Fact> &facts, 
+        set<State> &states);
 
     void mark_goal_states_as_alive(
         map<State, StateActionPairSet> &reversed_edges,
         const set<State> &states,
         set<State> &goal_states,
         set<State> &non_goal_states,
-        StateActionPairToBoolMap &is_bad_state_action_pair);
+        StateActionPairToBoolMap &is_bad_state_action_pair) override;
 
-    void transform_weak_alive_states_into_alive_states(const set<State> &weak_alive_states);
-
-    void unlabel_weak_alive_states_before_performing_loop(set<State> &weak_alive_states);
-
-    void mark_bad_state_action_pairs(
-        map<State, StateActionPairSet> &reversed_edges,
-        const State &dead_end_state,
-        set<State>& dead_end_states,
-        StateActionPairToBoolMap &is_bad_state_action_pair);
-
-    double is_deadend(const State &state) const;
-
-    bool have_good_actions(
-        const State &state,
-        const StateActionPairToBoolMap &is_bad_state_action_pair);
-
-    void count_and_print(
-        const set<State> &goal_states, 
-        const set<State> &non_goal_states, 
-        const set<State> &states
-    );
-
-    CompleteDeadEndDetector(
-        const Task &task,
-        const bool save_metadata = false);
+public:
+    CompleteDeadEndDetector(const Task &task);
 };

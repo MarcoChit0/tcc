@@ -1,1 +1,9 @@
 miner,p1
+miner,p2
+miner,p3
+miner,p4
+miner,p5
+miner,p6
+miner,p7
+miner,p8
+miner,p9

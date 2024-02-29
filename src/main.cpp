@@ -25,6 +25,7 @@
 #include "./samples_generator/sample.hpp"
 #include "./dead_end_detectors/dead_end_detector.hpp"
 #include "./dead_end_detectors/complete_dead_end_detector.hpp"
+#include "./dead_end_detectors/reachable_dead_end_detector.hpp"
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
@@ -338,7 +339,11 @@ opt<std::shared_ptr<DeadEndDetector>> select_dead_end_detector(const std::string
 {
     if (dead_end_detector == "complete")
     {
-        return std::make_shared<CompleteDeadEndDetector>(task, true);
+        return std::make_shared<CompleteDeadEndDetector>(task);
+    }
+    else if(dead_end_detector == "reachable")
+    {
+        return std::make_shared<ReachableDeadEndDetector>(task);
     }
     else if (dead_end_detector == "none")
     {
@@ -360,6 +365,7 @@ int main(int argc, char **argv)
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector = select_dead_end_detector(str(argv[16]), task);
+    (*(optional_dead_end_detector))->label_states();
     // // commented for running only dead-end detector on server 
     // int number_of_samples = std::atoi(argv[5]);
     // int length = parse_length_data(argv[6], task);

@@ -1,1 +1,2 @@
-tireworld-spiky-2,p1
+tireworld-spiky-2,p3
+tireworld-triangle,p1

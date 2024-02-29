@@ -31,10 +31,10 @@ def map_fact_to_int(fact:str, domain):
 
 def print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, map_state_to_facts, mapping_states_to_hash, domain):
     has_completed = False
-    key_label = "deadend"
+    key_label = "difficult dead end"
     output_str = ""
 
-    for y in range(0, len(mapping_label_to_states[key_label]) + 1):
+    for y in range(1, len(mapping_label_to_states[key_label]) + 1):
         if has_completed:
             break
 
@@ -87,16 +87,11 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
             problem += (expr >= 1)
 
         problem += obj
-        has_completed = True
 
         status = problem.solve(pulp.GUROBI_CMD())
         
-        if pulp.LpStatus[status] is not 'Optimal':
-            has_completed = False
-            break
-        
-
-        if has_completed:
+        if pulp.LpStatus[status] == 'Optimal':
+            has_completed = True
             for i in range(y):
                 partial_state_true_facts: list[str] = []
                 for fact in mapping_label_to_facts[key_label]:
@@ -110,12 +105,20 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
     return output_str
 
 
-
+import os
 domain = {}
 # .sas file
-for p in [2]:
-    sas_file = f"./res/compiled_benchmarks/tireworld-spiky-2,p{p}.sas"
-    states_file = f"./states_p{p}.txt"
+path = "misc/data/raw_results/test,v2024-02-28/max-lookup-delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
+instances = [
+    "tireworld-spiky-2/p3/dead-end/labels.txt", 
+    # "tireworld-spiky/p1/dead-end/labels.txt",
+    "tireworld-triangle/p1/dead-end/labels.txt"
+]
+sas_path = "res/compiled_benchmarks/"
+for p in instances:
+    states_file = os.path.join(path, p)
+    sas_file_name = p.split("/")[0] + "," + p.split("/")[1] + ".sas"
+    sas_file = os.path.join(sas_path, sas_file_name)
     with open(sas_file, "r") as file:
         while True:
             if "end_metric" in file.readline():
@@ -161,6 +164,7 @@ for p in [2]:
             variables = state.replace("[", "").replace("]", "").split(", ")
             v = {}
             for i in range(len(variables)):
+                print(variables[i])
                 variable, fact = variables[i].split(" = ")
                 v[variable] = fact
             s = State(v, label)
@@ -176,6 +180,18 @@ for p in [2]:
             else:
                 mapping_label_to_facts[label] = set(v.values())
             mapping_state_to_facts[s] = set(v.values())
+    print("mapping_label_to_states")
+    print(mapping_label_to_states)
+    print("mapping_state_to_label")
+    print(mapping_state_to_label)
+    print("mapping_label_to_facts")
+    print(mapping_label_to_facts)
+    print("mapping_state_to_facts")
+    print(mapping_state_to_facts)
+    print("mapping_states_to_hash")
+    print(mapping_states_to_hash)
+    print("domain")
+    print(domain)
     output = print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, mapping_state_to_facts, mapping_states_to_hash, domain)
-    with open(f"ip_p{p}", "w") as file:
+    with open(os.path.join(path, p.replace("labels.txt", "ip.txt")), "w") as file:
         file.write(output)

@@ -47,13 +47,13 @@
 		:effect (and (not (up)))
 	)
 
-	;; effects mean:
-	;; 1) agent falls from the beam and breaks its leg
-	;; 2) agent falls from the beam, breaks its leg and falls in the middle
-	;; 3) agent falls from the beam, does not break its leg and falls in the middle
-	;; 4) agent falls from the beam, does not break its leg and falls at destination position
-	;; 5) agent falls from the beam, breaks its leg and fall at destination position
-	;; 6) agent falls on the beam at the destination position
+	;; effects mean:z
+	;; 1. agent falls from the beam and breaks its leg
+	;; 2. agent falls from the beam, breaks its leg and falls in the middle
+	;; 3. agent falls from the beam, does not break its leg and falls in the middle
+	;; 4. agent falls from the beam, does not break its leg and falls at destination position
+	;; 5. agent falls from the beam, breaks its leg and fall at destination position
+	;; 6. agent falls on the beam at the destination position
 	
 	(:action jump-over
 		:parameters ( ?from - location ?middle - location ?to - location )

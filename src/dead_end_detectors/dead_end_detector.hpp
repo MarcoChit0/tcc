@@ -9,15 +9,17 @@
 enum StateLabel
 {
     NO_LABEL,
-    DEAD_END,
+    HARD_DEAD_END,
+    EASY_DEAD_END,
     WEAK_ALIVE,
     ALIVE,
-    ND_DEAD_END
 };
 
 static std::map<int, str> state_label_to_string = {
-    {DEAD_END, "deadend"},
-    {WEAK_ALIVE, "weak-alive"},
+    {NO_LABEL, "no label"},
+    {HARD_DEAD_END, "difficult dead end"},
+    {EASY_DEAD_END, "easy dead end"},
+    {WEAK_ALIVE, "weak alive"},
     {ALIVE, "alive"},
 }; 
 
@@ -47,6 +49,7 @@ class DeadEndDetector
                 throw std::runtime_error("LOG::DeadEndDetector::DeadEndDetector::directory not created");
             }
         };
-        // TODO: make this bool
+        
         virtual double is_deadend(const State &state) const = 0;
+        virtual void label_states(const bool save_metadata=true) = 0;
 };

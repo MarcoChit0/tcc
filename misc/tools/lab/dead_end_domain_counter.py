@@ -12,7 +12,7 @@ from typing import Any
 import pandas as pd
 import numpy as np
 
-dfs = pd.DataFrame()
+all_data = []
 base_dir_path = 'misc/data/raw_results/test,v2024-02-28/max-lookup-delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,reachable/'
 for domain in os.listdir(base_dir_path):
     domain_path = os.path.join(base_dir_path, domain)
@@ -34,18 +34,43 @@ for domain in os.listdir(base_dir_path):
             content = [line.split(',') for line in content]
             metadata:dict[str, Any] = {line[0]: int(line[1]) for line in content[1:-1]}
 
-            # add the metadata to the dataframe
-            data = {}
-            data['domain'] = domain
-            data['problem'] = problem
-            # data['sum'] = metadata['HardDeadEndStates'] + metadata['SoftDeadEndStates']
-            data['sum'] = metadata['HardDeadEndStates']
+            all_data.append({
+                'domain': domain,
+                'problem': problem,
+                'hard dead ends': metadata.get('HardDeadEndStates', 0),
+                'soft dead ends': metadata.get('SoftDeadEndStates', 0)
+            })
 
-            df = pd.DataFrame(data, index=[0])
-            dfs = pd.concat([dfs, df])
 
-# print the dataframe
-print(dfs.groupby('domain').agg({
-    'sum' : 'sum',
-    'problem' : lambda x : ', '.join(x)
-}))
+
+# Convert all_data to DataFrame
+df = pd.DataFrame(all_data)
+
+# Process data to get required format
+def process_data(group):
+    domain = group['domain'].iloc[0]
+    hdd = group['hard dead ends'].sum()
+    sdd = group['soft dead ends'].sum()
+    total_dead_ends = hdd + sdd
+    
+    # Get problems with hard dead ends and soft dead ends
+    problems_hdd = group[group['hard dead ends'] > 0]['problem'].tolist()
+    problems_total = group[(group['hard dead ends'] > 0) | (group['soft dead ends'] > 0)]['problem'].tolist()
+    
+    # Limit problem names to 3 and add '...' if there are more
+    problems_hdd = problems_hdd[:3] + (['...'] if len(problems_hdd) > 3 else [])
+    problems_total = problems_total[:3] + (['...'] if len(problems_total) > 3 else [])
+    
+    return pd.Series({
+        'domain': domain,
+        'hard dead ends': hdd,
+        'problems with hard dead ends': ', '.join(problems_hdd),
+        'dead ends': total_dead_ends,
+        'problems with dead ends': ', '.join(problems_total)
+    })
+
+# Apply processing function and reset index
+result_df = df.groupby('domain').apply(process_data).reset_index(drop=True)
+
+# print the result adding some formatting, i.e., "|" to indicate the spacing between columns
+print(result_df.to_markdown(index=False, tablefmt="pipe"))

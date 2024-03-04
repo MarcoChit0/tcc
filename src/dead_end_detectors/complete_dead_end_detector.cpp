@@ -20,7 +20,6 @@ void CompleteDeadEndDetector::create_states_recursive_procedure(const int depth,
 
 void CompleteDeadEndDetector::create_states(const vec<Fact> &facts, set<State> &states)
 {
-    std::cout << "LOG::CompleteDeadEndDetector::create_states" << std::endl;
     create_states_recursive_procedure(0, facts, states);
 }
 
@@ -31,7 +30,6 @@ void CompleteDeadEndDetector::mark_goal_states_as_alive(
     set<State> &non_goal_states,
     StateActionPairToBoolMap &is_bad_state_action_pair)
 {
-    std::cout << "LOG::CompleteDeadEndDetector::mark_goal_states_as_alive" << std::endl;
     vec<State> stack;
     set<State> states_to_explore = states;
     stack.push_back(this->task.initial_state());

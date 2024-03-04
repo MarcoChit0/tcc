@@ -335,23 +335,54 @@ void set_step_and_policy_alarm()
     policy_alarm = 1 - sample_generation_alarm;
 }
 
-opt<std::shared_ptr<DeadEndDetector>> select_dead_end_detector(const std::string &dead_end_detector, const Task &task)
+enum DeadEndLabelsProgramFlow
+{
+    GENERATE_LABELS_AND_END_PROGRAM = 0,
+    GENERATE_LABELS_AND_CONTINUE_PROGRAM = 1,
+    LOAD_LABELS_AND_CONTINUE_PROGRAM = 2,
+};
+
+
+void select_dead_end_detector(const Task &task, str dead_end_detector, int dead_end_labels_program_flow, std::optional<std::shared_ptr<DeadEndDetector>> &optional_dead_end_detector)
 {
     if (dead_end_detector == "complete")
     {
-        return std::make_shared<CompleteDeadEndDetector>(task);
+        optional_dead_end_detector = std::make_shared<CompleteDeadEndDetector>(task);
     }
     else if(dead_end_detector == "reachable")
     {
-        return std::make_shared<ReachableDeadEndDetector>(task);
+        optional_dead_end_detector = std::make_shared<ReachableDeadEndDetector>(task);
     }
     else if (dead_end_detector == "none")
     {
-        return std::nullopt;
+        optional_dead_end_detector = std::nullopt;
     }
     else
     {
         throw std::domain_error("Invalid dead end detector.");
+    }
+
+    if(not optional_dead_end_detector.has_value())
+    {
+        return;
+    }
+
+    switch(dead_end_labels_program_flow)
+    {
+        case DeadEndLabelsProgramFlow::GENERATE_LABELS_AND_END_PROGRAM:
+            (*(optional_dead_end_detector))->label_states();
+            (*(optional_dead_end_detector))->save_labeled_states();
+            exit(0);
+            break;
+        case DeadEndLabelsProgramFlow::GENERATE_LABELS_AND_CONTINUE_PROGRAM:
+            (*(optional_dead_end_detector))->label_states();
+            (*(optional_dead_end_detector))->save_labeled_states();
+            break;
+        case DeadEndLabelsProgramFlow::LOAD_LABELS_AND_CONTINUE_PROGRAM:
+            (*(optional_dead_end_detector))->load_labeled_states();
+            break;
+        default:
+            throw std::domain_error("Invalid dead end labels program flow.");
     }
 }
 
@@ -364,27 +395,28 @@ int main(int argc, char **argv)
     std::cerr << "LOG::main::start of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
-    std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector = select_dead_end_detector(str(argv[16]), task);
-    (*(optional_dead_end_detector))->label_states();
-    // // commented for running only dead-end detector on server 
-    // int number_of_samples = std::atoi(argv[5]);
-    // int length = parse_length_data(argv[6], task);
-    // float porcentage = std::atof(argv[7]);
-    // percentage_timer = std::atof(argv[10]);
-    // sample_generation_alarm = std::atof(argv[11]);
-    // set_step_and_policy_alarm();
-    // percentage_memory_limit = std::atof(argv[12]);
-    // parse_concrete_states_generator(str(argv[14]));
-    // RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));
-    // State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]));
-    // SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
-    // Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
-    // Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);
+    std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector;
+    select_dead_end_detector(task, str(argv[16]), std::atoi(argv[17]), optional_dead_end_detector);
 
-    // AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
-    // Policy opt_solution = and_star.get_solution(task);
-    // // std::cout << opt_solution << std::endl;
-    // print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
+    // commented for running only dead-end detector on server 
+    int number_of_samples = std::atoi(argv[5]);
+    int length = parse_length_data(argv[6], task);
+    float porcentage = std::atof(argv[7]);
+    percentage_timer = std::atof(argv[10]);
+    sample_generation_alarm = std::atof(argv[11]);
+    set_step_and_policy_alarm();
+    percentage_memory_limit = std::atof(argv[12]);
+    parse_concrete_states_generator(str(argv[14]));
+    RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));
+    State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]));
+    SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
+    Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
+    Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);
+
+    AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
+    Policy opt_solution = and_star.get_solution(task);
+    // std::cout << opt_solution << std::endl;
+    print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     return 0;
 }

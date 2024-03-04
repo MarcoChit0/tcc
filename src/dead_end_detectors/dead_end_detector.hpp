@@ -3,8 +3,10 @@
 #include "../task.hpp"
 #include <unordered_set>
 
-#define DEAD_END_FILE_NAME "log.txt"
+#define DEAD_END_LOG_FILE "log.txt"
 #define DEAD_END_DIR "dead-end/"
+#define DEAD_END_LABEL_FILE "labeled_states.txt"
+
 
 enum StateLabel
 {
@@ -17,11 +19,19 @@ enum StateLabel
 
 static std::map<int, str> state_label_to_string = {
     {NO_LABEL, "no label"},
-    {HARD_DEAD_END, "difficult dead end"},
+    {HARD_DEAD_END, "hard dead end"},
     {EASY_DEAD_END, "easy dead end"},
     {WEAK_ALIVE, "weak alive"},
     {ALIVE, "alive"},
 }; 
+
+static std::map<str, int> string_to_state_label = {
+    {"no label", NO_LABEL},
+    {"hard dead end", HARD_DEAD_END},
+    {"easy dead end", EASY_DEAD_END},
+    {"weak alive", WEAK_ALIVE},
+    {"alive", ALIVE},
+};
 
 typedef std::pair<State, Action> StateActionPair;
 
@@ -41,7 +51,7 @@ class DeadEndDetector
         const Task &task;
         static map<int64_t, int> labeled_states;
         const str dead_end_directory = default_directory + DEAD_END_DIR;
-        const str file_name = DEAD_END_FILE_NAME;
+        
     public:
         DeadEndDetector(const Task &task) : task(task) {
             if(not directory_created_successfully(DEAD_END_DIR))
@@ -52,4 +62,6 @@ class DeadEndDetector
         
         virtual double is_deadend(const State &state) const = 0;
         virtual void label_states(const bool save_metadata=true) = 0;
+        void save_labeled_states() const;
+        void load_labeled_states();
 };

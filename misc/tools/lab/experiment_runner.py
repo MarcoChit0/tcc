@@ -1,5 +1,7 @@
+from email.mime import base
 import sys
 import faulthandler
+from enum import Enum
 
 from matplotlib.font_manager import json_dump
 faulthandler.enable()
@@ -38,6 +40,11 @@ class TerminalColor:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+class DeadEndProgramFlow(Enum):
+    GENERATE_LABELS_AND_END_PROGRAM = '0'
+    GENERATE_LABELS_AND_CONTINUE_PROGRAM = '1'
+    LOAD_LABELS_AND_CONTINUE_PROGRAM = '2'
+
 class ArgParsingNamespace(tap.Tap):
     number_of_threads: int
     time_limit: float
@@ -59,13 +66,14 @@ class ArgParsingNamespace(tap.Tap):
     walker: str
     concrete_states_generator: str
     regressor: str
-    dead_end_detection: str
+    dead_end_detector: str
+    dead_end_labels_program_flow: DeadEndProgramFlow
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=7)
         self.add_argument("-t", "--time-limit", help="(in minutes)", type=float, default=5)
         self.add_argument("-m", "--memory-limit", help="(in Gb)", type=float, default=64)
-        self.add_argument("--run-again-if-done", default=False, action='store_true')
+        self.add_argument("-ra", "--run-again-if-done", default=False, action='store_true')
         self.add_argument("-wl", "--white-list-file-path", type=str, default='./white-list.txt')
         self.add_argument("-bl", "--black-list-file-path", type=str, default='./black-list.txt')
         self.add_argument("-p", "--save-folder-name-prefix", type=str, default=f'test,v{datetime.date.today().isoformat()}')
@@ -82,11 +90,13 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-w", "--walker", type=str, default="stop")
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")
         self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
-        self.add_argument("-ded", "--dead-end-detection", type=str, default="none")
+        self.add_argument("-ded", "--dead-end-detector", type=str, default="none")
+        self.add_argument("-delpf", "--dead_end_labels_program_flow",choices=list(DeadEndProgramFlow) ,default=DeadEndProgramFlow.GENERATE_LABELS_AND_CONTINUE_PROGRAM, type=DeadEndProgramFlow, help=f"{list(DeadEndProgramFlow)}")
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
 apn.parse_args()
+basic_dir_structure = f'./misc/data/raw_results/{apn.save_folder_name_prefix}/'
 
 threads_semaphore = Semaphore(apn.number_of_threads)
 folder_creation_lock = Lock()
@@ -104,8 +114,8 @@ class TaskInfo:
     domain_file_path: str
     task_file_path: str
 
-def get_splitted_command(
-        task_info: TaskInfo, 
+class ThreadArguments:
+    def __init__(self, task_info: TaskInfo, 
         policy_heuristic: str, 
         state_heuristic: str, 
         number_of_samples: str, 
@@ -119,53 +129,102 @@ def get_splitted_command(
         walker: str,
         concrete_states_generator: str,
         regressor: str,
-        dead_end_detection: str,
-        save_folder_path: str,
-        ) -> list[str]:
-    return [
-        f'./build/and_star',
-        f'{task_info.domain_file_path}',
-        f'{task_info.task_file_path}',
-        f'{policy_heuristic}',
-        f'{state_heuristic}',
-        f'{number_of_samples}',
-        f'{length}',
-        f'{percentage_fsm}',
-        f'{sample_generator}',
-        f'{sample_treatment_class}',
-        f'{percentage_timer}',
-        f'{percentage_time_limit}',
-        f'{percentage_memory_limit}',
-        f'{walker}',
-        f'{concrete_states_generator}',
-        f'{regressor}',
-        f'{dead_end_detection}',
-        f'{save_folder_path}',
-    ]
+        dead_end_detector: str,
+        dead_end_labels_program_flow: DeadEndProgramFlow,
+        ):
+        global base_dir_structure
+        self.task_info = task_info
+        self.policy_heuristic = policy_heuristic
+        self.state_heuristic = state_heuristic
+        self.number_of_samples = number_of_samples
+        self.length = length
+        self.percentage_fsm = percentage_fsm
+        self.sample_generator = sample_generator
+        self.sample_treatment_class = sample_treatment_class
+        self.percentage_timer = percentage_timer
+        self.percentage_time_limit = percentage_time_limit
+        self.percentage_memory_limit = percentage_memory_limit
+        self.walker = walker
+        self.concrete_states_generator = concrete_states_generator
+        self.regressor = regressor
+        self.dead_end_detector = dead_end_detector
+        self.dead_end_labels_program_flow = dead_end_labels_program_flow
+        self.task = f'{task_info.domain_label}/{task_info.task_label}'
+        self.params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor},{dead_end_detector}"
+        self.save_folder_path = f'{basic_dir_structure}/{self.params}/{self.task}/'
+        self.cerr = os.path.join(self.save_folder_path, 'log.txt')
+        self.cout = os.path.join(self.save_folder_path, 'results.csv')
 
-def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str, number_of_samples:str, length:str, percentage_fsm: str, sample_generator: str, sample_treatment_class: str, percentage_timer: str, percentage_time_limit: str, percentage_memory_limit: str, walker: str, concrete_states_generator: str, regressor: str, dead_end_detector: str) -> None:
-    global apn, threads_semaphore, folder_creation_lock, process_creation_lock, print_lock
+    def get_splitted_command(self) -> list[str]:
+        return [
+            f'./build/and_star',
+            f'{self.task_info.domain_file_path}',
+            f'{self.task_info.task_file_path}',
+            f'{self.policy_heuristic}',
+            f'{self.state_heuristic}',
+            f'{self.number_of_samples}',
+            f'{self.length}',
+            f'{self.percentage_fsm}',
+            f'{self.sample_generator}',
+            f'{self.sample_treatment_class}',
+            f'{self.percentage_timer}',
+            f'{self.percentage_time_limit}',
+            f'{self.percentage_memory_limit}',
+            f'{self.walker}',
+            f'{self.concrete_states_generator}',
+            f'{self.regressor}',
+            f'{self.dead_end_detector}',
+            f'{self.dead_end_labels_program_flow.value}',
+            f'{self.save_folder_path}',
+        ]
+    
+    def to_json(self):
+        # Convert the instance attributes to a dictionary
+        params_dict = {
+            "task_info": {
+                "domain_label": self.task_info.domain_label,
+                "task_label": self.task_info.task_label,
+                "domain_file_path": self.task_info.domain_file_path,
+                "task_file_path": self.task_info.task_file_path
+            },
+            "policy_heuristic": self.policy_heuristic,
+            "state_heuristic": self.state_heuristic,
+            "number_of_samples": self.number_of_samples,
+            "length": self.length,
+            "percentage_fsm": self.percentage_fsm,
+            "sample_generator": self.sample_generator,
+            "sample_treatment_class": self.sample_treatment_class,
+            "percentage_timer": self.percentage_timer,
+            "percentage_time_limit": self.percentage_time_limit,
+            "percentage_memory_limit": self.percentage_memory_limit,
+            "walker": self.walker,
+            "concrete_states_generator": self.concrete_states_generator,
+            "regressor": self.regressor,
+            "dead_end_detector": self.dead_end_detector,
+            "dead_end_labels_program_flow": self.dead_end_labels_program_flow.value,
+            "task": self.task,
+            "params": self.params,
+            "save_folder_path": self.save_folder_path
+        }
+        # Convert the dictionary to a JSON string
+        return json.dumps(params_dict, indent=4)
 
-    basic_dir_structure = f'./misc/data/raw_results/{apn.save_folder_name_prefix}/'
-    params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor},{dead_end_detector}"
-    task = f'{task_info.domain_label}/{task_info.task_label}'
-    save_folder_path = f'{basic_dir_structure}/{params}/{task}/'
-    results_file = f'results.csv'
-    exp_log_file = f'log.txt'
+def run_thread(thread_arguments: ThreadArguments) -> None:
+    global apn, threads_semaphore, folder_creation_lock, process_creation_lock, print_lock, basic_dir_structure
 
-    if os.path.exists(os.path.join(save_folder_path, results_file)) and not apn.run_again_if_done: threads_semaphore.release(); return
+    if os.path.exists(thread_arguments.cout) and not apn.run_again_if_done: threads_semaphore.release(); return
 
     folder_creation_lock.acquire()
-    if not os.path.exists(save_folder_path): os.makedirs(save_folder_path)
+    if not os.path.exists(thread_arguments.save_folder_path): os.makedirs(thread_arguments.save_folder_path)
     folder_creation_lock.release()
 
     process_creation_lock.acquire(); time.sleep(0.1)
-    with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, policy_heuristic, state_heuristic, apn.save_folder_name_prefix)}\n')
+    with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, thread_arguments.policy_heuristic, thread_arguments.state_heuristic, apn.save_folder_name_prefix)}\n')
 
     # # for debugging purposes only:
     # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor,dead_end_detector ,save_folder_path)))
     # exit(1)
-    process = subprocess.Popen(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, save_folder_path), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
+    process = subprocess.Popen(thread_arguments.get_splitted_command(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()
 
     # process._sigint_wait_secs = 0
@@ -179,9 +238,9 @@ def run_thread(task_info: TaskInfo, policy_heuristic: str, state_heuristic: str,
         stdout, stderr = process.communicate()
 
     print_lock.acquire(); time.sleep(0.1)
-    print(f'domain: {task_info.domain_label}, task: {task_info.task_label}, policyh: {policy_heuristic}, stateh: {state_heuristic}, nsamples: {number_of_samples}, length: {length}, %fsm: {percentage_fsm}, generator: {sample_generator}, treatment: {sample_treatment_class}, %timer: {percentage_timer}, %tlimit: {percentage_time_limit}, %mlimit: {percentage_memory_limit}, walker: {walker}, concrete states gen: {concrete_states_generator}, regressor: {regressor}, dead end detector: {dead_end_detector}')
-    open(os.path.join(save_folder_path, results_file), 'w').write(stdout)
-    open(os.path.join(save_folder_path, exp_log_file), 'w').write(stderr)
+    print(thread_arguments.to_json())
+    open(thread_arguments.cout, "w").write(stdout)
+    open(thread_arguments.cerr, "w").write(stderr)
     print_lock.release()
 
     threads_semaphore.release()
@@ -234,8 +293,9 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                             for walker in apn.walker.split(','):
                                                 for concrete_states_generator in apn.concrete_states_generator.split(','):
                                                     for regressor in apn.regressor.split(','):
-                                                        for dead_end_detector in apn.dead_end_detection.split(','):
-                                                            yield Thread(target=run_thread, args=(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector))
+                                                        for dead_end_detector in apn.dead_end_detector.split(','):
+                                                            args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow)
+                                                            yield Thread(target=run_thread, args=[args])
 
                                         
 lock_file = open('/tmp/and-star-lab.lock', 'w')

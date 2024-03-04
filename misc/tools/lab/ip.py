@@ -108,12 +108,14 @@ def print_integer_programming(mapping_label_to_states, mapping_state_to_label, m
 import os
 domain = {}
 # .sas file
-path = "misc/data/raw_results/test,v2024-02-28/max-lookup-delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
-instances = [
-    "tireworld-spiky-2/p3/dead-end/labels.txt", 
-    # "tireworld-spiky/p1/dead-end/labels.txt",
-    "tireworld-triangle/p1/dead-end/labels.txt"
-]
+# path = "misc/data/raw_results/test,v2024-02-28/max-lookup-delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
+# instances = [
+#     "tireworld-spiky-2/p3/dead-end/labels.txt", 
+#     # "tireworld-spiky/p1/dead-end/labels.txt",
+#     "tireworld-triangle/p1/dead-end/labels.txt"
+# ]
+path = "misc/data/raw_results/test,v2024-02-29/max-lookup-delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
+instances = ["tireworld-triangle/p1/dead-end/labels.txt"]
 sas_path = "res/compiled_benchmarks/"
 for p in instances:
     states_file = os.path.join(path, p)

@@ -1,4 +1,4 @@
-(define (domain sokoban-sequential)
+(define (domain sokoban-non-deterministic)
   (:requirements :typing :action-costs)
   (:types thing location direction - object
           player stone - thing)

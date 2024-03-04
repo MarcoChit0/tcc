@@ -1,7 +1,7 @@
 #pragma once
 
 #include "dead_end_detector.hpp"
-#define DEAD_END_LABELS_FILE "labels.txt"
+#define DEAD_END_LABEL_TO_IP_FILE "labels.txt"
 #define DEAD_END_METADATA_FILE "metadata.txt"
 
 class ReachableDeadEndDetector : public DeadEndDetector

@@ -291,9 +291,14 @@ Task::Regressor *parse_regressor(str regressor_string)
     }
 }
 
-void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristic, AndStar &and_star, opt<Policy> opt_solution, int number_of_states_generated_on_state_heuristic_table = -1)
+void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristic, AndStar &and_star, opt<Policy> opt_solution,  std::optional<std::shared_ptr<DeadEndDetector>>& dead_end_detector, int number_of_states_generated_on_state_heuristic_table = -1)
 {
-    std::cout << "domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups,number_of_states_generated_on_state_heuristic_table" << std::endl;
+    str header = "domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups,number_of_states_generated_on_state_heuristic_table";
+    if(dead_end_detector.has_value())
+    {
+        header += "," + (*(dead_end_detector))->get_statistics_header();
+    }
+    std::cout << header << std::endl;
     std::cout << get_domain(str(argv[1]));                                                                            // domain
     std::cout << "," << get_problem(str(argv[2]));                                                                    // problem
     std::cout << "," << str(argv[3]);                                                                                 // policy_heuristic
@@ -319,6 +324,10 @@ void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristi
     std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1);                                       // solution_length
     std::cout << "," << (str(argv[3]) == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1; // number_of_lookups
     std::cout << "," << number_of_states_generated_on_state_heuristic_table;                                          // number_of_states_generated_on_state_heuristic_table
+    if(dead_end_detector.has_value())
+    {
+        std::cout << "," << (*(dead_end_detector))->get_statistics();
+    }
 }
 
 double percentage_timer = 0.1;
@@ -416,7 +425,7 @@ int main(int argc, char **argv)
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
     Policy opt_solution = and_star.get_solution(task);
     // std::cout << opt_solution << std::endl;
-    print_end(argv, task, policy_heuristic, and_star, opt_solution, state_heuristic->size());
+    print_end(argv, task, policy_heuristic, and_star, opt_solution, optional_dead_end_detector, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     return 0;
 }

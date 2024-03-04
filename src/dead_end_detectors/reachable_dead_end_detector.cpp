@@ -99,6 +99,10 @@ void ReachableDeadEndDetector::find_easy_dead_end_states(
     {
         if (this->labeled_states[state.id] == NO_LABEL)
         {
+            if(this->first_dead_end_detected_time == -1)
+            {
+                this->first_dead_end_detected_time = get_ellapsed_time();
+            }
             this->labeled_states[state.id] = EASY_DEAD_END;
             dead_end_states.insert(state);
             stack.push(state);
@@ -122,6 +126,10 @@ void ReachableDeadEndDetector::find_hard_dead_end_states(
     {
         if (this->labeled_states[state.id] == NO_LABEL)
         {
+            if(this->first_hard_dead_end_detected_time == -1)
+            {
+                this->first_hard_dead_end_detected_time = get_ellapsed_time();
+            }
             this->labeled_states[state.id] = HARD_DEAD_END;
             dead_end_states.insert(state);
             mark_bad_state_action_pairs(reversed_edges, state, dead_end_states, is_bad_state_action_pair);
@@ -267,6 +275,10 @@ void ReachableDeadEndDetector::mark_bad_state_action_pairs(
         State predecessor_state = pair_state_action.first;
         if (not have_good_actions(predecessor_state, is_bad_state_action_pair) and not this->labeled_states[predecessor_state.id] == ALIVE and not this->labeled_states[predecessor_state.id] == EASY_DEAD_END)
         {
+            if(this->first_dead_end_detected_time == -1)
+            {
+                this->first_dead_end_detected_time = get_ellapsed_time();
+            }
             this->labeled_states[predecessor_state.id] = HARD_DEAD_END;
             dead_end_states.insert(predecessor_state);
             mark_bad_state_action_pairs(reversed_edges, predecessor_state, dead_end_states, is_bad_state_action_pair);
@@ -276,8 +288,17 @@ void ReachableDeadEndDetector::mark_bad_state_action_pairs(
 
 double ReachableDeadEndDetector::is_deadend(const State &state) const
 {
-    if (this->labeled_states.at(state.id) == HARD_DEAD_END or this->labeled_states.at(state.id) == EASY_DEAD_END)
+    number_of_lookups++;
+    if (this->labeled_states.at(state.id) == HARD_DEAD_END)
     {
+        number_of_hard_dead_end_lookups++;
+        number_of_useful_lookups++;
+        return 1.0f;
+    }
+    else if (this->labeled_states.at(state.id) == EASY_DEAD_END)
+    {
+        number_of_easy_dead_end_lookups++;
+        number_of_useful_lookups++;
         return 1.0f;
     }
     else
@@ -316,6 +337,7 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
     set<State> dead_end_states;
     int number_of_dead_end_states;
     int iteration = 0;
+    bool first_dead_end_detected = false, first_hard_dead_end_detected = false;
     do
     {
         // 3.
@@ -339,8 +361,19 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
         { // dead ends that are not that interessing
             this->find_easy_dead_end_states(reversed_edges, states, dead_end_states, is_bad_state_action_pair);
         }
+        if(this->first_dead_end_detected_time != -1 and not first_dead_end_detected)
+        {
+            log_file << "4. First dead end detected at " << this->first_dead_end_detected_time << std::endl;
+            first_dead_end_detected = true;
+        }
+        if(this->first_hard_dead_end_detected_time != -1 and not first_hard_dead_end_detected)
+        {
+            log_file << "4. First hard dead end detected at " << this->first_hard_dead_end_detected_time << std::endl;
+            first_hard_dead_end_detected = true;
+        }
         log_file << "4. Number of dead end states after = " << dead_end_states.size() << std::endl;
         log_file << "4. Ended at " << get_ellapsed_time() << std::endl;
+
     } while (number_of_dead_end_states != dead_end_states.size());
 
     // 5.

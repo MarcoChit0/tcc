@@ -1,6 +1,10 @@
 #include "dead_end_detector.hpp"
 
 map<int64_t, int> DeadEndDetector::labeled_states = {};
+int64_t DeadEndDetector::number_of_lookups = 0;
+int64_t DeadEndDetector::number_of_useful_lookups = 0;
+int64_t DeadEndDetector::number_of_hard_dead_end_lookups = 0;
+int64_t DeadEndDetector::number_of_easy_dead_end_lookups = 0;
 
 void DeadEndDetector::save_labeled_states() const
 {
@@ -46,4 +50,19 @@ void DeadEndDetector::load_labeled_states()
         }
         file.close();
     }
+}
+
+str DeadEndDetector::get_statistics_header() const
+{
+    return "number_of_lookups,number_of_useful_lookups,number_of_hard_dead_end_lookups,number_of_easy_dead_end_lookups";
+}
+
+str DeadEndDetector::get_statistics() const
+{
+    str statistics = "";
+    statistics += std::to_string(number_of_lookups) + ",";
+    statistics += std::to_string(number_of_useful_lookups) + ",";
+    statistics += std::to_string(number_of_hard_dead_end_lookups) + ",";
+    statistics += std::to_string(number_of_easy_dead_end_lookups);
+    return statistics;
 }

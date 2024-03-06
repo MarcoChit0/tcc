@@ -60,6 +60,8 @@ class TypedObject(object):
 
 def parse_typed_list(alist, only_variables=False, constructor=TypedObject,
                      default_type="object"):
+    with open("parse_typed_list_log.txt", "w") as file:
+        file.write(f"alist: {alist}\n")
     result = []
     while alist:
         try:

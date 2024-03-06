@@ -2,9 +2,8 @@
 /and_star
 *.pyc
 *.png
-*.csv
-/experiments/
 *log*
 states*
 build/
 /misc/data/*
+labeled_states.txt

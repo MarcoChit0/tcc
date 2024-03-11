@@ -9,6 +9,7 @@
             (stone-at ?loc - location)
             (is-goal ?loc - location)
             (player-at ?loc - location)
+            (is-slippery ?loc - location)
             (move-dir ?from ?to - location ?dir - direction)
         )
 

@@ -4,13 +4,17 @@ import os
 # R, C
 # grid
 # where R and C are the number of rows and columns of the grid, respectively, and grid is a RxC matrix with the following elements:
-# '#' -> wall
-# '@' -> player
-# '$' -> stone
-# '.' -> goal
+# 'W' -> wall
+# 'P' -> player
+# 'B' -> stone
+# 'G' -> goal
+# 'S' -> slippery floor
 # ' ' -> empty
-# '+' -> player on goal
-# '*' -> stone on goal
+# '1' -> player on goal
+# '!' -> stone on goal
+# '~' -> player on slippery floor
+# '' -> stone on slippery floor
+# '^' -> goal on slippery floor
 # The output is a PDDL instance file.
 # A bord example is the following:
 # 5,7

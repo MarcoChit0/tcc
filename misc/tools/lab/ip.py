@@ -1,7 +1,6 @@
 from functools import partial
 import time
 
-from attr import has
 from pulp import *
 import pulp
 from collections import defaultdict
@@ -31,10 +30,10 @@ def map_fact_to_int(fact:str, domain):
 
 def print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, map_state_to_facts, mapping_states_to_hash, domain):
     has_completed = False
-    key_label = "difficult dead end"
+    key_label = "dead end"
     output_str = ""
 
-    for y in range(1, len(mapping_label_to_states[key_label]) + 1):
+    for y in range(0, len(mapping_label_to_states[key_label]) + 1):
         if has_completed:
             break
 
@@ -114,13 +113,15 @@ domain = {}
 #     # "tireworld-spiky/p1/dead-end/labels.txt",
 #     "tireworld-triangle/p1/dead-end/labels.txt"
 # ]
-path = "misc/data/raw_results/test,v2024-02-29/max-lookup-delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
-instances = ["tireworld-triangle/p1/dead-end/labels.txt"]
+path = "misc/data/raw_results/test,v2024-03-11/delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
+instances = ["tireworld-spiky-2/p2/dead-end/labels.txt"]
 sas_path = "res/compiled_benchmarks/"
 for p in instances:
     states_file = os.path.join(path, p)
     sas_file_name = p.split("/")[0] + "," + p.split("/")[1] + ".sas"
     sas_file = os.path.join(sas_path, sas_file_name)
+    var = ""
+    dsize = 0
     with open(sas_file, "r") as file:
         while True:
             if "end_metric" in file.readline():
@@ -138,6 +139,9 @@ for p in instances:
                 facts[file.readline().replace("\n", "")] = index
                 index += 1 
             domain[variable] = facts
+            if len(facts) > dsize:
+                dsize = len(facts)
+                var = variable
             assert file.readline() == "end_variable\n"
 
     generated_states = 0
@@ -154,19 +158,26 @@ for p in instances:
         
     states = set()
     facts = set()
-    mapping_label_to_states = defaultdict(set)
+    mapping_label_to_states = {}
     mapping_state_to_label = {}
-    mapping_label_to_facts = defaultdict(set)
-    mapping_state_to_facts = defaultdict(set)
+    mapping_label_to_facts = {}
+    mapping_state_to_facts = {}
     mapping_states_to_hash = {}
+    for fact in domain[var]:
+        mapping_label_to_states[fact] = defaultdict(set)
+        mapping_state_to_label[fact] = {}
+        mapping_label_to_facts[fact] = defaultdict(set)
+        mapping_state_to_facts[fact] = defaultdict(set)
+        mapping_states_to_hash[fact] = {}
     num_states = 0
     with open(states_file, "r") as file:
         for line in file.readlines():
             state, label = line.replace("\n", "").split(" -> ")
+            if 'dead end' in label:
+                label = 'dead end'
             variables = state.replace("[", "").replace("]", "").split(", ")
             v = {}
             for i in range(len(variables)):
-                print(variables[i])
                 variable, fact = variables[i].split(" = ")
                 v[variable] = fact
             s = State(v, label)
@@ -174,26 +185,33 @@ for p in instances:
             states.add(s)
             facts.update(v.values())
 
-            mapping_states_to_hash[s] = f"state_{num_states}"; num_states += 1
-            mapping_label_to_states[label].add(s)
-            mapping_state_to_label[s] = label
-            if label in mapping_label_to_facts:
-                mapping_label_to_facts[label].update(v.values())
+            mapping_states_to_hash[v[var]][s] = f"state_{num_states}"; num_states += 1
+            mapping_label_to_states[v[var]][label].add(s)
+            mapping_state_to_label[v[var]][s] = label
+            if label in mapping_label_to_facts[v[var]]:
+                mapping_label_to_facts[v[var]][label].update(v.values())
             else:
-                mapping_label_to_facts[label] = set(v.values())
-            mapping_state_to_facts[s] = set(v.values())
-    print("mapping_label_to_states")
-    print(mapping_label_to_states)
-    print("mapping_state_to_label")
-    print(mapping_state_to_label)
-    print("mapping_label_to_facts")
-    print(mapping_label_to_facts)
-    print("mapping_state_to_facts")
-    print(mapping_state_to_facts)
-    print("mapping_states_to_hash")
-    print(mapping_states_to_hash)
-    print("domain")
-    print(domain)
-    output = print_integer_programming(mapping_label_to_states, mapping_state_to_label, mapping_label_to_facts, mapping_state_to_facts, mapping_states_to_hash, domain)
-    with open(os.path.join(path, p.replace("labels.txt", "ip.txt")), "w") as file:
-        file.write(output)
+                mapping_label_to_facts[v[var]][label] = set(v.values())
+            mapping_state_to_facts[v[var]][s] = set(v.values())
+    
+        
+    output_file = os.path.join(path, p.replace("labels.txt", "ip.txt"))
+    with open(output_file, "w") as file:
+        file.write("")
+    count = 0
+    for fact in domain[var]:
+        count += 1
+        if len(mapping_label_to_states[fact]) == 0:
+            with open(output_file, "a") as file:
+                file.write("Run #{}\n".format(count))
+                file.write("var {} := {}\n".format(var, fact))
+                file.write("No states with dead-end label found\n\n")
+            continue
+        for state in mapping_label_to_states[fact]['dead end']:
+            print(state)
+        output = print_integer_programming(mapping_label_to_states[fact], mapping_state_to_label[fact], mapping_label_to_facts[fact], mapping_state_to_facts[fact], mapping_states_to_hash[fact], domain)
+        with open(output_file, "a") as file:
+            file.write("Run #{}\n".format(count))
+            file.write("var {} := {}\n".format(var, fact))
+            file.write(output)
+            file.write('\n')

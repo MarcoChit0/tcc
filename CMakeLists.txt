@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_COMPILER "${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-c++")
 set(CMAKE_C_COMPILER "${CONDA_PREFIX}/bin/x86_64-conda-linux-gnu-gcc")
 # default location of libtorch
-set(CMAKE_PREFIX_PATH "/home/${USER}/libtorch")
+set(CMAKE_PREFIX_PATH "/home/macsilva/libtorch")
 
 # Find external libraries
 find_package(Torch REQUIRED)

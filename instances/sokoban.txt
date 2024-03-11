@@ -1,1 +1,1 @@
-sokoban,p1
+sokoban,p2

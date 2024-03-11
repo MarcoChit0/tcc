@@ -160,6 +160,7 @@ void ReachableDeadEndDetector::mark_goal_states_as_alive(
             goal_states.insert(state);
             continue;
         }
+
         this->labeled_states[state.id] = NO_LABEL;
         non_goal_states.insert(state);
 

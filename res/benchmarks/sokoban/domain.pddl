@@ -6,21 +6,26 @@
         (:predicates 
             (is-clear ?loc - location)
             (at-goal ?loc - location)
-            (stone-at ?loc - location)
+            (box-at ?loc - location)
             (is-goal ?loc - location)
             (player-at ?loc - location)
+            (boots-at ?loc - location)
             (is-slippery ?loc - location)
+            (using-non-slippery-boots)
+            (alive)
             (move-dir ?from ?to - location ?dir - direction)
         )
 
         (
-            :action move
+            :action move-non-slippery
             :parameters (?from ?to - location ?dir - direction)
             :precondition 
             (
                 and 
+                    (alive)
                     (player-at ?from)
                     (is-clear ?to)
+                    (not (is-slippery ?to))
                     (move-dir ?from ?to ?dir)
             )
             :effect       
@@ -32,148 +37,257 @@
                     (player-at ?to)
             )
         )
-
         (
-            :action push-stone-clear
+            :action move-slippery
+            :parameters (?from ?to - location ?dir - direction)
+            :precondition 
+            (
+                and 
+                    (alive)
+                    (player-at ?from)
+                    (is-clear ?to)
+                    (is-slippery ?to)
+                    (move-dir ?from ?to ?dir)
+            )
+            :effect       
+            (
+                and 
+                    (not (player-at ?from))
+                    (is-clear ?from)
+                    (not (is-clear ?to))
+                    (player-at ?to)
+                    (when
+                        (not (using-non-slippery-boots))
+                        (oneof 
+                            ()              ;; stays alive 
+                            (not (alive))   ;; fall and die
+                        )
+                    )
+            )
+        )
+        (
+            :action push-box-clear-to-slippery-location
             :parameters 
             (
-                ?player_pos ?stone_pos ?desired_stone_pos ?undesired_stone_pos - location
+                ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
                 ?dir - direction
             )
             :precondition
             (
                 and
-                    ;; player and stone at defined positions
+                    ;; player and box at defined positions
                     (player-at ?player_pos)
-                    (stone-at ?stone_pos)
+                    (box-at ?box_pos)
                     
                     ;; all positions must be connected
-                    (move-dir ?player_pos ?stone_pos ?dir)
-                    (move-dir ?stone_pos ?desired_stone_pos ?dir)
-                    (move-dir ?desired_stone_pos ?undesired_stone_pos ?dir)
+                    (move-dir ?player_pos ?box_pos ?dir)
+                    (move-dir ?box_pos ?desired_box_pos ?dir)
+                    (move-dir ?desired_box_pos ?undesired_box_pos ?dir)
 
                     ;; desired and undesired positions must be clear
-                    (is-clear ?desired_stone_pos)
-                    (is-clear ?undesired_stone_pos)
+                    (is-clear ?desired_box_pos)
+                    (is-clear ?undesired_box_pos)
+
+                    ;; desired location is slippery -> box goes to desired position | box goes to undesired position
+                    (is-slippery ?desired_box_pos)
             )
             :effect
             (
                 oneof        
                 (
-                    ;; move stone to desired position, and player stays on previous stone position
+                    ;; move box to desired position, and player stays on previous box position
                     and
-                        ;; remove player and stone from theirs previous positions
+                        ;; remove player and box from theirs previous positions
                         (not (player-at ?player_pos))
-                        (not (stone-at ?stone_pos))
+                        (not (box-at ?box_pos))
 
-                        ;; place player on stone's previous position and stone on desired stone position
-                        (player-at ?stone_pos)
-                        (stone-at ?desired_stone_pos)
+                        ;; place player on box's previous position and box on desired box position
+                        (player-at ?box_pos)
+                        (box-at ?desired_box_pos)
 
-                        ;; clear player position and mark desired stone position as occupied
+                        ;; clear player position and mark desired box position as occupied
                         (is-clear ?player_pos)
-                        (not (is-clear ?desired_stone_pos))
+                        (not (is-clear ?desired_box_pos))
 
-                        ;; if stone was placed upon a goal, mark it
+                        ;; if box was placed upon a goal, mark it
                         (
                             when
-                                (is-goal ?desired_stone_pos)
-                                (at-goal ?desired_stone_pos)
+                                (is-goal ?desired_box_pos)
+                                (at-goal ?desired_box_pos)
                         )
 
-                        ;; if the previous position the stone were in was a goal, turn off the mark
+                        ;; if the previous position the box were in was a goal, turn off the mark
                         (
                             when
-                                (is-goal ?stone_pos)
-                                (not (at-goal ?stone_pos))
+                                (is-goal ?box_pos)
+                                (not (at-goal ?box_pos))
                         )
                 )
                 (
-                    ;; move stone to undesired position, and player stays on previous stone position
+                    ;; move box to undesired position, and player stays on previous box position
                     and
-                        ;; remove player and stone from theirs previous positions
+                        ;; remove player and box from theirs previous positions
                         (not (player-at ?player_pos))
-                        (not (stone-at ?stone_pos))
+                        (not (box-at ?box_pos))
 
-                        ;; place player on stone's previous position and stone on undesired stone position
-                        (player-at ?stone_pos)
-                        (stone-at ?undesired_stone_pos)
+                        ;; place player on box's previous position and box on undesired box position
+                        (player-at ?box_pos)
+                        (box-at ?undesired_box_pos)
 
-                        ;; clear player position and mark desired stone position as occupied
+                        ;; clear player position and mark desired box position as occupied
                         (is-clear ?player_pos)
-                        (not (is-clear ?undesired_stone_pos))
+                        (not (is-clear ?undesired_box_pos))
 
-                        ;; if stone was placed upon a goal, mark it
+                        ;; if box was placed upon a goal, mark it
                         (
                             when
-                                (is-goal ?undesired_stone_pos)
-                                (at-goal ?undesired_stone_pos)
+                                (is-goal ?undesired_box_pos)
+                                (at-goal ?undesired_box_pos)
                         )
 
-                        ;; if the previous position the stone were in was a goal, turn off the mark
+                        ;; if the previous position the box were in was a goal, turn off the mark
                         (
                             when
-                                (is-goal ?stone_pos)
-                                (not (at-goal ?stone_pos))
+                                (is-goal ?box_pos)
+                                (not (at-goal ?box_pos))
                         )
                 )
 
             )
 
         )
-(
-            :action push-stone-not-clear
+        (
+            :action push-box-to-non-slippery-location
             :parameters 
             (
-                ?player_pos ?stone_pos ?desired_stone_pos ?undesired_stone_pos - location
+                ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
                 ?dir - direction
             )
             :precondition
             (
                 and
-                    ;; player and stone at defined positions
+                    ;; player and box at defined positions
                     (player-at ?player_pos)
-                    (stone-at ?stone_pos)
+                    (box-at ?box_pos)
                     
                     ;; all positions must be connected
-                    (move-dir ?player_pos ?stone_pos ?dir)
-                    (move-dir ?stone_pos ?desired_stone_pos ?dir)
-                    (move-dir ?desired_stone_pos ?undesired_stone_pos ?dir)
+                    (move-dir ?player_pos ?box_pos ?dir)
+                    (move-dir ?box_pos ?desired_box_pos ?dir)
 
-                    ;; desired position must be clear, while undesired must not be clear
-                    (is-clear ?desired_stone_pos)
-                    (not (is-clear ?undesired_stone_pos))
+                    ;; desired and undesired positions must be clear
+                    (is-clear ?desired_box_pos)
+
+                    ;; desired position is not slippery -> box stays on the desired position
+                    (not (is-slippery ?desired_box_pos))
             )
             :effect
             (
-                ;; move stone to desired position, since it cannot make an undesired movimente
+
+                    ;; move box to desired position, and player stays on previous box position
+                    and
+                        ;; remove player and box from theirs previous positions
+                        (not (player-at ?player_pos))
+                        (not (box-at ?box_pos))
+
+                        ;; place player on box's previous position and box on desired box position
+                        (player-at ?box_pos)
+                        (box-at ?desired_box_pos)
+
+                        ;; clear player position and mark desired box position as occupied
+                        (is-clear ?player_pos)
+                        (not (is-clear ?desired_box_pos))
+
+                        ;; if box was placed upon a goal, mark it
+                        (
+                            when
+                                (is-goal ?desired_box_pos)
+                                (at-goal ?desired_box_pos)
+                        )
+
+                        ;; if the previous position the box were in was a goal, turn off the mark
+                        (
+                            when
+                                (is-goal ?box_pos)
+                                (not (at-goal ?box_pos))
+                        )
+            )
+        )
+        (
+            :action push-box-not-clear
+            :parameters 
+            (
+                ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
+                ?dir - direction
+            )
+            :precondition
+            (
                 and
-                    ;; remove player and stone from theirs previous positions
+                    ;; player and box at defined positions
+                    (player-at ?player_pos)
+                    (box-at ?box_pos)
+                    
+                    ;; all positions must be connected
+                    (move-dir ?player_pos ?box_pos ?dir)
+                    (move-dir ?box_pos ?desired_box_pos ?dir)
+                    (move-dir ?desired_box_pos ?undesired_box_pos ?dir)
+
+                    ;; desired position must be clear, while undesired must not be clear
+                    (is-clear ?desired_box_pos)
+                    (not (is-clear ?undesired_box_pos))
+            )
+            :effect
+            (
+                ;; move box to desired position, since it cannot make an undesired movimente
+                and
+                    ;; remove player and box from theirs previous positions
                     (not (player-at ?player_pos))
-                    (not (stone-at ?stone_pos))
+                    (not (box-at ?box_pos))
 
-                    ;; place player on stone's previous position and stone on desired stone position
-                    (player-at ?stone_pos)
-                    (stone-at ?desired_stone_pos)
+                    ;; place player on box's previous position and box on desired box position
+                    (player-at ?box_pos)
+                    (box-at ?desired_box_pos)
 
-                    ;; clear player position and mark desired stone position as occupied
+                    ;; clear player position and mark desired box position as occupied
                     (is-clear ?player_pos)
-                    (not (is-clear ?desired_stone_pos))
+                    (not (is-clear ?desired_box_pos))
 
-                    ;; if stone was placed upon a goal, mark it
+                    ;; if box was placed upon a goal, mark it
                     (
                         when
-                            (is-goal ?desired_stone_pos)
-                            (at-goal ?desired_stone_pos)
+                            (is-goal ?desired_box_pos)
+                            (at-goal ?desired_box_pos)
                     )
 
-                    ;; if the previous position the stone were in was a goal, turn off the mark
+                    ;; if the previous position the box were in was a goal, turn off the mark
                     (
                         when
-                            (is-goal ?stone_pos)
-                            (not (at-goal ?stone_pos))
+                            (is-goal ?box_pos)
+                            (not (at-goal ?box_pos))
                     )
                 
+            )
+        )
+        (
+            :action put-non-slippery-boots
+            :parameters (?player_pos ?boots_pos - location)
+            :precondition
+            (
+                and
+                    (player-at ?player_pos)
+                    (boots-at ?boots_pos)
+                    
+                    ;; boots should be on reach 
+                    (exists 
+                        (?dir - direction)
+                        (move-dir ?player_pos ?boots_pos ?dir)
+                    )
+            )
+            :effect
+            (
+                and
+                    (using-non-slippery-boots)
+                    (not (boots-at ?boots_pos))
+                    (is-clear ?boots_pos)
             )
         )
 )

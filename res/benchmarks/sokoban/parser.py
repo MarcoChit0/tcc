@@ -4,28 +4,27 @@ import os
 # R, C
 # grid
 # where R and C are the number of rows and columns of the grid, respectively, and grid is a RxC matrix with the following elements:
-# 'W' -> wall
-# 'P' -> player
-# 'B' -> stone
-# 'G' -> goal
-# 'S' -> slippery floor
+# '#' -> wall
 # ' ' -> empty
-# '1' -> player on goal
-# '!' -> stone on goal
-# '2' -> player on slippery floor
-# '@' -> stone on slippery floor
-# '~' -> goal on slippery floor
-# '3' -> player on goal on slippery floor
-# '#' -> stone on goal on slippery floor
-
-# The output is a PDDL instance file.
-# A bord example is the following:
-# 5,7
-# #######
-# #    ##
-# # @$. #
-# #    ##
-# #######
+# '*' -> goal
+# '~' -> slipper floor
+# '.' -> goal on slipper floor
+# '0' -> player
+# '1' -> box
+# '2' -> boots
+# '3' -> player on slipper floor
+# '4' -> box on slipper floor
+# '5' -> boots on slipper floor
+# '6' -> player on goal
+# '7' -> box on goal
+# '8' -> boots on goal
+# '9' -> player on goal on slipper floor
+# 'A' -> box on goal on slipper floor
+# 'B' -> boots on goal on slipper floor
+# 'C' -> player with boots
+# 'D' -> player with boots on slipper floor
+# 'E' -> player with boots on goal
+# 'F' -> player with boots on goal on slipper floor
 
 board_path = "res/benchmarks/sokoban/boards/"
 instance_path = board_path.replace("boards/", "")
@@ -40,13 +39,33 @@ for instance_file in os.listdir(board_path):
 
     grid_elements = {
         'wall': '#',
-        'player': '@',
-        'stone': '$',
-        'goal': '.',
         'empty': ' ',
-        'player_on_goal': '+',
-        'stone_on_goal': '*'
+        'goal': '*',
+        'slipper_floor': '~',
+        'goal_on_slipper_floor': '.',
+        'player': '0',
+        'box': '1',
+        'boots': '2',
+        'player_on_slipper_floor': '3',
+        'box_on_slipper_floor': '4',
+        'boots_on_slipper_floor': '5',
+        'player_on_goal': '6',
+        'box_on_goal': '7',
+        'boots_on_goal': '8',
+        'player_on_goal_on_slipper_floor': '9',
+        'box_on_goal_on_slipper_floor': 'A',
+        'boots_on_goal_on_slipper_floor': 'B',
+        'player_with_boots': 'C',
+        'player_with_boots_on_slipper_floor': 'D',
+        'player_with_boots_on_goal': 'E',
+        'player_with_boots_on_goal_on_slipper_floor': 'F'
     }
+
+    player_values = [value for key, value in grid_elements.items() if "player" in key]
+    box_values = [value for key, value in grid_elements.items() if "box" in key]
+    boots_values = [value for key, value in grid_elements.items() if "boots" in key]
+    goal_values = [value for key, value in grid_elements.items() if "goal" in key]
+    slippery_values = [value for key, value in grid_elements.items() if "slipper" in key]
 
     elements_map = {}
     for key, value in grid_elements.items():
@@ -85,32 +104,51 @@ for instance_file in os.listdir(board_path):
 
     for i in range(row):
         for j in range(column):
-            # initial_predicates.append(f"\n;; position r{i}c{j} is \'{elements_map[grid[i][j]]}\'")
-            if grid[i][j] == grid_elements['goal']:
-                initial_predicates.append(f"(is-goal r{i}c{j})")
+            # debug only
+            initial_predicates.append(f"\n")
+            initial_predicates.append(f";; r{i}c{j} - {elements_map[grid[i][j]]}")
+            
+            # clear locations
+            if grid[i][j] in [grid_elements['goal'], grid_elements['empty'], grid_elements['slipper_floor'], grid_elements['goal_on_slipper_floor']]:
                 initial_predicates.append(f"(is-clear r{i}c{j})")
-                initial_predicates.extend(apply_movements(i, j, grid))
-                goal_predicates.append(f"(at-goal r{i}c{j})")
-            elif grid[i][j] == grid_elements['empty']:
-                initial_predicates.append(f"(is-clear r{i}c{j})")
-                initial_predicates.extend(apply_movements(i, j, grid))
-            elif grid[i][j] == grid_elements['player']:
-                initial_predicates.append(f"(player-at r{i}c{j})")
-                initial_predicates.extend(apply_movements(i, j, grid))
-            elif grid[i][j] == grid_elements['stone']:
-                initial_predicates.append(f"(stone-at r{i}c{j})")
-                initial_predicates.extend(apply_movements(i, j, grid))
-            elif grid[i][j] == grid_elements['player_on_goal']:
-                initial_predicates.append(f"(is-goal r{i}c{j})")
-                initial_predicates.append(f"(player-at r{i}c{j})")
-                initial_predicates.extend(apply_movements(i, j, grid))
-            elif grid[i][j] == grid_elements['stone_on_goal']:
-                initial_predicates.append(f"(is-goal r{i}c{j})")
-                initial_predicates.append(f"(stone-at r{i}c{j})")
+
+            # box at-goal
+            if grid[i][j] in [grid_elements['box_on_goal'], grid_elements['box_on_goal_on_slipper_floor']]:
                 initial_predicates.append(f"(at-goal r{i}c{j})")
+
+            # player with boots
+            if grid[i][j] in [grid_elements['player_with_boots'], grid_elements['player_with_boots_on_slipper_floor'], grid_elements['player_with_boots_on_goal'], grid_elements['player_with_boots_on_goal_on_slipper_floor']]:
+                initial_predicates.append(f"(using-non-slippery-boots)")
+
+            if grid[i][j] in player_values:
+                initial_predicates.append(f"(player-at r{i}c{j})")
+                initial_predicates.append(f"(alive)")
+            
+            if grid[i][j] in box_values:
+                initial_predicates.append(f"(box-at r{i}c{j})")
+            
+            if grid[i][j] in boots_values:
+                initial_predicates.append(f"(boots-at r{i}c{j})")
+
+            if grid[i][j] in slippery_values:
+                initial_predicates.append(f"(slippery-floor r{i}c{j})")
+
+            if grid[i][j] in goal_values:
+                goal_predicates.append(f"(at-goal r{i}c{j})")
+                initial_predicates.append(f"(is-goal r{i}c{j})")
+
+            # apply possible movements
+            if not grid[i][j] == grid_elements['wall']:
                 initial_predicates.extend(apply_movements(i, j, grid))
 
     with open(os.path.join(instance_path, f"{instance}.pddl"), "w") as file:
+        for i in range(row):
+            file.write(';;\t')
+            for j in range(column):
+                file.write(grid[i][j])
+            file.write("\n")
+        file.write("\n")
+
         file.write(f'(define (problem {instance}-sokoban-non-deterministic)\n')
         file.write(f'\t(:domain sokoban-non-deterministic)\n')
         file.write(f'\t(:objects\n')

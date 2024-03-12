@@ -12,9 +12,12 @@ import os
 # ' ' -> empty
 # '1' -> player on goal
 # '!' -> stone on goal
-# '~' -> player on slippery floor
-# '' -> stone on slippery floor
-# '^' -> goal on slippery floor
+# '2' -> player on slippery floor
+# '@' -> stone on slippery floor
+# '~' -> goal on slippery floor
+# '3' -> player on goal on slippery floor
+# '#' -> stone on goal on slippery floor
+
 # The output is a PDDL instance file.
 # A bord example is the following:
 # 5,7

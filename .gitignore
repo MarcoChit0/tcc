@@ -7,5 +7,4 @@ states*
 build/
 /misc/data/*
 labeled_states.txt
-/misc/data/log.txt
 /experiments/*

@@ -1,6 +1,6 @@
 from functools import partial
 import time
-
+import re
 from pulp import *
 import pulp
 from collections import defaultdict
@@ -113,8 +113,8 @@ domain = {}
 #     # "tireworld-spiky/p1/dead-end/labels.txt",
 #     "tireworld-triangle/p1/dead-end/labels.txt"
 # ]
-path = "misc/data/raw_results/test,v2024-03-11/delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
-instances = ["tireworld-spiky-2/p2/dead-end/labels.txt"]
+path = "misc/data/raw_results/test,v2024-03-11/delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,reachable/"
+instances = ["first-responders/fr-p_4_3/dead-end/labels.txt"]
 sas_path = "res/compiled_benchmarks/"
 for p in instances:
     states_file = os.path.join(path, p)
@@ -137,7 +137,7 @@ for p in instances:
             index = 0
             for _ in range(domain_size):
                 facts[file.readline().replace("\n", "")] = index
-                index += 1 
+                index += 1
             domain[variable] = facts
             if len(facts) > dsize:
                 dsize = len(facts)
@@ -170,22 +170,31 @@ for p in instances:
         mapping_state_to_facts[fact] = defaultdict(set)
         mapping_states_to_hash[fact] = {}
     num_states = 0
+
+    # Modification starts here
     with open(states_file, "r") as file:
         for line in file.readlines():
-            state, label = line.replace("\n", "").split(" -> ")
+            line = line.strip()  # Trim newline and spaces at both ends
+            state_label_split = line.split(" -> ")
+            if len(state_label_split) != 2:
+                continue  # Skip malformed lines
+            state, label = state_label_split
             if 'dead end' in label:
                 label = 'dead end'
-            variables = state.replace("[", "").replace("]", "").split(", ")
+
+            # Use regex to extract variables and facts within the state string
+            variables_matches = re.findall(r"(\w+)\s*=\s*((?:Atom|NegatedAtom)\s*[-|\w]*\([^\)]*\))", state)
             v = {}
-            for i in range(len(variables)):
-                variable, fact = variables[i].split(" = ")
+            for variable, fact in variables_matches:
                 v[variable] = fact
+
             s = State(v, label)
 
             states.add(s)
             facts.update(v.values())
 
-            mapping_states_to_hash[v[var]][s] = f"state_{num_states}"; num_states += 1
+            mapping_states_to_hash[v[var]][s] = f"state_{num_states}"
+            num_states += 1
             mapping_label_to_states[v[var]][label].add(s)
             mapping_state_to_label[v[var]][s] = label
             if label in mapping_label_to_facts[v[var]]:
@@ -193,7 +202,6 @@ for p in instances:
             else:
                 mapping_label_to_facts[v[var]][label] = set(v.values())
             mapping_state_to_facts[v[var]][s] = set(v.values())
-    
         
     output_file = os.path.join(path, p.replace("labels.txt", "ip.txt"))
     with open(output_file, "w") as file:
@@ -207,8 +215,7 @@ for p in instances:
                 file.write("var {} := {}\n".format(var, fact))
                 file.write("No states with dead-end label found\n\n")
             continue
-        for state in mapping_label_to_states[fact]['dead end']:
-            print(state)
+
         output = print_integer_programming(mapping_label_to_states[fact], mapping_state_to_label[fact], mapping_label_to_facts[fact], mapping_state_to_facts[fact], mapping_states_to_hash[fact], domain)
         with open(output_file, "a") as file:
             file.write("Run #{}\n".format(count))

@@ -1,7 +1,7 @@
 (
     define 
         (domain sokoban-non-deterministic)
-        (:requirements :typing :strips :non-deterministic)
+        (:requirements :typing :strips :non-deterministic :disjunctive-preconditions :existential-preconditions :universal-preconditions)
         (:types location direction)
         (:predicates 
             (is-clear ?loc - location)
@@ -59,14 +59,14 @@
                     (when
                         (not (using-non-slippery-boots))
                         (oneof 
-                            ()              ;; stays alive 
+                            (and)           ;; stays alive 
                             (not (alive))   ;; fall and die
                         )
                     )
             )
         )
         (
-            :action push-box-clear-to-slippery-location
+            :action push-box-with-slippery-effect
             :parameters 
             (
                 ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
@@ -75,6 +75,8 @@
             :precondition
             (
                 and
+                    (alive)
+
                     ;; player and box at defined positions
                     (player-at ?player_pos)
                     (box-at ?box_pos)
@@ -94,8 +96,8 @@
             :effect
             (
                 oneof        
+                ;; move box to desired position, and player stays on previous box position
                 (
-                    ;; move box to desired position, and player stays on previous box position
                     and
                         ;; remove player and box from theirs previous positions
                         (not (player-at ?player_pos))
@@ -123,8 +125,8 @@
                                 (not (at-goal ?box_pos))
                         )
                 )
+                ;; move box to undesired position, and player stays on previous box position
                 (
-                    ;; move box to undesired position, and player stays on previous box position
                     and
                         ;; remove player and box from theirs previous positions
                         (not (player-at ?player_pos))
@@ -157,7 +159,7 @@
 
         )
         (
-            :action push-box-to-non-slippery-location
+            :action push-box-without-slippery-effect
             :parameters 
             (
                 ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
@@ -166,6 +168,8 @@
             :precondition
             (
                 and
+                    (alive)
+
                     ;; player and box at defined positions
                     (player-at ?player_pos)
                     (box-at ?box_pos)
@@ -173,12 +177,17 @@
                     ;; all positions must be connected
                     (move-dir ?player_pos ?box_pos ?dir)
                     (move-dir ?box_pos ?desired_box_pos ?dir)
+                    (move-dir ?desired_box_pos ?undesired_box_pos ?dir)
 
-                    ;; desired and undesired positions must be clear
+                    ;; desired position must be clear
                     (is-clear ?desired_box_pos)
 
-                    ;; desired position is not slippery -> box stays on the desired position
-                    (not (is-slippery ?desired_box_pos))
+                    ;; for the box stop on the desired position without the possibility of and undesired effect:
+                    (
+                        or
+                            (not (is-clear ?undesired_box_pos))
+                            (not (is-slippery ?desired_box_pos))
+                    )
             )
             :effect
             (
@@ -213,66 +222,13 @@
             )
         )
         (
-            :action push-box-not-clear
-            :parameters 
-            (
-                ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
-                ?dir - direction
-            )
-            :precondition
-            (
-                and
-                    ;; player and box at defined positions
-                    (player-at ?player_pos)
-                    (box-at ?box_pos)
-                    
-                    ;; all positions must be connected
-                    (move-dir ?player_pos ?box_pos ?dir)
-                    (move-dir ?box_pos ?desired_box_pos ?dir)
-                    (move-dir ?desired_box_pos ?undesired_box_pos ?dir)
-
-                    ;; desired position must be clear, while undesired must not be clear
-                    (is-clear ?desired_box_pos)
-                    (not (is-clear ?undesired_box_pos))
-            )
-            :effect
-            (
-                ;; move box to desired position, since it cannot make an undesired movimente
-                and
-                    ;; remove player and box from theirs previous positions
-                    (not (player-at ?player_pos))
-                    (not (box-at ?box_pos))
-
-                    ;; place player on box's previous position and box on desired box position
-                    (player-at ?box_pos)
-                    (box-at ?desired_box_pos)
-
-                    ;; clear player position and mark desired box position as occupied
-                    (is-clear ?player_pos)
-                    (not (is-clear ?desired_box_pos))
-
-                    ;; if box was placed upon a goal, mark it
-                    (
-                        when
-                            (is-goal ?desired_box_pos)
-                            (at-goal ?desired_box_pos)
-                    )
-
-                    ;; if the previous position the box were in was a goal, turn off the mark
-                    (
-                        when
-                            (is-goal ?box_pos)
-                            (not (at-goal ?box_pos))
-                    )
-                
-            )
-        )
-        (
             :action put-non-slippery-boots
             :parameters (?player_pos ?boots_pos - location)
             :precondition
             (
                 and
+                    (alive)
+
                     (player-at ?player_pos)
                     (boots-at ?boots_pos)
                     

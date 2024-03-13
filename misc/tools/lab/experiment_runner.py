@@ -78,7 +78,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-bl", "--black-list-file-path", type=str, default='./black-list.txt')
         self.add_argument("-p", "--save-folder-name-prefix", type=str, default=f'test,v{datetime.date.today().isoformat()}')
         self.add_argument("-sh", "--state-heuristic", type=str, default='trie-star')
-        self.add_argument("-ph", "--policy-heuristic", type=str, default='max-lookup-delta-nearest')
+        self.add_argument("-ph", "--policy-heuristic", type=str, default='delta-nearest')
         self.add_argument("-ns", "--number-of-samples", type=str, default="100")
         self.add_argument("-l", "--length", type=str, default="facts-over-effects-mean-over-actions-mean")
         self.add_argument("-pfsm", "--percentage-fsm", type=str, default="0.2")

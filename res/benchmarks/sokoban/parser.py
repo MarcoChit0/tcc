@@ -81,6 +81,7 @@ for instance_file in os.listdir(board_path):
 
     object_predicates = ["r{}c{} - location".format(i, j) for i in range(row) for j in range(column)] + ["{} - direction".format(dir) for dir in directions.keys()]
     initial_predicates = []
+    # goal_predicates = [f"(alive)"]
     goal_predicates = []
 
     def is_good_move(i, j, dir, grid):
@@ -131,7 +132,7 @@ for instance_file in os.listdir(board_path):
                 initial_predicates.append(f"(boots-at r{i}c{j})")
 
             if grid[i][j] in slippery_values:
-                initial_predicates.append(f"(slippery-floor r{i}c{j})")
+                initial_predicates.append(f"(is-slippery r{i}c{j})")
 
             if grid[i][j] in goal_values:
                 goal_predicates.append(f"(at-goal r{i}c{j})")

@@ -1,15 +1,15 @@
 ;;	#######
-;;	#    2#
-;;	#     #
-;;	# #1# #
-;;	#.#0#.#
-;;	# #4# #
-;;	#     #
-;;	#     #
-;;	#     #
+;;	#~~~~~#
+;;	#~~~~~#
+;;	#~#4#~#
+;;	#.#D#.#
+;;	#~#4#~#
+;;	#~~~~~#
+;;	#~~~~~#
+;;	#~~~~~#
 ;;	#######
 
-(define (problem p2-sokoban-non-deterministic)
+(define (problem p5-sokoban-non-deterministic)
 	(:domain sokoban-non-deterministic)
 	(:objects
 		r0c0 - location
@@ -115,35 +115,40 @@
 		;; r1c0 - wall
 		
 
-		;; r1c1 - empty
+		;; r1c1 - slipper_floor
 		(is-clear r1c1)
+		(is-slippery r1c1)
 		(move-dir r1c1 r2c1 down)
 		(move-dir r1c1 r1c2 right)
 		
 
-		;; r1c2 - empty
+		;; r1c2 - slipper_floor
 		(is-clear r1c2)
+		(is-slippery r1c2)
 		(move-dir r1c2 r2c2 down)
 		(move-dir r1c2 r1c1 left)
 		(move-dir r1c2 r1c3 right)
 		
 
-		;; r1c3 - empty
+		;; r1c3 - slipper_floor
 		(is-clear r1c3)
+		(is-slippery r1c3)
 		(move-dir r1c3 r2c3 down)
 		(move-dir r1c3 r1c2 left)
 		(move-dir r1c3 r1c4 right)
 		
 
-		;; r1c4 - empty
+		;; r1c4 - slipper_floor
 		(is-clear r1c4)
+		(is-slippery r1c4)
 		(move-dir r1c4 r2c4 down)
 		(move-dir r1c4 r1c3 left)
 		(move-dir r1c4 r1c5 right)
 		
 
-		;; r1c5 - boots
-		(boots-at r1c5)
+		;; r1c5 - slipper_floor
+		(is-clear r1c5)
+		(is-slippery r1c5)
 		(move-dir r1c5 r2c5 down)
 		(move-dir r1c5 r1c4 left)
 		
@@ -154,37 +159,42 @@
 		;; r2c0 - wall
 		
 
-		;; r2c1 - empty
+		;; r2c1 - slipper_floor
 		(is-clear r2c1)
+		(is-slippery r2c1)
 		(move-dir r2c1 r1c1 up)
 		(move-dir r2c1 r3c1 down)
 		(move-dir r2c1 r2c2 right)
 		
 
-		;; r2c2 - empty
+		;; r2c2 - slipper_floor
 		(is-clear r2c2)
+		(is-slippery r2c2)
 		(move-dir r2c2 r1c2 up)
 		(move-dir r2c2 r2c1 left)
 		(move-dir r2c2 r2c3 right)
 		
 
-		;; r2c3 - empty
+		;; r2c3 - slipper_floor
 		(is-clear r2c3)
+		(is-slippery r2c3)
 		(move-dir r2c3 r1c3 up)
 		(move-dir r2c3 r3c3 down)
 		(move-dir r2c3 r2c2 left)
 		(move-dir r2c3 r2c4 right)
 		
 
-		;; r2c4 - empty
+		;; r2c4 - slipper_floor
 		(is-clear r2c4)
+		(is-slippery r2c4)
 		(move-dir r2c4 r1c4 up)
 		(move-dir r2c4 r2c3 left)
 		(move-dir r2c4 r2c5 right)
 		
 
-		;; r2c5 - empty
+		;; r2c5 - slipper_floor
 		(is-clear r2c5)
+		(is-slippery r2c5)
 		(move-dir r2c5 r1c5 up)
 		(move-dir r2c5 r3c5 down)
 		(move-dir r2c5 r2c4 left)
@@ -196,8 +206,9 @@
 		;; r3c0 - wall
 		
 
-		;; r3c1 - empty
+		;; r3c1 - slipper_floor
 		(is-clear r3c1)
+		(is-slippery r3c1)
 		(move-dir r3c1 r2c1 up)
 		(move-dir r3c1 r4c1 down)
 		
@@ -205,8 +216,9 @@
 		;; r3c2 - wall
 		
 
-		;; r3c3 - box
+		;; r3c3 - box_on_slipper_floor
 		(box-at r3c3)
+		(is-slippery r3c3)
 		(move-dir r3c3 r2c3 up)
 		(move-dir r3c3 r4c3 down)
 		
@@ -214,8 +226,9 @@
 		;; r3c4 - wall
 		
 
-		;; r3c5 - empty
+		;; r3c5 - slipper_floor
 		(is-clear r3c5)
+		(is-slippery r3c5)
 		(move-dir r3c5 r2c5 up)
 		(move-dir r3c5 r4c5 down)
 		
@@ -237,9 +250,12 @@
 		;; r4c2 - wall
 		
 
-		;; r4c3 - player
+		;; r4c3 - player_with_boots_on_slipper_floor
+		(using-non-slippery-boots)
 		(player-at r4c3)
 		(alive)
+		(boots-at r4c3)
+		(is-slippery r4c3)
 		(move-dir r4c3 r3c3 up)
 		(move-dir r4c3 r5c3 down)
 		
@@ -261,8 +277,9 @@
 		;; r5c0 - wall
 		
 
-		;; r5c1 - empty
+		;; r5c1 - slipper_floor
 		(is-clear r5c1)
+		(is-slippery r5c1)
 		(move-dir r5c1 r4c1 up)
 		(move-dir r5c1 r6c1 down)
 		
@@ -280,8 +297,9 @@
 		;; r5c4 - wall
 		
 
-		;; r5c5 - empty
+		;; r5c5 - slipper_floor
 		(is-clear r5c5)
+		(is-slippery r5c5)
 		(move-dir r5c5 r4c5 up)
 		(move-dir r5c5 r6c5 down)
 		
@@ -292,37 +310,42 @@
 		;; r6c0 - wall
 		
 
-		;; r6c1 - empty
+		;; r6c1 - slipper_floor
 		(is-clear r6c1)
+		(is-slippery r6c1)
 		(move-dir r6c1 r5c1 up)
 		(move-dir r6c1 r7c1 down)
 		(move-dir r6c1 r6c2 right)
 		
 
-		;; r6c2 - empty
+		;; r6c2 - slipper_floor
 		(is-clear r6c2)
+		(is-slippery r6c2)
 		(move-dir r6c2 r7c2 down)
 		(move-dir r6c2 r6c1 left)
 		(move-dir r6c2 r6c3 right)
 		
 
-		;; r6c3 - empty
+		;; r6c3 - slipper_floor
 		(is-clear r6c3)
+		(is-slippery r6c3)
 		(move-dir r6c3 r5c3 up)
 		(move-dir r6c3 r7c3 down)
 		(move-dir r6c3 r6c2 left)
 		(move-dir r6c3 r6c4 right)
 		
 
-		;; r6c4 - empty
+		;; r6c4 - slipper_floor
 		(is-clear r6c4)
+		(is-slippery r6c4)
 		(move-dir r6c4 r7c4 down)
 		(move-dir r6c4 r6c3 left)
 		(move-dir r6c4 r6c5 right)
 		
 
-		;; r6c5 - empty
+		;; r6c5 - slipper_floor
 		(is-clear r6c5)
+		(is-slippery r6c5)
 		(move-dir r6c5 r5c5 up)
 		(move-dir r6c5 r7c5 down)
 		(move-dir r6c5 r6c4 left)
@@ -334,39 +357,44 @@
 		;; r7c0 - wall
 		
 
-		;; r7c1 - empty
+		;; r7c1 - slipper_floor
 		(is-clear r7c1)
+		(is-slippery r7c1)
 		(move-dir r7c1 r6c1 up)
 		(move-dir r7c1 r8c1 down)
 		(move-dir r7c1 r7c2 right)
 		
 
-		;; r7c2 - empty
+		;; r7c2 - slipper_floor
 		(is-clear r7c2)
+		(is-slippery r7c2)
 		(move-dir r7c2 r6c2 up)
 		(move-dir r7c2 r8c2 down)
 		(move-dir r7c2 r7c1 left)
 		(move-dir r7c2 r7c3 right)
 		
 
-		;; r7c3 - empty
+		;; r7c3 - slipper_floor
 		(is-clear r7c3)
+		(is-slippery r7c3)
 		(move-dir r7c3 r6c3 up)
 		(move-dir r7c3 r8c3 down)
 		(move-dir r7c3 r7c2 left)
 		(move-dir r7c3 r7c4 right)
 		
 
-		;; r7c4 - empty
+		;; r7c4 - slipper_floor
 		(is-clear r7c4)
+		(is-slippery r7c4)
 		(move-dir r7c4 r6c4 up)
 		(move-dir r7c4 r8c4 down)
 		(move-dir r7c4 r7c3 left)
 		(move-dir r7c4 r7c5 right)
 		
 
-		;; r7c5 - empty
+		;; r7c5 - slipper_floor
 		(is-clear r7c5)
+		(is-slippery r7c5)
 		(move-dir r7c5 r6c5 up)
 		(move-dir r7c5 r8c5 down)
 		(move-dir r7c5 r7c4 left)
@@ -378,35 +406,40 @@
 		;; r8c0 - wall
 		
 
-		;; r8c1 - empty
+		;; r8c1 - slipper_floor
 		(is-clear r8c1)
+		(is-slippery r8c1)
 		(move-dir r8c1 r7c1 up)
 		(move-dir r8c1 r8c2 right)
 		
 
-		;; r8c2 - empty
+		;; r8c2 - slipper_floor
 		(is-clear r8c2)
+		(is-slippery r8c2)
 		(move-dir r8c2 r7c2 up)
 		(move-dir r8c2 r8c1 left)
 		(move-dir r8c2 r8c3 right)
 		
 
-		;; r8c3 - empty
+		;; r8c3 - slipper_floor
 		(is-clear r8c3)
+		(is-slippery r8c3)
 		(move-dir r8c3 r7c3 up)
 		(move-dir r8c3 r8c2 left)
 		(move-dir r8c3 r8c4 right)
 		
 
-		;; r8c4 - empty
+		;; r8c4 - slipper_floor
 		(is-clear r8c4)
+		(is-slippery r8c4)
 		(move-dir r8c4 r7c4 up)
 		(move-dir r8c4 r8c3 left)
 		(move-dir r8c4 r8c5 right)
 		
 
-		;; r8c5 - empty
+		;; r8c5 - slipper_floor
 		(is-clear r8c5)
+		(is-slippery r8c5)
 		(move-dir r8c5 r7c5 up)
 		(move-dir r8c5 r8c4 left)
 		

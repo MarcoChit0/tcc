@@ -81,24 +81,20 @@ for instance_file in os.listdir(board_path):
 
     object_predicates = ["r{}c{} - location".format(i, j) for i in range(row) for j in range(column)] + ["{} - direction".format(dir) for dir in directions.keys()]
     initial_predicates = []
-    # goal_predicates = [f"(alive)"]
     goal_predicates = []
 
-    def is_good_move(i, j, dir, grid):
-        if grid[i][j] == grid_elements['wall']:
-            return False
-        
+    def is_good_move(i, j, dir):
         r, c = directions[dir][0] + i, directions[dir][1] + j
 
         if 0 <= r < row and 0 <= c < column:
-            return True if not grid[r][c] == grid_elements['wall'] else False
+            return True
         else:
             return False
 
-    def apply_movements(i, j, grid):
+    def apply_movements(i, j):
         predicates = []
         for dir, (di, dj) in directions.items():
-            if is_good_move(i, j, dir, grid):
+            if is_good_move(i, j, dir):
                 nr, nc = i + di, j + dj
                 predicates.append(f"(move-dir r{i}c{j} r{nr}c{nc} {dir})")
         return predicates
@@ -112,11 +108,7 @@ for instance_file in os.listdir(board_path):
             # clear locations
             if grid[i][j] in [grid_elements['goal'], grid_elements['empty'], grid_elements['slipper_floor'], grid_elements['goal_on_slipper_floor']]:
                 initial_predicates.append(f"(is-clear r{i}c{j})")
-
-            # box at-goal
-            if grid[i][j] in [grid_elements['box_on_goal'], grid_elements['box_on_goal_on_slipper_floor']]:
-                initial_predicates.append(f"(at-goal r{i}c{j})")
-
+                
             # player with boots
             if grid[i][j] in [grid_elements['player_with_boots'], grid_elements['player_with_boots_on_slipper_floor'], grid_elements['player_with_boots_on_goal'], grid_elements['player_with_boots_on_goal_on_slipper_floor']]:
                 initial_predicates.append(f"(using-non-slippery-boots)")
@@ -135,12 +127,13 @@ for instance_file in os.listdir(board_path):
                 initial_predicates.append(f"(is-slippery r{i}c{j})")
 
             if grid[i][j] in goal_values:
-                goal_predicates.append(f"(at-goal r{i}c{j})")
-                initial_predicates.append(f"(is-goal r{i}c{j})")
+                goal_predicates.append(f"(box-at r{i}c{j})")
+            #    initial_predicates.append(f"(is-goal r{i}c{j})")
 
-            # apply possible movements
-            if not grid[i][j] == grid_elements['wall']:
-                initial_predicates.extend(apply_movements(i, j, grid))
+            if grid[i][j] == grid_elements['wall']:
+                initial_predicates.append(f"(not (is-clear r{i}c{j}))")
+
+            initial_predicates.extend(apply_movements(i, j))
 
     with open(os.path.join(instance_path, f"{instance}.pddl"), "w") as file:
         for i in range(row):

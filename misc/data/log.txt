@@ -3979,3 +3979,8 @@
 (datetime.datetime(2024, 3, 14, 10, 0, 41, 166505), ('sokoban', 'p5', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))
 (datetime.datetime(2024, 3, 14, 10, 0, 41, 669786), ('sokoban', 'p5', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))
 (datetime.datetime(2024, 3, 14, 10, 0, 41, 958330), ('sokoban', 'p5', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))
+(datetime.datetime(2024, 3, 14, 16, 3, 19, 955234), ('kitchen', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))
+(datetime.datetime(2024, 3, 14, 16, 11, 0, 854975), ('kitchen', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))
+(datetime.datetime(2024, 3, 14, 16, 47, 40, 698112), ('kitchen', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))
+(datetime.datetime(2024, 3, 14, 16, 51, 8, 182560), ('kitchen', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))
+(datetime.datetime(2024, 3, 14, 16, 59, 52, 357278), ('kitchen', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-03-14'))

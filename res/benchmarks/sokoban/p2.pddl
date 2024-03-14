@@ -9,7 +9,6 @@
 ;;	#     #
 ;;	#     #
 ;;	#######
-
 (define (problem p2-sokoban-non-deterministic)
 	(:domain sokoban-non-deterministic)
 	(:objects

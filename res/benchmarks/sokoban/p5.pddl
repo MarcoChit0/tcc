@@ -8,7 +8,6 @@
 ;;	#~~~~~#
 ;;	#~~~~~#
 ;;	#######
-
 (define (problem p5-sokoban-non-deterministic)
 	(:domain sokoban-non-deterministic)
 	(:objects

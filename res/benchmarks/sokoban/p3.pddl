@@ -5,7 +5,6 @@
 ;;	#     #
 ;;	#     #
 ;;	#######
-
 (define (problem p3-sokoban-non-deterministic)
 	(:domain sokoban-non-deterministic)
 	(:objects

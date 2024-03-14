@@ -1,10 +1,10 @@
 ;;	#######
+;;	#    2#
 ;;	#     #
 ;;	#     #
-;;	#     #
-;;	###1###
-;;	#*#0#*#
 ;;	# #1# #
+;;	#.#0#.#
+;;	# #4# #
 ;;	#     #
 ;;	#     #
 ;;	#     #
@@ -185,8 +185,8 @@
 		(move-dir r1c4 r1c5 right)
 		
 
-		;; r1c5 - empty
-		(is-clear r1c5)
+		;; r1c5 - boots
+		(boots-at r1c5)
 		(move-dir r1c5 r0c5 up)
 		(move-dir r1c5 r2c5 down)
 		(move-dir r1c5 r1c4 left)
@@ -315,8 +315,8 @@
 		(move-dir r4c0 r4c1 right)
 		
 
-		;; r4c1 - wall
-		(not (is-clear r4c1))
+		;; r4c1 - empty
+		(is-clear r4c1)
 		(move-dir r4c1 r3c1 up)
 		(move-dir r4c1 r5c1 down)
 		(move-dir r4c1 r4c0 left)
@@ -347,8 +347,8 @@
 		(move-dir r4c4 r4c5 right)
 		
 
-		;; r4c5 - wall
-		(not (is-clear r4c5))
+		;; r4c5 - empty
+		(is-clear r4c5)
 		(move-dir r4c5 r3c5 up)
 		(move-dir r4c5 r5c5 down)
 		(move-dir r4c5 r4c4 left)
@@ -369,8 +369,9 @@
 		(move-dir r5c0 r5c1 right)
 		
 
-		;; r5c1 - goal
+		;; r5c1 - goal_on_slipper_floor
 		(is-clear r5c1)
+		(is-slippery r5c1)
 		(move-dir r5c1 r4c1 up)
 		(move-dir r5c1 r6c1 down)
 		(move-dir r5c1 r5c0 left)
@@ -402,8 +403,9 @@
 		(move-dir r5c4 r5c5 right)
 		
 
-		;; r5c5 - goal
+		;; r5c5 - goal_on_slipper_floor
 		(is-clear r5c5)
+		(is-slippery r5c5)
 		(move-dir r5c5 r4c5 up)
 		(move-dir r5c5 r6c5 down)
 		(move-dir r5c5 r5c4 left)
@@ -440,8 +442,9 @@
 		(move-dir r6c2 r6c3 right)
 		
 
-		;; r6c3 - box
+		;; r6c3 - box_on_slipper_floor
 		(box-at r6c3)
+		(is-slippery r6c3)
 		(move-dir r6c3 r5c3 up)
 		(move-dir r6c3 r7c3 down)
 		(move-dir r6c3 r6c2 left)

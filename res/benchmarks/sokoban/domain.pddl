@@ -14,7 +14,7 @@
             (move-dir ?from ?to - location ?dir - direction)
         )
         (
-            :action move
+            :action move-slippery
             :parameters (?from ?to - location ?dir - direction)
             :precondition 
             (
@@ -22,8 +22,9 @@
                     (alive)
                     (player-at ?from)
                     (is-clear ?to)
-                    (is-slippery ?to)
                     (move-dir ?from ?to ?dir)
+                    (not (using-non-slippery-boots))
+                    (is-slippery ?to)
             )
             :effect       
             (
@@ -32,13 +33,35 @@
                     (is-clear ?from)
                     (not (is-clear ?to))
                     (player-at ?to)
-                    (when
-                        (not (using-non-slippery-boots))
-                        (oneof 
-                            (and)           ;; stays alive 
-                            (not (alive))   ;; fall and die
-                        )
+                    (oneof 
+                        (and)           ;; stays alive 
+                        (not (alive))   ;; fall and die
                     )
+                    
+            )
+        )
+        (
+            :action move-non-slippery
+            :parameters (?from ?to - location ?dir - direction)
+            :precondition 
+            (
+                and 
+                    (alive)
+                    (player-at ?from)
+                    (is-clear ?to)
+                    (move-dir ?from ?to ?dir)
+                    (or
+                        (using-non-slippery-boots)
+                        (not (is-slippery ?to))
+                    )
+            )
+            :effect       
+            (
+                and 
+                    (not (player-at ?from))
+                    (is-clear ?from)
+                    (not (is-clear ?to))
+                    (player-at ?to)
             )
         )
         (
@@ -71,36 +94,30 @@
             )
             :effect
             (
-                
-                    and
-                        ;; remove player and box from theirs previous positions
-                        (not (player-at ?player_pos))
-                        (not (box-at ?box_pos))
+                and
+                    ;; remove player and box from theirs previous positions
+                    (not (player-at ?player_pos))
+                    (not (box-at ?box_pos))
+
+                    ;; place player on box's previous position and clear theirs previous position
+                    (player-at ?box_pos)
+                    (is-clear ?player_pos)
+                    
+                    (
+                        oneof        
+                        ;; place box on desired box position and mark desired box position as occupied
                         (
-                            oneof        
-                            ;; move box to desired position, and player stays on previous box position
-                            (
-                                and
-                                    ;; place player on box's previous position and box on desired box position
-                                    (player-at ?box_pos)
-                                    (box-at ?desired_box_pos)
-
-                                    ;; clear player position and mark desired box position as occupied
-                                    (is-clear ?player_pos)
-                                    (not (is-clear ?desired_box_pos))
-                            )
-                            ;; move box to undesired position, and player stays on previous box position
-                            (
-                                and
-                                    ;; place player on box's previous position and box on undesired box position
-                                    (player-at ?box_pos)
-                                    (box-at ?undesired_box_pos)
-
-                                    ;; clear player position and mark desired box position as occupied
-                                    (is-clear ?player_pos)
-                                    (not (is-clear ?undesired_box_pos))
-                            )
+                            and
+                                (box-at ?desired_box_pos)
+                                (not (is-clear ?desired_box_pos))
                         )
+                        ;; place box on undesired box position and mark undesired box position as occupied
+                        (
+                            and
+                                (box-at ?undesired_box_pos)
+                                (not (is-clear ?undesired_box_pos))
+                        )
+                    )
             )
 
         )
@@ -151,10 +168,9 @@
                     (not (is-clear ?desired_box_pos))
             )
         )
-                    
         (
             :action put-boots
-            :parameters (?player_pos ?boots_pos - location ?dir - direction)
+            :parameters (?player_pos ?boots_pos - location)
             :precondition
             (
                 and
@@ -162,8 +178,10 @@
 
                     (player-at ?player_pos)
                     (boots-at ?boots_pos)
+
+                    (not (using-non-slippery-boots))
                     
-                    boots should be on reach 
+                    ;; boots should be on reach 
                     (exists (?dir - direction)
                         (move-dir ?player_pos ?boots_pos ?dir)
                     )

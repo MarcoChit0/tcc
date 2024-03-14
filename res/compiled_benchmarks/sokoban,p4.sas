@@ -490,18 +490,9 @@ begin_goal
 1
 26 12
 end_goal
-303
+220
 begin_operator
-move r1c1 r1c2 right
-0
-3
-0 1 -1 0
-0 2 0 1
-0 28 0 1
-0
-end_operator
-begin_operator
-move r1c1 r1c2 right
+move-non-slippery1 r1c1 r1c2 right
 1
 0 0
 3
@@ -511,16 +502,7 @@ move r1c1 r1c2 right
 0
 end_operator
 begin_operator
-move r1c1 r2c1 down
-0
-3
-0 1 -1 0
-0 6 0 1
-0 28 0 5
-0
-end_operator
-begin_operator
-move r1c1 r2c1 down
+move-non-slippery1 r1c1 r2c1 down
 1
 0 0
 3
@@ -530,16 +512,7 @@ move r1c1 r2c1 down
 0
 end_operator
 begin_operator
-move r1c2 r1c1 left
-0
-3
-0 1 0 1
-0 2 -1 0
-0 28 1 0
-0
-end_operator
-begin_operator
-move r1c2 r1c1 left
+move-non-slippery1 r1c2 r1c1 left
 1
 0 0
 3
@@ -549,16 +522,7 @@ move r1c2 r1c1 left
 0
 end_operator
 begin_operator
-move r1c2 r1c3 right
-0
-3
-0 2 -1 0
-0 3 0 1
-0 28 1 2
-0
-end_operator
-begin_operator
-move r1c2 r1c3 right
+move-non-slippery1 r1c2 r1c3 right
 1
 0 0
 3
@@ -568,16 +532,7 @@ move r1c2 r1c3 right
 0
 end_operator
 begin_operator
-move r1c2 r2c2 down
-0
-3
-0 2 -1 0
-0 7 0 1
-0 28 1 6
-0
-end_operator
-begin_operator
-move r1c2 r2c2 down
+move-non-slippery1 r1c2 r2c2 down
 1
 0 0
 3
@@ -587,16 +542,7 @@ move r1c2 r2c2 down
 0
 end_operator
 begin_operator
-move r1c3 r1c2 left
-0
-3
-0 2 0 1
-0 3 -1 0
-0 28 2 1
-0
-end_operator
-begin_operator
-move r1c3 r1c2 left
+move-non-slippery1 r1c3 r1c2 left
 1
 0 0
 3
@@ -606,16 +552,7 @@ move r1c3 r1c2 left
 0
 end_operator
 begin_operator
-move r1c3 r1c4 right
-0
-3
-0 3 -1 0
-0 4 0 1
-0 28 2 3
-0
-end_operator
-begin_operator
-move r1c3 r1c4 right
+move-non-slippery1 r1c3 r1c4 right
 1
 0 0
 3
@@ -625,16 +562,7 @@ move r1c3 r1c4 right
 0
 end_operator
 begin_operator
-move r1c3 r2c3 down
-0
-3
-0 3 -1 0
-0 8 0 1
-0 28 2 7
-0
-end_operator
-begin_operator
-move r1c3 r2c3 down
+move-non-slippery1 r1c3 r2c3 down
 1
 0 0
 3
@@ -644,16 +572,7 @@ move r1c3 r2c3 down
 0
 end_operator
 begin_operator
-move r1c4 r1c3 left
-0
-3
-0 3 0 1
-0 4 -1 0
-0 28 3 2
-0
-end_operator
-begin_operator
-move r1c4 r1c3 left
+move-non-slippery1 r1c4 r1c3 left
 1
 0 0
 3
@@ -663,16 +582,7 @@ move r1c4 r1c3 left
 0
 end_operator
 begin_operator
-move r1c4 r1c5 right
-0
-3
-0 4 -1 0
-0 5 0 1
-0 28 3 4
-0
-end_operator
-begin_operator
-move r1c4 r1c5 right
+move-non-slippery1 r1c4 r1c5 right
 1
 0 0
 3
@@ -682,16 +592,7 @@ move r1c4 r1c5 right
 0
 end_operator
 begin_operator
-move r1c4 r2c4 down
-0
-3
-0 4 -1 0
-0 9 0 1
-0 28 3 8
-0
-end_operator
-begin_operator
-move r1c4 r2c4 down
+move-non-slippery1 r1c4 r2c4 down
 1
 0 0
 3
@@ -701,16 +602,7 @@ move r1c4 r2c4 down
 0
 end_operator
 begin_operator
-move r1c5 r1c4 left
-0
-3
-0 4 0 1
-0 5 -1 0
-0 28 4 3
-0
-end_operator
-begin_operator
-move r1c5 r1c4 left
+move-non-slippery1 r1c5 r1c4 left
 1
 0 0
 3
@@ -720,16 +612,7 @@ move r1c5 r1c4 left
 0
 end_operator
 begin_operator
-move r1c5 r2c5 down
-0
-3
-0 5 -1 0
-0 10 0 1
-0 28 4 9
-0
-end_operator
-begin_operator
-move r1c5 r2c5 down
+move-non-slippery1 r1c5 r2c5 down
 1
 0 0
 3
@@ -739,16 +622,7 @@ move r1c5 r2c5 down
 0
 end_operator
 begin_operator
-move r2c1 r1c1 up
-0
-3
-0 1 0 1
-0 6 -1 0
-0 28 5 0
-0
-end_operator
-begin_operator
-move r2c1 r1c1 up
+move-non-slippery1 r2c1 r1c1 up
 1
 0 0
 3
@@ -758,16 +632,7 @@ move r2c1 r1c1 up
 0
 end_operator
 begin_operator
-move r2c1 r2c2 right
-0
-3
-0 6 -1 0
-0 7 0 1
-0 28 5 6
-0
-end_operator
-begin_operator
-move r2c1 r2c2 right
+move-non-slippery1 r2c1 r2c2 right
 1
 0 0
 3
@@ -777,16 +642,7 @@ move r2c1 r2c2 right
 0
 end_operator
 begin_operator
-move r2c1 r3c1 down
-0
-3
-0 6 -1 0
-0 27 0 1
-0 28 5 10
-0
-end_operator
-begin_operator
-move r2c1 r3c1 down
+move-non-slippery1 r2c1 r3c1 down
 1
 0 0
 3
@@ -796,16 +652,7 @@ move r2c1 r3c1 down
 0
 end_operator
 begin_operator
-move r2c2 r1c2 up
-0
-3
-0 2 0 1
-0 7 -1 0
-0 28 6 1
-0
-end_operator
-begin_operator
-move r2c2 r1c2 up
+move-non-slippery1 r2c2 r1c2 up
 1
 0 0
 3
@@ -815,16 +662,7 @@ move r2c2 r1c2 up
 0
 end_operator
 begin_operator
-move r2c2 r2c1 left
-0
-3
-0 6 0 1
-0 7 -1 0
-0 28 6 5
-0
-end_operator
-begin_operator
-move r2c2 r2c1 left
+move-non-slippery1 r2c2 r2c1 left
 1
 0 0
 3
@@ -834,16 +672,7 @@ move r2c2 r2c1 left
 0
 end_operator
 begin_operator
-move r2c2 r2c3 right
-0
-3
-0 7 -1 0
-0 8 0 1
-0 28 6 7
-0
-end_operator
-begin_operator
-move r2c2 r2c3 right
+move-non-slippery1 r2c2 r2c3 right
 1
 0 0
 3
@@ -853,16 +682,7 @@ move r2c2 r2c3 right
 0
 end_operator
 begin_operator
-move r2c2 r3c2 down
-0
-3
-0 7 -1 0
-0 12 0 1
-0 28 6 11
-0
-end_operator
-begin_operator
-move r2c2 r3c2 down
+move-non-slippery1 r2c2 r3c2 down
 1
 0 0
 3
@@ -872,16 +692,7 @@ move r2c2 r3c2 down
 0
 end_operator
 begin_operator
-move r2c3 r1c3 up
-0
-3
-0 3 0 1
-0 8 -1 0
-0 28 7 2
-0
-end_operator
-begin_operator
-move r2c3 r1c3 up
+move-non-slippery1 r2c3 r1c3 up
 1
 0 0
 3
@@ -891,16 +702,7 @@ move r2c3 r1c3 up
 0
 end_operator
 begin_operator
-move r2c3 r2c2 left
-0
-3
-0 7 0 1
-0 8 -1 0
-0 28 7 6
-0
-end_operator
-begin_operator
-move r2c3 r2c2 left
+move-non-slippery1 r2c3 r2c2 left
 1
 0 0
 3
@@ -910,16 +712,7 @@ move r2c3 r2c2 left
 0
 end_operator
 begin_operator
-move r2c3 r2c4 right
-0
-3
-0 8 -1 0
-0 9 0 1
-0 28 7 8
-0
-end_operator
-begin_operator
-move r2c3 r2c4 right
+move-non-slippery1 r2c3 r2c4 right
 1
 0 0
 3
@@ -929,16 +722,7 @@ move r2c3 r2c4 right
 0
 end_operator
 begin_operator
-move r2c3 r3c3 down
-0
-3
-0 8 -1 0
-0 13 0 1
-0 28 7 12
-0
-end_operator
-begin_operator
-move r2c3 r3c3 down
+move-non-slippery1 r2c3 r3c3 down
 1
 0 0
 3
@@ -948,16 +732,7 @@ move r2c3 r3c3 down
 0
 end_operator
 begin_operator
-move r2c4 r1c4 up
-0
-3
-0 4 0 1
-0 9 -1 0
-0 28 8 3
-0
-end_operator
-begin_operator
-move r2c4 r1c4 up
+move-non-slippery1 r2c4 r1c4 up
 1
 0 0
 3
@@ -967,16 +742,7 @@ move r2c4 r1c4 up
 0
 end_operator
 begin_operator
-move r2c4 r2c3 left
-0
-3
-0 8 0 1
-0 9 -1 0
-0 28 8 7
-0
-end_operator
-begin_operator
-move r2c4 r2c3 left
+move-non-slippery1 r2c4 r2c3 left
 1
 0 0
 3
@@ -986,16 +752,7 @@ move r2c4 r2c3 left
 0
 end_operator
 begin_operator
-move r2c4 r2c5 right
-0
-3
-0 9 -1 0
-0 10 0 1
-0 28 8 9
-0
-end_operator
-begin_operator
-move r2c4 r2c5 right
+move-non-slippery1 r2c4 r2c5 right
 1
 0 0
 3
@@ -1005,16 +762,7 @@ move r2c4 r2c5 right
 0
 end_operator
 begin_operator
-move r2c4 r3c4 down
-0
-3
-0 9 -1 0
-0 14 0 1
-0 28 8 13
-0
-end_operator
-begin_operator
-move r2c4 r3c4 down
+move-non-slippery1 r2c4 r3c4 down
 1
 0 0
 3
@@ -1024,16 +772,7 @@ move r2c4 r3c4 down
 0
 end_operator
 begin_operator
-move r2c5 r1c5 up
-0
-3
-0 5 0 1
-0 10 -1 0
-0 28 9 4
-0
-end_operator
-begin_operator
-move r2c5 r1c5 up
+move-non-slippery1 r2c5 r1c5 up
 1
 0 0
 3
@@ -1043,16 +782,7 @@ move r2c5 r1c5 up
 0
 end_operator
 begin_operator
-move r2c5 r2c4 left
-0
-3
-0 9 0 1
-0 10 -1 0
-0 28 9 8
-0
-end_operator
-begin_operator
-move r2c5 r2c4 left
+move-non-slippery1 r2c5 r2c4 left
 1
 0 0
 3
@@ -1062,16 +792,7 @@ move r2c5 r2c4 left
 0
 end_operator
 begin_operator
-move r2c5 r3c5 down
-0
-3
-0 10 -1 0
-0 15 0 1
-0 28 9 14
-0
-end_operator
-begin_operator
-move r2c5 r3c5 down
+move-non-slippery1 r2c5 r3c5 down
 1
 0 0
 3
@@ -1081,16 +802,7 @@ move r2c5 r3c5 down
 0
 end_operator
 begin_operator
-move r3c1 r2c1 up
-0
-3
-0 6 0 1
-0 27 -1 0
-0 28 10 5
-0
-end_operator
-begin_operator
-move r3c1 r2c1 up
+move-non-slippery1 r3c1 r2c1 up
 1
 0 0
 3
@@ -1100,16 +812,7 @@ move r3c1 r2c1 up
 0
 end_operator
 begin_operator
-move r3c1 r3c2 right
-0
-3
-0 12 0 1
-0 27 -1 0
-0 28 10 11
-0
-end_operator
-begin_operator
-move r3c1 r3c2 right
+move-non-slippery1 r3c1 r3c2 right
 1
 0 0
 3
@@ -1119,16 +822,7 @@ move r3c1 r3c2 right
 0
 end_operator
 begin_operator
-move r3c1 r4c1 down
-0
-3
-0 16 0 1
-0 27 -1 0
-0 28 10 15
-0
-end_operator
-begin_operator
-move r3c1 r4c1 down
+move-non-slippery1 r3c1 r4c1 down
 1
 0 0
 3
@@ -1138,16 +832,7 @@ move r3c1 r4c1 down
 0
 end_operator
 begin_operator
-move r3c2 r2c2 up
-0
-3
-0 7 0 1
-0 12 -1 0
-0 28 11 6
-0
-end_operator
-begin_operator
-move r3c2 r2c2 up
+move-non-slippery1 r3c2 r2c2 up
 1
 0 0
 3
@@ -1157,16 +842,7 @@ move r3c2 r2c2 up
 0
 end_operator
 begin_operator
-move r3c2 r3c1 left
-0
-3
-0 12 -1 0
-0 27 0 1
-0 28 11 10
-0
-end_operator
-begin_operator
-move r3c2 r3c1 left
+move-non-slippery1 r3c2 r3c1 left
 1
 0 0
 3
@@ -1176,16 +852,7 @@ move r3c2 r3c1 left
 0
 end_operator
 begin_operator
-move r3c2 r3c3 right
-0
-3
-0 12 -1 0
-0 13 0 1
-0 28 11 12
-0
-end_operator
-begin_operator
-move r3c2 r3c3 right
+move-non-slippery1 r3c2 r3c3 right
 1
 0 0
 3
@@ -1195,16 +862,7 @@ move r3c2 r3c3 right
 0
 end_operator
 begin_operator
-move r3c2 r4c2 down
-0
-3
-0 12 -1 0
-0 17 0 1
-0 28 11 16
-0
-end_operator
-begin_operator
-move r3c2 r4c2 down
+move-non-slippery1 r3c2 r4c2 down
 1
 0 0
 3
@@ -1214,16 +872,7 @@ move r3c2 r4c2 down
 0
 end_operator
 begin_operator
-move r3c3 r2c3 up
-0
-3
-0 8 0 1
-0 13 -1 0
-0 28 12 7
-0
-end_operator
-begin_operator
-move r3c3 r2c3 up
+move-non-slippery1 r3c3 r2c3 up
 1
 0 0
 3
@@ -1233,16 +882,7 @@ move r3c3 r2c3 up
 0
 end_operator
 begin_operator
-move r3c3 r3c2 left
-0
-3
-0 12 0 1
-0 13 -1 0
-0 28 12 11
-0
-end_operator
-begin_operator
-move r3c3 r3c2 left
+move-non-slippery1 r3c3 r3c2 left
 1
 0 0
 3
@@ -1252,16 +892,7 @@ move r3c3 r3c2 left
 0
 end_operator
 begin_operator
-move r3c3 r3c4 right
-0
-3
-0 13 -1 0
-0 14 0 1
-0 28 12 13
-0
-end_operator
-begin_operator
-move r3c3 r3c4 right
+move-non-slippery1 r3c3 r3c4 right
 1
 0 0
 3
@@ -1271,16 +902,7 @@ move r3c3 r3c4 right
 0
 end_operator
 begin_operator
-move r3c3 r4c3 down
-0
-3
-0 13 -1 0
-0 18 0 1
-0 28 12 17
-0
-end_operator
-begin_operator
-move r3c3 r4c3 down
+move-non-slippery1 r3c3 r4c3 down
 1
 0 0
 3
@@ -1290,16 +912,7 @@ move r3c3 r4c3 down
 0
 end_operator
 begin_operator
-move r3c4 r2c4 up
-0
-3
-0 9 0 1
-0 14 -1 0
-0 28 13 8
-0
-end_operator
-begin_operator
-move r3c4 r2c4 up
+move-non-slippery1 r3c4 r2c4 up
 1
 0 0
 3
@@ -1309,16 +922,7 @@ move r3c4 r2c4 up
 0
 end_operator
 begin_operator
-move r3c4 r3c3 left
-0
-3
-0 13 0 1
-0 14 -1 0
-0 28 13 12
-0
-end_operator
-begin_operator
-move r3c4 r3c3 left
+move-non-slippery1 r3c4 r3c3 left
 1
 0 0
 3
@@ -1328,16 +932,7 @@ move r3c4 r3c3 left
 0
 end_operator
 begin_operator
-move r3c4 r3c5 right
-0
-3
-0 14 -1 0
-0 15 0 1
-0 28 13 14
-0
-end_operator
-begin_operator
-move r3c4 r3c5 right
+move-non-slippery1 r3c4 r3c5 right
 1
 0 0
 3
@@ -1347,16 +942,7 @@ move r3c4 r3c5 right
 0
 end_operator
 begin_operator
-move r3c4 r4c4 down
-0
-3
-0 14 -1 0
-0 19 0 1
-0 28 13 18
-0
-end_operator
-begin_operator
-move r3c4 r4c4 down
+move-non-slippery1 r3c4 r4c4 down
 1
 0 0
 3
@@ -1366,16 +952,7 @@ move r3c4 r4c4 down
 0
 end_operator
 begin_operator
-move r3c5 r2c5 up
-0
-3
-0 10 0 1
-0 15 -1 0
-0 28 14 9
-0
-end_operator
-begin_operator
-move r3c5 r2c5 up
+move-non-slippery1 r3c5 r2c5 up
 1
 0 0
 3
@@ -1385,16 +962,7 @@ move r3c5 r2c5 up
 0
 end_operator
 begin_operator
-move r3c5 r3c4 left
-0
-3
-0 14 0 1
-0 15 -1 0
-0 28 14 13
-0
-end_operator
-begin_operator
-move r3c5 r3c4 left
+move-non-slippery1 r3c5 r3c4 left
 1
 0 0
 3
@@ -1404,16 +972,7 @@ move r3c5 r3c4 left
 0
 end_operator
 begin_operator
-move r3c5 r4c5 down
-0
-3
-0 15 -1 0
-0 20 0 1
-0 28 14 19
-0
-end_operator
-begin_operator
-move r3c5 r4c5 down
+move-non-slippery1 r3c5 r4c5 down
 1
 0 0
 3
@@ -1423,16 +982,7 @@ move r3c5 r4c5 down
 0
 end_operator
 begin_operator
-move r4c1 r3c1 up
-0
-3
-0 16 -1 0
-0 27 0 1
-0 28 15 10
-0
-end_operator
-begin_operator
-move r4c1 r3c1 up
+move-non-slippery1 r4c1 r3c1 up
 1
 0 0
 3
@@ -1442,16 +992,7 @@ move r4c1 r3c1 up
 0
 end_operator
 begin_operator
-move r4c1 r4c2 right
-0
-3
-0 16 -1 0
-0 17 0 1
-0 28 15 16
-0
-end_operator
-begin_operator
-move r4c1 r4c2 right
+move-non-slippery1 r4c1 r4c2 right
 1
 0 0
 3
@@ -1461,16 +1002,7 @@ move r4c1 r4c2 right
 0
 end_operator
 begin_operator
-move r4c1 r5c1 down
-0
-3
-0 16 -1 0
-0 21 0 1
-0 28 15 20
-0
-end_operator
-begin_operator
-move r4c1 r5c1 down
+move-non-slippery1 r4c1 r5c1 down
 1
 0 0
 3
@@ -1480,16 +1012,7 @@ move r4c1 r5c1 down
 0
 end_operator
 begin_operator
-move r4c2 r3c2 up
-0
-3
-0 12 0 1
-0 17 -1 0
-0 28 16 11
-0
-end_operator
-begin_operator
-move r4c2 r3c2 up
+move-non-slippery1 r4c2 r3c2 up
 1
 0 0
 3
@@ -1499,16 +1022,7 @@ move r4c2 r3c2 up
 0
 end_operator
 begin_operator
-move r4c2 r4c1 left
-0
-3
-0 16 0 1
-0 17 -1 0
-0 28 16 15
-0
-end_operator
-begin_operator
-move r4c2 r4c1 left
+move-non-slippery1 r4c2 r4c1 left
 1
 0 0
 3
@@ -1518,16 +1032,7 @@ move r4c2 r4c1 left
 0
 end_operator
 begin_operator
-move r4c2 r4c3 right
-0
-3
-0 17 -1 0
-0 18 0 1
-0 28 16 17
-0
-end_operator
-begin_operator
-move r4c2 r4c3 right
+move-non-slippery1 r4c2 r4c3 right
 1
 0 0
 3
@@ -1537,16 +1042,7 @@ move r4c2 r4c3 right
 0
 end_operator
 begin_operator
-move r4c2 r5c2 down
-0
-3
-0 17 -1 0
-0 22 0 1
-0 28 16 21
-0
-end_operator
-begin_operator
-move r4c2 r5c2 down
+move-non-slippery1 r4c2 r5c2 down
 1
 0 0
 3
@@ -1556,16 +1052,7 @@ move r4c2 r5c2 down
 0
 end_operator
 begin_operator
-move r4c3 r3c3 up
-0
-3
-0 13 0 1
-0 18 -1 0
-0 28 17 12
-0
-end_operator
-begin_operator
-move r4c3 r3c3 up
+move-non-slippery1 r4c3 r3c3 up
 1
 0 0
 3
@@ -1575,16 +1062,7 @@ move r4c3 r3c3 up
 0
 end_operator
 begin_operator
-move r4c3 r4c2 left
-0
-3
-0 17 0 1
-0 18 -1 0
-0 28 17 16
-0
-end_operator
-begin_operator
-move r4c3 r4c2 left
+move-non-slippery1 r4c3 r4c2 left
 1
 0 0
 3
@@ -1594,16 +1072,7 @@ move r4c3 r4c2 left
 0
 end_operator
 begin_operator
-move r4c3 r4c4 right
-0
-3
-0 18 -1 0
-0 19 0 1
-0 28 17 18
-0
-end_operator
-begin_operator
-move r4c3 r4c4 right
+move-non-slippery1 r4c3 r4c4 right
 1
 0 0
 3
@@ -1613,16 +1082,7 @@ move r4c3 r4c4 right
 0
 end_operator
 begin_operator
-move r4c3 r5c3 down
-0
-3
-0 18 -1 0
-0 23 0 1
-0 28 17 22
-0
-end_operator
-begin_operator
-move r4c3 r5c3 down
+move-non-slippery1 r4c3 r5c3 down
 1
 0 0
 3
@@ -1632,16 +1092,7 @@ move r4c3 r5c3 down
 0
 end_operator
 begin_operator
-move r4c4 r3c4 up
-0
-3
-0 14 0 1
-0 19 -1 0
-0 28 18 13
-0
-end_operator
-begin_operator
-move r4c4 r3c4 up
+move-non-slippery1 r4c4 r3c4 up
 1
 0 0
 3
@@ -1651,16 +1102,7 @@ move r4c4 r3c4 up
 0
 end_operator
 begin_operator
-move r4c4 r4c3 left
-0
-3
-0 18 0 1
-0 19 -1 0
-0 28 18 17
-0
-end_operator
-begin_operator
-move r4c4 r4c3 left
+move-non-slippery1 r4c4 r4c3 left
 1
 0 0
 3
@@ -1670,16 +1112,7 @@ move r4c4 r4c3 left
 0
 end_operator
 begin_operator
-move r4c4 r4c5 right
-0
-3
-0 19 -1 0
-0 20 0 1
-0 28 18 19
-0
-end_operator
-begin_operator
-move r4c4 r4c5 right
+move-non-slippery1 r4c4 r4c5 right
 1
 0 0
 3
@@ -1689,16 +1122,7 @@ move r4c4 r4c5 right
 0
 end_operator
 begin_operator
-move r4c4 r5c4 down
-0
-3
-0 19 -1 0
-0 24 0 1
-0 28 18 23
-0
-end_operator
-begin_operator
-move r4c4 r5c4 down
+move-non-slippery1 r4c4 r5c4 down
 1
 0 0
 3
@@ -1708,16 +1132,7 @@ move r4c4 r5c4 down
 0
 end_operator
 begin_operator
-move r4c5 r3c5 up
-0
-3
-0 15 0 1
-0 20 -1 0
-0 28 19 14
-0
-end_operator
-begin_operator
-move r4c5 r3c5 up
+move-non-slippery1 r4c5 r3c5 up
 1
 0 0
 3
@@ -1727,16 +1142,7 @@ move r4c5 r3c5 up
 0
 end_operator
 begin_operator
-move r4c5 r4c4 left
-0
-3
-0 19 0 1
-0 20 -1 0
-0 28 19 18
-0
-end_operator
-begin_operator
-move r4c5 r4c4 left
+move-non-slippery1 r4c5 r4c4 left
 1
 0 0
 3
@@ -1746,16 +1152,7 @@ move r4c5 r4c4 left
 0
 end_operator
 begin_operator
-move r4c5 r5c5 down
-0
-3
-0 20 -1 0
-0 25 0 1
-0 28 19 24
-0
-end_operator
-begin_operator
-move r4c5 r5c5 down
+move-non-slippery1 r4c5 r5c5 down
 1
 0 0
 3
@@ -1765,16 +1162,7 @@ move r4c5 r5c5 down
 0
 end_operator
 begin_operator
-move r5c1 r4c1 up
-0
-3
-0 16 0 1
-0 21 -1 0
-0 28 20 15
-0
-end_operator
-begin_operator
-move r5c1 r4c1 up
+move-non-slippery1 r5c1 r4c1 up
 1
 0 0
 3
@@ -1784,16 +1172,7 @@ move r5c1 r4c1 up
 0
 end_operator
 begin_operator
-move r5c1 r5c2 right
-0
-3
-0 21 -1 0
-0 22 0 1
-0 28 20 21
-0
-end_operator
-begin_operator
-move r5c1 r5c2 right
+move-non-slippery1 r5c1 r5c2 right
 1
 0 0
 3
@@ -1803,16 +1182,7 @@ move r5c1 r5c2 right
 0
 end_operator
 begin_operator
-move r5c2 r4c2 up
-0
-3
-0 17 0 1
-0 22 -1 0
-0 28 21 16
-0
-end_operator
-begin_operator
-move r5c2 r4c2 up
+move-non-slippery1 r5c2 r4c2 up
 1
 0 0
 3
@@ -1822,16 +1192,7 @@ move r5c2 r4c2 up
 0
 end_operator
 begin_operator
-move r5c2 r5c1 left
-0
-3
-0 21 0 1
-0 22 -1 0
-0 28 21 20
-0
-end_operator
-begin_operator
-move r5c2 r5c1 left
+move-non-slippery1 r5c2 r5c1 left
 1
 0 0
 3
@@ -1841,16 +1202,7 @@ move r5c2 r5c1 left
 0
 end_operator
 begin_operator
-move r5c2 r5c3 right
-0
-3
-0 22 -1 0
-0 23 0 1
-0 28 21 22
-0
-end_operator
-begin_operator
-move r5c2 r5c3 right
+move-non-slippery1 r5c2 r5c3 right
 1
 0 0
 3
@@ -1860,16 +1212,7 @@ move r5c2 r5c3 right
 0
 end_operator
 begin_operator
-move r5c3 r4c3 up
-0
-3
-0 18 0 1
-0 23 -1 0
-0 28 22 17
-0
-end_operator
-begin_operator
-move r5c3 r4c3 up
+move-non-slippery1 r5c3 r4c3 up
 1
 0 0
 3
@@ -1879,16 +1222,7 @@ move r5c3 r4c3 up
 0
 end_operator
 begin_operator
-move r5c3 r5c2 left
-0
-3
-0 22 0 1
-0 23 -1 0
-0 28 22 21
-0
-end_operator
-begin_operator
-move r5c3 r5c2 left
+move-non-slippery1 r5c3 r5c2 left
 1
 0 0
 3
@@ -1898,16 +1232,7 @@ move r5c3 r5c2 left
 0
 end_operator
 begin_operator
-move r5c3 r5c4 right
-0
-3
-0 23 -1 0
-0 24 0 1
-0 28 22 23
-0
-end_operator
-begin_operator
-move r5c3 r5c4 right
+move-non-slippery1 r5c3 r5c4 right
 1
 0 0
 3
@@ -1917,16 +1242,7 @@ move r5c3 r5c4 right
 0
 end_operator
 begin_operator
-move r5c4 r4c4 up
-0
-3
-0 19 0 1
-0 24 -1 0
-0 28 23 18
-0
-end_operator
-begin_operator
-move r5c4 r4c4 up
+move-non-slippery1 r5c4 r4c4 up
 1
 0 0
 3
@@ -1936,16 +1252,7 @@ move r5c4 r4c4 up
 0
 end_operator
 begin_operator
-move r5c4 r5c3 left
-0
-3
-0 23 0 1
-0 24 -1 0
-0 28 23 22
-0
-end_operator
-begin_operator
-move r5c4 r5c3 left
+move-non-slippery1 r5c4 r5c3 left
 1
 0 0
 3
@@ -1955,16 +1262,7 @@ move r5c4 r5c3 left
 0
 end_operator
 begin_operator
-move r5c4 r5c5 right
-0
-3
-0 24 -1 0
-0 25 0 1
-0 28 23 24
-0
-end_operator
-begin_operator
-move r5c4 r5c5 right
+move-non-slippery1 r5c4 r5c5 right
 1
 0 0
 3
@@ -1974,16 +1272,7 @@ move r5c4 r5c5 right
 0
 end_operator
 begin_operator
-move r5c5 r4c5 up
-0
-3
-0 20 0 1
-0 25 -1 0
-0 28 24 19
-0
-end_operator
-begin_operator
-move r5c5 r4c5 up
+move-non-slippery1 r5c5 r4c5 up
 1
 0 0
 3
@@ -1993,8 +1282,9 @@ move r5c5 r4c5 up
 0
 end_operator
 begin_operator
-move r5c5 r5c4 left
-0
+move-non-slippery1 r5c5 r5c4 left
+1
+0 0
 3
 0 24 0 1
 0 25 -1 0
@@ -2002,12 +1292,702 @@ move r5c5 r5c4 left
 0
 end_operator
 begin_operator
-move r5c5 r5c4 left
+push-box-not-slippery2 r1c3 r1c2 r1c1 r1c0 left
 1
 0 0
-3
+4
+0 1 0 1
+0 3 -1 0
+0 26 1 0
+0 28 2 1
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r1c3 r1c4 r1c5 r1c6 right
+1
+0 0
+4
+0 3 -1 0
+0 5 0 1
+0 26 3 4
+0 28 2 3
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r2c3 r2c2 r2c1 r2c0 left
+1
+0 0
+4
+0 6 0 1
+0 8 -1 0
+0 26 6 5
+0 28 7 6
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r2c3 r2c4 r2c5 r2c6 right
+1
+0 0
+4
+0 8 -1 0
+0 10 0 1
+0 26 8 9
+0 28 7 8
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c1 r2c1 r1c1 r0c1 up
+1
+0 0
+4
+0 1 0 1
+0 26 5 0
+0 27 -1 0
+0 28 10 5
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c1 r4c1 r5c1 r6c1 down
+1
+0 0
+4
+0 21 0 1
+0 26 15 20
+0 27 -1 0
+0 28 10 15
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c2 r2c2 r1c2 r0c2 up
+1
+0 0
+4
+0 2 0 1
+0 12 -1 0
+0 26 6 1
+0 28 11 6
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c2 r4c2 r5c2 r6c2 down
+1
+0 0
+4
+0 12 -1 0
+0 22 0 1
+0 26 16 21
+0 28 11 16
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c3 r2c3 r1c3 r0c3 up
+1
+0 0
+4
+0 3 0 1
+0 13 -1 0
+0 26 7 2
+0 28 12 7
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c3 r3c2 r3c1 r3c0 left
+1
+0 0
+4
+0 13 -1 0
+0 26 11 10
+0 27 0 1
+0 28 12 11
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c3 r3c4 r3c5 r3c6 right
+1
+0 0
+4
+0 13 -1 0
+0 15 0 1
+0 26 13 14
+0 28 12 13
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c3 r4c3 r5c3 r6c3 down
+1
+0 0
+4
+0 13 -1 0
+0 23 0 1
+0 26 17 22
+0 28 12 17
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c4 r2c4 r1c4 r0c4 up
+1
+0 0
+4
+0 4 0 1
+0 14 -1 0
+0 26 8 3
+0 28 13 8
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c4 r3c3 r3c2 r3c1 left
+2
+0 0
+27 1
+4
+0 12 0 1
+0 14 -1 0
+0 26 12 11
+0 28 13 12
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c4 r4c4 r5c4 r6c4 down
+1
+0 0
+4
+0 14 -1 0
 0 24 0 1
+0 26 18 23
+0 28 13 18
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c5 r2c5 r1c5 r0c5 up
+1
+0 0
+4
+0 5 0 1
+0 15 -1 0
+0 26 9 4
+0 28 14 9
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r3c5 r4c5 r5c5 r6c5 down
+1
+0 0
+4
+0 15 -1 0
+0 25 0 1
+0 26 19 24
+0 28 14 19
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r4c3 r4c2 r4c1 r4c0 left
+1
+0 0
+4
+0 16 0 1
+0 18 -1 0
+0 26 16 15
+0 28 17 16
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r4c3 r4c4 r4c5 r4c6 right
+1
+0 0
+4
+0 18 -1 0
+0 20 0 1
+0 26 18 19
+0 28 17 18
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r5c3 r5c2 r5c1 r5c0 left
+1
+0 0
+4
+0 21 0 1
+0 23 -1 0
+0 26 21 20
+0 28 22 21
+0
+end_operator
+begin_operator
+push-box-not-slippery2 r5c3 r5c4 r5c5 r5c6 right
+1
+0 0
+4
+0 23 -1 0
+0 25 0 1
+0 26 23 24
+0 28 22 23
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c1 r1c2 r1c3 r1c4 right
+2
+0 0
+4 1
+4
+0 1 -1 0
+0 3 0 1
+0 26 1 2
+0 28 0 1
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c1 r2c1 r3c1 r4c1 down
+2
+0 0
+16 1
+4
+0 1 -1 0
+0 26 5 10
+0 27 0 1
+0 28 0 5
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c2 r1c3 r1c4 r1c5 right
+2
+0 0
+5 1
+4
+0 2 -1 0
+0 4 0 1
+0 26 2 3
+0 28 1 2
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c2 r2c2 r3c2 r4c2 down
+2
+0 0
+17 1
+4
+0 2 -1 0
+0 12 0 1
+0 26 6 11
+0 28 1 6
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c3 r2c3 r3c3 r4c3 down
+2
+0 0
+18 1
+4
+0 3 -1 0
+0 13 0 1
+0 26 7 12
+0 28 2 7
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c4 r1c3 r1c2 r1c1 left
+2
+0 0
+1 1
+4
+0 2 0 1
+0 4 -1 0
+0 26 2 1
+0 28 3 2
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c4 r2c4 r3c4 r4c4 down
+2
+0 0
+19 1
+4
+0 4 -1 0
+0 14 0 1
+0 26 8 13
+0 28 3 8
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c5 r1c4 r1c3 r1c2 left
+2
+0 0
+2 1
+4
+0 3 0 1
+0 5 -1 0
+0 26 3 2
+0 28 4 3
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r1c5 r2c5 r3c5 r4c5 down
+2
+0 0
+20 1
+4
+0 5 -1 0
+0 15 0 1
+0 26 9 14
+0 28 4 9
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c1 r2c2 r2c3 r2c4 right
+2
+0 0
+9 1
+4
+0 6 -1 0
+0 8 0 1
+0 26 6 7
+0 28 5 6
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c1 r3c1 r4c1 r5c1 down
+2
+0 0
+21 1
+4
+0 6 -1 0
+0 16 0 1
+0 26 10 15
+0 28 5 10
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c2 r2c3 r2c4 r2c5 right
+2
+0 0
+10 1
+4
+0 7 -1 0
+0 9 0 1
+0 26 7 8
+0 28 6 7
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c2 r3c2 r4c2 r5c2 down
+2
+0 0
+22 1
+4
+0 7 -1 0
+0 17 0 1
+0 26 11 16
+0 28 6 11
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c3 r3c3 r4c3 r5c3 down
+2
+0 0
+23 1
+4
+0 8 -1 0
+0 18 0 1
+0 26 12 17
+0 28 7 12
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c4 r2c3 r2c2 r2c1 left
+2
+0 0
+6 1
+4
+0 7 0 1
+0 9 -1 0
+0 26 7 6
+0 28 8 7
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c4 r3c4 r4c4 r5c4 down
+2
+0 0
+24 1
+4
+0 9 -1 0
+0 19 0 1
+0 26 13 18
+0 28 8 13
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c5 r2c4 r2c3 r2c2 left
+2
+0 0
+7 1
+4
+0 8 0 1
+0 10 -1 0
+0 26 8 7
+0 28 9 8
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r2c5 r3c5 r4c5 r5c5 down
+2
+0 0
+25 1
+4
+0 10 -1 0
+0 20 0 1
+0 26 14 19
+0 28 9 14
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r3c1 r3c2 r3c3 r3c4 right
+2
+0 0
+14 1
+4
+0 13 0 1
+0 26 11 12
+0 27 -1 0
+0 28 10 11
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r3c2 r3c3 r3c4 r3c5 right
+2
+0 0
+15 1
+4
+0 12 -1 0
+0 14 0 1
+0 26 12 13
+0 28 11 12
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r3c5 r3c4 r3c3 r3c2 left
+2
+0 0
+12 1
+4
+0 13 0 1
+0 15 -1 0
+0 26 13 12
+0 28 14 13
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c1 r3c1 r2c1 r1c1 up
+2
+0 0
+1 1
+4
+0 6 0 1
+0 16 -1 0
+0 26 10 5
+0 28 15 10
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c1 r4c2 r4c3 r4c4 right
+2
+0 0
+19 1
+4
+0 16 -1 0
+0 18 0 1
+0 26 16 17
+0 28 15 16
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c2 r3c2 r2c2 r1c2 up
+2
+0 0
+2 1
+4
+0 7 0 1
+0 17 -1 0
+0 26 11 6
+0 28 16 11
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c2 r4c3 r4c4 r4c5 right
+2
+0 0
+20 1
+4
+0 17 -1 0
+0 19 0 1
+0 26 17 18
+0 28 16 17
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c3 r3c3 r2c3 r1c3 up
+2
+0 0
+3 1
+4
+0 8 0 1
+0 18 -1 0
+0 26 12 7
+0 28 17 12
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c4 r3c4 r2c4 r1c4 up
+2
+0 0
+4 1
+4
+0 9 0 1
+0 19 -1 0
+0 26 13 8
+0 28 18 13
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c4 r4c3 r4c2 r4c1 left
+2
+0 0
+16 1
+4
+0 17 0 1
+0 19 -1 0
+0 26 17 16
+0 28 18 17
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c5 r3c5 r2c5 r1c5 up
+2
+0 0
+5 1
+4
+0 10 0 1
+0 20 -1 0
+0 26 14 9
+0 28 19 14
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r4c5 r4c4 r4c3 r4c2 left
+2
+0 0
+17 1
+4
+0 18 0 1
+0 20 -1 0
+0 26 18 17
+0 28 19 18
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c1 r4c1 r3c1 r2c1 up
+2
+0 0
+6 1
+4
+0 21 -1 0
+0 26 15 10
+0 27 0 1
+0 28 20 15
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c1 r5c2 r5c3 r5c4 right
+2
+0 0
+24 1
+4
+0 21 -1 0
+0 23 0 1
+0 26 21 22
+0 28 20 21
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c2 r4c2 r3c2 r2c2 up
+2
+0 0
+7 1
+4
+0 12 0 1
+0 22 -1 0
+0 26 16 11
+0 28 21 16
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c2 r5c3 r5c4 r5c5 right
+2
+0 0
+25 1
+4
+0 22 -1 0
+0 24 0 1
+0 26 22 23
+0 28 21 22
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c3 r4c3 r3c3 r2c3 up
+2
+0 0
+8 1
+4
+0 13 0 1
+0 23 -1 0
+0 26 17 12
+0 28 22 17
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c4 r4c4 r3c4 r2c4 up
+2
+0 0
+9 1
+4
+0 14 0 1
+0 24 -1 0
+0 26 18 13
+0 28 23 18
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c4 r5c3 r5c2 r5c1 left
+2
+0 0
+21 1
+4
+0 22 0 1
+0 24 -1 0
+0 26 22 21
+0 28 23 22
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c5 r4c5 r3c5 r2c5 up
+2
+0 0
+10 1
+4
+0 15 0 1
 0 25 -1 0
+0 26 19 14
+0 28 24 19
+0
+end_operator
+begin_operator
+push-box-not-slippery2_v2 r5c5 r5c4 r5c3 r5c2 left
+2
+0 0
+22 1
+4
+0 23 0 1
+0 25 -1 0
+0 26 23 22
 0 28 24 23
 0
 end_operator
@@ -2969,736 +2949,6 @@ push-box-slippery r5c5 r5c4 r5c3 r5c2 left
 0 25 -1 0
 0 26 23 21
 0 28 24 23
-0
-end_operator
-begin_operator
-push-box-slippery2 r1c3 r1c2 r1c1 r1c0 left
-1
-0 0
-4
-0 1 0 1
-0 3 -1 0
-0 26 1 0
-0 28 2 1
-0
-end_operator
-begin_operator
-push-box-slippery2 r1c3 r1c4 r1c5 r1c6 right
-1
-0 0
-4
-0 3 -1 0
-0 5 0 1
-0 26 3 4
-0 28 2 3
-0
-end_operator
-begin_operator
-push-box-slippery2 r2c3 r2c2 r2c1 r2c0 left
-1
-0 0
-4
-0 6 0 1
-0 8 -1 0
-0 26 6 5
-0 28 7 6
-0
-end_operator
-begin_operator
-push-box-slippery2 r2c3 r2c4 r2c5 r2c6 right
-1
-0 0
-4
-0 8 -1 0
-0 10 0 1
-0 26 8 9
-0 28 7 8
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c1 r2c1 r1c1 r0c1 up
-1
-0 0
-4
-0 1 0 1
-0 26 5 0
-0 27 -1 0
-0 28 10 5
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c1 r4c1 r5c1 r6c1 down
-1
-0 0
-4
-0 21 0 1
-0 26 15 20
-0 27 -1 0
-0 28 10 15
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c2 r2c2 r1c2 r0c2 up
-1
-0 0
-4
-0 2 0 1
-0 12 -1 0
-0 26 6 1
-0 28 11 6
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c2 r4c2 r5c2 r6c2 down
-1
-0 0
-4
-0 12 -1 0
-0 22 0 1
-0 26 16 21
-0 28 11 16
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c3 r2c3 r1c3 r0c3 up
-1
-0 0
-4
-0 3 0 1
-0 13 -1 0
-0 26 7 2
-0 28 12 7
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c3 r3c2 r3c1 r3c0 left
-1
-0 0
-4
-0 13 -1 0
-0 26 11 10
-0 27 0 1
-0 28 12 11
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c3 r3c4 r3c5 r3c6 right
-1
-0 0
-4
-0 13 -1 0
-0 15 0 1
-0 26 13 14
-0 28 12 13
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c3 r4c3 r5c3 r6c3 down
-1
-0 0
-4
-0 13 -1 0
-0 23 0 1
-0 26 17 22
-0 28 12 17
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c4 r2c4 r1c4 r0c4 up
-1
-0 0
-4
-0 4 0 1
-0 14 -1 0
-0 26 8 3
-0 28 13 8
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c4 r3c3 r3c2 r3c1 left
-2
-0 0
-27 1
-4
-0 12 0 1
-0 14 -1 0
-0 26 12 11
-0 28 13 12
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c4 r4c4 r5c4 r6c4 down
-1
-0 0
-4
-0 14 -1 0
-0 24 0 1
-0 26 18 23
-0 28 13 18
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c5 r2c5 r1c5 r0c5 up
-1
-0 0
-4
-0 5 0 1
-0 15 -1 0
-0 26 9 4
-0 28 14 9
-0
-end_operator
-begin_operator
-push-box-slippery2 r3c5 r4c5 r5c5 r6c5 down
-1
-0 0
-4
-0 15 -1 0
-0 25 0 1
-0 26 19 24
-0 28 14 19
-0
-end_operator
-begin_operator
-push-box-slippery2 r4c3 r4c2 r4c1 r4c0 left
-1
-0 0
-4
-0 16 0 1
-0 18 -1 0
-0 26 16 15
-0 28 17 16
-0
-end_operator
-begin_operator
-push-box-slippery2 r4c3 r4c4 r4c5 r4c6 right
-1
-0 0
-4
-0 18 -1 0
-0 20 0 1
-0 26 18 19
-0 28 17 18
-0
-end_operator
-begin_operator
-push-box-slippery2 r5c3 r5c2 r5c1 r5c0 left
-1
-0 0
-4
-0 21 0 1
-0 23 -1 0
-0 26 21 20
-0 28 22 21
-0
-end_operator
-begin_operator
-push-box-slippery2 r5c3 r5c4 r5c5 r5c6 right
-1
-0 0
-4
-0 23 -1 0
-0 25 0 1
-0 26 23 24
-0 28 22 23
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c1 r1c2 r1c3 r1c4 right
-2
-0 0
-4 1
-4
-0 1 -1 0
-0 3 0 1
-0 26 1 2
-0 28 0 1
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c1 r2c1 r3c1 r4c1 down
-2
-0 0
-16 1
-4
-0 1 -1 0
-0 26 5 10
-0 27 0 1
-0 28 0 5
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c2 r1c3 r1c4 r1c5 right
-2
-0 0
-5 1
-4
-0 2 -1 0
-0 4 0 1
-0 26 2 3
-0 28 1 2
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c2 r2c2 r3c2 r4c2 down
-2
-0 0
-17 1
-4
-0 2 -1 0
-0 12 0 1
-0 26 6 11
-0 28 1 6
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c3 r2c3 r3c3 r4c3 down
-2
-0 0
-18 1
-4
-0 3 -1 0
-0 13 0 1
-0 26 7 12
-0 28 2 7
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c4 r1c3 r1c2 r1c1 left
-2
-0 0
-1 1
-4
-0 2 0 1
-0 4 -1 0
-0 26 2 1
-0 28 3 2
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c4 r2c4 r3c4 r4c4 down
-2
-0 0
-19 1
-4
-0 4 -1 0
-0 14 0 1
-0 26 8 13
-0 28 3 8
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c5 r1c4 r1c3 r1c2 left
-2
-0 0
-2 1
-4
-0 3 0 1
-0 5 -1 0
-0 26 3 2
-0 28 4 3
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r1c5 r2c5 r3c5 r4c5 down
-2
-0 0
-20 1
-4
-0 5 -1 0
-0 15 0 1
-0 26 9 14
-0 28 4 9
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c1 r2c2 r2c3 r2c4 right
-2
-0 0
-9 1
-4
-0 6 -1 0
-0 8 0 1
-0 26 6 7
-0 28 5 6
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c1 r3c1 r4c1 r5c1 down
-2
-0 0
-21 1
-4
-0 6 -1 0
-0 16 0 1
-0 26 10 15
-0 28 5 10
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c2 r2c3 r2c4 r2c5 right
-2
-0 0
-10 1
-4
-0 7 -1 0
-0 9 0 1
-0 26 7 8
-0 28 6 7
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c2 r3c2 r4c2 r5c2 down
-2
-0 0
-22 1
-4
-0 7 -1 0
-0 17 0 1
-0 26 11 16
-0 28 6 11
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c3 r3c3 r4c3 r5c3 down
-2
-0 0
-23 1
-4
-0 8 -1 0
-0 18 0 1
-0 26 12 17
-0 28 7 12
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c4 r2c3 r2c2 r2c1 left
-2
-0 0
-6 1
-4
-0 7 0 1
-0 9 -1 0
-0 26 7 6
-0 28 8 7
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c4 r3c4 r4c4 r5c4 down
-2
-0 0
-24 1
-4
-0 9 -1 0
-0 19 0 1
-0 26 13 18
-0 28 8 13
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c5 r2c4 r2c3 r2c2 left
-2
-0 0
-7 1
-4
-0 8 0 1
-0 10 -1 0
-0 26 8 7
-0 28 9 8
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r2c5 r3c5 r4c5 r5c5 down
-2
-0 0
-25 1
-4
-0 10 -1 0
-0 20 0 1
-0 26 14 19
-0 28 9 14
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r3c1 r3c2 r3c3 r3c4 right
-2
-0 0
-14 1
-4
-0 13 0 1
-0 26 11 12
-0 27 -1 0
-0 28 10 11
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r3c2 r3c3 r3c4 r3c5 right
-2
-0 0
-15 1
-4
-0 12 -1 0
-0 14 0 1
-0 26 12 13
-0 28 11 12
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r3c5 r3c4 r3c3 r3c2 left
-2
-0 0
-12 1
-4
-0 13 0 1
-0 15 -1 0
-0 26 13 12
-0 28 14 13
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c1 r3c1 r2c1 r1c1 up
-2
-0 0
-1 1
-4
-0 6 0 1
-0 16 -1 0
-0 26 10 5
-0 28 15 10
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c1 r4c2 r4c3 r4c4 right
-2
-0 0
-19 1
-4
-0 16 -1 0
-0 18 0 1
-0 26 16 17
-0 28 15 16
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c2 r3c2 r2c2 r1c2 up
-2
-0 0
-2 1
-4
-0 7 0 1
-0 17 -1 0
-0 26 11 6
-0 28 16 11
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c2 r4c3 r4c4 r4c5 right
-2
-0 0
-20 1
-4
-0 17 -1 0
-0 19 0 1
-0 26 17 18
-0 28 16 17
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c3 r3c3 r2c3 r1c3 up
-2
-0 0
-3 1
-4
-0 8 0 1
-0 18 -1 0
-0 26 12 7
-0 28 17 12
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c4 r3c4 r2c4 r1c4 up
-2
-0 0
-4 1
-4
-0 9 0 1
-0 19 -1 0
-0 26 13 8
-0 28 18 13
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c4 r4c3 r4c2 r4c1 left
-2
-0 0
-16 1
-4
-0 17 0 1
-0 19 -1 0
-0 26 17 16
-0 28 18 17
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c5 r3c5 r2c5 r1c5 up
-2
-0 0
-5 1
-4
-0 10 0 1
-0 20 -1 0
-0 26 14 9
-0 28 19 14
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r4c5 r4c4 r4c3 r4c2 left
-2
-0 0
-17 1
-4
-0 18 0 1
-0 20 -1 0
-0 26 18 17
-0 28 19 18
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c1 r4c1 r3c1 r2c1 up
-2
-0 0
-6 1
-4
-0 21 -1 0
-0 26 15 10
-0 27 0 1
-0 28 20 15
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c1 r5c2 r5c3 r5c4 right
-2
-0 0
-24 1
-4
-0 21 -1 0
-0 23 0 1
-0 26 21 22
-0 28 20 21
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c2 r4c2 r3c2 r2c2 up
-2
-0 0
-7 1
-4
-0 12 0 1
-0 22 -1 0
-0 26 16 11
-0 28 21 16
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c2 r5c3 r5c4 r5c5 right
-2
-0 0
-25 1
-4
-0 22 -1 0
-0 24 0 1
-0 26 22 23
-0 28 21 22
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c3 r4c3 r3c3 r2c3 up
-2
-0 0
-8 1
-4
-0 13 0 1
-0 23 -1 0
-0 26 17 12
-0 28 22 17
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c4 r4c4 r3c4 r2c4 up
-2
-0 0
-9 1
-4
-0 14 0 1
-0 24 -1 0
-0 26 18 13
-0 28 23 18
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c4 r5c3 r5c2 r5c1 left
-2
-0 0
-21 1
-4
-0 22 0 1
-0 24 -1 0
-0 26 22 21
-0 28 23 22
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c5 r4c5 r3c5 r2c5 up
-2
-0 0
-10 1
-4
-0 15 0 1
-0 25 -1 0
-0 26 19 14
-0 28 24 19
-0
-end_operator
-begin_operator
-push-box-slippery2_v2 r5c5 r5c4 r5c3 r5c2 left
-2
-0 0
-22 1
-4
-0 23 0 1
-0 25 -1 0
-0 26 23 22
-0 28 24 23
-0
-end_operator
-begin_operator
-put-boots r2c1 r3c1 down
-2
-0 0
-28 5
-2
-0 11 0 1
-0 27 -1 0
-0
-end_operator
-begin_operator
-put-boots r3c2 r3c1 left
-2
-0 0
-28 11
-2
-0 11 0 1
-0 27 -1 0
-0
-end_operator
-begin_operator
-put-boots r4c1 r3c1 up
-2
-0 0
-28 15
-2
-0 11 0 1
-0 27 -1 0
 0
 end_operator
 0

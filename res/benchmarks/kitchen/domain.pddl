@@ -23,7 +23,6 @@
         (can-accept ?c - costumer ?r - recipe)
         (num-refused-recipes ?c - costumer ?n - number)
         (num-recipes-to-refuse ?c - costumer ?n - number)
-        (locked ?i - ingredient ?isl - number)
     )
 
 
@@ -35,11 +34,15 @@
         )
         :precondition
         (and
-            (not (locked ?ing ?chef-island))
+            ;; check numerical precedence 
             (dec ?ing-on-stock ?dec-ing-on-stock)
             (inc ?ing-on-chef-island ?inc-ing-on-chef-island)
+
+            ;; check ingredient on chef's island/ kitchen's stock
             (on-stock ?ing ?ing-on-stock)
             (on-chef-island ?ing ?ing-on-chef-island ?chef-island)
+
+            ;; check possibility of changing the ingredient on chef's island
             (not (finished ?chef-island))
         )
         
@@ -59,7 +62,6 @@
         )
         :precondition 
         (and
-            (not (locked ?ing ?chef-island))
             (inc ?ing-on-stock ?inc-ing-on-stock)
             (dec ?ing-on-chef-island ?dec-ing-on-chef-island)
             (on-stock ?ing ?ing-on-stock)
@@ -75,32 +77,21 @@
         )
         
     )
-    (:action lock-ingredient
-        :parameters (
-            ?r - recipe 
-            ?i - ingredient 
-            ?chef-island ?n ?m - number)
-        :precondition
-        (and
-            (not (locked ?i ?isl))
-            (on-chef-island ?i ?n ?chef-island)
-            (on-recipe ?i ?m ?r)
-            (equal ?n ?m)
-        )    
-        :effect (locked ?i ?isl)
-    )
     (:action select-recipe
         :parameters (?r - recipe ?chef-island - number)
         :precondition 
         (and
             ;; the chef island chef-island contains the exaclty quantity of ingredient the recipe r requires
             (not (finished ?chef-island))
-            (forall (?ing - ingredient)
-                (and
-                    (exists (?n - number)
+            (forall (?ing - ingredient ?n - number)
+                ;; if is on recipe, then must also be on chef island
+                ;; on-recipe -> on-chef-island <=> ((on-recipe ^ on-chef-island) v ~on-recipe)
+                (or
+                    (and
                         (on-recipe ?ing ?n ?r)
+                        (on-chef-island ?ing ?n ?chef-island)
                     )
-                    (locked ?ing ?chef-island)
+                    (not (on-recipe ?ing ?n ?r))
                 )
             )            
         )

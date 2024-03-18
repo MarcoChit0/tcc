@@ -10,6 +10,9 @@ Policy AndStar::get_solution(const Task &task)
 {
     std::function<bool(const Policy &, const Policy &)> is_policy_worse_than = [*this](const Policy policy_1, const Policy policy_2)
     {
+        // h = f - g
+        // f = g + 2*h
+        // -> f = g + 2*(f - g)
         if (this->policy_heuristic[policy_1] != this->policy_heuristic[policy_2])
         {
             return this->policy_heuristic[policy_1] > this->policy_heuristic[policy_2];

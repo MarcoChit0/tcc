@@ -113,8 +113,8 @@ domain = {}
 #     # "tireworld-spiky/p1/dead-end/labels.txt",
 #     "tireworld-triangle/p1/dead-end/labels.txt"
 # ]
-path = "misc/data/raw_results/test,v2024-03-12/delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,complete/"
-instances = ["tireworld-spiky-2/p5/dead-end/labels.txt"]
+path = "misc/data/raw_results/test,v2024-03-18/delta-nearest,trie-star,100,facts-over-effects-mean-over-actions-mean,0.2,fsm,keep,0.1,0.7,0.9,stop,all,action-proportionality,reachable/"
+instances = [f"tireworld-spiky-2/p{i+2}/dead-end/labels.txt" for i in range(4)]
 sas_path = "res/compiled_benchmarks/"
 for p in instances:
     states_file = os.path.join(path, p)
@@ -122,6 +122,9 @@ for p in instances:
     sas_file = os.path.join(sas_path, sas_file_name)
     var = ""
     dsize = 0
+    if not os.path.exists(sas_file):
+        continue
+    print(sas_file)
     with open(sas_file, "r") as file:
         while True:
             if "end_metric" in file.readline():

@@ -27,6 +27,7 @@
 	)
 	(:init
 		(inc 0 1)
+		(is-zero 0)
 		(dec 1 0)
 		(inc 1 2)
 		(dec 2 1)
@@ -83,9 +84,9 @@
 	)
 	(:goal
 		(and
-			(satisfied John)
-			(satisfied Alice)
-			(satisfied Bob)
+			(satisfied costumer-John)
+			(satisfied costumer-Alice)
+			(satisfied costumer-Bob)
 		)
 	)
 )

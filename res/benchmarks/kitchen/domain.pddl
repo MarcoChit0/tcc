@@ -7,6 +7,7 @@
     (:predicates
         (inc ?op ?res - number)
         (dec ?op ?res - number)
+        (is-zero ?n - number)
 
         (on-chef-island ?i - ingredient ?n - number)
         (on-recipe ?i - ingredient ?n - number ?r - recipe)
@@ -35,7 +36,10 @@
         :precondition
         (and
             (forall (?any-recipe - recipe)
-                (not (prepared ?any-recipe))
+                (and 
+                    (not (prepared ?any-recipe))
+                    (not (properly-added ?i ?any-recipe))
+                )
             )
 
             ;; check numerical precedence 
@@ -67,7 +71,10 @@
         :precondition 
         (and
             (forall (?any-recipe - recipe)
-                (not (prepared ?any-recipe))
+                (and 
+                    (not (prepared ?any-recipe))
+                    (not (properly-added ?i ?any-recipe))
+                )
             )
             ;; check numerical precedence 
             (inc ?iStock ?inc-iStock)
@@ -100,8 +107,6 @@
         (and
             (not (on-chef-island ?i ?n))
             (properly-added ?i ?r)
-            
-            ;; (on-chef-island ?i 0)
         )
     )
     (:action select-ingredient-that-is-not-on-recipe
@@ -113,7 +118,12 @@
                     (on-recipe ?i ?n ?r)
                 )
             )
-            ;; (on-chef-island ?i 0)
+            (exists (?z - number)
+                (and
+                    (is-zero ?z)
+                    (on-chef-island ?i ?z)
+                )
+            )
         )
         :effect
         (and
@@ -241,5 +251,21 @@
             (not (consumed ?r))
         )
     )
-
+    (:action clear-balcony
+        :parameters (?i - ingredient ?n - number)
+        :precondition
+        (and
+            (forall (?r - recipe)
+                (and 
+                    (not (prepared ?r))
+                    (not (properly-added ?i ?r))
+                )
+            )
+            (is-zero ?n)
+        )
+        :effect 
+        (and
+            (on-chef-island ?i ?n)
+        )
+    )
 )

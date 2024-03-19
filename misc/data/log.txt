@@ -3995,3 +3995,6 @@
 (datetime.datetime(2024, 3, 18, 10, 39, 27, 569861), ('tireworld-spiky-2', 'p5', 'delta-nearest', 'trie-star', 'test,v2024-03-18'))
 (datetime.datetime(2024, 3, 18, 10, 39, 28, 23854), ('tireworld-spiky-2', 'p5', 'delta-nearest', 'trie-star', 'test,v2024-03-18'))
 (datetime.datetime(2024, 3, 19, 15, 12, 15, 300063), ('kitchen', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-03-19'))
+(datetime.datetime(2024, 3, 19, 15, 51, 17, 549911), ('kitchen', 'p1', 'delta-nearest', 'trie-star', 'test,v2024-03-19'))
+(datetime.datetime(2024, 3, 19, 17, 36, 46, 103291), ('kitchen', 'p3', 'delta-nearest', 'trie-star', 'test,v2024-03-19'))
+(datetime.datetime(2024, 3, 19, 17, 37, 10, 116822), ('kitchen', 'p3', 'delta-nearest', 'trie-star', 'test,v2024-03-19'))

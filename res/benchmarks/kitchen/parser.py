@@ -34,7 +34,7 @@ if __name__ == "__main__":
                 for ingredient, quantity in instance["recipes"][recipe].items():
                     max_num = max(max_num, int(quantity))
 
-            objets_predicates = [f"{i} - number" for i in range( max_num+1)]
+            objets_predicates = [f"{i} - number" for i in range(1, max_num+1)]
             objets_predicates += [f"ingredient-{ingredient} - ingredient" for ingredient, quantity in instance["stock"].items()]
             objets_predicates += [f"recipe-{recipe} - recipe" for recipe in instance["recipes"]]
             objets_predicates += [f"costumer-{costumer} - costumer" for costumer in instance["costumers"]]
@@ -48,8 +48,6 @@ if __name__ == "__main__":
                     initial_predicates.append(f"(dec {i} {i-1})")
                 if i < max_num:
                     initial_predicates.append(f"(inc {i} {i+1})")
-                if i == 0:
-                    initial_predicates.append(f"(is-zero {i})")
             
             # (on-chef-island ?ing - ingredient ?n - number)
             for ingredient, quantity in instance["stock"].items():

@@ -1,7 +1,6 @@
 (define (problem p1-kitchen)
 	(:domain kitchen)
 	(:objects
-		0 - number
 		1 - number
 		2 - number
 		3 - number
@@ -27,7 +26,6 @@
 	)
 	(:init
 		(inc 0 1)
-		(is-zero 0)
 		(dec 1 0)
 		(inc 1 2)
 		(dec 2 1)

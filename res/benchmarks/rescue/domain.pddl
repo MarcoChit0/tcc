@@ -20,11 +20,24 @@
         (have-water ?u - fire_unit)
         (have-victim-in-unit ?v - victim ?u - medical_unit)
 
+        (is-succ ?n1 ?n2 - number)
+
         (inc ?op ?res - number)
         (spreading-time ?t - number ?l - location)
-        (spread-out ?l)
+        (spread-out ?t - number ?l - location)
         (adjusted-clock)
         (need-to-adjust-clock)
+    )
+
+    (:action succ-app
+        :parameters (?n1 ?n2 ?n3 - number)
+        :precondition (and 
+            (is-succ ?n1 ?n2)
+            (is-succ ?n2 ?n3)
+        )
+        :effect (and 
+            (is-succ ?n1 ?n3)
+        )
     )
 
     (:action drive-fire-unit
@@ -106,20 +119,42 @@
 
     (:action unload-fire-unit
         :parameters (?u - fire_unit ?l ?l1 - location)
-        :precondition (and (fire-unit-at ?u ?l)
+        :precondition 
+        (and 
+            (fire-unit-at ?u ?l)
             (adjacent ?l1 ?l)
             (have-water ?u)
-            (fire ?l1))
-        :effect (and
+            (fire ?l1)
+
+            (adjusted-clock)    
+        )
+        :effect 
+        (and
             (not (have-water ?u))
             (not (fire ?l1))
+        
+            (need-to-adjust-clock)
+            (not (adjusted-clock))
         )
     )
 
     (:action unload-medical-unit
         :parameters (?u - medical_unit ?l - location ?v - victim)
-        :precondition (and (medical-unit-at ?u ?l)(have-victim-in-unit ?v ?u))
-        :effect (and (victim-at ?v ?l) (not (have-victim-in-unit ?v ?u)))
+        :precondition 
+        (and 
+            (medical-unit-at ?u ?l)
+            (have-victim-in-unit ?v ?u)
+        
+            (adjusted-clock)
+        )
+        :effect 
+        (and 
+            (victim-at ?v ?l) 
+            (not (have-victim-in-unit ?v ?u))
+        
+            (need-to-adjust-clock)
+            (not (adjusted-clock))
+        )
     )
 
     (:action spread-fire
@@ -130,12 +165,13 @@
             (clock ?t)
             (spreading-time ?next ?l)
             (need-to-adjust-clock)
+
         )            
         :effect 
         (and 
             ;; TODO: add the possibility of not spreading the fire
             (fire ?l)
-            (spread-out ?l)
+            (spread-out ?next ?l)
         )
     )
     (:action adjust-clock
@@ -148,9 +184,10 @@
                 (or
                     (and
                         (spreading-time ?next ?l)
-                        (fire ?l) ;; change this... the fire unit could extinguish the fire before the next spreading time
+                        ;; change this... the fire unit could extinguish the fire before the next spreading time
+                        (spread-out ?next ?l) 
                     )
-                    (not (fire ?l))
+                    (not (spreading-time ?next ?l))
                 )
             )
         )

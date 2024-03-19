@@ -320,24 +320,7 @@ def compute_model(prog):
             else:
                 relevant_atoms += 1
             matches = unifier.unify(next_atom)
-            for rule, cond_index in matches:
-                if type(rule) is ProjectRule:
-                    print("Project rule fired")
-                    print(rule.conditions)
-                    print(rule.effect)
-                elif type(rule) is ProductRule:
-                    print("Product rule fired")
-                    print(rule.conditions)
-                    print(rule.effect)
-                    print(rule.atoms_by_index)
-                    print(rule.empty_atom_list_no)
-                elif type(rule) is JoinRule:
-                    print("Join rule fired")
-                    print(rule.conditions)
-                    print(rule.effect)
-                    print(rule.common_var_positions)
-                    print(rule.atoms_by_key)
-                
+            for rule, cond_index in matches:                
                 rule.update_index(next_atom, cond_index)
                 rule.fire(next_atom, cond_index, queue.push)
     # print("%d relevant atoms" % relevant_atoms)

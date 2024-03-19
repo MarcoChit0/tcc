@@ -27,14 +27,14 @@ if __name__ == "__main__":
         with open(os.path.join(path, instances_dir, json_file)) as file:
             instance = json.load(file)
 
-            max_num = 0
+            max_num = int(instance["islands"])
             for ingredient, quantity in instance["stock"].items():
                 max_num = max(max_num, int(quantity))
             for recipe in instance["recipes"]:
                 for ingredient, quantity in instance["recipes"][recipe].items():
                     max_num = max(max_num, int(quantity))
 
-            objets_predicates = [f"{i} - number" for i in range(1, max_num+1)]
+            objets_predicates = [f"{i} - number" for i in range(max_num+1)]
             objets_predicates += [f"ingredient-{ingredient} - ingredient" for ingredient, quantity in instance["stock"].items()]
             objets_predicates += [f"recipe-{recipe} - recipe" for recipe in instance["recipes"]]
             objets_predicates += [f"costumer-{costumer} - costumer" for costumer in instance["costumers"]]
@@ -42,16 +42,19 @@ if __name__ == "__main__":
             goal_predicates = [f"(satisfied costumer-{costumer})" for costumer in instance["costumers"]]
 
             initial_predicates = []
-
             for i in range(0, max_num+1):
                 if i > 0:
                     initial_predicates.append(f"(dec {i} {i-1})")
                 if i < max_num:
                     initial_predicates.append(f"(inc {i} {i+1})")
-            
-            # (on-chef-island ?ing - ingredient ?n - number)
-            for ingredient, quantity in instance["stock"].items():
-                initial_predicates.append(f"(on-chef-island ingredient-{ingredient} {0})")
+                initial_predicates.append(f"(equal {i} {i})")
+
+            # (on-chef-island ?ing - ingredient ?n - number ?isl - number)
+            for i in range(int(instance["islands"])):
+                # start all islands empty
+                initial_predicates.append(f"(not (finished {i}))")
+                for ingredient, quantity in instance["stock"].items():
+                    initial_predicates.append(f"(on-chef-island ingredient-{ingredient} {0} {i})")
 
             # (on-recipe ?ing - ingredient ?n - number ?r - recipe)
             for recipe in instance["recipes"]:

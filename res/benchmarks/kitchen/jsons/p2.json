@@ -1,0 +1,19 @@
+{
+    "recipes": {
+        "cake": {
+            "flour": "1"
+        },
+        "pancakes": {
+            "flour": "1"
+        }
+    },
+    "stock": {
+        "flour": "2"
+    },
+    "costumers": {
+        "John": [
+            "cake",
+            "pancakes"
+        ]
+    }
+}

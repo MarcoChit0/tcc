@@ -14,7 +14,6 @@ You will need **[Boost](https://www.boost.org/)** and **[GMP](https://gmplib.org
 
 ---
 
-
 ## Build:
 ```
 conda env create -f environment.yml
@@ -30,3 +29,13 @@ python3 ./misc/tools/lab/experiment_runner.py
 The results will appear in `./misc/data/raw_results` directory.
 
 Create `./white-list.txt` to define which instances will be used. (one `<domain-label,instance-label>` per line).
+
+## Problems
+### Problem
+```
+ModuleNotFoundError: No module named 'res'
+```
+### Solution
+```
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+```

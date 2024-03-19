@@ -1,125 +1,163 @@
-;; Disclaimer:
-;; The introduction of multiple numbered islands as areas where chefs organize their ingredients addresses a specific limitation in our PDDL translator. 
-;; Originally, our translator struggled with processing 'forall' statements in effects, which made it impossible to accurately track which ingredients had been used in a recipe. 
-;; To circumvent this issue, we devised the concept of islands. 
-;; Once a recipe is completed, the corresponding island is "closed," rendering the ingredients placed on it inaccessible for further use.
-;; As a direct consequence of this approach, it's necessary to specify the number of available islands in the instance file, ensuring that the chef has sufficient space to prepare dishes. 
-;; This solution, while not ideal, provided a practical workaround to the translator's limitations.
-;; Please note that this methodology introduces a requirement to manage island availability within the instance files, which may impact how you plan and execute your cooking simulations.
 (define
     (domain kitchen)
     (:requirements :strips :typing :non-deterministic :disjunctive-preconditions :existential-preconditions :universal-preconditions)
-    (:types recipe ingredient costumer number - object)
+    (:types 
+        recipe ingredient costumer number - object
+    )
     (:predicates
         (inc ?op ?res - number)
         (dec ?op ?res - number)
-        (equal ?a ?b - number)
-        (finished ?isl - number)
-        (on-chef-island ?ing - ingredient ?n - number ?isl - number)
-        (on-recipe ?ing - ingredient ?n - number ?r - recipe)
-        (on-stock ?ing - ingredient ?n - number)
+
+        (on-chef-island ?i - ingredient ?n - number)
+        (on-recipe ?i - ingredient ?n - number ?r - recipe)
+        (on-stock ?i - ingredient ?n - number)
+
         (prepared ?r - recipe)
         (satisfied ?c - costumer)
+
         (can-accept ?c - costumer ?r - recipe)
         (num-refused-recipes ?c - costumer ?n - number)
         (num-recipes-to-refuse ?c - costumer ?n - number)
+        
+        (properly-added ?i - ingredient ?r - recipe)
+        
+        (consumed ?r - recipe)
+        (thrashed ?r - recipe)
     )
 
 
-    ;; move one unit of the ingredient ing from the stock to the chef island chef-island
+    ;; move one unit of the ingredient i from the stock to the chef island chef-island
     (:action from-stock-to-chef-island
         :parameters (
-            ?ing - ingredient
-            ?ing-on-stock ?dec-ing-on-stock ?ing-on-chef-island ?inc-ing-on-chef-island ?chef-island - number
+            ?i - ingredient
+            ?iStock ?dec-iStock ?iIsland ?inc-iIsland - number
         )
         :precondition
         (and
+            (forall (?any-recipe - recipe)
+                (not (prepared ?any-recipe))
+            )
+
             ;; check numerical precedence 
-            (dec ?ing-on-stock ?dec-ing-on-stock)
-            (inc ?ing-on-chef-island ?inc-ing-on-chef-island)
+            (dec ?iStock ?dec-iStock)
+            (inc ?iIsland ?inc-iIsland)
 
             ;; check ingredient on chef's island/ kitchen's stock
-            (on-stock ?ing ?ing-on-stock)
-            (on-chef-island ?ing ?ing-on-chef-island ?chef-island)
-
-            ;; check possibility of changing the ingredient on chef's island
-            (not (finished ?chef-island))
+            (on-stock ?i ?iStock)
+            (on-chef-island ?i ?iIsland)
         )
         
         :effect 
         (and
-            (not (on-stock ?ing ?ing-on-stock))
-            (on-stock ?ing ?dec-ing-on-stock)
-            (not (on-chef-island ?ing ?ing-on-chef-island ?chef-island))
-            (on-chef-island ?ing ?inc-ing-on-chef-island ?chef-island)
+            ;; negate previous quantities
+            (not (on-stock ?i ?iStock))
+            (not (on-chef-island ?i ?iIsland))
+            
+            ;; move ingredient from stock to chef island 
+            (on-stock ?i ?dec-iStock)
+            (on-chef-island ?i ?inc-iIsland)
         )
     )
-    ;; move one unit of the ingredient ing from the chef island chef-island to the stock
+    ;; move one unit of the ingredient i from the chef island chef-island to the stock
     (:action from-chef-island-to-stock
         :parameters (
-            ?ing - ingredient
-            ?ing-on-stock ?inc-ing-on-stock ?ing-on-chef-island ?dec-ing-on-chef-island ?chef-island - number
+            ?i - ingredient
+            ?iStock ?inc-iStock ?iIsland ?dec-iIsland - number
         )
         :precondition 
         (and
-            (inc ?ing-on-stock ?inc-ing-on-stock)
-            (dec ?ing-on-chef-island ?dec-ing-on-chef-island)
-            (on-stock ?ing ?ing-on-stock)
-            (on-chef-island ?ing ?ing-on-chef-island ?chef-island)
-            (not (finished ?chef-island))
+            (forall (?any-recipe - recipe)
+                (not (prepared ?any-recipe))
+            )
+            ;; check numerical precedence 
+            (inc ?iStock ?inc-iStock)
+            (dec ?iIsland ?dec-iIsland)
+
+            ;; check ingredient on chef's island/ kitchen's stock
+            (on-stock ?i ?iStock)
+            (on-chef-island ?i ?iIsland)
         )
         :effect 
         (and
-            (not (on-stock ?ing ?ing-on-stock))
-            (on-stock ?ing ?inc-ing-on-stock)
-            (not (on-chef-island ?ing ?ing-on-chef-island ?chef-island))
-            (on-chef-island ?ing ?dec-ing-on-chef-island ?chef-island)
+            ;; negate previous quantities
+            (not (on-stock ?i ?iStock))
+            (not (on-chef-island ?i ?iIsland))
+            
+            ;; move ingredient from chef island to stock
+            (on-stock ?i ?inc-iStock)
+            (on-chef-island ?i ?dec-iIsland)
         )
         
     )
-    (:action select-recipe
-        :parameters (?r - recipe ?chef-island - number)
+    (:action select-ingredient-that-is-on-recipe
+        :parameters (?i - ingredient ?n - number ?r - recipe)
         :precondition 
         (and
-            ;; the chef island chef-island contains the exaclty quantity of ingredient the recipe r requires
-            (not (finished ?chef-island))
-            (forall (?ing - ingredient ?n - number)
-                ;; if is on recipe, then must also be on chef island
-                ;; on-recipe -> on-chef-island <=> ((on-recipe ^ on-chef-island) v ~on-recipe)
-                (or
-                    (and
-                        (on-recipe ?ing ?n ?r)
-                        (on-chef-island ?ing ?n ?chef-island)
-                    )
-                    (not (on-recipe ?ing ?n ?r))
+            (on-recipe ?i ?n ?r)
+            (on-chef-island ?i ?n)
+        )
+        :effect
+        (and
+            (not (on-chef-island ?i ?n))
+            (properly-added ?i ?r)
+            
+            ;; (on-chef-island ?i 0)
+        )
+    )
+    (:action select-ingredient-that-is-not-on-recipe
+        :parameters (?i - ingredient ?r - recipe)
+        :precondition 
+        (and
+            (not 
+                (exists (?n - number)
+                    (on-recipe ?i ?n ?r)
                 )
+            )
+            ;; (on-chef-island ?i 0)
+        )
+        :effect
+        (and
+            (properly-added ?i ?r)
+        )
+    )
+    (:action select-recipe
+        :parameters (?r - recipe)
+        :precondition 
+        (and
+            (forall (?any-recipe - recipe)
+                (not (prepared ?any-recipe))
+            )
+            (forall (?i - ingredient)
+                (properly-added ?i ?r)
             )            
         )
         :effect 
         (and
             (prepared ?r)
-            (finished ?chef-island)
         )
     )    
     (:action offer-not-refusable
         :parameters (
             ?c - costumer 
             ?r - recipe
-            ?refused-recipes ?max - number
+            ?refused-recipes - number
         )
         :precondition 
         (and
+            ;; number of refused recipes reached max
             (num-refused-recipes ?c ?refused-recipes)
-            (num-recipes-to-refuse ?c ?max)
-            (equal ?refused-recipes ?max)
-
-            (prepared ?r)
+            (num-recipes-to-refuse ?c ?refused-recipes)
+        
             (can-accept ?c ?r)
             (not (satisfied ?c))
+
+            (prepared ?r)
+            (not (thrashed ?r))
+            (not (consumed ?r))
         )
         :effect 
         (and
-            (not (prepared ?r))
+            (consumed ?r)
             (not (can-accept ?c ?r))
             (satisfied ?c)
         )
@@ -128,19 +166,21 @@
         :parameters (
             ?c - costumer 
             ?r - recipe
-            ?refused-recipes ?next ?max - number
+            ?refused-recipes ?next - number
         )
         :precondition 
         (and
             ;; number of refused recipes by the client does not exceed its limit
             (num-refused-recipes ?c ?refused-recipes)
-            (num-recipes-to-refuse ?c ?max)
-            (not (equal ?refused-recipes ?max))
+            (not (num-recipes-to-refuse ?c ?refused-recipes))
             (inc ?refused-recipes ?next)
 
-            (prepared ?r)
             (can-accept ?c ?r)
             (not (satisfied ?c))
+
+            (prepared ?r)
+            (not (thrashed ?r))
+            (not (consumed ?r))
         )
         :effect             
         (and
@@ -149,7 +189,7 @@
             (oneof
                 ;; consumes the recipe normally -> the recipe is consumed and the client is satisfied
                 (and 
-                    (not (prepared ?r))
+                    (consumed ?r)
                     (satisfied ?c)
                 )
                 ;; refuses the recipe -> increment the counter of refused recipes
@@ -160,4 +200,46 @@
             )
         )
     )
+    (:action throw-into-trash
+        :parameters (?r - recipe)
+        :precondition 
+        (and 
+            (prepared ?r)
+            (not (thrashed ?r))
+            (not (consumed ?r))
+        )
+        :effect (and (thrashed ?r))
+    )
+    (:action remove-properly-added-mark
+        :parameters (?i - ingredient ?r - recipe)
+        :precondition 
+        (and
+            (or
+                (thrashed ?r)
+                (consumed ?r)
+            )
+            (properly-added ?i ?r)
+        )
+        :effect (and (not (properly-added ?i ?r)))
+    )
+    ;; recipe reached an end (being consumed by one costumer or being refused by all of them)
+    ;; now the chef can prepare a new recipe,
+    ;; but first they need to remove the mark of each ingredient,
+    ;; so that they can add them into the new recipe.
+    (:action remove-prepared-mark
+        :parameters (?r - recipe)
+        :precondition
+        (and
+            (forall (?i - ingredient)
+                (not (properly-added ?i ?r))
+            )
+        )
+        :effect 
+        (and 
+            (not (prepared ?r))
+            (not (thrashed ?r))
+            (not (consumed ?r))
+        )
+    )
+
 )

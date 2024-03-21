@@ -13,7 +13,6 @@
     (:predicates
         (inc ?op ?res - number)
         (dec ?op ?res - number)
-        (equal ?a ?b - number)
         (finished ?isl - number)
         (on-chef-island ?ing - ingredient ?n - number ?isl - number)
         (on-recipe ?ing - ingredient ?n - number ?r - recipe)
@@ -83,15 +82,14 @@
         (and
             ;; the chef island chef-island contains the exaclty quantity of ingredient the recipe r requires
             (not (finished ?chef-island))
-            (forall (?ing - ingredient ?n - number)
+            (forall (?ing - ingredient)
                 ;; if is on recipe, then must also be on chef island
                 ;; on-recipe -> on-chef-island <=> ((on-recipe ^ on-chef-island) v ~on-recipe)
-                (or
+                (exists (?n - number)
                     (and
                         (on-recipe ?ing ?n ?r)
                         (on-chef-island ?ing ?n ?chef-island)
                     )
-                    (not (on-recipe ?ing ?n ?r))
                 )
             )            
         )
@@ -105,13 +103,12 @@
         :parameters (
             ?c - costumer 
             ?r - recipe
-            ?refused-recipes ?max - number
+            ?refused-recipes - number
         )
         :precondition 
         (and
             (num-refused-recipes ?c ?refused-recipes)
             (num-recipes-to-refuse ?c ?max)
-            (equal ?refused-recipes ?max)
 
             (prepared ?r)
             (can-accept ?c ?r)
@@ -128,14 +125,13 @@
         :parameters (
             ?c - costumer 
             ?r - recipe
-            ?refused-recipes ?next ?max - number
+            ?refused-recipes ?next - number
         )
         :precondition 
         (and
             ;; number of refused recipes by the client does not exceed its limit
             (num-refused-recipes ?c ?refused-recipes)
-            (num-recipes-to-refuse ?c ?max)
-            (not (equal ?refused-recipes ?max))
+            (not (num-recipes-to-refuse ?c ?refused-recipes))
             (inc ?refused-recipes ?next)
 
             (prepared ?r)

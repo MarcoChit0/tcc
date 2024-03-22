@@ -10,18 +10,23 @@
     (domain kitchen)
     (:requirements :strips :typing :non-deterministic :disjunctive-preconditions :existential-preconditions :universal-preconditions)
     (:types recipe ingredient costumer number - object)
+    (:constants
+        0 - number
+    )
     (:predicates
         (inc ?op ?res - number)
         (dec ?op ?res - number)
         (finished ?isl - number)
         (on-chef-island ?ing - ingredient ?n - number ?isl - number)
         (on-recipe ?ing - ingredient ?n - number ?r - recipe)
+        (not-on-recipe ?ing - ingredient ?r - recipe)
         (on-stock ?ing - ingredient ?n - number)
         (prepared ?r - recipe)
         (satisfied ?c - costumer)
         (can-accept ?c - costumer ?r - recipe)
         (num-refused-recipes ?c - costumer ?n - number)
         (num-recipes-to-refuse ?c - costumer ?n - number)
+        (properly-added ?i - ingredient ?r - recipe ?isl - number)
     )
 
 
@@ -76,6 +81,7 @@
         )
         
     )
+
     (:action select-recipe
         :parameters (?r - recipe ?chef-island - number)
         :precondition 
@@ -85,12 +91,7 @@
             (forall (?ing - ingredient)
                 ;; if is on recipe, then must also be on chef island
                 ;; on-recipe -> on-chef-island <=> ((on-recipe ^ on-chef-island) v ~on-recipe)
-                (exists (?n - number)
-                    (and
-                        (on-recipe ?ing ?n ?r)
-                        (on-chef-island ?ing ?n ?chef-island)
-                    )
-                )
+                (properly-added ?ing ?r ?chef-island)
             )            
         )
         :effect 
@@ -99,6 +100,27 @@
             (finished ?chef-island)
         )
     )    
+    (:action on-recipe-add-to-recipe
+        :parameters (?ing - ingredient ?r - recipe ?chef_island ?n - number)
+        :precondition 
+        (and 
+            (on-recipe ?ing ?n ?r)
+            (on-chef-island ?ing ?n ?chef_island)
+        )
+        :effect 
+        (and 
+            (properly-added ?ing ?r ?chef_island)
+            (not (on-chef-island ?ing ?n ?chef_island))
+            (on-chef-island ?ing 0 ?chef_island)
+        )
+    )
+    (:action not-on-recipe-add-to-recipe
+        :parameters (?ing - ingredient ?r - recipe ?chef_island - number)
+        :precondition (and (not-on-recipe ?ing ?r))
+        :effect (and (properly-added ?ing ?r ?chef_island))
+    )
+    
+    
     (:action offer-not-refusable
         :parameters (
             ?c - costumer 

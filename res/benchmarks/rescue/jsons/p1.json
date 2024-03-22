@@ -1,0 +1,26 @@
+{
+    "victim": {
+        "v1": "dying"
+    },
+    "fire_unit": ["f1"],
+    "medical_unit": [],
+    "location": {
+        "l1": {
+            "objects": {
+                "fire_unit":["f1"]
+            },
+            "predicates": ["fire-at", "water-at"],
+            "adjacent": ["l2"],
+            "spreading-time": "0"
+        },
+        "l2": {
+            "objects": {
+                "victim": ["v1"]
+            },
+            "predicates": ["hospital-at"],
+            "adjacent": ["l1"],
+            "spreading-time": "1"
+        }
+    },
+    "clock": ["0", "5"]
+}

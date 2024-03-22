@@ -1,7 +1,6 @@
 (define (problem p2-kitchen)
 	(:domain kitchen)
 	(:objects
-		0 - number
 		1 - number
 		2 - number
 		ingredient-flour - ingredient

@@ -1,58 +1,55 @@
-(define (domain first-response)
+(define (domain rescue)
     (:requirements :typing :equality :negative-preconditions :disjunctive-preconditions :universal-preconditions :conditional-effects :existential-preconditions :non-deterministic)
     (:types
         location victim status fire_unit medical_unit number - object
     )
     (:constants
         healthy hurt dying - status
-        0 - number
     )
     (:predicates
+        ;; -- when porcessing clock --
         (clock ?t - number)
-        (fire ?l - location)
-        (victim-at ?v - victim ?l - location)
-        (victim-status ?v - victim ?s - status)
-        (hospital ?l - location)
+        (adjusted-clock)
+
+        (is-greater-or-equal ?n1 ?n2 - number) ;; n1 >= n2 -> true, else false
+        (is-equal ?n1 ?n2 - number) ;; n1 == n2 -> true, else false
+        (inc ?op ?res - number)
+        ;; ---------------------------
+        ;; -- when porcessing location --
+        (fire-at ?l - location)
         (water-at ?l - location)
-        (adjacent ?l1 ?l2 - location)
+        (hospital-at ?l - location)
+
+        (victim-at ?v - victim ?l - location)
         (fire-unit-at ?u - fire_unit ?l - location)
         (medical-unit-at ?u - medical_unit ?l - location)
+
+        (adjacent ?l1 ?l2 - location)
+
+        (spreading-time ?t - number ?l - location)
+        ;; ------------------------------
+        ;; -- when porcessing victim --
+        (victim-status ?v - victim ?s - status)
+        ;; ----------------------------
+        ;; -- do not appear on instance json --
+        (spread-out ?t - number ?l - location)
+        (need-to-adjust-clock)
         (have-water ?u - fire_unit)
         (have-victim-in-unit ?v - victim ?u - medical_unit)
-
-        (is-succ ?n1 ?n2 - number)
-
-        (inc ?op ?res - number)
-        (spreading-time ?t - number ?l - location)
-        (spread-out ?t - number ?l - location)
-        (adjusted-clock)
-        (need-to-adjust-clock)
-    )
-
-    (:action succ-app
-        :parameters (?n1 ?n2 ?n3 - number)
-        :precondition (and 
-            (is-succ ?n1 ?n2)
-            (is-succ ?n2 ?n3)
-        )
-        :effect (and 
-            (is-succ ?n1 ?n3)
-        )
+        ;; ------------------------------------
     )
 
     (:action drive-fire-unit
         :parameters (?u - fire_unit ?from - location ?to - location)
-        :precondition 
-        (and 
+        :precondition (and
             (fire-unit-at ?u ?from)
             (adjacent ?to ?from)
-            (not (fire ?to))
+            (not (fire-at ?to))
 
             (adjusted-clock)
         )
-        :effect 
-        (and 
-            (fire-unit-at ?u ?to) 
+        :effect (and
+            (fire-unit-at ?u ?to)
             (not (fire-unit-at ?u ?from))
 
             (need-to-adjust-clock)
@@ -62,17 +59,15 @@
 
     (:action drive-medical-unit
         :parameters (?u - medical_unit ?from - location ?to - location)
-        :precondition 
-        (and 
+        :precondition (and
             (medical-unit-at ?u ?from)
             (adjacent ?to ?from)
-            (not (fire ?to))
+            (not (fire-at ?to))
 
             (adjusted-clock)
         )
-        :effect 
-        (and 
-            (medical-unit-at ?u ?to) 
+        :effect (and
+            (medical-unit-at ?u ?to)
             (not (medical-unit-at ?u ?from))
 
             (need-to-adjust-clock)
@@ -82,17 +77,15 @@
 
     (:action load-fire-unit
         :parameters (?u - fire_unit ?l - location)
-        :precondition 
-        (and 
-            (fire-unit-at ?u ?l) 
+        :precondition (and
+            (fire-unit-at ?u ?l)
             (water-at ?l)
 
             (adjusted-clock)
         )
-        :effect 
-        (and
+        :effect (and
             (have-water ?u)
-        
+
             (need-to-adjust-clock)
             (not (adjusted-clock))
         )
@@ -100,18 +93,16 @@
 
     (:action load-medical-unit
         :parameters (?u - medical_unit ?l - location ?v - victim)
-        :precondition 
-        (and 
-            (medical-unit-at ?u ?l) 
+        :precondition (and
+            (medical-unit-at ?u ?l)
             (victim-at ?v ?l)
 
             (adjusted-clock)
         )
-        :effect 
-        (and 
+        :effect (and
             (have-victim-in-unit ?v ?u)
             (not (victim-at ?v ?l))
-        
+
             (need-to-adjust-clock)
             (not (adjusted-clock))
         )
@@ -119,20 +110,19 @@
 
     (:action unload-fire-unit
         :parameters (?u - fire_unit ?l ?l1 - location)
-        :precondition 
-        (and 
+        :precondition (and
             (fire-unit-at ?u ?l)
-            (adjacent ?l1 ?l)
             (have-water ?u)
-            (fire ?l1)
 
-            (adjusted-clock)    
+            (adjacent ?l ?l1)
+            (fire-at ?l1)
+
+            (adjusted-clock)
         )
-        :effect 
-        (and
+        :effect (and
             (not (have-water ?u))
-            (not (fire ?l1))
-        
+            (not (fire-at ?l1))
+
             (need-to-adjust-clock)
             (not (adjusted-clock))
         )
@@ -140,65 +130,154 @@
 
     (:action unload-medical-unit
         :parameters (?u - medical_unit ?l - location ?v - victim)
-        :precondition 
-        (and 
+        :precondition (and
             (medical-unit-at ?u ?l)
             (have-victim-in-unit ?v ?u)
-        
+
             (adjusted-clock)
         )
-        :effect 
-        (and 
-            (victim-at ?v ?l) 
+        :effect (and
+            (victim-at ?v ?l)
             (not (have-victim-in-unit ?v ?u))
-        
+
             (need-to-adjust-clock)
             (not (adjusted-clock))
         )
     )
 
     (:action spread-fire
-        :parameters (?l - location ?t ?next - number)
-        :precondition (and 
-            ;; TODO: improve this so that any time t' > t the fire could spread to that location provided that the fire is not extinguished nearby
-            (inc ?t ?next)
+        :parameters (?l - location ?t ?next_t ?spreading_t - number)
+        :precondition (and
             (clock ?t)
-            (spreading-time ?next ?l)
+            (spreading-time ?spreading_t ?l)
+            (inc ?t ?next_t)
+            (is-greater-or-equal ?next_t ?spreading_t)
             (need-to-adjust-clock)
-
-        )            
-        :effect 
-        (and 
-            ;; TODO: add the possibility of not spreading the fire
-            (fire ?l)
-            (spread-out ?next ?l)
-        )
-    )
-    (:action adjust-clock
-        :parameters (?t ?next - number)
-        :precondition 
-        (and 
-            (need-to-adjust-clock)
-            ;; all fire spread out
-            (forall (?l - location)
-                (or
-                    (and
-                        (spreading-time ?next ?l)
-                        ;; change this... the fire unit could extinguish the fire before the next spreading time
-                        (spread-out ?next ?l) 
-                    )
-                    (not (spreading-time ?next ?l))
+            (exists
+                (?l1 - location)
+                (and
+                    (adjacent ?l ?l1)
+                    (fire-at ?l1)
                 )
             )
         )
-        :effect 
-        (and 
+        :effect (and
+            (spread-out ?next_t ?l)
+            (oneof
+                (and)
+                (fire-at ?l)
+            )
+        )
+    )
+    ;; TODO: ACTION BELLOW IS RESPONSIBLE FOR MAKING THE PROGRAM IMPOSSIBLE TO SOLVE
+    (:action not-spread-fire
+        :parameters (?l - location ?t ?next_t ?spreading_t - number)
+        :precondition (and
+            (clock ?t)
+            (inc ?t ?next_t)
+            (need-to-adjust-clock)
+            (spreading-time ?spreading_t ?l)
+            (or
+                (and (is-greater-or-equal ?spreading_t ?next_t) (not (is-equal ?spreading_t ?next_t)))
+                (and
+                    (is-greater-or-equal ?next_t ?spreading_t)
+                    ;; there is no fire in the adjacent locations
+                    (forall
+                        (?l1 - location)
+                        (or
+                            (not (adjacent ?l ?l1))
+                            (and
+                                (adjacent ?l ?l1)
+                                (not (fire-at ?l1))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        :effect (and
+            (spread-out ?next_t ?l)
+        )
+
+    )
+
+    ;; TODO: action responsible for the following error: Unbound effect variables: Adding @object predicat
+    (:action adjust-clock
+        :parameters (?t ?next_t - number)
+        :precondition (and
+            (need-to-adjust-clock)
+            (clock ?t)
+            (inc ?t ?next_t)
+            (forall
+                (?l - location)
+                (spread-out ?next_t ?l)
+            )
+        )
+        :effect (and
             (not (clock ?t))
-            (clock ?next)
+            (clock ?next_t)
             (not (need-to-adjust-clock))
             (adjusted-clock)
         )
     )
-    
+
+    (:action treat-dying-victim-on-hospital
+        :parameters (?l - location ?v - victim)
+        :precondition (and
+            (hospital-at ?l)
+            (victim-at ?v ?l)
+            (not (fire-at ?l))
+            (adjusted-clock)
+            (victim-status ?v dying)
+        )
+        :effect (and
+            (need-to-adjust-clock)
+            (not (adjusted-clock))
+            (oneof
+                (and (victim-status ?v healthy) (not (victim-status ?v hurt)))
+                (and)
+            )
+        )
+    )
+    (:action treat-hurt-victim-on-hospital
+        :parameters (?l - location ?v - victim)
+        :precondition (and
+            (hospital-at ?l)
+            (victim-at ?v ?l)
+            (not (fire-at ?l))
+            (adjusted-clock)
+            (victim-status ?v hurt)
+        )
+        :effect (and
+            (need-to-adjust-clock)
+            (not (adjusted-clock))
+            (victim-status ?v healthy)
+            (not (victim-status ?v hurt))
+        )
+    )
+    (:action treat-victim-on-medical-unit
+        :parameters (?u - medical_unit ?v - victim ?l - location)
+        :precondition (and
+            (not (fire-at ?l))
+            (adjusted-clock)
+            (or
+                (have-victim-in-unit ?v ?u)
+                (and
+                    (medical-unit-at ?u ?l)
+                    (victim-at ?v ?l)
+                )
+            )
+            (victim-status ?v hurt)
+        )
+        :effect (and
+            (not (adjusted-clock))
+            (need-to-adjust-clock)
+            (oneof
+                (and (victim-status ?v healthy) (not (victim-status ?v hurt)))
+                (and)
+                (and (victim-status ?v dying) (not (victim-status ?v hurt)))
+            )
+        )
+    )
 
 )

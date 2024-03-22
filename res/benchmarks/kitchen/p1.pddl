@@ -1,7 +1,6 @@
 (define (problem p1-kitchen)
 	(:domain kitchen)
 	(:objects
-		0 - number
 		1 - number
 		2 - number
 		3 - number
@@ -68,17 +67,17 @@
 		(on-recipe ingredient-sugar 1 recipe-cake)
 		(on-recipe ingredient-eggs 3 recipe-cake)
 		(on-recipe ingredient-butter 1 recipe-cake)
-		(on-recipe ingredient-milk 0 recipe-cake)
+		(not-on-recipe ingredient-milk recipe-cake)
 		(on-recipe ingredient-flour 1 recipe-pancakes)
 		(on-recipe ingredient-sugar 1 recipe-pancakes)
 		(on-recipe ingredient-eggs 1 recipe-pancakes)
 		(on-recipe ingredient-milk 1 recipe-pancakes)
-		(on-recipe ingredient-butter 0 recipe-pancakes)
+		(not-on-recipe ingredient-butter recipe-pancakes)
 		(on-recipe ingredient-flour 2 recipe-cookies)
 		(on-recipe ingredient-sugar 2 recipe-cookies)
 		(on-recipe ingredient-eggs 2 recipe-cookies)
 		(on-recipe ingredient-butter 2 recipe-cookies)
-		(on-recipe ingredient-milk 0 recipe-cookies)
+		(not-on-recipe ingredient-milk recipe-cookies)
 		(on-stock ingredient-flour 10)
 		(on-stock ingredient-sugar 10)
 		(on-stock ingredient-eggs 10)

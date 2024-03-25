@@ -29,7 +29,8 @@
                 "c11",
                 "c12",
                 "c13",
-                "c14"
+                "c14",
+                "c21"
             ],
             "map": {
                 "buying-price": "2",
@@ -38,6 +39,7 @@
         },
         "s2": {
             "city": [
+                "c11",
                 "c21",
                 "c22"
             ],
@@ -49,17 +51,17 @@
     },
     "item": {
         "bottle-of-water": {
-            "volume": "1",
+            "volumn": "1",
             "buying-price": "1",
             "selling-price": "2"
         },
         "bottle-of-coke": {
-            "volume": "1",
+            "volumn": "1",
             "buying-price": "1",
             "selling-price": "2"
         },
         "bottle-of-beer": {
-            "volume": "2",
+            "volumn": "2",
             "buying-price": "1",
             "selling-price": "4"
         }
@@ -133,5 +135,5 @@
     },
     "money": "7",
     "biggest-number": "10",
-    "initial-city": "c11"
+    "initial-city": "c22"
 }

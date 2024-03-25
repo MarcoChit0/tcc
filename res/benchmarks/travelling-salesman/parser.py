@@ -20,7 +20,7 @@ if __name__ == "__main__":
             for i in range(int(instance["biggest-number"]) + 1):
                 if i > 0:
                     initial_predicates.append(f"(dec {i} {i-1})")
-                if i < int(instance["biggest-number"]) + 1:
+                if i < int(instance["biggest-number"]):
                     initial_predicates.append(f"(inc {i} {i+1})")
 
             # (buying-price-state-map ?n - number ?s - state)
@@ -35,9 +35,11 @@ if __name__ == "__main__":
             # (connected ?c1 - city ?c2 - city)
             # (same-city ?c1 - city ?c2 - city)
             # (has-adjacent-cities ?c - city ?n - number)
+            # (number-of-visits ?c - city ?n - number)
             for city in instance["city"]:
                 initial_predicates.append(f"(same-city {city} {city})")
                 initial_predicates.append(f"(has-adjacent-cities {city} {len(instance['city'][city])})")
+                initial_predicates.append(f"(number-of-visits {city} 0)")
                 for adj in instance["city"][city]:
                     initial_predicates.append(f"(connected {city} {adj})")
             
@@ -53,6 +55,10 @@ if __name__ == "__main__":
             # (backpack-allocated-space ?n - number)
             initial_predicates.append(f"(backpack-total-space {instance['backpack']['total-space']})")
             initial_predicates.append(f"(backpack-allocated-space 0)")
+
+            # (volumn ?i - item ?n - number)
+            for item in instance["item"]:
+                initial_predicates.append(f"(volumn {item} {instance['item'][item]['volumn']})")
 
             # (is-buyer ?p - person)
             # (is-seller ?p - person)
@@ -84,4 +90,4 @@ if __name__ == "__main__":
                 initial_predicates.append(f"(person-at {person} {instance['person'][person]['at']})")
 
             goal_predicates = [f"(number-of-visits {city} 1)" for city in instance["city"].keys()]
-            write_instance("travalling-salesman", path, json_file.replace(".json", ""), objets_predicates, initial_predicates, goal_predicates)
+            write_instance("travelling-salesman", path, json_file.replace(".json", ""), objets_predicates, initial_predicates, goal_predicates)

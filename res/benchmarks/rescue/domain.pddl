@@ -316,7 +316,6 @@
         :precondition (and
             (hospital-at ?l)
             (victim-at ?v ?l)
-            (not (fire-at ?l))
             (adjusted-clock)
             (victim-status ?v hurt)
         )
@@ -327,10 +326,27 @@
             (not (victim-status ?v hurt))
         )
     )
+    (:action treat-victim-on-fire-unit
+        :parameters (?f - fire_unit ?v - victim ?l - location)
+        :precondition (and
+            (adjusted-clock)
+            (fire-unit-at ?f ?l)
+            (victim-at ?v ?l)
+            (victim-status ?v hurt)
+        )
+        :effect (and
+            (not (adjusted-clock))
+            (need-to-adjust-clock)
+            (oneof
+                (and (victim-status ?v healthy) (not (victim-status ?v hurt)))
+                (and)
+                (and (victim-status ?v dying) (not (victim-status ?v hurt)))
+            )
+        )
+    )
     (:action treat-victim-on-medical-unit
         :parameters (?u - medical_unit ?v - victim ?l - location)
         :precondition (and
-            (not (fire-at ?l))
             (adjusted-clock)
             (medical-unit-at ?u ?l)
             (or
@@ -343,9 +359,8 @@
             (not (adjusted-clock))
             (need-to-adjust-clock)
             (oneof
-                (and (victim-status ?v healthy) (not (victim-status ?v hurt)))
                 (and)
-                (and (victim-status ?v dying) (not (victim-status ?v hurt)))
+                (and (victim-status ?v healthy) (not (victim-status ?v hurt)))
             )
         )
     )

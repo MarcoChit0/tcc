@@ -1,0 +1,81 @@
+(define (problem p2-travelling-salesman)
+	(:domain travelling-salesman)
+	(:objects
+		a - city
+		b - city
+		c - city
+		d - city
+		s1 - state
+		s2 - state
+		spongebob-squarepants-magical-pencil - item
+		p1 - person
+		p2 - person
+
+	)
+	(:init
+		(inc 0 1)
+		(dec 1 0)
+		(inc 1 2)
+		(dec 2 1)
+		(inc 2 3)
+		(dec 3 2)
+		(inc 3 4)
+		(dec 4 3)
+		(inc 4 5)
+		(dec 5 4)
+		(buying-price-state-map 2 s1)
+		(selling-price-state-map 0 s1)
+		(at a s1)
+		(at b s1)
+		(at c s1)
+		(buying-price-state-map 4 s2)
+		(selling-price-state-map 0 s2)
+		(at b s2)
+		(at c s2)
+		(at d s2)
+		(same-city a a)
+		(has-adjacent-cities a 2)
+		(number-of-visits a 0)
+		(connected a b)
+		(connected a c)
+		(same-city b b)
+		(has-adjacent-cities b 3)
+		(number-of-visits b 0)
+		(connected b a)
+		(connected b c)
+		(connected b d)
+		(same-city c c)
+		(has-adjacent-cities c 3)
+		(number-of-visits c 0)
+		(connected c a)
+		(connected c b)
+		(connected c d)
+		(same-city d d)
+		(has-adjacent-cities d 2)
+		(number-of-visits d 0)
+		(connected d b)
+		(connected d c)
+		(money 5)
+		(wallet 0)
+		(on-city a)
+		(backpack-total-space 1)
+		(backpack-allocated-space 0)
+		(volumn spongebob-squarepants-magical-pencil 1)
+		(is-seller p1)
+		(stock spongebob-squarepants-magical-pencil 1 p1)
+		(selling-price spongebob-squarepants-magical-pencil 4 p1)
+		(person-at p1 b)
+		(is-buyer p2)
+		(buying-price spongebob-squarepants-magical-pencil 3 p2)
+		(person-at p2 c)
+
+	)
+	(:goal
+		(and
+			(number-of-visits a 1)
+			(number-of-visits b 1)
+			(number-of-visits c 1)
+			(number-of-visits d 1)
+		)
+	)
+)

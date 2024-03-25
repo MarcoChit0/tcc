@@ -1,0 +1,137 @@
+{
+    "city": {
+        "c11": [
+            "c12",
+            "c21"
+        ],
+        "c12": [
+            "c11",
+            "c13"
+        ],
+        "c13": [
+            "c12",
+            "c14"
+        ],
+        "c14": [
+            "c13"
+        ],
+        "c21": [
+            "c11",
+            "c22"
+        ],
+        "c22": [
+            "c21"
+        ]
+    },
+    "state": {
+        "s1": {
+            "city": [
+                "c11",
+                "c12",
+                "c13",
+                "c14"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "1"
+            }
+        },
+        "s2": {
+            "city": [
+                "c21",
+                "c22"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "1"
+            }
+        }
+    },
+    "item": {
+        "bottle-of-water": {
+            "volume": "1",
+            "buying-price": "1",
+            "selling-price": "2"
+        },
+        "bottle-of-coke": {
+            "volume": "1",
+            "buying-price": "1",
+            "selling-price": "2"
+        },
+        "bottle-of-beer": {
+            "volume": "2",
+            "buying-price": "1",
+            "selling-price": "4"
+        }
+    },
+    "person": {
+        "p1": {
+            "at": "c11",
+            "is": [
+                "buyer",
+                "seller"
+            ],
+            "stock": {
+                "bottle-of-water": "10",
+                "bottle-of-coke": "2",
+                "bottle-of-beer": "1"
+            },
+            "item": {
+                "bottle-of-water": {
+                    "buying-price": "1",
+                    "selling-price": "2"
+                },
+                "bottle-of-coke": {
+                    "buying-price": "2",
+                    "selling-price": "3"
+                },
+                "bottle-of-beer": {
+                    "buying-price": "3",
+                    "selling-price": "4"
+                }
+            }
+        },
+        "p2": {
+            "at": "c21",
+            "is": [
+                "buyer"
+            ],
+            "stock": {},
+            "item": {
+                "bottle-of-water": {
+                },
+                "bottle-of-coke": {
+                    "buying-price": "2"
+                },
+                "bottle-of-beer": {
+                }
+            }
+        },
+        "p3": {
+            "at": "c13",
+            "is": [
+                "seller"
+            ],
+            "stock": {
+                "bottle-of-water": "2",
+                "bottle-of-coke": "1",
+                "bottle-of-beer": "5"
+            },
+            "item": {
+                "bottle-of-water": {
+                },
+                "bottle-of-coke": {
+                },
+                "bottle-of-beer": {
+                    "selling-price": "5"
+                }
+            }
+        }
+    },
+    "backpack": {
+        "total-space": "5"
+    },
+    "money": "7",
+    "biggest-number": "10",
+    "initial-city": "c11"
+}

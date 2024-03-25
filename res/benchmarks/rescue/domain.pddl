@@ -4,7 +4,7 @@
         location victim status fire_unit medical_unit number - object
     )
     (:constants
-        healthy hurt dying - status
+        healthy hurt dying deceased - status
     )
     (:predicates
         ;; -- when porcessing clock --
@@ -33,6 +33,7 @@
         ;; ----------------------------
         ;; -- do not appear on instance json --
         (spread-out ?t - number ?l - location)
+        (adjusted-status ?t - number ?v - victim)
         (need-to-adjust-clock)
         (have-water ?u - fire_unit)
         (have-victim-in-unit ?v - victim ?u - medical_unit)
@@ -144,7 +145,76 @@
             (not (adjusted-clock))
         )
     )
-
+    (:action adjust-status-helthy-to-hurt
+        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :precondition (and 
+            (clock ?t)
+            (inc ?t ?next_t)
+            (need-to-adjust-clock)
+            (victim-at ?v ?l)
+            (fire-at ?l)
+            (victim-status ?v healthy)
+        )
+        :effect (and 
+            (adjusted-status ?next_t ?v)
+            (oneof
+                (and (victim-status ?v hurt) (not (victim-status ?v healthy)))
+                (and)
+            )
+        )
+    )
+    (:action adjust-status-hurt-to-dying
+        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :precondition (and 
+            (clock ?t)
+            (inc ?t ?next_t)
+            (need-to-adjust-clock)
+            (victim-at ?v ?l)
+            (fire-at ?l)
+            (victim-status ?v hurt)
+        )
+        :effect (and 
+            (adjusted-status ?next_t ?v)
+            (oneof
+                (and (victim-status ?v dying) (not (victim-status ?v hurt)))
+                (and)
+            )
+        )
+    )
+    (:action adjust-status-dying-to-deceased
+        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :precondition (and 
+            (clock ?t)
+            (inc ?t ?next_t)
+            (need-to-adjust-clock)
+            (victim-at ?v ?l)
+            (fire-at ?l)
+            (victim-status ?v dying)
+        )
+        :effect (and 
+            (adjusted-status ?next_t ?v)
+            (oneof
+                (and (victim-status ?v deceased) (not (victim-status ?v dying)))
+                (and)
+            )
+        )
+    )
+    (:action adjust-status-no-fire-at-location
+        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :precondition (and 
+            (clock ?t)
+            (inc ?t ?next_t)
+            (need-to-adjust-clock)
+            (victim-at ?v ?l)
+            (not (fire-at ?l))
+        )
+        :effect (and 
+            (adjusted-status ?next_t ?v)
+        )
+    )
+    
+    
+    
     (:action spread-fire
         :parameters (?l - location ?t ?next_t ?spreading_t - number)
         :precondition (and
@@ -169,7 +239,6 @@
             )
         )
     )
-    ;; TODO: ACTION BELLOW IS RESPONSIBLE FOR MAKING THE PROGRAM IMPOSSIBLE TO SOLVE
     (:action not-spread-fire
         :parameters (?l - location ?t ?next_t ?spreading_t - number)
         :precondition (and
@@ -201,7 +270,6 @@
 
     )
 
-    ;; TODO: action responsible for the following error: Unbound effect variables: Adding @object predicat
     (:action adjust-clock
         :parameters (?t ?next_t - number)
         :precondition (and
@@ -211,6 +279,10 @@
             (forall
                 (?l - location)
                 (spread-out ?next_t ?l)
+            )
+            (forall
+                (?v - victim)
+                (adjusted-status ?next_t ?v)
             )
         )
         :effect (and
@@ -260,12 +332,10 @@
         :precondition (and
             (not (fire-at ?l))
             (adjusted-clock)
+            (medical-unit-at ?u ?l)
             (or
                 (have-victim-in-unit ?v ?u)
-                (and
-                    (medical-unit-at ?u ?l)
-                    (victim-at ?v ?l)
-                )
+                (victim-at ?v ?l)
             )
             (victim-status ?v hurt)
         )

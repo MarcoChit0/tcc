@@ -124,11 +124,10 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
                 this->actions().emplace_back(action_name, PartialState(action_precondition_true_facts), action_effects, action_cost);
             }
             action_name = buffer;
-            action_precondition_true_facts = vec<Fact>(number_of_variables);
             action_effects = vec<PartialState>();
             action_cost = EMPTY_OBJECT;
         }
-        vec<Fact> action_effect_true_facts = vec<Fact>(number_of_variables);
+        vec<Fact> action_precondition_true_facts_cache;
         int action_number_of_precondition_raw_facts;
         sas >> action_number_of_precondition_raw_facts;
         for (int _ = 0; _ < action_number_of_precondition_raw_facts; _++)
@@ -136,8 +135,17 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
             int i, j;
             sas >> i;
             sas >> j;
-            action_precondition_true_facts[i] = this->variables()[i].facts()[j];
+            action_precondition_true_facts_cache[i] = this->variables()[i].facts()[j];
         }
+        if (not action_effects.empty() and action_precondition_true_facts_cache != action_precondition_true_facts)
+        {
+            this->actions().emplace_back(action_name, PartialState(action_precondition_true_facts), action_effects, action_cost);
+            std::cerr << "Creating another action because the preconditions have changed, even though the new operator has the same name as the previous one." << std::endl;
+            action_effects = vec<PartialState>();
+            action_cost = EMPTY_OBJECT;
+        }
+        action_precondition_true_facts = action_precondition_true_facts_cache;
+        vec<Fact> action_effect_true_facts = vec<Fact>(number_of_variables);
         int action_effect_number_of_atomic_effects;
         sas >> action_effect_number_of_atomic_effects;
         for (int _ = 0; _ < action_effect_number_of_atomic_effects; _++)
@@ -154,6 +162,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
                 action_precondition_true_facts[i] = this->variables()[i].facts()[j];
             }
             sas >> j;
+            assert(action_effect_true_facts[i].is_none());
             action_effect_true_facts[i] = this->variables()[i].facts()[j];
         }
         action_effects.emplace_back(action_effect_true_facts);
@@ -293,7 +302,7 @@ str Task::bitstring_representation_of_state(const State& state) const
 {
     str bitset_representation = str(this->bitset_size, '0');
 
-    int variable_offset = 0; 
+    int variable_offset = 0;
     for(auto fact : state.true_facts())
     {
         if(fact.id != EMPTY_OBJECT)
@@ -310,7 +319,7 @@ vec<double> Task::bitvector_representation_of_state(const State& state) const
 {
     vec<double> bitset_representation(this->bitset_size, 0.0);
 
-    int variable_offset = 0; 
+    int variable_offset = 0;
     for(auto fact : state.true_facts())
     {
         if(fact.id != EMPTY_OBJECT)

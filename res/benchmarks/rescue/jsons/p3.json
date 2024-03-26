@@ -3,11 +3,12 @@
         "v1": "dying"
     },
     "fire-unit": ["f1"],
-    "medical-unit": [],
+    "medical-unit": ["m1"],
     "location": {
         "l1": {
             "objects": {
-                "fire-unit":["f1"]
+                "fire-unit":["f1"],
+                "medical-unit": ["m1"]
             },
             "predicates": ["fire-at", "water-at"],
             "adjacent": ["l2"],
@@ -17,9 +18,13 @@
             "objects": {
                 "victim": ["v1"]
             },
+            "adjacent": ["l1", "l3"],
+            "spreading-time": "4"
+        },
+        "l3": {
             "predicates": ["hospital-at"],
-            "adjacent": ["l1"],
-            "spreading-time": "1"
+            "adjacent": ["l2"],
+            "spreading-time": "5"
         }
     },
     "clock": ["0", "5"]

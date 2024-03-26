@@ -39,10 +39,10 @@ if __name__ == "__main__":
             objets_predicates = [f"{i} - number" for i in range(int(instance["clock"][0]), int(instance["clock"][1] )+ 1)]
             objets_predicates += [f"{l} - location" for l in instance["location"].keys()]
             objets_predicates += [f"{v} - victim" for v in instance["victim"].keys()]
-            objets_predicates += [f"{f} - fire_unit" for f in instance["fire_unit"]]
-            objets_predicates += [f"{m} - medical_unit" for m in instance["medical_unit"]]
+            objets_predicates += [f"{f} - fire-unit" for f in instance["fire-unit"]]
+            objets_predicates += [f"{m} - medical-unit" for m in instance["medical-unit"]]
 
-            goal_predicates = [f"(victim-status {v} healthy)" for v in instance["victim"].keys()]
+            goal_predicates = [f"(healthy {v})" for v in instance["victim"].keys()]
 
             initial_predicates = [f"(clock {instance['clock'][0]})", "(adjusted-clock)"]
 
@@ -71,6 +71,6 @@ if __name__ == "__main__":
                     initial_predicates.append(f"(spreading-time {data['spreading-time']} {l})")
         
             for v, status in instance["victim"].items():
-                initial_predicates.append(f"(victim-status {v} {status})")
+                initial_predicates.append(f"({status} {v})")
 
             write_instance("rescue", path, json_file.replace(".json", ""), objets_predicates, initial_predicates, goal_predicates)

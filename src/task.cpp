@@ -102,7 +102,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
     this->goal_condition() = PartialState(goal_condition_true_facts);
 
     str action_name;
-    vec<Fact> action_precondition_true_facts;
+    vec<Fact> action_precondition_true_facts = vec<Fact>(number_of_variables);;
     vec<PartialState> action_effects;
     int action_cost;
     int number_of_actions_effects;

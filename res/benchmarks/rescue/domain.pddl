@@ -154,6 +154,8 @@
             (victim-at ?v ?l)
             (fire-at ?l)
             (healthy ?v)
+            (not (on-hospital ?v))
+            (not (adjusted-status ?next_t ?v))
         )
         :effect (and 
             (adjusted-status ?next_t ?v)
@@ -172,6 +174,8 @@
             (victim-at ?v ?l)
             (fire-at ?l)
             (hurt ?v)
+            (not (on-hospital ?v))
+            (not (adjusted-status ?next_t ?v))
         )
         :effect (and 
             (adjusted-status ?next_t ?v)
@@ -190,6 +194,8 @@
             (victim-at ?v ?l)
             (fire-at ?l)
             (dying ?v)
+            (not (on-hospital ?v))
+            (not (adjusted-status ?next_t ?v))
         )
         :effect (and 
             (adjusted-status ?next_t ?v)
@@ -205,6 +211,7 @@
             (clock ?t)
             (inc ?t ?next_t)
             (need-to-adjust-clock)
+            (not (adjusted-status ?next_t ?v))
             (or
                 (exists (?m - medical-unit) 
                     (and 
@@ -255,6 +262,7 @@
                     (fire-at ?l1)
                 )
             )
+            (not (spread-out ?next_t ?l))
         )
         :effect (and
             (spread-out ?next_t ?l)
@@ -271,6 +279,7 @@
             (inc ?t ?next_t)
             (need-to-adjust-clock)
             (spreading-time ?spreading_t ?l)
+            (not (spread-out ?next_t ?l))
             (or
                 (and (is-greater-or-equal ?spreading_t ?next_t) (not (= ?spreading_t ?next_t)))
                 (and
@@ -375,12 +384,10 @@
         :parameters (?u - medical-unit ?v - victim ?l - location)
         :precondition (and
             (adjusted-clock)
+            (medical-unit-at ?u ?l)
             (or
                 (have-victim-in-unit ?v ?u)
-                (and 
-                    (medical-unit-at ?u ?l)
-                    (victim-at ?v ?l)
-                )
+                (victim-at ?v ?l)
             )
             (hurt ?v)
         )

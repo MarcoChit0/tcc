@@ -9,7 +9,6 @@
         (adjusted-clock)
 
         (is-greater-or-equal ?n1 ?n2 - number) ;; n1 >= n2 -> true, else false
-        (is-equal ?n1 ?n2 - number) ;; n1 == n2 -> true, else false
         (inc ?op ?res - number)
         ;; ---------------------------
         ;; -- when porcessing location --
@@ -37,6 +36,7 @@
         (need-to-adjust-clock)
         (have-water ?u - fire-unit)
         (have-victim-in-unit ?v - victim ?u - medical-unit)
+        (on-hospital ?v - victim)
         ;; ------------------------------------
     )
 
@@ -205,11 +205,36 @@
             (clock ?t)
             (inc ?t ?next_t)
             (need-to-adjust-clock)
-            (victim-at ?v ?l)
-            (not (fire-at ?l))
+            (or
+                (exists (?m - medical-unit) 
+                    (and 
+                        (have-victim-in-unit ?v ?m)
+                    )
+                )
+                (on-hospital ?v)
+                (and 
+                    (not (fire-at ?l))
+                    (victim-at ?v ?l)
+                )
+            )
         )
         :effect (and 
             (adjusted-status ?next_t ?v)
+        )
+    )
+    (:action enter-hospital
+        :parameters (?v - victim ?l - location)
+        :precondition (and 
+            (hospital-at ?l)
+            (victim-at ?v ?l)
+
+            (adjusted-clock)
+        )
+        :effect (and 
+            (on-hospital ?v)
+
+            (need-to-adjust-clock)
+            (not (adjusted-clock))
         )
     )
     
@@ -247,7 +272,7 @@
             (need-to-adjust-clock)
             (spreading-time ?spreading_t ?l)
             (or
-                (and (is-greater-or-equal ?spreading_t ?next_t) (not (is-equal ?spreading_t ?next_t)))
+                (and (is-greater-or-equal ?spreading_t ?next_t) (not (= ?spreading_t ?next_t)))
                 (and
                     (is-greater-or-equal ?next_t ?spreading_t)
                     ;; there is no fire in the adjacent locations
@@ -301,6 +326,7 @@
             (not (fire-at ?l))
             (adjusted-clock)
             (dying ?v)
+            (on-hospital ?v)
         )
         :effect (and
             (need-to-adjust-clock)
@@ -318,6 +344,7 @@
             (victim-at ?v ?l)
             (adjusted-clock)
             (hurt ?v)
+            (on-hospital ?v)
         )
         :effect (and
             (need-to-adjust-clock)
@@ -348,10 +375,12 @@
         :parameters (?u - medical-unit ?v - victim ?l - location)
         :precondition (and
             (adjusted-clock)
-            (medical-unit-at ?u ?l)
             (or
                 (have-victim-in-unit ?v ?u)
-                (victim-at ?v ?l)
+                (and 
+                    (medical-unit-at ?u ?l)
+                    (victim-at ?v ?l)
+                )
             )
             (hurt ?v)
         )

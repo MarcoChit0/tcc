@@ -46,8 +46,7 @@ if __name__ == "__main__":
 
             initial_predicates = [f"(clock {instance['clock'][0]})", "(adjusted-clock)"]
 
-            for i in range(int(instance["clock"][0]), int(instance["clock"][1])):
-                initial_predicates.append(f"(is-equal {i} {i})")
+            for i in range(int(instance["clock"][0]), int(instance["clock"][1]) + 1):
 
                 for j in range(int(instance["clock"][0]), i+1):
                     initial_predicates.append(f"(is-greater-or-equal  {i} {j})")

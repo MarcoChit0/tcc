@@ -102,7 +102,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
     this->goal_condition() = PartialState(goal_condition_true_facts);
 
     str action_name;
-    vec<Fact> action_precondition_true_facts = vec<Fact>(number_of_variables);;
+    vec<Fact> action_precondition_true_facts;
     vec<PartialState> action_effects;
     int action_cost;
     int number_of_actions_effects;
@@ -127,7 +127,7 @@ Task::Task(const str &domain_file_name, const str &task_file_name, const Regress
             action_effects = vec<PartialState>();
             action_cost = EMPTY_OBJECT;
         }
-        vec<Fact> action_precondition_true_facts_cache;
+        vec<Fact> action_precondition_true_facts_cache = vec<Fact>(number_of_variables);
         int action_number_of_precondition_raw_facts;
         sas >> action_number_of_precondition_raw_facts;
         for (int _ = 0; _ < action_number_of_precondition_raw_facts; _++)

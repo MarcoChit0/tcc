@@ -1,0 +1,68 @@
+{
+    "city": {
+        "a": [
+            "b"
+        ],
+        "b": [
+            "c"
+        ],
+        "c": [
+            "d", "b", "a"
+        ],
+        "d": [
+            "a"
+        ]
+    },
+    "state": {
+        "s1": {
+            "city": [
+                "a",
+                "b"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s2": {
+            "city": [
+                "b",
+                "c"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s3": {
+            "city": [
+                "c",
+                "d"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s4": {
+            "city": [
+                "d",
+                "a"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        }
+    },
+    "item": {
+    },
+    "person": {
+    },
+    "backpack": {
+        "total-space": "0"
+    },
+    "money": "1",
+    "biggest-number": "5",
+    "initial-city": "a"
+}

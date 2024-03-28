@@ -424,6 +424,7 @@ int main(int argc, char **argv)
 
     AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
     Policy opt_solution = and_star.get_solution(task);
+    
     // std::cout << opt_solution << std::endl;
     print_end(argv, task, policy_heuristic, and_star, opt_solution, optional_dead_end_detector, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;

@@ -33,11 +33,9 @@ if __name__ == "__main__":
                     initial_predicates.append(f"(at {city} {state})")
             
             # (connected ?c1 - city ?c2 - city)
-            # (same-city ?c1 - city ?c2 - city)
             # (has-adjacent-cities ?c - city ?n - number)
             # (number-of-visits ?c - city ?n - number)
             for city in instance["city"]:
-                initial_predicates.append(f"(same-city {city} {city})")
                 initial_predicates.append(f"(has-adjacent-cities {city} {len(instance['city'][city])})")
                 initial_predicates.append(f"(number-of-visits {city} 0)")
                 for adj in instance["city"][city]:

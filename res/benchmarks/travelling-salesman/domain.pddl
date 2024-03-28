@@ -3,7 +3,7 @@
 (define (domain travelling-salesman)
 
     ;remove requirements that are not needed
-    (:requirements :typing :strips :non-deterministic :disjunctive-preconditions :existential-preconditions)
+    (:requirements :typing :strips :non-deterministic :disjunctive-preconditions :existential-preconditions :equality)
 
     (:types
         state city number item person
@@ -22,7 +22,6 @@
         (at ?c - city ?s - state)
         
         (connected ?c1 - city ?c2 - city)
-        (same-city ?c1 - city ?c2 - city)
         (has-adjacent-cities ?c - city ?n - number)
 
         (money ?n - number)
@@ -51,22 +50,36 @@
 
     ;; cities belong to multiple states 
     ;define actions here
-    (:action move-with-map-or-without-map-1-adjacent-city
+    (:action move-with-map-inside-state
         :parameters ( ?c1 ?c2 - city ?s - state ?visits_c2 ?inc_vists_c2 - number
         )
         :precondition (and
+            (at ?c1 ?s)
+            (at ?c2 ?s)
+
+            (on-city ?c1)
             (connected ?c1 ?c2)
 
-            (or
-                (and
-                    (has-state-map ?s)
-                    (at ?c2 ?s)
-                )
-                (has-adjacent-cities ?c1 1)
-            )
+            (has-state-map ?s)
 
-            (at ?c1 ?s)
+            (inc ?visits_c2 ?inc_vists_c2)
+            (number-of-visits ?c2 ?visits_c2)
+        )
+        :effect (and
+            (not (on-city ?c1))
+            (on-city ?c2)
+            (not (number-of-visits ?c2 ?visits_c2))
+            (number-of-visits ?c2 ?inc_vists_c2)
+        )
+    )
+
+    (:action move-without-map-1-adjacent-cities
+        :parameters (?c1 ?c2 - city ?visits_c2 ?inc_vists_c2 - number)
+        :precondition (and
             (on-city ?c1)
+
+            (connected ?c1 ?c2)
+            (has-adjacent-cities ?c1 1)
 
             (inc ?visits_c2 ?inc_vists_c2)
             (number-of-visits ?c2 ?visits_c2)
@@ -86,18 +99,16 @@
     ;; ou diferentes moves com diferentes quantidades de cidades adjacentes
 
     (:action move-without-map-2-adjacent-cities
-        :parameters ( ?c1 ?c2 ?c3 - city ?s - state ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 - number
+        :parameters ( ?c1 ?c2 ?c3 - city ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 - number
         )
         :precondition (and
             (connected ?c1 ?c2)
             (connected ?c1 ?c3)
 
             (on-city ?c1)
-            (at ?c1 ?s)
-            (not (has-state-map ?s))
-            (has-adjacent-cities ?c 2)
+            (has-adjacent-cities ?c1 2)
 
-            (not (same-city ?c2 ?c3))
+            (not (= ?c2 ?c3))
 
             (inc ?visits_c2 ?inc_vists_c2)
             (number-of-visits ?c2 ?visits_c2)
@@ -114,7 +125,7 @@
     )
 
     (:action move-without-map-3-adjacent-cities
-        :parameters ( ?c1 ?c2 ?c3 ?c4 - city ?s - state ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 ?visits_c4 ?inc_vists_c4 - number
+        :parameters ( ?c1 ?c2 ?c3 ?c4 - city ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 ?visits_c4 ?inc_vists_c4 - number
         )
         :precondition (and
             (connected ?c1 ?c2)
@@ -122,13 +133,11 @@
             (connected ?c1 ?c4)
 
             (on-city ?c1)
-            (at ?c1 ?s)
-            (not (has-state-map ?s))
-            (has-adjacent-cities ?c 3)
+            (has-adjacent-cities ?c1 3)
 
-            (not (same-city ?c2 ?c3))
-            (not (same-city ?c2 ?c4))
-            (not (same-city ?c3 ?c4))
+            (not (= ?c2 ?c3))
+            (not (= ?c2 ?c4))
+            (not (= ?c3 ?c4))
 
             (inc ?visits_c2 ?inc_vists_c2)
             (number-of-visits ?c2 ?visits_c2)
@@ -149,7 +158,7 @@
     )
 
     (:action move-without-map-4-adjacent-cities
-        :parameters ( ?c1 ?c2 ?c3 ?c4 ?c5 - city ?s - state ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 ?visits_c4 ?inc_vists_c4 ?visits_c5 ?inc_vists_c5 - number
+        :parameters ( ?c1 ?c2 ?c3 ?c4 ?c5 - city ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 ?visits_c4 ?inc_vists_c4 ?visits_c5 ?inc_vists_c5 - number
         )
         :precondition (and
             (connected ?c1 ?c2)
@@ -158,16 +167,14 @@
             (connected ?c1 ?c5)
 
             (on-city ?c1)
-            (at ?c1 ?s)
-            (not (has-state-map ?s))
-            (has-adjacent-cities ?c 4)
+            (has-adjacent-cities ?c1 4)
 
-            (not (same-city ?c2 ?c3))
-            (not (same-city ?c2 ?c4))
-            (not (same-city ?c2 ?c5))
-            (not (same-city ?c3 ?c4))
-            (not (same-city ?c3 ?c5))
-            (not (same-city ?c4 ?c5))
+            (not (= ?c2 ?c3))
+            (not (= ?c2 ?c4))
+            (not (= ?c2 ?c5))
+            (not (= ?c3 ?c4))
+            (not (= ?c3 ?c5))
+            (not (= ?c4 ?c5))
 
             (inc ?visits_c2 ?inc_vists_c2)
             (number-of-visits ?c2 ?visits_c2)
@@ -192,7 +199,7 @@
     )
 
     (:action move-without-map-5-adjacent-cities
-        :parameters ( ?c1 ?c2 ?c3 ?c4 ?c5 ?c6 - city ?s - state ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 ?visits_c4 ?inc_vists_c4 ?visits_c5 ?inc_vists_c5 ?visits_c6 ?inc_vists_c6 - number
+        :parameters ( ?c1 ?c2 ?c3 ?c4 ?c5 ?c6 - city ?visits_c2 ?inc_vists_c2 ?visits_c3 ?inc_vists_c3 ?visits_c4 ?inc_vists_c4 ?visits_c5 ?inc_vists_c5 ?visits_c6 ?inc_vists_c6 - number
         )
         :precondition (and
             (connected ?c1 ?c2)
@@ -202,20 +209,18 @@
             (connected ?c1 ?c6)
 
             (on-city ?c1)
-            (at ?c1 ?s)
-            (not (has-state-map ?s))
-            (has-adjacent-cities ?c 5)
+            (has-adjacent-cities ?c1 5)
 
-            (not (same-city ?c2 ?c3))
-            (not (same-city ?c2 ?c4))
-            (not (same-city ?c2 ?c5))
-            (not (same-city ?c2 ?c6))
-            (not (same-city ?c3 ?c4))
-            (not (same-city ?c3 ?c5))
-            (not (same-city ?c3 ?c6))
-            (not (same-city ?c4 ?c5))
-            (not (same-city ?c4 ?c6))
-            (not (same-city ?c5 ?c6))
+            (not (= ?c2 ?c3))
+            (not (= ?c2 ?c4))
+            (not (= ?c2 ?c5))
+            (not (= ?c2 ?c6))
+            (not (= ?c3 ?c4))
+            (not (= ?c3 ?c5))
+            (not (= ?c3 ?c6))
+            (not (= ?c4 ?c5))
+            (not (= ?c4 ?c6))
+            (not (= ?c5 ?c6))
 
             (inc ?visits_c2 ?inc_vists_c2)
             (number-of-visits ?c2 ?visits_c2)
@@ -241,11 +246,11 @@
     )
 
     ;; TODO: make sense to the salesman to possibly buy other item that it already has?
-    (:action buy
+    (:action seller-sells-item-to-travelling-salesman
         :parameters ( ?i - item ?item_price ?itens_on_stock ?itens_on_stock_after_sale ?item_capacity - number ?p - person ?c - city)
         :precondition (and
             (is-seller ?p)
-            (buying-price ?i ?item_price ?p)
+            (selling-price ?i ?item_price ?p)
             (wallet ?item_price)
 
             (stock ?i ?itens_on_stock ?p)
@@ -271,11 +276,11 @@
         )
     )
 
-    (:action sell
+    (:action buyer-buys-item-from-travelling-salesman
         :parameters ( ?i - item ?item_price ?itens_on_stock ?itens_on_stock_after_purchase ?item_capacity - number ?p - person ?c - city)
         :precondition (and
             (is-buyer ?p)
-            (selling-price ?i ?item_price ?p)
+            (buying-price ?i ?item_price ?p)
             (wallet 0)
 
             (stock ?i ?itens_on_stock ?p)
@@ -340,6 +345,7 @@
     (:action buy-state-map
         :parameters (?c - city ?s - state ?map_price - number)
         :precondition (and
+            (on-city ?c)
             (at ?c ?s)
             (not (has-state-map ?s))
             (wallet ?map_price)
@@ -355,6 +361,7 @@
     (:action sell-state-map
         :parameters (?c - city ?s - state ?map_price - number)
         :precondition (and
+            (on-city ?c)
             (at ?c ?s)
             (has-state-map ?s)
             (selling-price-state-map ?map_price ?s)

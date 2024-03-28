@@ -4,7 +4,7 @@ end_version
 begin_metric
 0
 end_metric
-70
+71
 begin_variable
 var0
 -1
@@ -204,312 +204,319 @@ begin_variable
 var25
 -1
 2
+Atom on-hospital(v1)
+NegatedAtom on-hospital(v1)
+end_variable
+begin_variable
+var26
+-1
+2
 Atom spread-out(1, l1)
 NegatedAtom spread-out(1, l1)
 end_variable
 begin_variable
-var26
+var27
 -1
 2
 Atom spread-out(1, l2)
 NegatedAtom spread-out(1, l2)
 end_variable
 begin_variable
-var27
+var28
 -1
 2
 Atom spread-out(1, l3)
 NegatedAtom spread-out(1, l3)
 end_variable
 begin_variable
-var28
+var29
 -1
 2
 Atom spread-out(10, l1)
 NegatedAtom spread-out(10, l1)
 end_variable
 begin_variable
-var29
+var30
 -1
 2
 Atom spread-out(10, l2)
 NegatedAtom spread-out(10, l2)
 end_variable
 begin_variable
-var30
+var31
 -1
 2
 Atom spread-out(10, l3)
 NegatedAtom spread-out(10, l3)
 end_variable
 begin_variable
-var31
+var32
 -1
 2
 Atom spread-out(11, l1)
 NegatedAtom spread-out(11, l1)
 end_variable
 begin_variable
-var32
+var33
 -1
 2
 Atom spread-out(11, l2)
 NegatedAtom spread-out(11, l2)
 end_variable
 begin_variable
-var33
+var34
 -1
 2
 Atom spread-out(11, l3)
 NegatedAtom spread-out(11, l3)
 end_variable
 begin_variable
-var34
+var35
 -1
 2
 Atom spread-out(12, l1)
 NegatedAtom spread-out(12, l1)
 end_variable
 begin_variable
-var35
+var36
 -1
 2
 Atom spread-out(12, l2)
 NegatedAtom spread-out(12, l2)
 end_variable
 begin_variable
-var36
+var37
 -1
 2
 Atom spread-out(12, l3)
 NegatedAtom spread-out(12, l3)
 end_variable
 begin_variable
-var37
+var38
 -1
 2
 Atom spread-out(13, l1)
 NegatedAtom spread-out(13, l1)
 end_variable
 begin_variable
-var38
+var39
 -1
 2
 Atom spread-out(13, l2)
 NegatedAtom spread-out(13, l2)
 end_variable
 begin_variable
-var39
+var40
 -1
 2
 Atom spread-out(13, l3)
 NegatedAtom spread-out(13, l3)
 end_variable
 begin_variable
-var40
+var41
 -1
 2
 Atom spread-out(14, l1)
 NegatedAtom spread-out(14, l1)
 end_variable
 begin_variable
-var41
+var42
 -1
 2
 Atom spread-out(14, l2)
 NegatedAtom spread-out(14, l2)
 end_variable
 begin_variable
-var42
+var43
 -1
 2
 Atom spread-out(14, l3)
 NegatedAtom spread-out(14, l3)
 end_variable
 begin_variable
-var43
+var44
 -1
 2
 Atom spread-out(15, l1)
 NegatedAtom spread-out(15, l1)
 end_variable
 begin_variable
-var44
+var45
 -1
 2
 Atom spread-out(15, l2)
 NegatedAtom spread-out(15, l2)
 end_variable
 begin_variable
-var45
+var46
 -1
 2
 Atom spread-out(15, l3)
 NegatedAtom spread-out(15, l3)
 end_variable
 begin_variable
-var46
+var47
 -1
 2
 Atom spread-out(2, l1)
 NegatedAtom spread-out(2, l1)
 end_variable
 begin_variable
-var47
+var48
 -1
 2
 Atom spread-out(2, l2)
 NegatedAtom spread-out(2, l2)
 end_variable
 begin_variable
-var48
+var49
 -1
 2
 Atom spread-out(2, l3)
 NegatedAtom spread-out(2, l3)
 end_variable
 begin_variable
-var49
+var50
 -1
 2
 Atom spread-out(3, l1)
 NegatedAtom spread-out(3, l1)
 end_variable
 begin_variable
-var50
+var51
 -1
 2
 Atom spread-out(3, l2)
 NegatedAtom spread-out(3, l2)
 end_variable
 begin_variable
-var51
+var52
 -1
 2
 Atom spread-out(3, l3)
 NegatedAtom spread-out(3, l3)
 end_variable
 begin_variable
-var52
+var53
 -1
 2
 Atom spread-out(4, l1)
 NegatedAtom spread-out(4, l1)
 end_variable
 begin_variable
-var53
+var54
 -1
 2
 Atom spread-out(4, l2)
 NegatedAtom spread-out(4, l2)
 end_variable
 begin_variable
-var54
+var55
 -1
 2
 Atom spread-out(4, l3)
 NegatedAtom spread-out(4, l3)
 end_variable
 begin_variable
-var55
+var56
 -1
 2
 Atom spread-out(5, l1)
 NegatedAtom spread-out(5, l1)
 end_variable
 begin_variable
-var56
+var57
 -1
 2
 Atom spread-out(5, l2)
 NegatedAtom spread-out(5, l2)
 end_variable
 begin_variable
-var57
+var58
 -1
 2
 Atom spread-out(5, l3)
 NegatedAtom spread-out(5, l3)
 end_variable
 begin_variable
-var58
+var59
 -1
 2
 Atom spread-out(6, l1)
 NegatedAtom spread-out(6, l1)
 end_variable
 begin_variable
-var59
+var60
 -1
 2
 Atom spread-out(6, l2)
 NegatedAtom spread-out(6, l2)
 end_variable
 begin_variable
-var60
+var61
 -1
 2
 Atom spread-out(6, l3)
 NegatedAtom spread-out(6, l3)
 end_variable
 begin_variable
-var61
+var62
 -1
 2
 Atom spread-out(7, l1)
 NegatedAtom spread-out(7, l1)
 end_variable
 begin_variable
-var62
+var63
 -1
 2
 Atom spread-out(7, l2)
 NegatedAtom spread-out(7, l2)
 end_variable
 begin_variable
-var63
+var64
 -1
 2
 Atom spread-out(7, l3)
 NegatedAtom spread-out(7, l3)
 end_variable
 begin_variable
-var64
+var65
 -1
 2
 Atom spread-out(8, l1)
 NegatedAtom spread-out(8, l1)
 end_variable
 begin_variable
-var65
+var66
 -1
 2
 Atom spread-out(8, l2)
 NegatedAtom spread-out(8, l2)
 end_variable
 begin_variable
-var66
+var67
 -1
 2
 Atom spread-out(8, l3)
 NegatedAtom spread-out(8, l3)
 end_variable
 begin_variable
-var67
+var68
 -1
 2
 Atom spread-out(9, l1)
 NegatedAtom spread-out(9, l1)
 end_variable
 begin_variable
-var68
+var69
 -1
 2
 Atom spread-out(9, l2)
 NegatedAtom spread-out(9, l2)
 end_variable
 begin_variable
-var69
+var70
 -1
 2
 Atom spread-out(9, l3)
@@ -656,19 +663,20 @@ begin_state
 1
 1
 1
+1
 end_state
 begin_goal
 1
 17 2
 end_goal
-603
+656
 begin_operator
 adjust-clock 0 1
 4
 1 0
-25 0
 26 0
 27 0
+28 0
 2
 0 0 1 0
 0 16 0 1
@@ -678,9 +686,9 @@ begin_operator
 adjust-clock 1 2
 4
 8 0
-46 0
 47 0
 48 0
+49 0
 2
 0 0 1 0
 0 16 1 8
@@ -690,9 +698,9 @@ begin_operator
 adjust-clock 10 11
 4
 3 0
-31 0
 32 0
 33 0
+34 0
 2
 0 0 1 0
 0 16 2 3
@@ -702,9 +710,9 @@ begin_operator
 adjust-clock 11 12
 4
 4 0
-34 0
 35 0
 36 0
+37 0
 2
 0 0 1 0
 0 16 3 4
@@ -714,9 +722,9 @@ begin_operator
 adjust-clock 12 13
 4
 5 0
-37 0
 38 0
 39 0
+40 0
 2
 0 0 1 0
 0 16 4 5
@@ -726,9 +734,9 @@ begin_operator
 adjust-clock 13 14
 4
 6 0
-40 0
 41 0
 42 0
+43 0
 2
 0 0 1 0
 0 16 5 6
@@ -738,9 +746,9 @@ begin_operator
 adjust-clock 14 15
 4
 7 0
-43 0
 44 0
 45 0
+46 0
 2
 0 0 1 0
 0 16 6 7
@@ -750,9 +758,9 @@ begin_operator
 adjust-clock 2 3
 4
 9 0
-49 0
 50 0
 51 0
+52 0
 2
 0 0 1 0
 0 16 8 9
@@ -762,9 +770,9 @@ begin_operator
 adjust-clock 3 4
 4
 10 0
-52 0
 53 0
 54 0
+55 0
 2
 0 0 1 0
 0 16 9 10
@@ -774,9 +782,9 @@ begin_operator
 adjust-clock 4 5
 4
 11 0
-55 0
 56 0
 57 0
+58 0
 2
 0 0 1 0
 0 16 10 11
@@ -786,9 +794,9 @@ begin_operator
 adjust-clock 5 6
 4
 12 0
-58 0
 59 0
 60 0
+61 0
 2
 0 0 1 0
 0 16 11 12
@@ -798,9 +806,9 @@ begin_operator
 adjust-clock 6 7
 4
 13 0
-61 0
 62 0
 63 0
+64 0
 2
 0 0 1 0
 0 16 12 13
@@ -810,9 +818,9 @@ begin_operator
 adjust-clock 7 8
 4
 14 0
-64 0
 65 0
 66 0
+67 0
 2
 0 0 1 0
 0 16 13 14
@@ -822,9 +830,9 @@ begin_operator
 adjust-clock 8 9
 4
 15 0
-67 0
 68 0
 69 0
+70 0
 2
 0 0 1 0
 0 16 14 15
@@ -834,3747 +842,4917 @@ begin_operator
 adjust-clock 9 10
 4
 2 0
-28 0
 29 0
 30 0
+31 0
 2
 0 0 1 0
 0 16 15 2
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 0 1
-5
+adjust-status-dying-to-deceased l1 v1 0 1
+6
 0 1
 16 0
 17 1
 18 0
 22 1
+25 1
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 0 1
-4
+adjust-status-dying-to-deceased l1 v1 0 1
+5
 0 1
 16 0
 18 0
 22 1
+25 1
 2
-0 1 -1 0
+0 1 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 1 2
-5
+adjust-status-dying-to-deceased l1 v1 1 2
+6
 0 1
 16 1
 17 1
 18 0
 22 1
+25 1
 1
-0 8 -1 0
+0 8 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 1 2
-4
+adjust-status-dying-to-deceased l1 v1 1 2
+5
 0 1
 16 1
 18 0
 22 1
+25 1
 2
-0 8 -1 0
+0 8 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 10 11
-5
+adjust-status-dying-to-deceased l1 v1 10 11
+6
 0 1
 16 2
 17 1
 18 0
 22 1
+25 1
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 10 11
-4
+adjust-status-dying-to-deceased l1 v1 10 11
+5
 0 1
 16 2
 18 0
 22 1
+25 1
 2
-0 3 -1 0
+0 3 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 11 12
-5
+adjust-status-dying-to-deceased l1 v1 11 12
+6
 0 1
 16 3
 17 1
 18 0
 22 1
+25 1
 1
-0 4 -1 0
+0 4 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 11 12
-4
+adjust-status-dying-to-deceased l1 v1 11 12
+5
 0 1
 16 3
 18 0
 22 1
+25 1
 2
-0 4 -1 0
+0 4 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 12 13
-5
+adjust-status-dying-to-deceased l1 v1 12 13
+6
 0 1
 16 4
 17 1
 18 0
 22 1
+25 1
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 12 13
-4
+adjust-status-dying-to-deceased l1 v1 12 13
+5
 0 1
 16 4
 18 0
 22 1
+25 1
 2
-0 5 -1 0
+0 5 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 13 14
-5
+adjust-status-dying-to-deceased l1 v1 13 14
+6
 0 1
 16 5
 17 1
 18 0
 22 1
+25 1
 1
-0 6 -1 0
+0 6 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 13 14
-4
+adjust-status-dying-to-deceased l1 v1 13 14
+5
 0 1
 16 5
 18 0
 22 1
+25 1
 2
-0 6 -1 0
+0 6 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 14 15
-5
+adjust-status-dying-to-deceased l1 v1 14 15
+6
 0 1
 16 6
 17 1
 18 0
 22 1
+25 1
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 14 15
-4
+adjust-status-dying-to-deceased l1 v1 14 15
+5
 0 1
 16 6
 18 0
 22 1
+25 1
 2
-0 7 -1 0
+0 7 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 2 3
-5
+adjust-status-dying-to-deceased l1 v1 2 3
+6
 0 1
 16 8
 17 1
 18 0
 22 1
+25 1
 1
-0 9 -1 0
+0 9 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 2 3
-4
+adjust-status-dying-to-deceased l1 v1 2 3
+5
 0 1
 16 8
 18 0
 22 1
+25 1
 2
-0 9 -1 0
+0 9 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 3 4
-5
+adjust-status-dying-to-deceased l1 v1 3 4
+6
 0 1
 16 9
 17 1
 18 0
 22 1
+25 1
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 3 4
-4
+adjust-status-dying-to-deceased l1 v1 3 4
+5
 0 1
 16 9
 18 0
 22 1
+25 1
 2
-0 10 -1 0
+0 10 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 4 5
-5
+adjust-status-dying-to-deceased l1 v1 4 5
+6
 0 1
 16 10
 17 1
 18 0
 22 1
+25 1
 1
-0 11 -1 0
+0 11 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 4 5
-4
+adjust-status-dying-to-deceased l1 v1 4 5
+5
 0 1
 16 10
 18 0
 22 1
+25 1
 2
-0 11 -1 0
+0 11 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 5 6
-5
+adjust-status-dying-to-deceased l1 v1 5 6
+6
 0 1
 16 11
 17 1
 18 0
 22 1
+25 1
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 5 6
-4
+adjust-status-dying-to-deceased l1 v1 5 6
+5
 0 1
 16 11
 18 0
 22 1
+25 1
 2
-0 12 -1 0
+0 12 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 6 7
-5
+adjust-status-dying-to-deceased l1 v1 6 7
+6
 0 1
 16 12
 17 1
 18 0
 22 1
+25 1
 1
-0 13 -1 0
+0 13 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 6 7
-4
+adjust-status-dying-to-deceased l1 v1 6 7
+5
 0 1
 16 12
 18 0
 22 1
+25 1
 2
-0 13 -1 0
+0 13 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 7 8
-5
+adjust-status-dying-to-deceased l1 v1 7 8
+6
 0 1
 16 13
 17 1
 18 0
 22 1
+25 1
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 7 8
-4
+adjust-status-dying-to-deceased l1 v1 7 8
+5
 0 1
 16 13
 18 0
 22 1
+25 1
 2
-0 14 -1 0
+0 14 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 8 9
-5
+adjust-status-dying-to-deceased l1 v1 8 9
+6
 0 1
 16 14
 17 1
 18 0
 22 1
+25 1
 1
-0 15 -1 0
+0 15 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 8 9
-4
+adjust-status-dying-to-deceased l1 v1 8 9
+5
 0 1
 16 14
 18 0
 22 1
+25 1
 2
-0 15 -1 0
+0 15 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 9 10
-5
+adjust-status-dying-to-deceased l1 v1 9 10
+6
 0 1
 16 15
 17 1
 18 0
 22 1
+25 1
 1
-0 2 -1 0
+0 2 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l1 v1 9 10
-4
+adjust-status-dying-to-deceased l1 v1 9 10
+5
 0 1
 16 15
 18 0
 22 1
+25 1
 2
-0 2 -1 0
+0 2 1 0
 0 17 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l2 v1 0 1
-5
+adjust-status-dying-to-deceased l2 v1 0 1
+6
 0 1
 16 0
 17 1
 19 0
 22 2
+25 1
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-dying-to-deceased2 l2 v1 0 1
-4
-0 1
-16 0
-19 0
-22 2
-2
-0 1 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 1 2
+adjust-status-dying-to-deceased l2 v1 0 1
 5
-0 1
-16 1
-17 1
-19 0
-22 2
-1
-0 8 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 1 2
-4
-0 1
-16 1
-19 0
-22 2
-2
-0 8 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 10 11
-5
-0 1
-16 2
-17 1
-19 0
-22 2
-1
-0 3 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 10 11
-4
-0 1
-16 2
-19 0
-22 2
-2
-0 3 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 11 12
-5
-0 1
-16 3
-17 1
-19 0
-22 2
-1
-0 4 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 11 12
-4
-0 1
-16 3
-19 0
-22 2
-2
-0 4 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 12 13
-5
-0 1
-16 4
-17 1
-19 0
-22 2
-1
-0 5 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 12 13
-4
-0 1
-16 4
-19 0
-22 2
-2
-0 5 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 13 14
-5
-0 1
-16 5
-17 1
-19 0
-22 2
-1
-0 6 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 13 14
-4
-0 1
-16 5
-19 0
-22 2
-2
-0 6 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 14 15
-5
-0 1
-16 6
-17 1
-19 0
-22 2
-1
-0 7 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 14 15
-4
-0 1
-16 6
-19 0
-22 2
-2
-0 7 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 2 3
-5
-0 1
-16 8
-17 1
-19 0
-22 2
-1
-0 9 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 2 3
-4
-0 1
-16 8
-19 0
-22 2
-2
-0 9 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 3 4
-5
-0 1
-16 9
-17 1
-19 0
-22 2
-1
-0 10 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 3 4
-4
-0 1
-16 9
-19 0
-22 2
-2
-0 10 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 4 5
-5
-0 1
-16 10
-17 1
-19 0
-22 2
-1
-0 11 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 4 5
-4
-0 1
-16 10
-19 0
-22 2
-2
-0 11 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 5 6
-5
-0 1
-16 11
-17 1
-19 0
-22 2
-1
-0 12 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 5 6
-4
-0 1
-16 11
-19 0
-22 2
-2
-0 12 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 6 7
-5
-0 1
-16 12
-17 1
-19 0
-22 2
-1
-0 13 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 6 7
-4
-0 1
-16 12
-19 0
-22 2
-2
-0 13 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 7 8
-5
-0 1
-16 13
-17 1
-19 0
-22 2
-1
-0 14 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 7 8
-4
-0 1
-16 13
-19 0
-22 2
-2
-0 14 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 8 9
-5
-0 1
-16 14
-17 1
-19 0
-22 2
-1
-0 15 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 8 9
-4
-0 1
-16 14
-19 0
-22 2
-2
-0 15 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 9 10
-5
-0 1
-16 15
-17 1
-19 0
-22 2
-1
-0 2 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l2 v1 9 10
-4
-0 1
-16 15
-19 0
-22 2
-2
-0 2 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 0 1
-5
-0 1
-16 0
-17 1
-20 0
-22 3
-1
-0 1 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 0 1
-4
-0 1
-16 0
-20 0
-22 3
-2
-0 1 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 1 2
-5
-0 1
-16 1
-17 1
-20 0
-22 3
-1
-0 8 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 1 2
-4
-0 1
-16 1
-20 0
-22 3
-2
-0 8 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 10 11
-5
-0 1
-16 2
-17 1
-20 0
-22 3
-1
-0 3 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 10 11
-4
-0 1
-16 2
-20 0
-22 3
-2
-0 3 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 11 12
-5
-0 1
-16 3
-17 1
-20 0
-22 3
-1
-0 4 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 11 12
-4
-0 1
-16 3
-20 0
-22 3
-2
-0 4 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 12 13
-5
-0 1
-16 4
-17 1
-20 0
-22 3
-1
-0 5 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 12 13
-4
-0 1
-16 4
-20 0
-22 3
-2
-0 5 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 13 14
-5
-0 1
-16 5
-17 1
-20 0
-22 3
-1
-0 6 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 13 14
-4
-0 1
-16 5
-20 0
-22 3
-2
-0 6 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 14 15
-5
-0 1
-16 6
-17 1
-20 0
-22 3
-1
-0 7 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 14 15
-4
-0 1
-16 6
-20 0
-22 3
-2
-0 7 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 2 3
-5
-0 1
-16 8
-17 1
-20 0
-22 3
-1
-0 9 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 2 3
-4
-0 1
-16 8
-20 0
-22 3
-2
-0 9 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 3 4
-5
-0 1
-16 9
-17 1
-20 0
-22 3
-1
-0 10 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 3 4
-4
-0 1
-16 9
-20 0
-22 3
-2
-0 10 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 4 5
-5
-0 1
-16 10
-17 1
-20 0
-22 3
-1
-0 11 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 4 5
-4
-0 1
-16 10
-20 0
-22 3
-2
-0 11 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 5 6
-5
-0 1
-16 11
-17 1
-20 0
-22 3
-1
-0 12 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 5 6
-4
-0 1
-16 11
-20 0
-22 3
-2
-0 12 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 6 7
-5
-0 1
-16 12
-17 1
-20 0
-22 3
-1
-0 13 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 6 7
-4
-0 1
-16 12
-20 0
-22 3
-2
-0 13 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 7 8
-5
-0 1
-16 13
-17 1
-20 0
-22 3
-1
-0 14 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 7 8
-4
-0 1
-16 13
-20 0
-22 3
-2
-0 14 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 8 9
-5
-0 1
-16 14
-17 1
-20 0
-22 3
-1
-0 15 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 8 9
-4
-0 1
-16 14
-20 0
-22 3
-2
-0 15 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 9 10
-5
-0 1
-16 15
-17 1
-20 0
-22 3
-1
-0 2 -1 0
-0
-end_operator
-begin_operator
-adjust-status-dying-to-deceased2 l3 v1 9 10
-4
-0 1
-16 15
-20 0
-22 3
-2
-0 2 -1 0
-0 17 1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 0 1
-5
-0 1
-16 0
-17 2
-18 0
-22 1
-1
-0 1 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 0 1
-4
-0 1
-16 0
-18 0
-22 1
-2
-0 1 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 1 2
-5
-0 1
-16 1
-17 2
-18 0
-22 1
-1
-0 8 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 1 2
-4
-0 1
-16 1
-18 0
-22 1
-2
-0 8 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 10 11
-5
-0 1
-16 2
-17 2
-18 0
-22 1
-1
-0 3 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 10 11
-4
-0 1
-16 2
-18 0
-22 1
-2
-0 3 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 11 12
-5
-0 1
-16 3
-17 2
-18 0
-22 1
-1
-0 4 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 11 12
-4
-0 1
-16 3
-18 0
-22 1
-2
-0 4 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 12 13
-5
-0 1
-16 4
-17 2
-18 0
-22 1
-1
-0 5 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 12 13
-4
-0 1
-16 4
-18 0
-22 1
-2
-0 5 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 13 14
-5
-0 1
-16 5
-17 2
-18 0
-22 1
-1
-0 6 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 13 14
-4
-0 1
-16 5
-18 0
-22 1
-2
-0 6 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 14 15
-5
-0 1
-16 6
-17 2
-18 0
-22 1
-1
-0 7 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 14 15
-4
-0 1
-16 6
-18 0
-22 1
-2
-0 7 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 2 3
-5
-0 1
-16 8
-17 2
-18 0
-22 1
-1
-0 9 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 2 3
-4
-0 1
-16 8
-18 0
-22 1
-2
-0 9 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 3 4
-5
-0 1
-16 9
-17 2
-18 0
-22 1
-1
-0 10 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 3 4
-4
-0 1
-16 9
-18 0
-22 1
-2
-0 10 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 4 5
-5
-0 1
-16 10
-17 2
-18 0
-22 1
-1
-0 11 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 4 5
-4
-0 1
-16 10
-18 0
-22 1
-2
-0 11 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 5 6
-5
-0 1
-16 11
-17 2
-18 0
-22 1
-1
-0 12 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 5 6
-4
-0 1
-16 11
-18 0
-22 1
-2
-0 12 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 6 7
-5
-0 1
-16 12
-17 2
-18 0
-22 1
-1
-0 13 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 6 7
-4
-0 1
-16 12
-18 0
-22 1
-2
-0 13 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 7 8
-5
-0 1
-16 13
-17 2
-18 0
-22 1
-1
-0 14 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 7 8
-4
-0 1
-16 13
-18 0
-22 1
-2
-0 14 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 8 9
-5
-0 1
-16 14
-17 2
-18 0
-22 1
-1
-0 15 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 8 9
-4
-0 1
-16 14
-18 0
-22 1
-2
-0 15 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 9 10
-5
-0 1
-16 15
-17 2
-18 0
-22 1
-1
-0 2 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l1 v1 9 10
-4
-0 1
-16 15
-18 0
-22 1
-2
-0 2 -1 0
-0 17 2 3
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 0 1
-5
-0 1
-16 0
-17 2
-19 0
-22 2
-1
-0 1 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 0 1
-4
 0 1
 16 0
 19 0
 22 2
+25 1
 2
-0 1 -1 0
+0 1 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 1 2
+6
+0 1
+16 1
+17 1
+19 0
+22 2
+25 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 1 2
+5
+0 1
+16 1
+19 0
+22 2
+25 1
+2
+0 8 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 10 11
+6
+0 1
+16 2
+17 1
+19 0
+22 2
+25 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 10 11
+5
+0 1
+16 2
+19 0
+22 2
+25 1
+2
+0 3 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 11 12
+6
+0 1
+16 3
+17 1
+19 0
+22 2
+25 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 11 12
+5
+0 1
+16 3
+19 0
+22 2
+25 1
+2
+0 4 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 12 13
+6
+0 1
+16 4
+17 1
+19 0
+22 2
+25 1
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 12 13
+5
+0 1
+16 4
+19 0
+22 2
+25 1
+2
+0 5 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 13 14
+6
+0 1
+16 5
+17 1
+19 0
+22 2
+25 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 13 14
+5
+0 1
+16 5
+19 0
+22 2
+25 1
+2
+0 6 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 14 15
+6
+0 1
+16 6
+17 1
+19 0
+22 2
+25 1
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 14 15
+5
+0 1
+16 6
+19 0
+22 2
+25 1
+2
+0 7 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 2 3
+6
+0 1
+16 8
+17 1
+19 0
+22 2
+25 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 2 3
+5
+0 1
+16 8
+19 0
+22 2
+25 1
+2
+0 9 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 3 4
+6
+0 1
+16 9
+17 1
+19 0
+22 2
+25 1
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 3 4
+5
+0 1
+16 9
+19 0
+22 2
+25 1
+2
+0 10 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 4 5
+6
+0 1
+16 10
+17 1
+19 0
+22 2
+25 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 4 5
+5
+0 1
+16 10
+19 0
+22 2
+25 1
+2
+0 11 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 5 6
+6
+0 1
+16 11
+17 1
+19 0
+22 2
+25 1
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 5 6
+5
+0 1
+16 11
+19 0
+22 2
+25 1
+2
+0 12 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 6 7
+6
+0 1
+16 12
+17 1
+19 0
+22 2
+25 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 6 7
+5
+0 1
+16 12
+19 0
+22 2
+25 1
+2
+0 13 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 7 8
+6
+0 1
+16 13
+17 1
+19 0
+22 2
+25 1
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 7 8
+5
+0 1
+16 13
+19 0
+22 2
+25 1
+2
+0 14 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 8 9
+6
+0 1
+16 14
+17 1
+19 0
+22 2
+25 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 8 9
+5
+0 1
+16 14
+19 0
+22 2
+25 1
+2
+0 15 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 9 10
+6
+0 1
+16 15
+17 1
+19 0
+22 2
+25 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l2 v1 9 10
+5
+0 1
+16 15
+19 0
+22 2
+25 1
+2
+0 2 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 0 1
+6
+0 1
+16 0
+17 1
+20 0
+22 3
+25 1
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 0 1
+5
+0 1
+16 0
+20 0
+22 3
+25 1
+2
+0 1 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 1 2
+6
+0 1
+16 1
+17 1
+20 0
+22 3
+25 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 1 2
+5
+0 1
+16 1
+20 0
+22 3
+25 1
+2
+0 8 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 10 11
+6
+0 1
+16 2
+17 1
+20 0
+22 3
+25 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 10 11
+5
+0 1
+16 2
+20 0
+22 3
+25 1
+2
+0 3 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 11 12
+6
+0 1
+16 3
+17 1
+20 0
+22 3
+25 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 11 12
+5
+0 1
+16 3
+20 0
+22 3
+25 1
+2
+0 4 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 12 13
+6
+0 1
+16 4
+17 1
+20 0
+22 3
+25 1
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 12 13
+5
+0 1
+16 4
+20 0
+22 3
+25 1
+2
+0 5 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 13 14
+6
+0 1
+16 5
+17 1
+20 0
+22 3
+25 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 13 14
+5
+0 1
+16 5
+20 0
+22 3
+25 1
+2
+0 6 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 14 15
+6
+0 1
+16 6
+17 1
+20 0
+22 3
+25 1
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 14 15
+5
+0 1
+16 6
+20 0
+22 3
+25 1
+2
+0 7 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 2 3
+6
+0 1
+16 8
+17 1
+20 0
+22 3
+25 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 2 3
+5
+0 1
+16 8
+20 0
+22 3
+25 1
+2
+0 9 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 3 4
+6
+0 1
+16 9
+17 1
+20 0
+22 3
+25 1
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 3 4
+5
+0 1
+16 9
+20 0
+22 3
+25 1
+2
+0 10 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 4 5
+6
+0 1
+16 10
+17 1
+20 0
+22 3
+25 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 4 5
+5
+0 1
+16 10
+20 0
+22 3
+25 1
+2
+0 11 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 5 6
+6
+0 1
+16 11
+17 1
+20 0
+22 3
+25 1
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 5 6
+5
+0 1
+16 11
+20 0
+22 3
+25 1
+2
+0 12 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 6 7
+6
+0 1
+16 12
+17 1
+20 0
+22 3
+25 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 6 7
+5
+0 1
+16 12
+20 0
+22 3
+25 1
+2
+0 13 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 7 8
+6
+0 1
+16 13
+17 1
+20 0
+22 3
+25 1
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 7 8
+5
+0 1
+16 13
+20 0
+22 3
+25 1
+2
+0 14 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 8 9
+6
+0 1
+16 14
+17 1
+20 0
+22 3
+25 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 8 9
+5
+0 1
+16 14
+20 0
+22 3
+25 1
+2
+0 15 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 9 10
+6
+0 1
+16 15
+17 1
+20 0
+22 3
+25 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-dying-to-deceased l3 v1 9 10
+5
+0 1
+16 15
+20 0
+22 3
+25 1
+2
+0 2 1 0
+0 17 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 0 1
+6
+0 1
+16 0
+17 2
+18 0
+22 1
+25 1
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 0 1
+5
+0 1
+16 0
+18 0
+22 1
+25 1
+2
+0 1 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 1 2
+adjust-status-helthy-to-hurt l1 v1 1 2
+6
+0 1
+16 1
+17 2
+18 0
+22 1
+25 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 1 2
 5
+0 1
+16 1
+18 0
+22 1
+25 1
+2
+0 8 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 10 11
+6
+0 1
+16 2
+17 2
+18 0
+22 1
+25 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 10 11
+5
+0 1
+16 2
+18 0
+22 1
+25 1
+2
+0 3 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 11 12
+6
+0 1
+16 3
+17 2
+18 0
+22 1
+25 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 11 12
+5
+0 1
+16 3
+18 0
+22 1
+25 1
+2
+0 4 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 12 13
+6
+0 1
+16 4
+17 2
+18 0
+22 1
+25 1
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 12 13
+5
+0 1
+16 4
+18 0
+22 1
+25 1
+2
+0 5 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 13 14
+6
+0 1
+16 5
+17 2
+18 0
+22 1
+25 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 13 14
+5
+0 1
+16 5
+18 0
+22 1
+25 1
+2
+0 6 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 14 15
+6
+0 1
+16 6
+17 2
+18 0
+22 1
+25 1
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 14 15
+5
+0 1
+16 6
+18 0
+22 1
+25 1
+2
+0 7 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 2 3
+6
+0 1
+16 8
+17 2
+18 0
+22 1
+25 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 2 3
+5
+0 1
+16 8
+18 0
+22 1
+25 1
+2
+0 9 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 3 4
+6
+0 1
+16 9
+17 2
+18 0
+22 1
+25 1
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 3 4
+5
+0 1
+16 9
+18 0
+22 1
+25 1
+2
+0 10 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 4 5
+6
+0 1
+16 10
+17 2
+18 0
+22 1
+25 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 4 5
+5
+0 1
+16 10
+18 0
+22 1
+25 1
+2
+0 11 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 5 6
+6
+0 1
+16 11
+17 2
+18 0
+22 1
+25 1
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 5 6
+5
+0 1
+16 11
+18 0
+22 1
+25 1
+2
+0 12 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 6 7
+6
+0 1
+16 12
+17 2
+18 0
+22 1
+25 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 6 7
+5
+0 1
+16 12
+18 0
+22 1
+25 1
+2
+0 13 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 7 8
+6
+0 1
+16 13
+17 2
+18 0
+22 1
+25 1
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 7 8
+5
+0 1
+16 13
+18 0
+22 1
+25 1
+2
+0 14 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 8 9
+6
+0 1
+16 14
+17 2
+18 0
+22 1
+25 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 8 9
+5
+0 1
+16 14
+18 0
+22 1
+25 1
+2
+0 15 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 9 10
+6
+0 1
+16 15
+17 2
+18 0
+22 1
+25 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l1 v1 9 10
+5
+0 1
+16 15
+18 0
+22 1
+25 1
+2
+0 2 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l2 v1 0 1
+6
+0 1
+16 0
+17 2
+19 0
+22 2
+25 1
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l2 v1 0 1
+5
+0 1
+16 0
+19 0
+22 2
+25 1
+2
+0 1 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l2 v1 1 2
+6
 0 1
 16 1
 17 2
 19 0
 22 2
+25 1
 1
-0 8 -1 0
+0 8 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 1 2
-4
+adjust-status-helthy-to-hurt l2 v1 1 2
+5
 0 1
 16 1
 19 0
 22 2
+25 1
 2
-0 8 -1 0
+0 8 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 10 11
-5
+adjust-status-helthy-to-hurt l2 v1 10 11
+6
 0 1
 16 2
 17 2
 19 0
 22 2
+25 1
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 10 11
-4
+adjust-status-helthy-to-hurt l2 v1 10 11
+5
 0 1
 16 2
 19 0
 22 2
+25 1
 2
-0 3 -1 0
+0 3 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 11 12
-5
+adjust-status-helthy-to-hurt l2 v1 11 12
+6
 0 1
 16 3
 17 2
 19 0
 22 2
+25 1
 1
-0 4 -1 0
+0 4 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 11 12
-4
+adjust-status-helthy-to-hurt l2 v1 11 12
+5
 0 1
 16 3
 19 0
 22 2
+25 1
 2
-0 4 -1 0
+0 4 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 12 13
-5
+adjust-status-helthy-to-hurt l2 v1 12 13
+6
 0 1
 16 4
 17 2
 19 0
 22 2
+25 1
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 12 13
-4
+adjust-status-helthy-to-hurt l2 v1 12 13
+5
 0 1
 16 4
 19 0
 22 2
+25 1
 2
-0 5 -1 0
+0 5 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 13 14
-5
+adjust-status-helthy-to-hurt l2 v1 13 14
+6
 0 1
 16 5
 17 2
 19 0
 22 2
+25 1
 1
-0 6 -1 0
+0 6 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 13 14
-4
+adjust-status-helthy-to-hurt l2 v1 13 14
+5
 0 1
 16 5
 19 0
 22 2
+25 1
 2
-0 6 -1 0
+0 6 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 14 15
-5
+adjust-status-helthy-to-hurt l2 v1 14 15
+6
 0 1
 16 6
 17 2
 19 0
 22 2
+25 1
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 14 15
-4
+adjust-status-helthy-to-hurt l2 v1 14 15
+5
 0 1
 16 6
 19 0
 22 2
+25 1
 2
-0 7 -1 0
+0 7 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 2 3
-5
+adjust-status-helthy-to-hurt l2 v1 2 3
+6
 0 1
 16 8
 17 2
 19 0
 22 2
+25 1
 1
-0 9 -1 0
+0 9 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 2 3
-4
+adjust-status-helthy-to-hurt l2 v1 2 3
+5
 0 1
 16 8
 19 0
 22 2
+25 1
 2
-0 9 -1 0
+0 9 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 3 4
-5
+adjust-status-helthy-to-hurt l2 v1 3 4
+6
 0 1
 16 9
 17 2
 19 0
 22 2
+25 1
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 3 4
-4
+adjust-status-helthy-to-hurt l2 v1 3 4
+5
 0 1
 16 9
 19 0
 22 2
+25 1
 2
-0 10 -1 0
+0 10 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 4 5
-5
+adjust-status-helthy-to-hurt l2 v1 4 5
+6
 0 1
 16 10
 17 2
 19 0
 22 2
+25 1
 1
-0 11 -1 0
+0 11 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 4 5
-4
+adjust-status-helthy-to-hurt l2 v1 4 5
+5
 0 1
 16 10
 19 0
 22 2
+25 1
 2
-0 11 -1 0
+0 11 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 5 6
-5
+adjust-status-helthy-to-hurt l2 v1 5 6
+6
 0 1
 16 11
 17 2
 19 0
 22 2
+25 1
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 5 6
-4
+adjust-status-helthy-to-hurt l2 v1 5 6
+5
 0 1
 16 11
 19 0
 22 2
+25 1
 2
-0 12 -1 0
+0 12 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 6 7
-5
+adjust-status-helthy-to-hurt l2 v1 6 7
+6
 0 1
 16 12
 17 2
 19 0
 22 2
+25 1
 1
-0 13 -1 0
+0 13 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 6 7
-4
+adjust-status-helthy-to-hurt l2 v1 6 7
+5
 0 1
 16 12
 19 0
 22 2
+25 1
 2
-0 13 -1 0
+0 13 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 7 8
-5
+adjust-status-helthy-to-hurt l2 v1 7 8
+6
 0 1
 16 13
 17 2
 19 0
 22 2
+25 1
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 7 8
-4
+adjust-status-helthy-to-hurt l2 v1 7 8
+5
 0 1
 16 13
 19 0
 22 2
+25 1
 2
-0 14 -1 0
+0 14 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 8 9
-5
+adjust-status-helthy-to-hurt l2 v1 8 9
+6
 0 1
 16 14
 17 2
 19 0
 22 2
+25 1
 1
-0 15 -1 0
+0 15 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 8 9
-4
+adjust-status-helthy-to-hurt l2 v1 8 9
+5
 0 1
 16 14
 19 0
 22 2
+25 1
 2
-0 15 -1 0
+0 15 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 9 10
-5
+adjust-status-helthy-to-hurt l2 v1 9 10
+6
 0 1
 16 15
 17 2
 19 0
 22 2
+25 1
 1
-0 2 -1 0
+0 2 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l2 v1 9 10
-4
+adjust-status-helthy-to-hurt l2 v1 9 10
+5
 0 1
 16 15
 19 0
 22 2
+25 1
 2
-0 2 -1 0
+0 2 1 0
 0 17 2 3
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 0 1
-5
+adjust-status-helthy-to-hurt l3 v1 0 1
+6
 0 1
 16 0
 17 2
 20 0
 22 3
+25 1
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 0 1
-4
+adjust-status-helthy-to-hurt l3 v1 0 1
+5
+0 1
+16 0
+20 0
+22 3
+25 1
+2
+0 1 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 1 2
+6
+0 1
+16 1
+17 2
+20 0
+22 3
+25 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 1 2
+5
+0 1
+16 1
+20 0
+22 3
+25 1
+2
+0 8 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 10 11
+6
+0 1
+16 2
+17 2
+20 0
+22 3
+25 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 10 11
+5
+0 1
+16 2
+20 0
+22 3
+25 1
+2
+0 3 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 11 12
+6
+0 1
+16 3
+17 2
+20 0
+22 3
+25 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 11 12
+5
+0 1
+16 3
+20 0
+22 3
+25 1
+2
+0 4 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 12 13
+6
+0 1
+16 4
+17 2
+20 0
+22 3
+25 1
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 12 13
+5
+0 1
+16 4
+20 0
+22 3
+25 1
+2
+0 5 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 13 14
+6
+0 1
+16 5
+17 2
+20 0
+22 3
+25 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 13 14
+5
+0 1
+16 5
+20 0
+22 3
+25 1
+2
+0 6 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 14 15
+6
+0 1
+16 6
+17 2
+20 0
+22 3
+25 1
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 14 15
+5
+0 1
+16 6
+20 0
+22 3
+25 1
+2
+0 7 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 2 3
+6
+0 1
+16 8
+17 2
+20 0
+22 3
+25 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 2 3
+5
+0 1
+16 8
+20 0
+22 3
+25 1
+2
+0 9 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 3 4
+6
+0 1
+16 9
+17 2
+20 0
+22 3
+25 1
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 3 4
+5
+0 1
+16 9
+20 0
+22 3
+25 1
+2
+0 10 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 4 5
+6
+0 1
+16 10
+17 2
+20 0
+22 3
+25 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 4 5
+5
+0 1
+16 10
+20 0
+22 3
+25 1
+2
+0 11 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 5 6
+6
+0 1
+16 11
+17 2
+20 0
+22 3
+25 1
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 5 6
+5
+0 1
+16 11
+20 0
+22 3
+25 1
+2
+0 12 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 6 7
+6
+0 1
+16 12
+17 2
+20 0
+22 3
+25 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 6 7
+5
+0 1
+16 12
+20 0
+22 3
+25 1
+2
+0 13 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 7 8
+6
+0 1
+16 13
+17 2
+20 0
+22 3
+25 1
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 7 8
+5
+0 1
+16 13
+20 0
+22 3
+25 1
+2
+0 14 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 8 9
+6
+0 1
+16 14
+17 2
+20 0
+22 3
+25 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 8 9
+5
+0 1
+16 14
+20 0
+22 3
+25 1
+2
+0 15 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 9 10
+6
+0 1
+16 15
+17 2
+20 0
+22 3
+25 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-helthy-to-hurt l3 v1 9 10
+5
+0 1
+16 15
+20 0
+22 3
+25 1
+2
+0 2 1 0
+0 17 2 3
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 0 1
+6
+0 1
+16 0
+17 3
+18 0
+22 1
+25 1
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 0 1
+5
+0 1
+16 0
+18 0
+22 1
+25 1
+2
+0 1 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 1 2
+6
+0 1
+16 1
+17 3
+18 0
+22 1
+25 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 1 2
+5
+0 1
+16 1
+18 0
+22 1
+25 1
+2
+0 8 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 10 11
+6
+0 1
+16 2
+17 3
+18 0
+22 1
+25 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 10 11
+5
+0 1
+16 2
+18 0
+22 1
+25 1
+2
+0 3 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 11 12
+6
+0 1
+16 3
+17 3
+18 0
+22 1
+25 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 11 12
+5
+0 1
+16 3
+18 0
+22 1
+25 1
+2
+0 4 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 12 13
+6
+0 1
+16 4
+17 3
+18 0
+22 1
+25 1
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 12 13
+5
+0 1
+16 4
+18 0
+22 1
+25 1
+2
+0 5 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 13 14
+6
+0 1
+16 5
+17 3
+18 0
+22 1
+25 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 13 14
+5
+0 1
+16 5
+18 0
+22 1
+25 1
+2
+0 6 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 14 15
+6
+0 1
+16 6
+17 3
+18 0
+22 1
+25 1
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 14 15
+5
+0 1
+16 6
+18 0
+22 1
+25 1
+2
+0 7 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 2 3
+6
+0 1
+16 8
+17 3
+18 0
+22 1
+25 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 2 3
+5
+0 1
+16 8
+18 0
+22 1
+25 1
+2
+0 9 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 3 4
+6
+0 1
+16 9
+17 3
+18 0
+22 1
+25 1
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 3 4
+5
+0 1
+16 9
+18 0
+22 1
+25 1
+2
+0 10 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 4 5
+6
+0 1
+16 10
+17 3
+18 0
+22 1
+25 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 4 5
+5
+0 1
+16 10
+18 0
+22 1
+25 1
+2
+0 11 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 5 6
+6
+0 1
+16 11
+17 3
+18 0
+22 1
+25 1
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 5 6
+5
+0 1
+16 11
+18 0
+22 1
+25 1
+2
+0 12 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 6 7
+6
+0 1
+16 12
+17 3
+18 0
+22 1
+25 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 6 7
+5
+0 1
+16 12
+18 0
+22 1
+25 1
+2
+0 13 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 7 8
+6
+0 1
+16 13
+17 3
+18 0
+22 1
+25 1
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 7 8
+5
+0 1
+16 13
+18 0
+22 1
+25 1
+2
+0 14 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 8 9
+6
+0 1
+16 14
+17 3
+18 0
+22 1
+25 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 8 9
+5
+0 1
+16 14
+18 0
+22 1
+25 1
+2
+0 15 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 9 10
+6
+0 1
+16 15
+17 3
+18 0
+22 1
+25 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l1 v1 9 10
+5
+0 1
+16 15
+18 0
+22 1
+25 1
+2
+0 2 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 0 1
+6
+0 1
+16 0
+17 3
+19 0
+22 2
+25 1
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 0 1
+5
+0 1
+16 0
+19 0
+22 2
+25 1
+2
+0 1 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 1 2
+6
+0 1
+16 1
+17 3
+19 0
+22 2
+25 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 1 2
+5
+0 1
+16 1
+19 0
+22 2
+25 1
+2
+0 8 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 10 11
+6
+0 1
+16 2
+17 3
+19 0
+22 2
+25 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 10 11
+5
+0 1
+16 2
+19 0
+22 2
+25 1
+2
+0 3 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 11 12
+6
+0 1
+16 3
+17 3
+19 0
+22 2
+25 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 11 12
+5
+0 1
+16 3
+19 0
+22 2
+25 1
+2
+0 4 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 12 13
+6
+0 1
+16 4
+17 3
+19 0
+22 2
+25 1
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 12 13
+5
+0 1
+16 4
+19 0
+22 2
+25 1
+2
+0 5 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 13 14
+6
+0 1
+16 5
+17 3
+19 0
+22 2
+25 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 13 14
+5
+0 1
+16 5
+19 0
+22 2
+25 1
+2
+0 6 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 14 15
+6
+0 1
+16 6
+17 3
+19 0
+22 2
+25 1
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 14 15
+5
+0 1
+16 6
+19 0
+22 2
+25 1
+2
+0 7 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 2 3
+6
+0 1
+16 8
+17 3
+19 0
+22 2
+25 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 2 3
+5
+0 1
+16 8
+19 0
+22 2
+25 1
+2
+0 9 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 3 4
+6
+0 1
+16 9
+17 3
+19 0
+22 2
+25 1
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 3 4
+5
+0 1
+16 9
+19 0
+22 2
+25 1
+2
+0 10 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 4 5
+6
+0 1
+16 10
+17 3
+19 0
+22 2
+25 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 4 5
+5
+0 1
+16 10
+19 0
+22 2
+25 1
+2
+0 11 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 5 6
+6
+0 1
+16 11
+17 3
+19 0
+22 2
+25 1
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 5 6
+5
+0 1
+16 11
+19 0
+22 2
+25 1
+2
+0 12 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 6 7
+6
+0 1
+16 12
+17 3
+19 0
+22 2
+25 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 6 7
+5
+0 1
+16 12
+19 0
+22 2
+25 1
+2
+0 13 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 7 8
+6
+0 1
+16 13
+17 3
+19 0
+22 2
+25 1
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 7 8
+5
+0 1
+16 13
+19 0
+22 2
+25 1
+2
+0 14 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 8 9
+6
+0 1
+16 14
+17 3
+19 0
+22 2
+25 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 8 9
+5
+0 1
+16 14
+19 0
+22 2
+25 1
+2
+0 15 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 9 10
+6
+0 1
+16 15
+17 3
+19 0
+22 2
+25 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l2 v1 9 10
+5
+0 1
+16 15
+19 0
+22 2
+25 1
+2
+0 2 1 0
+0 17 3 1
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 0 1
+6
+0 1
+16 0
+17 3
+20 0
+22 3
+25 1
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 0 1
+5
 0 1
 16 0
 20 0
 22 3
+25 1
 2
-0 1 -1 0
-0 17 2 3
+0 1 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 1 2
+adjust-status-hurt-to-dying l3 v1 1 2
+6
+0 1
+16 1
+17 3
+20 0
+22 3
+25 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 1 2
 5
 0 1
 16 1
-17 2
 20 0
 22 3
-1
-0 8 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 1 2
-4
-0 1
-16 1
-20 0
-22 3
+25 1
 2
-0 8 -1 0
-0 17 2 3
+0 8 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 10 11
-5
+adjust-status-hurt-to-dying l3 v1 10 11
+6
 0 1
 16 2
-17 2
+17 3
 20 0
 22 3
+25 1
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 10 11
-4
+adjust-status-hurt-to-dying l3 v1 10 11
+5
 0 1
 16 2
 20 0
 22 3
+25 1
 2
-0 3 -1 0
-0 17 2 3
+0 3 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 11 12
+adjust-status-hurt-to-dying l3 v1 11 12
+6
+0 1
+16 3
+17 3
+20 0
+22 3
+25 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 11 12
 5
 0 1
 16 3
-17 2
 20 0
 22 3
-1
-0 4 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 11 12
-4
-0 1
-16 3
-20 0
-22 3
+25 1
 2
-0 4 -1 0
-0 17 2 3
+0 4 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 12 13
-5
+adjust-status-hurt-to-dying l3 v1 12 13
+6
 0 1
 16 4
-17 2
+17 3
 20 0
 22 3
+25 1
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 12 13
-4
+adjust-status-hurt-to-dying l3 v1 12 13
+5
 0 1
 16 4
 20 0
 22 3
+25 1
 2
-0 5 -1 0
-0 17 2 3
+0 5 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 13 14
+adjust-status-hurt-to-dying l3 v1 13 14
+6
+0 1
+16 5
+17 3
+20 0
+22 3
+25 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 13 14
 5
 0 1
 16 5
-17 2
 20 0
 22 3
-1
-0 6 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 13 14
-4
-0 1
-16 5
-20 0
-22 3
+25 1
 2
-0 6 -1 0
-0 17 2 3
+0 6 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 14 15
-5
+adjust-status-hurt-to-dying l3 v1 14 15
+6
 0 1
 16 6
-17 2
+17 3
 20 0
 22 3
+25 1
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 14 15
-4
+adjust-status-hurt-to-dying l3 v1 14 15
+5
 0 1
 16 6
 20 0
 22 3
+25 1
 2
-0 7 -1 0
-0 17 2 3
+0 7 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 2 3
+adjust-status-hurt-to-dying l3 v1 2 3
+6
+0 1
+16 8
+17 3
+20 0
+22 3
+25 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 2 3
 5
 0 1
 16 8
-17 2
 20 0
 22 3
-1
-0 9 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 2 3
-4
-0 1
-16 8
-20 0
-22 3
+25 1
 2
-0 9 -1 0
-0 17 2 3
+0 9 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 3 4
-5
+adjust-status-hurt-to-dying l3 v1 3 4
+6
 0 1
 16 9
-17 2
+17 3
 20 0
 22 3
+25 1
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 3 4
-4
+adjust-status-hurt-to-dying l3 v1 3 4
+5
 0 1
 16 9
 20 0
 22 3
+25 1
 2
-0 10 -1 0
-0 17 2 3
+0 10 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 4 5
+adjust-status-hurt-to-dying l3 v1 4 5
+6
+0 1
+16 10
+17 3
+20 0
+22 3
+25 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 4 5
 5
 0 1
 16 10
-17 2
 20 0
 22 3
-1
-0 11 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 4 5
-4
-0 1
-16 10
-20 0
-22 3
+25 1
 2
-0 11 -1 0
-0 17 2 3
+0 11 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 5 6
-5
+adjust-status-hurt-to-dying l3 v1 5 6
+6
 0 1
 16 11
-17 2
+17 3
 20 0
 22 3
+25 1
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 5 6
-4
+adjust-status-hurt-to-dying l3 v1 5 6
+5
 0 1
 16 11
 20 0
 22 3
+25 1
 2
-0 12 -1 0
-0 17 2 3
+0 12 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 6 7
+adjust-status-hurt-to-dying l3 v1 6 7
+6
+0 1
+16 12
+17 3
+20 0
+22 3
+25 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 6 7
 5
 0 1
 16 12
-17 2
 20 0
 22 3
-1
-0 13 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 6 7
-4
-0 1
-16 12
-20 0
-22 3
+25 1
 2
-0 13 -1 0
-0 17 2 3
+0 13 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 7 8
-5
+adjust-status-hurt-to-dying l3 v1 7 8
+6
 0 1
 16 13
-17 2
+17 3
 20 0
 22 3
+25 1
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 7 8
-4
+adjust-status-hurt-to-dying l3 v1 7 8
+5
 0 1
 16 13
 20 0
 22 3
+25 1
 2
-0 14 -1 0
-0 17 2 3
+0 14 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 8 9
+adjust-status-hurt-to-dying l3 v1 8 9
+6
+0 1
+16 14
+17 3
+20 0
+22 3
+25 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 8 9
 5
 0 1
 16 14
-17 2
 20 0
 22 3
-1
-0 15 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 8 9
-4
-0 1
-16 14
-20 0
-22 3
+25 1
 2
-0 15 -1 0
-0 17 2 3
+0 15 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 9 10
+adjust-status-hurt-to-dying l3 v1 9 10
+6
+0 1
+16 15
+17 3
+20 0
+22 3
+25 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-hurt-to-dying l3 v1 9 10
 5
 0 1
 16 15
-17 2
 20 0
 22 3
-1
-0 2 -1 0
-0
-end_operator
-begin_operator
-adjust-status-helthy-to-hurt2 l3 v1 9 10
-4
-0 1
-16 15
-20 0
-22 3
+25 1
 2
-0 2 -1 0
-0 17 2 3
+0 2 1 0
+0 17 3 1
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 0 1
-5
+adjust-status-no-fire-at-location1 l1 v1 0 1
+3
 0 1
 16 0
-17 3
-18 0
-22 1
+22 0
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 0 1
-4
+adjust-status-no-fire-at-location1 l1 v1 1 2
+3
+0 1
+16 1
+22 0
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 10 11
+3
+0 1
+16 2
+22 0
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 11 12
+3
+0 1
+16 3
+22 0
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 12 13
+3
+0 1
+16 4
+22 0
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 13 14
+3
+0 1
+16 5
+22 0
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 14 15
+3
+0 1
+16 6
+22 0
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 2 3
+3
+0 1
+16 8
+22 0
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 3 4
+3
+0 1
+16 9
+22 0
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 4 5
+3
+0 1
+16 10
+22 0
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 5 6
+3
+0 1
+16 11
+22 0
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 6 7
+3
+0 1
+16 12
+22 0
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 7 8
+3
+0 1
+16 13
+22 0
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 8 9
+3
+0 1
+16 14
+22 0
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l1 v1 9 10
+3
+0 1
+16 15
+22 0
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location1 l2 v1 0 1
+3
 0 1
 16 0
-18 0
-22 1
-2
-0 1 -1 0
-0 17 3 1
+22 0
+1
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 1 2
-5
+adjust-status-no-fire-at-location1 l2 v1 1 2
+3
 0 1
 16 1
-17 3
-18 0
-22 1
+22 0
 1
-0 8 -1 0
+0 8 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 1 2
-4
-0 1
-16 1
-18 0
-22 1
-2
-0 8 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 10 11
-5
+adjust-status-no-fire-at-location1 l2 v1 10 11
+3
 0 1
 16 2
-17 3
-18 0
-22 1
+22 0
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 10 11
-4
-0 1
-16 2
-18 0
-22 1
-2
-0 3 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 11 12
-5
+adjust-status-no-fire-at-location1 l2 v1 11 12
+3
 0 1
 16 3
-17 3
-18 0
-22 1
+22 0
 1
-0 4 -1 0
+0 4 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 11 12
-4
-0 1
-16 3
-18 0
-22 1
-2
-0 4 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 12 13
-5
+adjust-status-no-fire-at-location1 l2 v1 12 13
+3
 0 1
 16 4
-17 3
-18 0
-22 1
+22 0
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 12 13
-4
-0 1
-16 4
-18 0
-22 1
-2
-0 5 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 13 14
-5
+adjust-status-no-fire-at-location1 l2 v1 13 14
+3
 0 1
 16 5
-17 3
-18 0
-22 1
+22 0
 1
-0 6 -1 0
+0 6 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 13 14
-4
-0 1
-16 5
-18 0
-22 1
-2
-0 6 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 14 15
-5
+adjust-status-no-fire-at-location1 l2 v1 14 15
+3
 0 1
 16 6
-17 3
-18 0
-22 1
+22 0
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 14 15
-4
-0 1
-16 6
-18 0
-22 1
-2
-0 7 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 2 3
-5
+adjust-status-no-fire-at-location1 l2 v1 2 3
+3
 0 1
 16 8
-17 3
-18 0
-22 1
+22 0
 1
-0 9 -1 0
+0 9 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 2 3
-4
-0 1
-16 8
-18 0
-22 1
-2
-0 9 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 3 4
-5
+adjust-status-no-fire-at-location1 l2 v1 3 4
+3
 0 1
 16 9
-17 3
-18 0
-22 1
+22 0
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 3 4
-4
-0 1
-16 9
-18 0
-22 1
-2
-0 10 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 4 5
-5
+adjust-status-no-fire-at-location1 l2 v1 4 5
+3
 0 1
 16 10
-17 3
-18 0
-22 1
+22 0
 1
-0 11 -1 0
+0 11 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 4 5
-4
-0 1
-16 10
-18 0
-22 1
-2
-0 11 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 5 6
-5
+adjust-status-no-fire-at-location1 l2 v1 5 6
+3
 0 1
 16 11
-17 3
-18 0
-22 1
+22 0
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 5 6
-4
-0 1
-16 11
-18 0
-22 1
-2
-0 12 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 6 7
-5
+adjust-status-no-fire-at-location1 l2 v1 6 7
+3
 0 1
 16 12
-17 3
-18 0
-22 1
+22 0
 1
-0 13 -1 0
+0 13 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 6 7
-4
-0 1
-16 12
-18 0
-22 1
-2
-0 13 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 7 8
-5
+adjust-status-no-fire-at-location1 l2 v1 7 8
+3
 0 1
 16 13
-17 3
-18 0
-22 1
+22 0
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 7 8
-4
-0 1
-16 13
-18 0
-22 1
-2
-0 14 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 8 9
-5
+adjust-status-no-fire-at-location1 l2 v1 8 9
+3
 0 1
 16 14
-17 3
-18 0
-22 1
+22 0
 1
-0 15 -1 0
+0 15 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 8 9
-4
-0 1
-16 14
-18 0
-22 1
-2
-0 15 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l1 v1 9 10
-5
+adjust-status-no-fire-at-location1 l2 v1 9 10
+3
 0 1
 16 15
-17 3
-18 0
-22 1
+22 0
 1
-0 2 -1 0
+0 2 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l1 v1 9 10
-4
-0 1
-16 15
-18 0
-22 1
-2
-0 2 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 0 1
-5
+adjust-status-no-fire-at-location1 l3 v1 0 1
+3
 0 1
 16 0
-17 3
-19 0
-22 2
+22 0
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 0 1
-4
-0 1
-16 0
-19 0
-22 2
-2
-0 1 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 1 2
-5
+adjust-status-no-fire-at-location1 l3 v1 1 2
+3
 0 1
 16 1
-17 3
-19 0
-22 2
+22 0
 1
-0 8 -1 0
+0 8 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 1 2
-4
-0 1
-16 1
-19 0
-22 2
-2
-0 8 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 10 11
-5
+adjust-status-no-fire-at-location1 l3 v1 10 11
+3
 0 1
 16 2
-17 3
-19 0
-22 2
+22 0
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 10 11
-4
-0 1
-16 2
-19 0
-22 2
-2
-0 3 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 11 12
-5
+adjust-status-no-fire-at-location1 l3 v1 11 12
+3
 0 1
 16 3
-17 3
-19 0
-22 2
+22 0
 1
-0 4 -1 0
+0 4 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 11 12
-4
-0 1
-16 3
-19 0
-22 2
-2
-0 4 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 12 13
-5
+adjust-status-no-fire-at-location1 l3 v1 12 13
+3
 0 1
 16 4
-17 3
-19 0
-22 2
+22 0
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 12 13
-4
-0 1
-16 4
-19 0
-22 2
-2
-0 5 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 13 14
-5
+adjust-status-no-fire-at-location1 l3 v1 13 14
+3
 0 1
 16 5
-17 3
-19 0
-22 2
+22 0
 1
-0 6 -1 0
+0 6 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 13 14
-4
-0 1
-16 5
-19 0
-22 2
-2
-0 6 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 14 15
-5
+adjust-status-no-fire-at-location1 l3 v1 14 15
+3
 0 1
 16 6
-17 3
-19 0
-22 2
+22 0
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 14 15
-4
-0 1
-16 6
-19 0
-22 2
-2
-0 7 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 2 3
-5
+adjust-status-no-fire-at-location1 l3 v1 2 3
+3
 0 1
 16 8
-17 3
-19 0
-22 2
+22 0
 1
-0 9 -1 0
+0 9 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 2 3
-4
-0 1
-16 8
-19 0
-22 2
-2
-0 9 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 3 4
-5
+adjust-status-no-fire-at-location1 l3 v1 3 4
+3
 0 1
 16 9
-17 3
-19 0
-22 2
+22 0
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 3 4
-4
-0 1
-16 9
-19 0
-22 2
-2
-0 10 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 4 5
-5
+adjust-status-no-fire-at-location1 l3 v1 4 5
+3
 0 1
 16 10
-17 3
-19 0
-22 2
+22 0
 1
-0 11 -1 0
+0 11 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 4 5
-4
-0 1
-16 10
-19 0
-22 2
-2
-0 11 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 5 6
-5
+adjust-status-no-fire-at-location1 l3 v1 5 6
+3
 0 1
 16 11
-17 3
-19 0
-22 2
+22 0
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 5 6
-4
-0 1
-16 11
-19 0
-22 2
-2
-0 12 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 6 7
-5
+adjust-status-no-fire-at-location1 l3 v1 6 7
+3
 0 1
 16 12
-17 3
-19 0
-22 2
+22 0
 1
-0 13 -1 0
+0 13 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 6 7
-4
-0 1
-16 12
-19 0
-22 2
-2
-0 13 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 7 8
-5
+adjust-status-no-fire-at-location1 l3 v1 7 8
+3
 0 1
 16 13
-17 3
-19 0
-22 2
+22 0
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 7 8
-4
-0 1
-16 13
-19 0
-22 2
-2
-0 14 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 8 9
-5
+adjust-status-no-fire-at-location1 l3 v1 8 9
+3
 0 1
 16 14
-17 3
-19 0
-22 2
+22 0
 1
-0 15 -1 0
+0 15 1 0
 0
 end_operator
 begin_operator
-adjust-status-hurt-to-dying2 l2 v1 8 9
-4
-0 1
-16 14
-19 0
-22 2
-2
-0 15 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 9 10
-5
+adjust-status-no-fire-at-location1 l3 v1 9 10
+3
 0 1
 16 15
-17 3
-19 0
-22 2
+22 0
 1
-0 2 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l2 v1 9 10
-4
-0 1
-16 15
-19 0
-22 2
-2
-0 2 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 0 1
-5
-0 1
-16 0
-17 3
-20 0
-22 3
-1
-0 1 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 0 1
-4
-0 1
-16 0
-20 0
-22 3
-2
-0 1 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 1 2
-5
-0 1
-16 1
-17 3
-20 0
-22 3
-1
-0 8 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 1 2
-4
-0 1
-16 1
-20 0
-22 3
-2
-0 8 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 10 11
-5
-0 1
-16 2
-17 3
-20 0
-22 3
-1
-0 3 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 10 11
-4
-0 1
-16 2
-20 0
-22 3
-2
-0 3 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 11 12
-5
-0 1
-16 3
-17 3
-20 0
-22 3
-1
-0 4 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 11 12
-4
-0 1
-16 3
-20 0
-22 3
-2
-0 4 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 12 13
-5
-0 1
-16 4
-17 3
-20 0
-22 3
-1
-0 5 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 12 13
-4
-0 1
-16 4
-20 0
-22 3
-2
-0 5 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 13 14
-5
-0 1
-16 5
-17 3
-20 0
-22 3
-1
-0 6 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 13 14
-4
-0 1
-16 5
-20 0
-22 3
-2
-0 6 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 14 15
-5
-0 1
-16 6
-17 3
-20 0
-22 3
-1
-0 7 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 14 15
-4
-0 1
-16 6
-20 0
-22 3
-2
-0 7 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 2 3
-5
-0 1
-16 8
-17 3
-20 0
-22 3
-1
-0 9 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 2 3
-4
-0 1
-16 8
-20 0
-22 3
-2
-0 9 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 3 4
-5
-0 1
-16 9
-17 3
-20 0
-22 3
-1
-0 10 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 3 4
-4
-0 1
-16 9
-20 0
-22 3
-2
-0 10 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 4 5
-5
-0 1
-16 10
-17 3
-20 0
-22 3
-1
-0 11 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 4 5
-4
-0 1
-16 10
-20 0
-22 3
-2
-0 11 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 5 6
-5
-0 1
-16 11
-17 3
-20 0
-22 3
-1
-0 12 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 5 6
-4
-0 1
-16 11
-20 0
-22 3
-2
-0 12 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 6 7
-5
-0 1
-16 12
-17 3
-20 0
-22 3
-1
-0 13 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 6 7
-4
-0 1
-16 12
-20 0
-22 3
-2
-0 13 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 7 8
-5
-0 1
-16 13
-17 3
-20 0
-22 3
-1
-0 14 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 7 8
-4
-0 1
-16 13
-20 0
-22 3
-2
-0 14 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 8 9
-5
-0 1
-16 14
-17 3
-20 0
-22 3
-1
-0 15 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 8 9
-4
-0 1
-16 14
-20 0
-22 3
-2
-0 15 -1 0
-0 17 3 1
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 9 10
-5
-0 1
-16 15
-17 3
-20 0
-22 3
-1
-0 2 -1 0
-0
-end_operator
-begin_operator
-adjust-status-hurt-to-dying2 l3 v1 9 10
-4
-0 1
-16 15
-20 0
-22 3
-2
-0 2 -1 0
-0 17 3 1
+0 2 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 0 1
-4
+3
 0 1
 16 0
-18 1
-22 1
+25 0
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 1 2
-4
+3
 0 1
 16 1
-18 1
-22 1
+25 0
 1
-0 8 -1 0
+0 8 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 10 11
-4
+3
 0 1
 16 2
-18 1
-22 1
+25 0
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 11 12
-4
+3
 0 1
 16 3
-18 1
-22 1
+25 0
 1
-0 4 -1 0
+0 4 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 12 13
-4
+3
 0 1
 16 4
-18 1
-22 1
+25 0
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 13 14
-4
+3
 0 1
 16 5
-18 1
-22 1
+25 0
 1
-0 6 -1 0
+0 6 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 14 15
-4
+3
 0 1
 16 6
-18 1
-22 1
+25 0
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 2 3
-4
+3
 0 1
 16 8
-18 1
-22 1
+25 0
 1
-0 9 -1 0
+0 9 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 3 4
-4
+3
 0 1
 16 9
-18 1
-22 1
+25 0
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 4 5
-4
+3
 0 1
 16 10
-18 1
-22 1
+25 0
 1
-0 11 -1 0
+0 11 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 5 6
-4
+3
 0 1
 16 11
-18 1
-22 1
+25 0
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 6 7
-4
+3
 0 1
 16 12
-18 1
-22 1
+25 0
 1
-0 13 -1 0
+0 13 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 7 8
-4
+3
 0 1
 16 13
-18 1
-22 1
+25 0
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 8 9
-4
+3
 0 1
 16 14
-18 1
-22 1
+25 0
 1
-0 15 -1 0
+0 15 1 0
 0
 end_operator
 begin_operator
 adjust-status-no-fire-at-location2 l1 v1 9 10
+3
+0 1
+16 15
+25 0
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 0 1
+3
+0 1
+16 0
+25 0
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 1 2
+3
+0 1
+16 1
+25 0
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 10 11
+3
+0 1
+16 2
+25 0
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 11 12
+3
+0 1
+16 3
+25 0
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 12 13
+3
+0 1
+16 4
+25 0
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 13 14
+3
+0 1
+16 5
+25 0
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 14 15
+3
+0 1
+16 6
+25 0
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 2 3
+3
+0 1
+16 8
+25 0
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 3 4
+3
+0 1
+16 9
+25 0
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 4 5
+3
+0 1
+16 10
+25 0
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 5 6
+3
+0 1
+16 11
+25 0
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 6 7
+3
+0 1
+16 12
+25 0
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 7 8
+3
+0 1
+16 13
+25 0
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 8 9
+3
+0 1
+16 14
+25 0
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l2 v1 9 10
+3
+0 1
+16 15
+25 0
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 0 1
+3
+0 1
+16 0
+25 0
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 1 2
+3
+0 1
+16 1
+25 0
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 10 11
+3
+0 1
+16 2
+25 0
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 11 12
+3
+0 1
+16 3
+25 0
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 12 13
+3
+0 1
+16 4
+25 0
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 13 14
+3
+0 1
+16 5
+25 0
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 14 15
+3
+0 1
+16 6
+25 0
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 2 3
+3
+0 1
+16 8
+25 0
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 3 4
+3
+0 1
+16 9
+25 0
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 4 5
+3
+0 1
+16 10
+25 0
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 5 6
+3
+0 1
+16 11
+25 0
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 6 7
+3
+0 1
+16 12
+25 0
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 7 8
+3
+0 1
+16 13
+25 0
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 8 9
+3
+0 1
+16 14
+25 0
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location2 l3 v1 9 10
+3
+0 1
+16 15
+25 0
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 0 1
+4
+0 1
+16 0
+18 1
+22 1
+1
+0 1 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 1 2
+4
+0 1
+16 1
+18 1
+22 1
+1
+0 8 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 10 11
+4
+0 1
+16 2
+18 1
+22 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 11 12
+4
+0 1
+16 3
+18 1
+22 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 12 13
+4
+0 1
+16 4
+18 1
+22 1
+1
+0 5 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 13 14
+4
+0 1
+16 5
+18 1
+22 1
+1
+0 6 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 14 15
+4
+0 1
+16 6
+18 1
+22 1
+1
+0 7 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 2 3
+4
+0 1
+16 8
+18 1
+22 1
+1
+0 9 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 3 4
+4
+0 1
+16 9
+18 1
+22 1
+1
+0 10 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 4 5
+4
+0 1
+16 10
+18 1
+22 1
+1
+0 11 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 5 6
+4
+0 1
+16 11
+18 1
+22 1
+1
+0 12 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 6 7
+4
+0 1
+16 12
+18 1
+22 1
+1
+0 13 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 7 8
+4
+0 1
+16 13
+18 1
+22 1
+1
+0 14 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 8 9
+4
+0 1
+16 14
+18 1
+22 1
+1
+0 15 1 0
+0
+end_operator
+begin_operator
+adjust-status-no-fire-at-location3 l1 v1 9 10
 4
 0 1
 16 15
 18 1
 22 1
 1
-0 2 -1 0
+0 2 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 0 1
+adjust-status-no-fire-at-location3 l2 v1 0 1
 4
 0 1
 16 0
 19 1
 22 2
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 1 2
+adjust-status-no-fire-at-location3 l2 v1 1 2
 4
 0 1
 16 1
 19 1
 22 2
 1
-0 8 -1 0
+0 8 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 10 11
+adjust-status-no-fire-at-location3 l2 v1 10 11
 4
 0 1
 16 2
 19 1
 22 2
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 11 12
+adjust-status-no-fire-at-location3 l2 v1 11 12
 4
 0 1
 16 3
 19 1
 22 2
 1
-0 4 -1 0
+0 4 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 12 13
+adjust-status-no-fire-at-location3 l2 v1 12 13
 4
 0 1
 16 4
 19 1
 22 2
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 13 14
+adjust-status-no-fire-at-location3 l2 v1 13 14
 4
 0 1
 16 5
 19 1
 22 2
 1
-0 6 -1 0
+0 6 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 14 15
+adjust-status-no-fire-at-location3 l2 v1 14 15
 4
 0 1
 16 6
 19 1
 22 2
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 2 3
+adjust-status-no-fire-at-location3 l2 v1 2 3
 4
 0 1
 16 8
 19 1
 22 2
 1
-0 9 -1 0
+0 9 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 3 4
+adjust-status-no-fire-at-location3 l2 v1 3 4
 4
 0 1
 16 9
 19 1
 22 2
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 4 5
+adjust-status-no-fire-at-location3 l2 v1 4 5
 4
 0 1
 16 10
 19 1
 22 2
 1
-0 11 -1 0
+0 11 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 5 6
+adjust-status-no-fire-at-location3 l2 v1 5 6
 4
 0 1
 16 11
 19 1
 22 2
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 6 7
+adjust-status-no-fire-at-location3 l2 v1 6 7
 4
 0 1
 16 12
 19 1
 22 2
 1
-0 13 -1 0
+0 13 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 7 8
+adjust-status-no-fire-at-location3 l2 v1 7 8
 4
 0 1
 16 13
 19 1
 22 2
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 8 9
+adjust-status-no-fire-at-location3 l2 v1 8 9
 4
 0 1
 16 14
 19 1
 22 2
 1
-0 15 -1 0
+0 15 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l2 v1 9 10
+adjust-status-no-fire-at-location3 l2 v1 9 10
 4
 0 1
 16 15
 19 1
 22 2
 1
-0 2 -1 0
+0 2 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 0 1
+adjust-status-no-fire-at-location3 l3 v1 0 1
 4
 0 1
 16 0
 20 1
 22 3
 1
-0 1 -1 0
+0 1 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 1 2
+adjust-status-no-fire-at-location3 l3 v1 1 2
 4
 0 1
 16 1
 20 1
 22 3
 1
-0 8 -1 0
+0 8 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 10 11
+adjust-status-no-fire-at-location3 l3 v1 10 11
 4
 0 1
 16 2
 20 1
 22 3
 1
-0 3 -1 0
+0 3 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 11 12
+adjust-status-no-fire-at-location3 l3 v1 11 12
 4
 0 1
 16 3
 20 1
 22 3
 1
-0 4 -1 0
+0 4 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 12 13
+adjust-status-no-fire-at-location3 l3 v1 12 13
 4
 0 1
 16 4
 20 1
 22 3
 1
-0 5 -1 0
+0 5 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 13 14
+adjust-status-no-fire-at-location3 l3 v1 13 14
 4
 0 1
 16 5
 20 1
 22 3
 1
-0 6 -1 0
+0 6 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 14 15
+adjust-status-no-fire-at-location3 l3 v1 14 15
 4
 0 1
 16 6
 20 1
 22 3
 1
-0 7 -1 0
+0 7 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 2 3
+adjust-status-no-fire-at-location3 l3 v1 2 3
 4
 0 1
 16 8
 20 1
 22 3
 1
-0 9 -1 0
+0 9 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 3 4
+adjust-status-no-fire-at-location3 l3 v1 3 4
 4
 0 1
 16 9
 20 1
 22 3
 1
-0 10 -1 0
+0 10 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 4 5
+adjust-status-no-fire-at-location3 l3 v1 4 5
 4
 0 1
 16 10
 20 1
 22 3
 1
-0 11 -1 0
+0 11 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 5 6
+adjust-status-no-fire-at-location3 l3 v1 5 6
 4
 0 1
 16 11
 20 1
 22 3
 1
-0 12 -1 0
+0 12 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 6 7
+adjust-status-no-fire-at-location3 l3 v1 6 7
 4
 0 1
 16 12
 20 1
 22 3
 1
-0 13 -1 0
+0 13 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 7 8
+adjust-status-no-fire-at-location3 l3 v1 7 8
 4
 0 1
 16 13
 20 1
 22 3
 1
-0 14 -1 0
+0 14 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 8 9
+adjust-status-no-fire-at-location3 l3 v1 8 9
 4
 0 1
 16 14
 20 1
 22 3
 1
-0 15 -1 0
+0 15 1 0
 0
 end_operator
 begin_operator
-adjust-status-no-fire-at-location2 l3 v1 9 10
+adjust-status-no-fire-at-location3 l3 v1 9 10
 4
 0 1
 16 15
 20 1
 22 3
 1
-0 2 -1 0
+0 2 1 0
 0
 end_operator
 begin_operator
@@ -4704,6 +5882,15 @@ drive-medical-unit m1 l3 l3
 0
 end_operator
 begin_operator
+enter-hospital v1 l3
+1
+22 3
+2
+0 0 0 1
+0 25 -1 0
+0
+end_operator
+begin_operator
 load-fire-unit f1 l1
 1
 21 0
@@ -4745,7 +5932,7 @@ not-spread-fire1 l2 0 1 4
 0 1
 16 0
 1
-0 26 -1 0
+0 27 1 0
 0
 end_operator
 begin_operator
@@ -4754,7 +5941,7 @@ not-spread-fire1 l2 1 2 4
 0 1
 16 1
 1
-0 47 -1 0
+0 48 1 0
 0
 end_operator
 begin_operator
@@ -4763,7 +5950,7 @@ not-spread-fire1 l2 2 3 4
 0 1
 16 8
 1
-0 50 -1 0
+0 51 1 0
 0
 end_operator
 begin_operator
@@ -4772,7 +5959,7 @@ not-spread-fire1 l3 0 1 5
 0 1
 16 0
 1
-0 27 -1 0
+0 28 1 0
 0
 end_operator
 begin_operator
@@ -4781,7 +5968,7 @@ not-spread-fire1 l3 1 2 5
 0 1
 16 1
 1
-0 48 -1 0
+0 49 1 0
 0
 end_operator
 begin_operator
@@ -4790,7 +5977,7 @@ not-spread-fire1 l3 2 3 5
 0 1
 16 8
 1
-0 51 -1 0
+0 52 1 0
 0
 end_operator
 begin_operator
@@ -4799,7 +5986,7 @@ not-spread-fire1 l3 3 4 5
 0 1
 16 9
 1
-0 54 -1 0
+0 55 1 0
 0
 end_operator
 begin_operator
@@ -4810,7 +5997,7 @@ not-spread-fire5 l1 0 1 0
 18 1
 19 1
 1
-0 25 -1 0
+0 26 1 0
 0
 end_operator
 begin_operator
@@ -4821,7 +6008,7 @@ not-spread-fire5 l1 1 2 0
 18 1
 19 1
 1
-0 46 -1 0
+0 47 1 0
 0
 end_operator
 begin_operator
@@ -4832,7 +6019,7 @@ not-spread-fire5 l1 10 11 0
 18 1
 19 1
 1
-0 31 -1 0
+0 32 1 0
 0
 end_operator
 begin_operator
@@ -4843,7 +6030,7 @@ not-spread-fire5 l1 11 12 0
 18 1
 19 1
 1
-0 34 -1 0
+0 35 1 0
 0
 end_operator
 begin_operator
@@ -4854,7 +6041,7 @@ not-spread-fire5 l1 12 13 0
 18 1
 19 1
 1
-0 37 -1 0
+0 38 1 0
 0
 end_operator
 begin_operator
@@ -4865,7 +6052,7 @@ not-spread-fire5 l1 13 14 0
 18 1
 19 1
 1
-0 40 -1 0
+0 41 1 0
 0
 end_operator
 begin_operator
@@ -4876,7 +6063,7 @@ not-spread-fire5 l1 14 15 0
 18 1
 19 1
 1
-0 43 -1 0
+0 44 1 0
 0
 end_operator
 begin_operator
@@ -4887,7 +6074,7 @@ not-spread-fire5 l1 2 3 0
 18 1
 19 1
 1
-0 49 -1 0
+0 50 1 0
 0
 end_operator
 begin_operator
@@ -4898,7 +6085,7 @@ not-spread-fire5 l1 3 4 0
 18 1
 19 1
 1
-0 52 -1 0
+0 53 1 0
 0
 end_operator
 begin_operator
@@ -4909,7 +6096,7 @@ not-spread-fire5 l1 4 5 0
 18 1
 19 1
 1
-0 55 -1 0
+0 56 1 0
 0
 end_operator
 begin_operator
@@ -4920,7 +6107,7 @@ not-spread-fire5 l1 5 6 0
 18 1
 19 1
 1
-0 58 -1 0
+0 59 1 0
 0
 end_operator
 begin_operator
@@ -4931,7 +6118,7 @@ not-spread-fire5 l1 6 7 0
 18 1
 19 1
 1
-0 61 -1 0
+0 62 1 0
 0
 end_operator
 begin_operator
@@ -4942,7 +6129,7 @@ not-spread-fire5 l1 7 8 0
 18 1
 19 1
 1
-0 64 -1 0
+0 65 1 0
 0
 end_operator
 begin_operator
@@ -4953,7 +6140,7 @@ not-spread-fire5 l1 8 9 0
 18 1
 19 1
 1
-0 67 -1 0
+0 68 1 0
 0
 end_operator
 begin_operator
@@ -4964,7 +6151,7 @@ not-spread-fire5 l1 9 10 0
 18 1
 19 1
 1
-0 28 -1 0
+0 29 1 0
 0
 end_operator
 begin_operator
@@ -4975,7 +6162,7 @@ not-spread-fire8 l3 10 11 5
 19 1
 20 1
 1
-0 33 -1 0
+0 34 1 0
 0
 end_operator
 begin_operator
@@ -4986,7 +6173,7 @@ not-spread-fire8 l3 11 12 5
 19 1
 20 1
 1
-0 36 -1 0
+0 37 1 0
 0
 end_operator
 begin_operator
@@ -4997,7 +6184,7 @@ not-spread-fire8 l3 12 13 5
 19 1
 20 1
 1
-0 39 -1 0
+0 40 1 0
 0
 end_operator
 begin_operator
@@ -5008,7 +6195,7 @@ not-spread-fire8 l3 13 14 5
 19 1
 20 1
 1
-0 42 -1 0
+0 43 1 0
 0
 end_operator
 begin_operator
@@ -5019,7 +6206,7 @@ not-spread-fire8 l3 14 15 5
 19 1
 20 1
 1
-0 45 -1 0
+0 46 1 0
 0
 end_operator
 begin_operator
@@ -5030,7 +6217,7 @@ not-spread-fire8 l3 4 5 5
 19 1
 20 1
 1
-0 57 -1 0
+0 58 1 0
 0
 end_operator
 begin_operator
@@ -5041,7 +6228,7 @@ not-spread-fire8 l3 5 6 5
 19 1
 20 1
 1
-0 60 -1 0
+0 61 1 0
 0
 end_operator
 begin_operator
@@ -5052,7 +6239,7 @@ not-spread-fire8 l3 6 7 5
 19 1
 20 1
 1
-0 63 -1 0
+0 64 1 0
 0
 end_operator
 begin_operator
@@ -5063,7 +6250,7 @@ not-spread-fire8 l3 7 8 5
 19 1
 20 1
 1
-0 66 -1 0
+0 67 1 0
 0
 end_operator
 begin_operator
@@ -5074,7 +6261,7 @@ not-spread-fire8 l3 8 9 5
 19 1
 20 1
 1
-0 69 -1 0
+0 70 1 0
 0
 end_operator
 begin_operator
@@ -5085,7 +6272,7 @@ not-spread-fire8 l3 9 10 5
 19 1
 20 1
 1
-0 30 -1 0
+0 31 1 0
 0
 end_operator
 begin_operator
@@ -5097,7 +6284,7 @@ not-spread-fire9 l2 10 11 4
 19 1
 20 1
 1
-0 32 -1 0
+0 33 1 0
 0
 end_operator
 begin_operator
@@ -5109,7 +6296,7 @@ not-spread-fire9 l2 11 12 4
 19 1
 20 1
 1
-0 35 -1 0
+0 36 1 0
 0
 end_operator
 begin_operator
@@ -5121,7 +6308,7 @@ not-spread-fire9 l2 12 13 4
 19 1
 20 1
 1
-0 38 -1 0
+0 39 1 0
 0
 end_operator
 begin_operator
@@ -5133,7 +6320,7 @@ not-spread-fire9 l2 13 14 4
 19 1
 20 1
 1
-0 41 -1 0
+0 42 1 0
 0
 end_operator
 begin_operator
@@ -5145,7 +6332,7 @@ not-spread-fire9 l2 14 15 4
 19 1
 20 1
 1
-0 44 -1 0
+0 45 1 0
 0
 end_operator
 begin_operator
@@ -5157,7 +6344,7 @@ not-spread-fire9 l2 3 4 4
 19 1
 20 1
 1
-0 53 -1 0
+0 54 1 0
 0
 end_operator
 begin_operator
@@ -5169,7 +6356,7 @@ not-spread-fire9 l2 4 5 4
 19 1
 20 1
 1
-0 56 -1 0
+0 57 1 0
 0
 end_operator
 begin_operator
@@ -5181,7 +6368,7 @@ not-spread-fire9 l2 5 6 4
 19 1
 20 1
 1
-0 59 -1 0
+0 60 1 0
 0
 end_operator
 begin_operator
@@ -5193,7 +6380,7 @@ not-spread-fire9 l2 6 7 4
 19 1
 20 1
 1
-0 62 -1 0
+0 63 1 0
 0
 end_operator
 begin_operator
@@ -5205,7 +6392,7 @@ not-spread-fire9 l2 7 8 4
 19 1
 20 1
 1
-0 65 -1 0
+0 66 1 0
 0
 end_operator
 begin_operator
@@ -5217,7 +6404,7 @@ not-spread-fire9 l2 8 9 4
 19 1
 20 1
 1
-0 68 -1 0
+0 69 1 0
 0
 end_operator
 begin_operator
@@ -5229,1824 +6416,1495 @@ not-spread-fire9 l2 9 10 4
 19 1
 20 1
 1
-0 29 -1 0
+0 30 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 0 1 0
+spread-fire-with-location-on-fire l1 0 1 0
 3
 0 1
 16 0
 18 0
 1
-0 25 -1 0
+0 26 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 0 1 0
+spread-fire-with-location-on-fire l1 1 2 0
+3
+0 1
+16 1
+18 0
+1
+0 47 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 10 11 0
+3
+0 1
+16 2
+18 0
+1
+0 32 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 11 12 0
+3
+0 1
+16 3
+18 0
+1
+0 35 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 12 13 0
+3
+0 1
+16 4
+18 0
+1
+0 38 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 13 14 0
+3
+0 1
+16 5
+18 0
+1
+0 41 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 14 15 0
+3
+0 1
+16 6
+18 0
+1
+0 44 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 2 3 0
+3
+0 1
+16 8
+18 0
+1
+0 50 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 3 4 0
+3
+0 1
+16 9
+18 0
+1
+0 53 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 4 5 0
+3
+0 1
+16 10
+18 0
+1
+0 56 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 5 6 0
+3
+0 1
+16 11
+18 0
+1
+0 59 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 6 7 0
+3
+0 1
+16 12
+18 0
+1
+0 62 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 7 8 0
+3
+0 1
+16 13
+18 0
+1
+0 65 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 8 9 0
+3
+0 1
+16 14
+18 0
+1
+0 68 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l1 9 10 0
+3
+0 1
+16 15
+18 0
+1
+0 29 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 10 11 4
+3
+0 1
+16 2
+19 0
+1
+0 33 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 11 12 4
+3
+0 1
+16 3
+19 0
+1
+0 36 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 12 13 4
+3
+0 1
+16 4
+19 0
+1
+0 39 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 13 14 4
+3
+0 1
+16 5
+19 0
+1
+0 42 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 14 15 4
+3
+0 1
+16 6
+19 0
+1
+0 45 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 3 4 4
+3
+0 1
+16 9
+19 0
+1
+0 54 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 4 5 4
+3
+0 1
+16 10
+19 0
+1
+0 57 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 5 6 4
+3
+0 1
+16 11
+19 0
+1
+0 60 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 6 7 4
+3
+0 1
+16 12
+19 0
+1
+0 63 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 7 8 4
+3
+0 1
+16 13
+19 0
+1
+0 66 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 8 9 4
+3
+0 1
+16 14
+19 0
+1
+0 69 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l2 9 10 4
+3
+0 1
+16 15
+19 0
+1
+0 30 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 10 11 5
+3
+0 1
+16 2
+20 0
+1
+0 34 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 11 12 5
+3
+0 1
+16 3
+20 0
+1
+0 37 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 12 13 5
+3
+0 1
+16 4
+20 0
+1
+0 40 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 13 14 5
+3
+0 1
+16 5
+20 0
+1
+0 43 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 14 15 5
+3
+0 1
+16 6
+20 0
+1
+0 46 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 4 5 5
+3
+0 1
+16 10
+20 0
+1
+0 58 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 5 6 5
+3
+0 1
+16 11
+20 0
+1
+0 61 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 6 7 5
+3
+0 1
+16 12
+20 0
+1
+0 64 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 7 8 5
+3
+0 1
+16 13
+20 0
+1
+0 67 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 8 9 5
+3
+0 1
+16 14
+20 0
+1
+0 70 1 0
+0
+end_operator
+begin_operator
+spread-fire-with-location-on-fire l3 9 10 5
+3
+0 1
+16 15
+20 0
+1
+0 31 1 0
+0
+end_operator
+begin_operator
+spread-fire-without-fire-on-location l1 0 1 0
+4
+0 1
+16 0
+18 1
+19 0
+1
+0 26 1 0
+0
+end_operator
+begin_operator
+spread-fire-without-fire-on-location l1 0 1 0
 3
 0 1
 16 0
-18 0
-1
-0 25 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 0 1 0
-3
-0 1
-16 0
 19 0
 2
-0 18 -1 0
-0 25 -1 0
+0 18 1 0
+0 26 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 0 1 0
-3
+spread-fire-without-fire-on-location l1 1 2 0
+4
 0 1
-16 0
+16 1
+18 1
 19 0
 1
-0 25 -1 0
+0 47 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 1 2 0
-3
-0 1
-16 1
-18 0
-1
-0 46 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 1 2 0
-3
-0 1
-16 1
-18 0
-1
-0 46 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 1 2 0
+spread-fire-without-fire-on-location l1 1 2 0
 3
 0 1
 16 1
 19 0
 2
-0 18 -1 0
-0 46 -1 0
+0 18 1 0
+0 47 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 1 2 0
-3
+spread-fire-without-fire-on-location l1 10 11 0
+4
 0 1
-16 1
+16 2
+18 1
 19 0
 1
-0 46 -1 0
+0 32 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 10 11 0
-3
-0 1
-16 2
-18 0
-1
-0 31 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 10 11 0
-3
-0 1
-16 2
-18 0
-1
-0 31 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 10 11 0
+spread-fire-without-fire-on-location l1 10 11 0
 3
 0 1
 16 2
 19 0
 2
-0 18 -1 0
-0 31 -1 0
+0 18 1 0
+0 32 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 10 11 0
-3
+spread-fire-without-fire-on-location l1 11 12 0
+4
 0 1
-16 2
+16 3
+18 1
 19 0
 1
-0 31 -1 0
+0 35 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 11 12 0
-3
-0 1
-16 3
-18 0
-1
-0 34 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 11 12 0
-3
-0 1
-16 3
-18 0
-1
-0 34 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 11 12 0
+spread-fire-without-fire-on-location l1 11 12 0
 3
 0 1
 16 3
 19 0
 2
-0 18 -1 0
-0 34 -1 0
+0 18 1 0
+0 35 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 11 12 0
-3
+spread-fire-without-fire-on-location l1 12 13 0
+4
 0 1
-16 3
+16 4
+18 1
 19 0
 1
-0 34 -1 0
+0 38 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 12 13 0
-3
-0 1
-16 4
-18 0
-1
-0 37 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 12 13 0
-3
-0 1
-16 4
-18 0
-1
-0 37 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 12 13 0
+spread-fire-without-fire-on-location l1 12 13 0
 3
 0 1
 16 4
 19 0
 2
-0 18 -1 0
-0 37 -1 0
+0 18 1 0
+0 38 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 12 13 0
-3
+spread-fire-without-fire-on-location l1 13 14 0
+4
 0 1
-16 4
+16 5
+18 1
 19 0
 1
-0 37 -1 0
+0 41 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 13 14 0
-3
-0 1
-16 5
-18 0
-1
-0 40 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 13 14 0
-3
-0 1
-16 5
-18 0
-1
-0 40 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 13 14 0
+spread-fire-without-fire-on-location l1 13 14 0
 3
 0 1
 16 5
 19 0
 2
-0 18 -1 0
-0 40 -1 0
+0 18 1 0
+0 41 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 13 14 0
-3
+spread-fire-without-fire-on-location l1 14 15 0
+4
 0 1
-16 5
+16 6
+18 1
 19 0
 1
-0 40 -1 0
+0 44 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 14 15 0
-3
-0 1
-16 6
-18 0
-1
-0 43 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 14 15 0
-3
-0 1
-16 6
-18 0
-1
-0 43 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 14 15 0
+spread-fire-without-fire-on-location l1 14 15 0
 3
 0 1
 16 6
 19 0
 2
-0 18 -1 0
-0 43 -1 0
+0 18 1 0
+0 44 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 14 15 0
-3
-0 1
-16 6
-19 0
-1
-0 43 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 2 3 0
-3
+spread-fire-without-fire-on-location l1 2 3 0
+4
 0 1
 16 8
-18 0
+18 1
+19 0
 1
-0 49 -1 0
+0 50 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 2 3 0
-3
-0 1
-16 8
-18 0
-1
-0 49 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 2 3 0
+spread-fire-without-fire-on-location l1 2 3 0
 3
 0 1
 16 8
 19 0
 2
-0 18 -1 0
-0 49 -1 0
+0 18 1 0
+0 50 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 2 3 0
-3
+spread-fire-without-fire-on-location l1 3 4 0
+4
 0 1
-16 8
+16 9
+18 1
 19 0
 1
-0 49 -1 0
+0 53 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 3 4 0
-3
-0 1
-16 9
-18 0
-1
-0 52 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 3 4 0
-3
-0 1
-16 9
-18 0
-1
-0 52 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 3 4 0
+spread-fire-without-fire-on-location l1 3 4 0
 3
 0 1
 16 9
 19 0
 2
-0 18 -1 0
-0 52 -1 0
+0 18 1 0
+0 53 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 3 4 0
-3
+spread-fire-without-fire-on-location l1 4 5 0
+4
 0 1
-16 9
+16 10
+18 1
 19 0
 1
-0 52 -1 0
+0 56 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 4 5 0
-3
-0 1
-16 10
-18 0
-1
-0 55 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 4 5 0
-3
-0 1
-16 10
-18 0
-1
-0 55 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 4 5 0
+spread-fire-without-fire-on-location l1 4 5 0
 3
 0 1
 16 10
 19 0
 2
-0 18 -1 0
-0 55 -1 0
+0 18 1 0
+0 56 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 4 5 0
-3
+spread-fire-without-fire-on-location l1 5 6 0
+4
 0 1
-16 10
+16 11
+18 1
 19 0
 1
-0 55 -1 0
+0 59 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 5 6 0
-3
-0 1
-16 11
-18 0
-1
-0 58 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 5 6 0
-3
-0 1
-16 11
-18 0
-1
-0 58 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 5 6 0
+spread-fire-without-fire-on-location l1 5 6 0
 3
 0 1
 16 11
 19 0
 2
-0 18 -1 0
-0 58 -1 0
+0 18 1 0
+0 59 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 5 6 0
-3
+spread-fire-without-fire-on-location l1 6 7 0
+4
 0 1
-16 11
+16 12
+18 1
 19 0
 1
-0 58 -1 0
+0 62 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 6 7 0
-3
-0 1
-16 12
-18 0
-1
-0 61 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 6 7 0
-3
-0 1
-16 12
-18 0
-1
-0 61 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 6 7 0
+spread-fire-without-fire-on-location l1 6 7 0
 3
 0 1
 16 12
 19 0
 2
-0 18 -1 0
-0 61 -1 0
+0 18 1 0
+0 62 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 6 7 0
-3
+spread-fire-without-fire-on-location l1 7 8 0
+4
 0 1
-16 12
+16 13
+18 1
 19 0
 1
-0 61 -1 0
+0 65 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 7 8 0
-3
-0 1
-16 13
-18 0
-1
-0 64 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 7 8 0
-3
-0 1
-16 13
-18 0
-1
-0 64 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 7 8 0
+spread-fire-without-fire-on-location l1 7 8 0
 3
 0 1
 16 13
 19 0
 2
-0 18 -1 0
-0 64 -1 0
+0 18 1 0
+0 65 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 7 8 0
-3
+spread-fire-without-fire-on-location l1 8 9 0
+4
 0 1
-16 13
+16 14
+18 1
 19 0
 1
-0 64 -1 0
+0 68 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 8 9 0
-3
-0 1
-16 14
-18 0
-1
-0 67 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 8 9 0
-3
-0 1
-16 14
-18 0
-1
-0 67 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 8 9 0
+spread-fire-without-fire-on-location l1 8 9 0
 3
 0 1
 16 14
 19 0
 2
-0 18 -1 0
-0 67 -1 0
+0 18 1 0
+0 68 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 8 9 0
-3
+spread-fire-without-fire-on-location l1 9 10 0
+4
 0 1
-16 14
+16 15
+18 1
 19 0
 1
-0 67 -1 0
+0 29 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 9 10 0
-3
-0 1
-16 15
-18 0
-1
-0 28 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 9 10 0
-3
-0 1
-16 15
-18 0
-1
-0 28 -1 0
-0
-end_operator
-begin_operator
-spread-fire l1 9 10 0
+spread-fire-without-fire-on-location l1 9 10 0
 3
 0 1
 16 15
 19 0
 2
-0 18 -1 0
-0 28 -1 0
+0 18 1 0
+0 29 1 0
 0
 end_operator
 begin_operator
-spread-fire l1 9 10 0
-3
-0 1
-16 15
-19 0
-1
-0 28 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 10 11 4
+spread-fire-without-fire-on-location l2 10 11 4
 3
 0 1
 16 2
 18 0
 2
-0 19 -1 0
-0 32 -1 0
+0 19 1 0
+0 33 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 10 11 4
-3
+spread-fire-without-fire-on-location l2 10 11 4
+4
 0 1
 16 2
 18 0
+19 1
 1
-0 32 -1 0
+0 33 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 10 11 4
-3
+spread-fire-without-fire-on-location l2 10 11 4
+4
 0 1
 16 2
-19 0
+19 1
+20 0
 1
-0 32 -1 0
+0 33 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 10 11 4
-3
-0 1
-16 2
-19 0
-1
-0 32 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 10 11 4
+spread-fire-without-fire-on-location l2 10 11 4
 3
 0 1
 16 2
 20 0
 2
-0 19 -1 0
-0 32 -1 0
+0 19 1 0
+0 33 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 10 11 4
-3
-0 1
-16 2
-20 0
-1
-0 32 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 11 12 4
+spread-fire-without-fire-on-location l2 11 12 4
 3
 0 1
 16 3
 18 0
 2
-0 19 -1 0
-0 35 -1 0
+0 19 1 0
+0 36 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 11 12 4
-3
+spread-fire-without-fire-on-location l2 11 12 4
+4
 0 1
 16 3
 18 0
+19 1
 1
-0 35 -1 0
+0 36 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 11 12 4
-3
+spread-fire-without-fire-on-location l2 11 12 4
+4
 0 1
 16 3
-19 0
+19 1
+20 0
 1
-0 35 -1 0
+0 36 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 11 12 4
-3
-0 1
-16 3
-19 0
-1
-0 35 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 11 12 4
+spread-fire-without-fire-on-location l2 11 12 4
 3
 0 1
 16 3
 20 0
 2
-0 19 -1 0
-0 35 -1 0
+0 19 1 0
+0 36 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 11 12 4
-3
-0 1
-16 3
-20 0
-1
-0 35 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 12 13 4
+spread-fire-without-fire-on-location l2 12 13 4
 3
 0 1
 16 4
 18 0
 2
-0 19 -1 0
-0 38 -1 0
+0 19 1 0
+0 39 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 12 13 4
-3
+spread-fire-without-fire-on-location l2 12 13 4
+4
 0 1
 16 4
 18 0
+19 1
 1
-0 38 -1 0
+0 39 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 12 13 4
-3
+spread-fire-without-fire-on-location l2 12 13 4
+4
 0 1
 16 4
-19 0
+19 1
+20 0
 1
-0 38 -1 0
+0 39 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 12 13 4
-3
-0 1
-16 4
-19 0
-1
-0 38 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 12 13 4
+spread-fire-without-fire-on-location l2 12 13 4
 3
 0 1
 16 4
 20 0
 2
-0 19 -1 0
-0 38 -1 0
+0 19 1 0
+0 39 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 12 13 4
-3
-0 1
-16 4
-20 0
-1
-0 38 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 13 14 4
+spread-fire-without-fire-on-location l2 13 14 4
 3
 0 1
 16 5
 18 0
 2
-0 19 -1 0
-0 41 -1 0
+0 19 1 0
+0 42 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 13 14 4
-3
+spread-fire-without-fire-on-location l2 13 14 4
+4
 0 1
 16 5
 18 0
+19 1
 1
-0 41 -1 0
+0 42 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 13 14 4
-3
+spread-fire-without-fire-on-location l2 13 14 4
+4
 0 1
 16 5
-19 0
+19 1
+20 0
 1
-0 41 -1 0
+0 42 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 13 14 4
-3
-0 1
-16 5
-19 0
-1
-0 41 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 13 14 4
+spread-fire-without-fire-on-location l2 13 14 4
 3
 0 1
 16 5
 20 0
 2
-0 19 -1 0
-0 41 -1 0
+0 19 1 0
+0 42 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 13 14 4
-3
-0 1
-16 5
-20 0
-1
-0 41 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 14 15 4
+spread-fire-without-fire-on-location l2 14 15 4
 3
 0 1
 16 6
 18 0
 2
-0 19 -1 0
-0 44 -1 0
+0 19 1 0
+0 45 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 14 15 4
-3
+spread-fire-without-fire-on-location l2 14 15 4
+4
 0 1
 16 6
 18 0
+19 1
 1
-0 44 -1 0
+0 45 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 14 15 4
-3
+spread-fire-without-fire-on-location l2 14 15 4
+4
 0 1
 16 6
-19 0
+19 1
+20 0
 1
-0 44 -1 0
+0 45 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 14 15 4
-3
-0 1
-16 6
-19 0
-1
-0 44 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 14 15 4
+spread-fire-without-fire-on-location l2 14 15 4
 3
 0 1
 16 6
 20 0
 2
-0 19 -1 0
-0 44 -1 0
+0 19 1 0
+0 45 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 14 15 4
-3
-0 1
-16 6
-20 0
-1
-0 44 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 3 4 4
+spread-fire-without-fire-on-location l2 3 4 4
 3
 0 1
 16 9
 18 0
 2
-0 19 -1 0
-0 53 -1 0
+0 19 1 0
+0 54 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 3 4 4
-3
+spread-fire-without-fire-on-location l2 3 4 4
+4
 0 1
 16 9
 18 0
+19 1
 1
-0 53 -1 0
+0 54 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 3 4 4
-3
+spread-fire-without-fire-on-location l2 3 4 4
+4
 0 1
 16 9
-19 0
+19 1
+20 0
 1
-0 53 -1 0
+0 54 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 3 4 4
-3
-0 1
-16 9
-19 0
-1
-0 53 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 3 4 4
+spread-fire-without-fire-on-location l2 3 4 4
 3
 0 1
 16 9
 20 0
 2
-0 19 -1 0
-0 53 -1 0
+0 19 1 0
+0 54 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 3 4 4
-3
-0 1
-16 9
-20 0
-1
-0 53 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 4 5 4
+spread-fire-without-fire-on-location l2 4 5 4
 3
 0 1
 16 10
 18 0
 2
-0 19 -1 0
-0 56 -1 0
+0 19 1 0
+0 57 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 4 5 4
-3
+spread-fire-without-fire-on-location l2 4 5 4
+4
 0 1
 16 10
 18 0
+19 1
 1
-0 56 -1 0
+0 57 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 4 5 4
-3
+spread-fire-without-fire-on-location l2 4 5 4
+4
 0 1
 16 10
-19 0
+19 1
+20 0
 1
-0 56 -1 0
+0 57 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 4 5 4
-3
-0 1
-16 10
-19 0
-1
-0 56 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 4 5 4
+spread-fire-without-fire-on-location l2 4 5 4
 3
 0 1
 16 10
 20 0
 2
-0 19 -1 0
-0 56 -1 0
+0 19 1 0
+0 57 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 4 5 4
-3
-0 1
-16 10
-20 0
-1
-0 56 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 5 6 4
+spread-fire-without-fire-on-location l2 5 6 4
 3
 0 1
 16 11
 18 0
 2
-0 19 -1 0
-0 59 -1 0
+0 19 1 0
+0 60 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 5 6 4
-3
+spread-fire-without-fire-on-location l2 5 6 4
+4
 0 1
 16 11
 18 0
+19 1
 1
-0 59 -1 0
+0 60 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 5 6 4
-3
+spread-fire-without-fire-on-location l2 5 6 4
+4
 0 1
 16 11
-19 0
+19 1
+20 0
 1
-0 59 -1 0
+0 60 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 5 6 4
-3
-0 1
-16 11
-19 0
-1
-0 59 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 5 6 4
+spread-fire-without-fire-on-location l2 5 6 4
 3
 0 1
 16 11
 20 0
 2
-0 19 -1 0
-0 59 -1 0
+0 19 1 0
+0 60 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 5 6 4
-3
-0 1
-16 11
-20 0
-1
-0 59 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 6 7 4
+spread-fire-without-fire-on-location l2 6 7 4
 3
 0 1
 16 12
 18 0
 2
-0 19 -1 0
-0 62 -1 0
+0 19 1 0
+0 63 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 6 7 4
-3
+spread-fire-without-fire-on-location l2 6 7 4
+4
 0 1
 16 12
 18 0
+19 1
 1
-0 62 -1 0
+0 63 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 6 7 4
-3
+spread-fire-without-fire-on-location l2 6 7 4
+4
 0 1
 16 12
-19 0
+19 1
+20 0
 1
-0 62 -1 0
+0 63 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 6 7 4
-3
-0 1
-16 12
-19 0
-1
-0 62 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 6 7 4
+spread-fire-without-fire-on-location l2 6 7 4
 3
 0 1
 16 12
 20 0
 2
-0 19 -1 0
-0 62 -1 0
+0 19 1 0
+0 63 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 6 7 4
-3
-0 1
-16 12
-20 0
-1
-0 62 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 7 8 4
+spread-fire-without-fire-on-location l2 7 8 4
 3
 0 1
 16 13
 18 0
 2
-0 19 -1 0
-0 65 -1 0
+0 19 1 0
+0 66 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 7 8 4
-3
+spread-fire-without-fire-on-location l2 7 8 4
+4
 0 1
 16 13
 18 0
+19 1
 1
-0 65 -1 0
+0 66 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 7 8 4
-3
+spread-fire-without-fire-on-location l2 7 8 4
+4
 0 1
 16 13
-19 0
+19 1
+20 0
 1
-0 65 -1 0
+0 66 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 7 8 4
-3
-0 1
-16 13
-19 0
-1
-0 65 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 7 8 4
+spread-fire-without-fire-on-location l2 7 8 4
 3
 0 1
 16 13
 20 0
 2
-0 19 -1 0
-0 65 -1 0
+0 19 1 0
+0 66 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 7 8 4
-3
-0 1
-16 13
-20 0
-1
-0 65 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 8 9 4
+spread-fire-without-fire-on-location l2 8 9 4
 3
 0 1
 16 14
 18 0
 2
-0 19 -1 0
-0 68 -1 0
+0 19 1 0
+0 69 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 8 9 4
-3
+spread-fire-without-fire-on-location l2 8 9 4
+4
 0 1
 16 14
 18 0
+19 1
 1
-0 68 -1 0
+0 69 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 8 9 4
-3
+spread-fire-without-fire-on-location l2 8 9 4
+4
 0 1
 16 14
-19 0
+19 1
+20 0
 1
-0 68 -1 0
+0 69 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 8 9 4
-3
-0 1
-16 14
-19 0
-1
-0 68 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 8 9 4
+spread-fire-without-fire-on-location l2 8 9 4
 3
 0 1
 16 14
 20 0
 2
-0 19 -1 0
-0 68 -1 0
+0 19 1 0
+0 69 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 8 9 4
-3
-0 1
-16 14
-20 0
-1
-0 68 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 9 10 4
+spread-fire-without-fire-on-location l2 9 10 4
 3
 0 1
 16 15
 18 0
 2
-0 19 -1 0
-0 29 -1 0
+0 19 1 0
+0 30 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 9 10 4
-3
+spread-fire-without-fire-on-location l2 9 10 4
+4
 0 1
 16 15
 18 0
+19 1
 1
-0 29 -1 0
+0 30 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 9 10 4
-3
+spread-fire-without-fire-on-location l2 9 10 4
+4
 0 1
 16 15
-19 0
+19 1
+20 0
 1
-0 29 -1 0
+0 30 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 9 10 4
-3
-0 1
-16 15
-19 0
-1
-0 29 -1 0
-0
-end_operator
-begin_operator
-spread-fire l2 9 10 4
+spread-fire-without-fire-on-location l2 9 10 4
 3
 0 1
 16 15
 20 0
 2
-0 19 -1 0
-0 29 -1 0
+0 19 1 0
+0 30 1 0
 0
 end_operator
 begin_operator
-spread-fire l2 9 10 4
-3
-0 1
-16 15
-20 0
-1
-0 29 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 10 11 5
+spread-fire-without-fire-on-location l3 10 11 5
 3
 0 1
 16 2
 19 0
 2
-0 20 -1 0
-0 33 -1 0
+0 20 1 0
+0 34 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 10 11 5
-3
+spread-fire-without-fire-on-location l3 10 11 5
+4
 0 1
 16 2
 19 0
+20 1
 1
-0 33 -1 0
+0 34 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 10 11 5
-3
-0 1
-16 2
-20 0
-1
-0 33 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 10 11 5
-3
-0 1
-16 2
-20 0
-1
-0 33 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 11 12 5
+spread-fire-without-fire-on-location l3 11 12 5
 3
 0 1
 16 3
 19 0
 2
-0 20 -1 0
-0 36 -1 0
+0 20 1 0
+0 37 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 11 12 5
-3
+spread-fire-without-fire-on-location l3 11 12 5
+4
 0 1
 16 3
 19 0
+20 1
 1
-0 36 -1 0
+0 37 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 11 12 5
-3
-0 1
-16 3
-20 0
-1
-0 36 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 11 12 5
-3
-0 1
-16 3
-20 0
-1
-0 36 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 12 13 5
+spread-fire-without-fire-on-location l3 12 13 5
 3
 0 1
 16 4
 19 0
 2
-0 20 -1 0
-0 39 -1 0
+0 20 1 0
+0 40 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 12 13 5
-3
+spread-fire-without-fire-on-location l3 12 13 5
+4
 0 1
 16 4
 19 0
+20 1
 1
-0 39 -1 0
+0 40 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 12 13 5
-3
-0 1
-16 4
-20 0
-1
-0 39 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 12 13 5
-3
-0 1
-16 4
-20 0
-1
-0 39 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 13 14 5
+spread-fire-without-fire-on-location l3 13 14 5
 3
 0 1
 16 5
 19 0
 2
-0 20 -1 0
-0 42 -1 0
+0 20 1 0
+0 43 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 13 14 5
-3
+spread-fire-without-fire-on-location l3 13 14 5
+4
 0 1
 16 5
 19 0
+20 1
 1
-0 42 -1 0
+0 43 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 13 14 5
-3
-0 1
-16 5
-20 0
-1
-0 42 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 13 14 5
-3
-0 1
-16 5
-20 0
-1
-0 42 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 14 15 5
+spread-fire-without-fire-on-location l3 14 15 5
 3
 0 1
 16 6
 19 0
 2
-0 20 -1 0
-0 45 -1 0
+0 20 1 0
+0 46 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 14 15 5
-3
+spread-fire-without-fire-on-location l3 14 15 5
+4
 0 1
 16 6
 19 0
+20 1
 1
-0 45 -1 0
+0 46 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 14 15 5
-3
-0 1
-16 6
-20 0
-1
-0 45 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 14 15 5
-3
-0 1
-16 6
-20 0
-1
-0 45 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 4 5 5
+spread-fire-without-fire-on-location l3 4 5 5
 3
 0 1
 16 10
 19 0
 2
-0 20 -1 0
-0 57 -1 0
+0 20 1 0
+0 58 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 4 5 5
-3
+spread-fire-without-fire-on-location l3 4 5 5
+4
 0 1
 16 10
 19 0
+20 1
 1
-0 57 -1 0
+0 58 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 4 5 5
-3
-0 1
-16 10
-20 0
-1
-0 57 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 4 5 5
-3
-0 1
-16 10
-20 0
-1
-0 57 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 5 6 5
+spread-fire-without-fire-on-location l3 5 6 5
 3
 0 1
 16 11
 19 0
 2
-0 20 -1 0
-0 60 -1 0
+0 20 1 0
+0 61 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 5 6 5
-3
+spread-fire-without-fire-on-location l3 5 6 5
+4
 0 1
 16 11
 19 0
+20 1
 1
-0 60 -1 0
+0 61 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 5 6 5
-3
-0 1
-16 11
-20 0
-1
-0 60 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 5 6 5
-3
-0 1
-16 11
-20 0
-1
-0 60 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 6 7 5
+spread-fire-without-fire-on-location l3 6 7 5
 3
 0 1
 16 12
 19 0
 2
-0 20 -1 0
-0 63 -1 0
+0 20 1 0
+0 64 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 6 7 5
-3
+spread-fire-without-fire-on-location l3 6 7 5
+4
 0 1
 16 12
 19 0
+20 1
 1
-0 63 -1 0
+0 64 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 6 7 5
-3
-0 1
-16 12
-20 0
-1
-0 63 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 6 7 5
-3
-0 1
-16 12
-20 0
-1
-0 63 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 7 8 5
+spread-fire-without-fire-on-location l3 7 8 5
 3
 0 1
 16 13
 19 0
 2
-0 20 -1 0
-0 66 -1 0
+0 20 1 0
+0 67 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 7 8 5
-3
+spread-fire-without-fire-on-location l3 7 8 5
+4
 0 1
 16 13
 19 0
+20 1
 1
-0 66 -1 0
+0 67 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 7 8 5
-3
-0 1
-16 13
-20 0
-1
-0 66 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 7 8 5
-3
-0 1
-16 13
-20 0
-1
-0 66 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 8 9 5
+spread-fire-without-fire-on-location l3 8 9 5
 3
 0 1
 16 14
 19 0
 2
-0 20 -1 0
-0 69 -1 0
+0 20 1 0
+0 70 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 8 9 5
-3
+spread-fire-without-fire-on-location l3 8 9 5
+4
 0 1
 16 14
 19 0
+20 1
 1
-0 69 -1 0
+0 70 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 8 9 5
-3
-0 1
-16 14
-20 0
-1
-0 69 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 8 9 5
-3
-0 1
-16 14
-20 0
-1
-0 69 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 9 10 5
+spread-fire-without-fire-on-location l3 9 10 5
 3
 0 1
 16 15
 19 0
 2
-0 20 -1 0
-0 30 -1 0
+0 20 1 0
+0 31 1 0
 0
 end_operator
 begin_operator
-spread-fire l3 9 10 5
-3
+spread-fire-without-fire-on-location l3 9 10 5
+4
 0 1
 16 15
 19 0
+20 1
 1
-0 30 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 9 10 5
-3
-0 1
-16 15
-20 0
-1
-0 30 -1 0
-0
-end_operator
-begin_operator
-spread-fire l3 9 10 5
-3
-0 1
-16 15
-20 0
-1
-0 30 -1 0
+0 31 1 0
 0
 end_operator
 begin_operator
 treat-dying-victim-on-hospital l3 v1
-2
+3
 20 1
 22 3
+25 0
 2
 0 0 0 1
 0 17 1 2
@@ -7054,9 +7912,10 @@ treat-dying-victim-on-hospital l3 v1
 end_operator
 begin_operator
 treat-dying-victim-on-hospital l3 v1
-2
+3
 20 1
 22 3
+25 0
 2
 0 0 0 1
 0 17 1 3
@@ -7064,8 +7923,9 @@ treat-dying-victim-on-hospital l3 v1
 end_operator
 begin_operator
 treat-hurt-victim-on-hospital l3 v1
-1
+2
 22 3
+25 0
 2
 0 0 0 1
 0 17 3 2

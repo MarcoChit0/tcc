@@ -2,7 +2,8 @@
     "city": {
         "a": [
             "b",
-            "c"
+            "c",
+            "d"
         ],
         "b": [
             "a",
@@ -15,6 +16,7 @@
             "d"
         ],
         "d": [
+            "a",
             "b",
             "c"
         ]
@@ -46,8 +48,8 @@
     "item": {
         "spongebob-squarepants-magical-pencil": {
             "volumn": "1",
-            "buying-price": "3",
-            "selling-price": "4"
+            "buying-price": "2",
+            "selling-price": "3"
         }
         
     },
@@ -66,13 +68,16 @@
             }
         },
         "p2": {
-            "at": "c",
+            "at": "b",
             "is": [
                 "buyer"
             ],
-            "stock": {},
+            "stock": {
+                "spongebob-squarepants-magical-pencil": "0"
+            },
             "item": {
                 "spongebob-squarepants-magical-pencil": {
+                    "buying-price":"4"
                 }
             }
         }

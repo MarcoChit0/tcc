@@ -247,7 +247,7 @@
     
     
     
-    (:action spread-fire
+    (:action spread-fire-without-fire-on-location
         :parameters (?l - location ?t ?next_t ?spreading_t - number)
         :precondition (and
             (clock ?t)
@@ -255,6 +255,7 @@
             (inc ?t ?next_t)
             (is-greater-or-equal ?next_t ?spreading_t)
             (need-to-adjust-clock)
+            (not (fire-at ?l))
             (exists
                 (?l1 - location)
                 (and
@@ -270,6 +271,21 @@
                 (and)
                 (fire-at ?l)
             )
+        )
+    )
+    (:action spread-fire-with-location-on-fire
+        :parameters (?l - location ?t ?next_t ?spreading_t - number)
+        :precondition (and
+            (clock ?t)
+            (spreading-time ?spreading_t ?l)
+            (inc ?t ?next_t)
+            (is-greater-or-equal ?next_t ?spreading_t)
+            (need-to-adjust-clock)
+            (fire-at ?l)
+            (not (spread-out ?next_t ?l))
+        )
+        :effect (and
+            (spread-out ?next_t ?l)
         )
     )
     (:action not-spread-fire

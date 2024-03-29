@@ -1,0 +1,200 @@
+{
+    "city": {
+        "a": [
+            "b",
+            "g",
+            "f"
+        ],
+        "b": [
+            "a",
+            "c",
+            "d",
+            "f",
+            "g"
+        ],
+        "c": [
+            "d",
+            "b",
+            "e",
+            "g"
+        ],
+        "d": [
+            "b",
+            "c",
+            "e",
+            "f",
+            "g"
+        ],
+        "e": [
+            "c",
+            "f",
+            "g"
+        ],
+        "f": [
+            "a",
+            "b",
+            "d",
+            "e",
+            "g"
+        ],
+        "g": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "f"
+        ]
+    },
+    "state": {
+        "s1": {
+            "city": [
+                "a",
+                "b",
+                "c",
+                "g"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s2": {
+            "city": [
+                "b",
+                "c",
+                "d"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s3": {
+            "city": [
+                "e",
+                "d",
+                "g",
+                "f"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s4": {
+            "city": [
+                "f",
+                "a",
+                "g"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        }
+    },
+    "item": {
+        "item-0": {
+            "volumn": "3",
+            "buying-price": "8",
+            "selling-price": "4"
+        },
+        "item-1": {
+            "volumn": "2",
+            "buying-price": "6",
+            "selling-price": "3"
+        }
+    },
+    "person": {
+        "seller-0": {
+            "at": "a",
+            "is": [
+                "seller"
+            ],
+            "stock": {
+                "item-0": "1",
+                "item-1": "0"
+            },
+            "item": {
+                "item-0": {},
+                "item-1": {}
+            }
+        },
+        "seller-1": {
+            "at": "b",
+            "is": [
+                "seller"
+            ],
+            "stock": {
+                "item-0": "0",
+                "item-1": "1"
+            },
+            "item": {
+                "item-0": {},
+                "item-1": {}
+            }
+        },
+        "buyer-0": {
+            "at": "c",
+            "is": [
+                "buyer"
+            ],
+            "stock": {},
+            "item": {
+                "item-0": {},
+                "item-1": {}
+            }
+        },
+        "buyer-1": {
+            "at": "b",
+            "is": [
+                "buyer"
+            ],
+            "stock": {},
+            "item": {
+                "item-0": {
+                    "buying-price": "5"
+                }
+            }
+        },
+        "buyer-2": {
+            "at": "g",
+            "is": [
+                "buyer"
+            ],
+            "stock": {},
+            "item": {
+                "item-0": {},
+                "item-1": {}
+            }
+        },
+        "buyer-3": {
+            "at": "f",
+            "is": [
+                "buyer"
+            ],
+            "stock": {},
+            "item": {
+                "item-0": {},
+                "item-1": {}
+            }
+        },
+        "buyer-4": {
+            "at": "d",
+            "is": [
+                "buyer"
+            ],
+            "stock": {},
+            "item": {
+                "item-0": {},
+                "item-1": {}
+            }
+        }
+    },
+    "backpack": {
+        "total-space": "5"
+    },
+    "money": "4",
+    "biggest-number": "8",
+    "initial-city": "a"
+}

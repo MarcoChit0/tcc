@@ -1,0 +1,91 @@
+{
+    "city": {
+        "a": [
+            "b",
+            "c",
+            "d"
+        ],
+        "b": [
+            "a",
+            "c",
+            "d"
+        ],
+        "c": [
+            "a",
+            "b",
+            "d"
+        ],
+        "d": [
+            "a",
+            "b",
+            "c"
+        ]
+    },
+    "state": {
+        "s1": {
+            "city": [
+                "a",
+                "b",
+                "c"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s2": {
+            "city": [
+                "b",
+                "c",
+                "d"
+            ],
+            "map": {
+                "buying-price": "4",
+                "selling-price": "0"
+            }
+        }
+    },
+    "item": {
+        "spongebob-squarepants-magical-pencil": {
+            "volumn": "1",
+            "buying-price": "2",
+            "selling-price": "3"
+        }
+        
+    },
+    "person": {
+        "p1": {
+            "at": "b",
+            "is": [
+                "seller"
+            ],
+            "stock": {
+                "spongebob-squarepants-magical-pencil": "1"
+            },
+            "item": {
+                "spongebob-squarepants-magical-pencil": {
+                }
+            }
+        },
+        "p2": {
+            "at": "b",
+            "is": [
+                "buyer"
+            ],
+            "stock": {
+                "spongebob-squarepants-magical-pencil": "0"
+            },
+            "item": {
+                "spongebob-squarepants-magical-pencil": {
+                    "buying-price":"4"
+                }
+            }
+        }
+    },
+    "backpack": {
+        "total-space": "1"
+    },
+    "money": "5",
+    "biggest-number": "5",
+    "initial-city": "a"
+}

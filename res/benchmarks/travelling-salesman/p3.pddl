@@ -9,6 +9,9 @@
 		s2 - state
 		s3 - state
 		s4 - state
+		bottle-of-water - item
+		p1 - person
+		p2 - person
 
 	)
 	(:init
@@ -30,7 +33,7 @@
 		(selling-price-state-map 0 s2)
 		(at b s2)
 		(at c s2)
-		(buying-price-state-map 1 s3)
+		(buying-price-state-map 2 s3)
 		(selling-price-state-map 0 s3)
 		(at c s3)
 		(at d s3)
@@ -39,32 +42,37 @@
 		(at d s4)
 		(at a s4)
 		(has-adjacent-cities a 1)
-		(number-of-visits a 0)
 		(connected a b)
 		(has-adjacent-cities b 1)
-		(number-of-visits b 0)
 		(connected b c)
 		(has-adjacent-cities c 3)
-		(number-of-visits c 0)
 		(connected c d)
 		(connected c b)
 		(connected c a)
 		(has-adjacent-cities d 1)
-		(number-of-visits d 0)
 		(connected d a)
 		(money 1)
 		(wallet 0)
 		(on-city a)
-		(backpack-total-space 0)
+		(backpack-total-space 5)
 		(backpack-allocated-space 0)
+		(volumn bottle-of-water 2)
+		(buying-price bottle-of-water 1)
+		(selling-price bottle-of-water 2)
+		(is-seller p1)
+		(is-selling p1 bottle-of-water)
+		(person-at p1 a)
+		(is-buyer p2)
+		(is-buying p2 bottle-of-water)
+		(person-at p2 b)
 
 	)
 	(:goal
 		(and
-			(number-of-visits a 1)
-			(number-of-visits b 1)
-			(number-of-visits c 1)
-			(number-of-visits d 1)
+			(visited-once a)
+			(visited-once b)
+			(visited-once c)
+			(visited-once d)
 		)
 	)
 )

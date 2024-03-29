@@ -10,9 +10,17 @@ Policy AndStar::get_solution(const Task &task)
 {
     std::function<bool(const Policy &, const Policy &)> is_policy_worse_than = [*this](const Policy policy_1, const Policy policy_2)
     {
+        // TODO:
         // h = f - g
         // f = g + 2*h
         // -> f = g + 2*(f - g)
+
+        // greedy: ONLY WORKS WHEN USING DEAD END DETECTOR
+        // min h = f -g 
+        // tiebreak: max g
+
+        // dfs:
+        // max id
         if (this->policy_heuristic[policy_1] != this->policy_heuristic[policy_2])
         {
             return this->policy_heuristic[policy_1] > this->policy_heuristic[policy_2];

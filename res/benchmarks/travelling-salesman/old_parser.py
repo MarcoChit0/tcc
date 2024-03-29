@@ -37,6 +37,7 @@ if __name__ == "__main__":
             # (number-of-visits ?c - city ?n - number)
             for city in instance["city"]:
                 initial_predicates.append(f"(has-adjacent-cities {city} {len(instance['city'][city])})")
+                initial_predicates.append(f"(number-of-visits {city} 0)")
                 for adj in instance["city"][city]:
                     initial_predicates.append(f"(connected {city} {adj})")
             
@@ -54,30 +55,37 @@ if __name__ == "__main__":
             initial_predicates.append(f"(backpack-allocated-space 0)")
 
             # (volumn ?i - item ?n - number)
-            # (buying-price ?n - number ?i - item)
-            # (selling-price ?n - number ?i - item)
             for item in instance["item"]:
                 initial_predicates.append(f"(volumn {item} {instance['item'][item]['volumn']})")
-                initial_predicates.append(f"(buying-price {item} {instance['item'][item]['buying-price']})")
-                initial_predicates.append(f"(selling-price {item} {instance['item'][item]['selling-price']})")
 
             # (is-buyer ?p - person)
             # (is-seller ?p - person)
+            # (stock ?i - item ?n - number ?p - person)
+            # (buying-price ?i - item ?n - number ?p - person)
+            # (selling-price ?i - item ?n - number ?p - person)
             # (person-at ?p - person ?c - city)
-            # (is-buying ?p - person ?i - item)
-            # (is-selling ?p - person ?i - item)
             for person in instance["person"]:
-                for intention in instance["person"][person]["is"]:
-                    if intention == "buying":
-                        initial_predicates.append(f"(is-buyer {person})")
-                        for item in instance["person"][person]["is"]["buying"]:
-                            initial_predicates.append(f"(is-buying {person} {item})")
-                    if intention == "selling":
-                        initial_predicates.append(f"(is-seller {person})")
-                        for item in instance["person"][person]["is"]["selling"]:
-                            initial_predicates.append(f"(is-selling {person} {item})")
-
+                jobs = set(instance["person"][person]["is"])
+                for job in jobs:
+                    initial_predicates.append(f"(is-{job} {person})")
+                for item in instance["person"][person]["stock"]:
+                    initial_predicates.append(f"(stock {item} {instance['person'][person]['stock'][item]} {person})")
+                for item in instance["person"][person]["item"]:
+                    if "seller" in jobs:
+                        if "selling-price" not in instance["person"][person]["item"][item]:
+                        # uses the default selling price
+                            initial_predicates.append(f"(selling-price {item} {instance['item'][item]['selling-price']} {person})")
+                        else:
+                        # uses the selling price defined in the person
+                            initial_predicates.append(f"(selling-price {item} {instance['person'][person]['item'][item]['selling-price']} {person})")
+                    if "buyer" in jobs:
+                        if "buying-price" not in instance["person"][person]["item"][item]:
+                        # uses the default buying price
+                            initial_predicates.append(f"(buying-price {item} {instance['item'][item]['buying-price']} {person})")
+                        else:
+                        # uses the buying price defined in the person
+                            initial_predicates.append(f"(buying-price {item} {instance['person'][person]['item'][item]['buying-price']} {person})")
                 initial_predicates.append(f"(person-at {person} {instance['person'][person]['at']})")
 
-            goal_predicates = [f"(visited-once {city})" for city in instance["city"].keys()]
+            goal_predicates = [f"(number-of-visits {city} 1)" for city in instance["city"].keys()]
             write_instance("travelling-salesman", path, json_file.replace(".json", ""), objets_predicates, initial_predicates, goal_predicates)

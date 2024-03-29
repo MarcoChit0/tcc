@@ -40,7 +40,7 @@
                 "d"
             ],
             "map": {
-                "buying-price": "2",
+                "buying-price": "1",
                 "selling-price": "0"
             }
         },
@@ -56,28 +56,11 @@
         }
     },
     "item": {
-        "bottle-of-water": {
-            "volumn": "1",
-            "buying-price": "1",
-            "selling-price": "2"
-        }
     },
     "person": {
-        "p1": {
-            "at": "a",
-            "is": {
-                "selling" : ["bottle-of-water"]
-            }
-        },
-        "p2": {
-            "at": "b",
-            "is": {
-                "buying" : ["bottle-of-water"]
-            }
-        }
     },
     "backpack": {
-        "total-space": "1"
+        "total-space": "0"
     },
     "money": "1",
     "biggest-number": "5",

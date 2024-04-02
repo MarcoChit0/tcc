@@ -90,7 +90,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-w", "--walker", type=str, default="stop")
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")
         self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
-        self.add_argument("-ded", "--dead-end-detector", type=str, default="none")
+        self.add_argument("-ded", "--dead-end-detector", type=str, default="reachable")
         self.add_argument("-delpf", "--dead_end_labels_program_flow",choices=list(DeadEndProgramFlow) ,default=DeadEndProgramFlow.GENERATE_LABELS_AND_CONTINUE_PROGRAM, type=DeadEndProgramFlow, help=f"{list(DeadEndProgramFlow)}")
 
 apn = ArgParsingNamespace()
@@ -219,10 +219,10 @@ def run_thread(thread_arguments: ThreadArguments) -> None:
     folder_creation_lock.release()
 
     process_creation_lock.acquire(); time.sleep(0.1)
-    with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (task_info.domain_label, task_info.task_label, thread_arguments.policy_heuristic, thread_arguments.state_heuristic, apn.save_folder_name_prefix)}\n')
+    with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (thread_arguments.task_info.domain_label, thread_arguments.task_info.task_label, thread_arguments.policy_heuristic, thread_arguments.state_heuristic, apn.save_folder_name_prefix)}\n')
 
-    # # for debugging purposes only:
-    # print(" ".join(get_splitted_command(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor,dead_end_detector ,save_folder_path)))
+    # for debugging purposes only:
+    # print(" ".join(thread_arguments.get_splitted_command()))
     # exit(1)
     process = subprocess.Popen(thread_arguments.get_splitted_command(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)
     process_creation_lock.release()

@@ -54,6 +54,9 @@
 		(adjacent l2 l2)
 		(spreading-time 1 l2)
 		(dying v1)
+		(first-victim v1)
+		(first-location l1)
+		(predecessor-location l1 l2)
 
 	)
 	(:goal

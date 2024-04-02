@@ -165,4 +165,4 @@ if __name__ == "__main__":
             for j in range(column):
                 s += grid[i][j]
             parser_input.append(s)
-        write_instance("sokoban-non-deterministic", instance, parser_input, object_predicates, initial_predicates, goal_predicates)
+        write_instance("sokoban-non-deterministic", instance_path, instance, object_predicates, initial_predicates, goal_predicates)

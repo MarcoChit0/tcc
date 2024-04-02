@@ -38,6 +38,14 @@
         (have-victim-in-unit ?v - victim ?u - medical-unit)
         (on-hospital ?v - victim)
         ;; ------------------------------------
+
+        ;; TODO: create partial orders
+        (predecessor-victim ?v1 ?v2 - victim)
+        (predecessor-location ?l1 ?l2 - location)
+        (all-locations-spread-out ?t - number)
+        (all-victims-adjusted ?t - number)
+        (first-victim ?v - victim)
+        (first-location ?l - location)
     )
 
     (:action drive-fire-unit
@@ -148,9 +156,15 @@
     (:action adjust-status-helthy-to-hurt
         :parameters (?l - location ?v - victim ?t ?next_t - number)
         :precondition (and 
+
             (clock ?t)
             (inc ?t ?next_t)
             (need-to-adjust-clock)
+            (all-locations-spread-out ?next_t)
+            (or
+                (first-victim ?v)
+                (exists (?v1 - victim) (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+            )
             (victim-at ?v ?l)
             (fire-at ?l)
             (healthy ?v)
@@ -171,6 +185,11 @@
             (clock ?t)
             (inc ?t ?next_t)
             (need-to-adjust-clock)
+            (all-locations-spread-out ?next_t)
+            (or
+                (first-victim ?v)
+                (exists (?v1 - victim) (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+            )
             (victim-at ?v ?l)
             (fire-at ?l)
             (hurt ?v)
@@ -191,6 +210,11 @@
             (clock ?t)
             (inc ?t ?next_t)
             (need-to-adjust-clock)
+            (all-locations-spread-out ?next_t)
+            (or
+                (first-victim ?v)
+                (exists (?v1 - victim) (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+            )
             (victim-at ?v ?l)
             (fire-at ?l)
             (dying ?v)
@@ -212,6 +236,11 @@
             (inc ?t ?next_t)
             (need-to-adjust-clock)
             (not (adjusted-status ?next_t ?v))
+            (all-locations-spread-out ?next_t)
+            (or
+                (first-victim ?v)
+                (exists (?v1 - victim) (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+            )
             (or
                 (exists (?m - medical-unit) 
                     (and 
@@ -223,6 +252,25 @@
                     (not (fire-at ?l))
                     (victim-at ?v ?l)
                 )
+            )
+        )
+        :effect (and 
+            (adjusted-status ?next_t ?v)
+        )
+    )
+    (:action adjust-status-deceased-stays-deceased
+        :parameters (?v - victim ?t ?next_t - number)
+        :precondition (and 
+            (clock ?t)
+            (inc ?t ?next_t)
+            (need-to-adjust-clock)
+            (all-locations-spread-out ?next_t)
+            (deceased ?v)
+            (not (on-hospital ?v))
+            (not (adjusted-status ?next_t ?v))
+            (or
+                (first-victim ?v)
+                (exists (?v1 - victim) (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
             )
         )
         :effect (and 
@@ -264,6 +312,10 @@
                 )
             )
             (not (spread-out ?next_t ?l))
+            (or
+                (first-location ?l)
+                (exists (?l1 - location) (and (predecessor-location ?l1 ?l) (spread-out ?next_t ?l1)))
+            )
         )
         :effect (and
             (spread-out ?next_t ?l)
@@ -283,6 +335,10 @@
             (need-to-adjust-clock)
             (fire-at ?l)
             (not (spread-out ?next_t ?l))
+            (or
+                (first-location ?l)
+                (exists (?l1 - location) (and (predecessor-location ?l1 ?l) (spread-out ?next_t ?l1)))
+            )
         )
         :effect (and
             (spread-out ?next_t ?l)
@@ -296,6 +352,10 @@
             (need-to-adjust-clock)
             (spreading-time ?spreading_t ?l)
             (not (spread-out ?next_t ?l))
+            (or
+                (first-location ?l)
+                (exists (?l1 - location) (and (predecessor-location ?l1 ?l) (spread-out ?next_t ?l1)))
+            )
             (or
                 (and (is-greater-or-equal ?spreading_t ?next_t) (not (= ?spreading_t ?next_t)))
                 (and
@@ -326,14 +386,7 @@
             (need-to-adjust-clock)
             (clock ?t)
             (inc ?t ?next_t)
-            (forall
-                (?l - location)
-                (spread-out ?next_t ?l)
-            )
-            (forall
-                (?v - victim)
-                (adjusted-status ?next_t ?v)
-            )
+            (all-victims-adjusted ?next_t)
         )
         :effect (and
             (not (clock ?t))
@@ -342,13 +395,41 @@
             (adjusted-clock)
         )
     )
+    (:action get-all-victims-adjusted
+        :parameters (?t ?next_t - number)
+        :precondition (and 
+            (need-to-adjust-clock)
+            (clock ?t)
+            (inc ?t ?next_t)
+            (all-locations-spread-out ?next_t)
+            (forall
+                (?v - victim)
+                (adjusted-status ?next_t ?v)
+            )
+        )
+        :effect (and (all-victims-adjusted ?next_t))
+    )
+    
+    (:action get-all-locations-spread-out
+        :parameters (?t ?next_t - number)
+        :precondition (and 
+            (need-to-adjust-clock)
+            (clock ?t)
+            (inc ?t ?next_t)
+            (forall
+                (?l - location)
+                (spread-out ?next_t ?l)
+            )
+        )
+        :effect (and (all-locations-spread-out ?next_t))
+    )
+    
 
     (:action treat-dying-victim-on-hospital
         :parameters (?l - location ?v - victim)
         :precondition (and
             (hospital-at ?l)
             (victim-at ?v ?l)
-            (not (fire-at ?l))
             (adjusted-clock)
             (dying ?v)
             (on-hospital ?v)

@@ -72,4 +72,16 @@ if __name__ == "__main__":
             for v, status in instance["victim"].items():
                 initial_predicates.append(f"({status} {v})")
 
+            victims = [v for v in instance["victim"].keys()]; locations = [l for l in instance["location"].keys()]
+            for i in range(0, len(victims)):
+                if i > 0:
+                    initial_predicates.append(f"(predecessor-victim {victims[i-1]} {victims[i]})")
+                else:
+                    initial_predicates.append(f"(first-victim {victims[i]})")
+            for i in range(0, len(locations)):
+                if i > 0:
+                    initial_predicates.append(f"(predecessor-location {locations[i-1]} {locations[i]})")
+                else:
+                    initial_predicates.append(f"(first-location {locations[i]})")
+
             write_instance("rescue", path, json_file.replace(".json", ""), objets_predicates, initial_predicates, goal_predicates)

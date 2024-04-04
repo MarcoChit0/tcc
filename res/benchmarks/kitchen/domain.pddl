@@ -14,8 +14,7 @@
         0 - number
     )
     (:predicates
-        (inc ?op ?res - number)
-        (dec ?op ?res - number)
+        (next ?n1 ?n2 - number)
         (finished ?isl - number)
         (on-chef-island ?ing - ingredient ?n - number ?isl - number)
         (on-recipe ?ing - ingredient ?n - number ?r - recipe)
@@ -24,7 +23,6 @@
         (prepared ?r - recipe)
         (satisfied ?c - costumer)
         (can-accept ?c - costumer ?r - recipe)
-        (num-refused-recipes ?c - costumer ?n - number)
         (num-recipes-to-refuse ?c - costumer ?n - number)
         (properly-added ?i - ingredient ?r - recipe ?isl - number)
     )
@@ -34,70 +32,71 @@
     (:action from-stock-to-chef-island
         :parameters (
             ?ing - ingredient
-            ?iStock ?dec-iStock ?iChefIsland ?inc-iChefIsland ?chef-island - number
+            ?iStock ?dec_iStock ?iChefIsland ?inc_iChefIsland ?chef_island - number
         )
         :precondition
         (and
             ;; check numerical precedence 
-            (dec ?iStock ?dec-iStock)
-            (inc ?iChefIsland ?inc-iChefIsland)
-
+            (next ?dec_iStock ?iStock)
+            (next ?iChefIsland ?inc_iChefIsland)
+            
             ;; check ingredient on chef's island/ kitchen's stock
             (on-stock ?ing ?iStock)
-            (on-chef-island ?ing ?iChefIsland ?chef-island)
+            (on-chef-island ?ing ?iChefIsland ?chef_island)
 
             ;; check possibility of changing the ingredient on chef's island
-            (not (finished ?chef-island))
+            (not (finished ?chef_island))
         )
         
         :effect 
         (and
             (not (on-stock ?ing ?iStock))
-            (on-stock ?ing ?dec-iStock)
-            (not (on-chef-island ?ing ?iChefIsland ?chef-island))
-            (on-chef-island ?ing ?inc-iChefIsland ?chef-island)
+            (on-stock ?ing ?dec_iStock)
+            (not (on-chef-island ?ing ?iChefIsland ?chef_island))
+            (on-chef-island ?ing ?inc_iChefIsland ?chef_island)
         )
     )
-    ;; move one unit of the ingredient ing from the chef island chef-island to the stock
-    (:action from-chef-island-to-stock
+    ;; move one unit of the ingredient ing from the chef island chef_island to the stock
+    (:action from-chef_island-to-stock
         :parameters (
             ?ing - ingredient
-            ?iStock ?inc-iStock ?iChefIsland ?dec-iChefIsland ?chef-island - number
+            ?iStock ?inc_iStock ?iChefIsland ?dec_iChefIsland ?chef_island - number
         )
         :precondition 
         (and
-            (inc ?iStock ?inc-iStock)
-            (dec ?iChefIsland ?dec-iChefIsland)
+            (next ?iStock ?inc_iStock)
+            (next ?dec_iChefIsland ?iChefIsland)        
+
             (on-stock ?ing ?iStock)
-            (on-chef-island ?ing ?iChefIsland ?chef-island)
-            (not (finished ?chef-island))
+            (on-chef-island ?ing ?iChefIsland ?chef_island)
+            (not (finished ?chef_island))
         )
         :effect 
         (and
             (not (on-stock ?ing ?iStock))
-            (on-stock ?ing ?inc-iStock)
-            (not (on-chef-island ?ing ?iChefIsland ?chef-island))
-            (on-chef-island ?ing ?dec-iChefIsland ?chef-island)
+            (on-stock ?ing ?inc_iStock)
+            (not (on-chef-island ?ing ?iChefIsland ?chef_island))
+            (on-chef-island ?ing ?dec_iChefIsland ?chef_island)
         )
         
     )
 
     (:action select-recipe
-        :parameters (?r - recipe ?chef-island - number)
+        :parameters (?r - recipe ?chef_island - number)
         :precondition 
         (and
-            ;; the chef island chef-island contains the exaclty quantity of ingredient the recipe r requires
-            (not (finished ?chef-island))
+            ;; the chef island chef_island contains the exaclty quantity of ingredient the recipe r requires
+            (not (finished ?chef_island))
             (forall (?ing - ingredient)
                 ;; if is on recipe, then must also be on chef island
                 ;; on-recipe -> on-chef-island <=> ((on-recipe ^ on-chef-island) v ~on-recipe)
-                (properly-added ?ing ?r ?chef-island)
+                (properly-added ?ing ?r ?chef_island)
             )            
         )
         :effect 
         (and
             (prepared ?r)
-            (finished ?chef-island)
+            (finished ?chef_island)
         )
     )    
     (:action on-recipe-add-to-recipe
@@ -125,12 +124,10 @@
         :parameters (
             ?c - costumer 
             ?r - recipe
-            ?refused-recipes - number
         )
         :precondition 
         (and
-            (num-refused-recipes ?c ?refused-recipes)
-            (num-recipes-to-refuse ?c ?max)
+            (num-recipes-to-refuse ?c 0)
 
             (prepared ?r)
             (can-accept ?c ?r)
@@ -147,14 +144,13 @@
         :parameters (
             ?c - costumer 
             ?r - recipe
-            ?refused-recipes ?next - number
+            ?refused_recipes ?one_less_recipe_to_refuse - number
         )
         :precondition 
         (and
             ;; number of refused recipes by the client does not exceed its limit
-            (num-refused-recipes ?c ?refused-recipes)
-            (not (num-recipes-to-refuse ?c ?refused-recipes))
-            (inc ?refused-recipes ?next)
+            (num-recipes-to-refuse ?c ?refused_recipes)
+            (next ?one_less_recipe_to_refuse ?refused_recipes)
 
             (prepared ?r)
             (can-accept ?c ?r)
@@ -172,8 +168,8 @@
                 )
                 ;; refuses the recipe -> increment the counter of refused recipes
                 (and 
-                    (not (num-refused-recipes ?c ?refused-recipes))
-                    (num-refused-recipes ?c ?next)
+                    (not (num-recipes-to-refuse ?c ?refused_recipes))
+                    (num-recipes-to-refuse ?c ?one_less_recipe_to_refuse)
                 )
             )
         )

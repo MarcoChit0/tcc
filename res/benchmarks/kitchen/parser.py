@@ -48,10 +48,8 @@ if __name__ == "__main__":
 
             initial_predicates = []
             for i in range(0, max_num+1):
-                if i > 0:
-                    initial_predicates.append(f"(dec {i} {i-1})")
                 if i < max_num:
-                    initial_predicates.append(f"(inc {i} {i+1})")
+                    initial_predicates.append(f"(next {i} {i+1})")
                 # initial_predicates.append(f"(equal {i} {i})")
 
             # (on-chef-island ?ing - ingredient ?n - number ?isl - number)
@@ -83,7 +81,7 @@ if __name__ == "__main__":
                 # each time the costumer refuses a recipe, the number of refused recipes increases by 1
                 # so it need to start at 0 and end at the number of recipes - 1,
                 # because the costumer can refuse all recipes but one
-                initial_predicates.append(f"(num-refused-recipes costumer-{costumer} 0)")
+                # initial_predicates.append(f"(num-refused-recipes costumer-{costumer} 0)")
                 initial_predicates.append(f"(num-recipes-to-refuse costumer-{costumer} {len(recipes) - 1})")
 
 

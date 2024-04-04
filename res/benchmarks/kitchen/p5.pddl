@@ -12,12 +12,9 @@
 
 	)
 	(:init
-		(inc 0 1)
-		(dec 1 0)
-		(inc 1 2)
-		(dec 2 1)
-		(inc 2 3)
-		(dec 3 2)
+		(next 0 1)
+		(next 1 2)
+		(next 2 3)
 		(not (finished 0))
 		(on-chef-island ingredient-flour 0 0)
 		(not (finished 1))
@@ -31,7 +28,6 @@
 		(can-accept costumer-John recipe-cake)
 		(can-accept costumer-John recipe-pancakes)
 		(can-accept costumer-John recipe-cookies)
-		(num-refused-recipes costumer-John 0)
 		(num-recipes-to-refuse costumer-John 2)
 
 	)

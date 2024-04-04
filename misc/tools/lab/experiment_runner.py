@@ -68,6 +68,7 @@ class ArgParsingNamespace(tap.Tap):
     regressor: str
     dead_end_detector: str
     dead_end_labels_program_flow: DeadEndProgramFlow
+    solver: str
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=7)
@@ -92,6 +93,8 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
         self.add_argument("-ded", "--dead-end-detector", type=str, default="reachable")
         self.add_argument("-delpf", "--dead_end_labels_program_flow",choices=list(DeadEndProgramFlow) ,default=DeadEndProgramFlow.GENERATE_LABELS_AND_CONTINUE_PROGRAM, type=DeadEndProgramFlow, help=f"{list(DeadEndProgramFlow)}")
+        self.add_argument("-s", "--solver", type=str, default="and-star") # choices in {and-star, weighted-and-star, depth-first-and-star, greedy-and-star}
+
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
@@ -131,6 +134,7 @@ class ThreadArguments:
         regressor: str,
         dead_end_detector: str,
         dead_end_labels_program_flow: DeadEndProgramFlow,
+        solver: str
         ):
         global base_dir_structure
         self.task_info = task_info
@@ -150,7 +154,8 @@ class ThreadArguments:
         self.dead_end_detector = dead_end_detector
         self.dead_end_labels_program_flow = dead_end_labels_program_flow
         self.task = f'{task_info.domain_label}/{task_info.task_label}'
-        self.params = f"{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor},{dead_end_detector}"
+        self.solver = solver
+        self.params = f"{solver},{policy_heuristic},{state_heuristic},{number_of_samples},{length},{percentage_fsm},{sample_generator},{sample_treatment_class},{percentage_timer},{percentage_time_limit},{percentage_memory_limit},{walker},{concrete_states_generator},{regressor},{dead_end_detector}"
         self.save_folder_path = f'{basic_dir_structure}/{self.params}/{self.task}/'
         self.cerr = os.path.join(self.save_folder_path, 'log.txt')
         self.cout = os.path.join(self.save_folder_path, 'results.csv')
@@ -175,12 +180,14 @@ class ThreadArguments:
             f'{self.regressor}',
             f'{self.dead_end_detector}',
             f'{self.dead_end_labels_program_flow.value}',
-            f'{self.save_folder_path}',
+            f'{self.solver}',
+            f'{self.save_folder_path}'
         ]
     
     def to_json(self):
         # Convert the instance attributes to a dictionary
         params_dict = {
+            "solver": self.solver,
             "task_info": {
                 "domain_label": self.task_info.domain_label,
                 "task_label": self.task_info.task_label,
@@ -204,7 +211,7 @@ class ThreadArguments:
             "dead_end_labels_program_flow": self.dead_end_labels_program_flow.value,
             "task": self.task,
             "params": self.params,
-            "save_folder_path": self.save_folder_path
+            "save_folder_path": self.save_folder_path,
         }
         # Convert the dictionary to a JSON string
         return json.dumps(params_dict, indent=4)
@@ -294,8 +301,9 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                                 for concrete_states_generator in apn.concrete_states_generator.split(','):
                                                     for regressor in apn.regressor.split(','):
                                                         for dead_end_detector in apn.dead_end_detector.split(','):
-                                                            args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow)
-                                                            yield Thread(target=run_thread, args=[args])
+                                                            for solver in apn.solver.split(','):
+                                                                args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow, solver)
+                                                                yield Thread(target=run_thread, args=[args])
 
                                         
 lock_file = open('/tmp/and-star-lab.lock', 'w')

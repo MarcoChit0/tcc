@@ -19,7 +19,9 @@ Sample SampleGenerator::get_sample(State new_initial_state) const
     this->task.initial_state().id = new_initial_state.id;
     DeltaNearest delta_nearest = DeltaNearest(this->task, this->state_heuristic);
     set_timer();
-    Policy policy = AndStar(delta_nearest, this->state_heuristic).get_solution(this->task);
+    // TODO: receive task solver as parameter
+    auto solver = AndStar(delta_nearest, this->state_heuristic, AndStar::DEFAULT);
+    auto policy = solver.get_solution(this->task);
     unset_timer();
     int policy_size = 0;
     if(get_policy_type() == UNSOLVABLE_POLICY)

@@ -291,15 +291,16 @@ Task::Regressor *parse_regressor(str regressor_string)
     }
 }
 
-void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristic, AndStar &and_star, opt<Policy> opt_solution,  std::optional<std::shared_ptr<DeadEndDetector>>& dead_end_detector, int number_of_states_generated_on_state_heuristic_table = -1)
+void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristic, std::unique_ptr<Task::Solver>& solver, opt<Policy> opt_solution,  std::optional<std::shared_ptr<DeadEndDetector>>& dead_end_detector, int number_of_states_generated_on_state_heuristic_table = -1)
 {
-    str header = "domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups,number_of_states_generated_on_state_heuristic_table";
+    str header = "solver,domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups,number_of_states_generated_on_state_heuristic_table";
     if(dead_end_detector.has_value())
     {
         header += "," + (*(dead_end_detector))->get_statistics_header();
     }
     std::cout << header << std::endl;
-    std::cout << get_domain(str(argv[1]));                                                                            // domain
+    std::cout << str(argv[18]);                                                                                // solver
+    std::cout << "," << get_domain(str(argv[1]));                                                                            // domain
     std::cout << "," << get_problem(str(argv[2]));                                                                    // problem
     std::cout << "," << str(argv[3]);                                                                                 // policy_heuristic
     std::cout << "," << str(argv[4]);                                                                                 // state_heuristic
@@ -317,10 +318,10 @@ void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristi
     std::cout << "," << policy_types_names[get_policy_type()];                                                        // termination
     std::cout << "," << get_memory_usage();                                                                           // memory_usage
     std::cout << "," << get_ellapsed_time();                                                                          // time
-    std::cout << "," << and_star.number_of_generated_policies;                                                        // number_of_generated_policies
-    std::cout << "," << and_star.number_of_inserted_policies;                                                         // number_of_inserted_policies
-    std::cout << "," << and_star.number_of_removed_policies;                                                          // number_of_removed_policies
-    std::cout << "," << and_star.number_of_expanded_policies;                                                         // number_of_expanded_policies
+    std::cout << "," << solver->number_of_generated_policies;                                                        // number_of_generated_policies
+    std::cout << "," << solver->number_of_inserted_policies;                                                         // number_of_inserted_policies
+    std::cout << "," << solver->number_of_removed_policies;                                                          // number_of_removed_policies
+    std::cout << "," << solver->number_of_expanded_policies;                                                         // number_of_expanded_policies
     std::cout << "," << (opt_solution.has_value() ? opt_solution->size() : -1);                                       // solution_length
     std::cout << "," << (str(argv[3]) == "lookup") ? static_cast<LookUp *>(policy_heuristic)->number_of_lookups : -1; // number_of_lookups
     std::cout << "," << number_of_states_generated_on_state_heuristic_table;                                          // number_of_states_generated_on_state_heuristic_table
@@ -395,6 +396,32 @@ void select_dead_end_detector(const Task &task, str dead_end_detector, int dead_
     }
 }
 
+std::unique_ptr<Task::Solver> parse_task_solver(const std::string& task_solver, const Policy::Heuristic& policy_heuristic, const State::Heuristic& state_heuristic, const opt<std::shared_ptr<DeadEndDetector>>& dead_end_detector)
+{
+    std::unique_ptr<AndStar::Comparator> comparator; // Use smart pointers for comparators
+
+    if(task_solver == "and-star")
+    {
+        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::DEFAULT, dead_end_detector);
+    }
+    else if(task_solver == "weighted-and-star")
+    {
+        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::WEIGHTED, dead_end_detector);
+    }
+    else if(task_solver == "greedy-and-star")
+    {
+        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::GREEDY, dead_end_detector);
+    }
+    else if(task_solver == "depth-first-and-star")
+    {
+        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::DEPTH_FIRST, dead_end_detector);
+    } 
+    else
+    {
+        throw std::domain_error("Invalid task solver.");
+    }
+}
+
 
 int main(int argc, char **argv)
 {
@@ -422,11 +449,11 @@ int main(int argc, char **argv)
     Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);
 
-    AndStar and_star = AndStar(*policy_heuristic, *state_heuristic, optional_dead_end_detector);
-    Policy opt_solution = and_star.get_solution(task);
+    auto solver = parse_task_solver(str(argv[18]), *policy_heuristic, *state_heuristic, optional_dead_end_detector);
+    Policy opt_solution = solver->get_solution(task);
     
     // std::cout << opt_solution << std::endl;
-    print_end(argv, task, policy_heuristic, and_star, opt_solution, optional_dead_end_detector, state_heuristic->size());
+    print_end(argv, task, policy_heuristic, solver, opt_solution, optional_dead_end_detector, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
     return 0;
 }

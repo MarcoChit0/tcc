@@ -63,7 +63,12 @@ public:
 
 class Task::Solver
 {
+
 public:
+    int64_t number_of_generated_policies = 0;
+    int64_t number_of_inserted_policies = 0;
+    int64_t number_of_removed_policies = 0;
+    int64_t number_of_expanded_policies = 0;
     virtual Policy get_solution(const Task &task) = 0; // TODO: I think it should be a const method, but currently it is impossible.
 };
 

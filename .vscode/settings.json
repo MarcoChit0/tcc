@@ -96,7 +96,9 @@
         "__tree": "cpp",
         "__bit_reference": "cpp",
         "__hash_table": "cpp",
-        "target": "cpp"
+        "target": "cpp",
+        "span": "cpp",
+        "format": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "python.analysis.autoImportCompletions": true,

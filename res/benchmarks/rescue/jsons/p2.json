@@ -11,25 +11,21 @@
                 "medical-unit": ["m1"]
             },
             "predicates": ["fire-at", "water-at"],
-            "adjacent": ["l2", "l3"],
+            "adjacent": ["l2"],
             "spreading-time": "0"
         },
         "l2": {
             "objects": {
                 "victim": ["v1"]
             },
-            "adjacent": ["l1", "l4"],
-            "spreading-time": "2"
+            "adjacent": ["l1", "l3"],
+            "spreading-time": "4"
         },
         "l3": {
-            "adjacent": ["l2"],
-            "spreading-time": "2"
-        },
-        "l4": {
             "predicates": ["hospital-at"],
-            "adjacent": ["l3", "l2"],
-            "spreading-time": "3"
+            "adjacent": ["l2"],
+            "spreading-time": "5"
         }
     },
-    "clock": ["0", "9"]
+    "clock": ["0", "8"]
 }

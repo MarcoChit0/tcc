@@ -10,9 +10,11 @@
 		6 - number
 		7 - number
 		8 - number
+		9 - number
 		l1 - location
 		l2 - location
 		l3 - location
+		l4 - location
 		v1 - victim
 		f1 - fire-unit
 		m1 - medical-unit
@@ -74,27 +76,44 @@
 		(is-greater-or-equal  8 6)
 		(is-greater-or-equal  8 7)
 		(is-greater-or-equal  8 8)
+		(inc 8 9)
+		(is-greater-or-equal  9 0)
+		(is-greater-or-equal  9 1)
+		(is-greater-or-equal  9 2)
+		(is-greater-or-equal  9 3)
+		(is-greater-or-equal  9 4)
+		(is-greater-or-equal  9 5)
+		(is-greater-or-equal  9 6)
+		(is-greater-or-equal  9 7)
+		(is-greater-or-equal  9 8)
+		(is-greater-or-equal  9 9)
 		(fire-unit-at f1 l1)
 		(medical-unit-at m1 l1)
 		(fire-at l1)
 		(water-at l1)
 		(adjacent l1 l2)
+		(adjacent l1 l3)
 		(adjacent l1 l1)
 		(spreading-time 0 l1)
 		(victim-at v1 l2)
 		(adjacent l2 l1)
-		(adjacent l2 l3)
+		(adjacent l2 l4)
 		(adjacent l2 l2)
-		(spreading-time 4 l2)
-		(hospital-at l3)
+		(spreading-time 2 l2)
 		(adjacent l3 l2)
 		(adjacent l3 l3)
-		(spreading-time 5 l3)
+		(spreading-time 2 l3)
+		(hospital-at l4)
+		(adjacent l4 l3)
+		(adjacent l4 l2)
+		(adjacent l4 l4)
+		(spreading-time 3 l4)
 		(dying v1)
 		(first-victim v1)
 		(first-location l1)
 		(predecessor-location l1 l2)
 		(predecessor-location l2 l3)
+		(predecessor-location l3 l4)
 
 	)
 	(:goal

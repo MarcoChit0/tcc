@@ -1,6 +1,7 @@
 {
     "victim": {
-        "v1": "dying"
+        "v1": "dying",
+        "v2": "hurt"
     },
     "fire-unit": ["f1"],
     "medical-unit": ["m1"],
@@ -19,17 +20,20 @@
                 "victim": ["v1"]
             },
             "adjacent": ["l1", "l4"],
-            "spreading-time": "2"
+            "spreading-time": "7"
         },
         "l3": {
+            "objects": {
+                "victim": ["v2"]
+            },
             "adjacent": ["l2"],
-            "spreading-time": "2"
+            "spreading-time": "7"
         },
         "l4": {
             "predicates": ["hospital-at"],
             "adjacent": ["l3", "l2"],
-            "spreading-time": "3"
+            "spreading-time": "8"
         }
     },
-    "clock": ["0", "9"]
+    "clock": ["0", "15"]
 }

@@ -415,7 +415,11 @@ std::unique_ptr<Task::Solver> parse_task_solver(const std::string& task_solver, 
     else if(task_solver == "depth-first-and-star")
     {
         return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::DEPTH_FIRST, dead_end_detector);
-    } 
+    }
+    else if(task_solver == "breadth-first-and-star")
+    {
+        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::BREADTH_FIRST, dead_end_detector);
+    }
     else
     {
         throw std::domain_error("Invalid task solver.");

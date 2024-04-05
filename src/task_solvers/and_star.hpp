@@ -7,7 +7,7 @@ class AndStar : public Task::Solver
 {
 public:
     enum SignaturingMethod {ID, LANE, IN_OUT, OUT};
-    enum Comparator {GREEDY, WEIGHTED, DEPTH_FIRST, DEFAULT};
+    enum Comparator {GREEDY, WEIGHTED, DEPTH_FIRST, DEFAULT, BREADTH_FIRST};
 
     const Policy::Heuristic &policy_heuristic;
     const State::Heuristic &state_heuristic;

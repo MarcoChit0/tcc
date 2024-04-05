@@ -54,7 +54,37 @@ AndStar::AndStar(const Policy::Heuristic &policy_heuristic, const State::Heurist
         {
             // depth first search
             // last in, first out
-            return policy_1.size() > policy_2.size();
+            if (policy_1.is_none() || policy_2.is_none())
+            {
+                return true;
+            }
+
+            if (policy_1.parent_policy().id != policy_2.parent_policy().id)
+            {
+                return policy_1.parent_policy().id < policy_2.parent_policy().id;
+            }
+
+            int min_1 = INFTY;
+            int min_2 = INFTY;
+            for (const State &succ_state: policy_1.state().get_successors(policy_1.action()))
+            {
+                min_1 = std::min(min_1, this->state_heuristic[succ_state]);
+            }
+            for (const State &succ_state: policy_2.state().get_successors(policy_2.action()))
+            {
+                min_2 = std::min(min_2, this->state_heuristic[succ_state]);
+            }
+
+            return min_1 > min_2;
+        };
+    }; break;
+    case BREADTH_FIRST:
+    {
+        this->is_policy_worse_than = [this](const Policy &policy_1, const Policy &policy_2)
+        {
+            // breadth first search
+            // first in, first out
+            return policy_1.id > policy_2.id;
         };
     }; break;
     case DEFAULT:
@@ -123,6 +153,8 @@ Policy AndStar::get_solution(const Task &task)
         Policy policy = queue.top();
         queue.pop();
         number_of_removed_policies++;
+
+        std::cout << number_of_removed_policies << " " << this->policy_heuristic[policy] << " " << policy.size() << " " << policy.id << std::endl;
 
         if (policy.outgoing_non_goal_states(task.goal_condition()).empty())
         {

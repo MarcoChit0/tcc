@@ -1,17 +1,14 @@
 {
     "recipes": {
         "cake": {
-            "flour": "1",
-            "eggs":"1"
+            "flour": "1"
         },
         "pancakes": {
-            "flour": "1",
-            "eggs":"1"
+            "flour": "1"
         }
     },
     "stock": {
-        "flour": "2",
-        "eggs":"2"
+        "flour": "3"
     },
     "costumers": {
         "John": [

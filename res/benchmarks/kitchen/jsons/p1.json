@@ -1,43 +1,23 @@
 {
     "recipes": {
         "cake": {
-            "flour": "2",
-            "sugar": "1",
-            "eggs": "3",
-            "butter": "1"
+            "flour": "1",
+            "eggs":"1"
         },
         "pancakes": {
             "flour": "1",
-            "sugar": "1",
-            "eggs": "1",
-            "milk": "1"
-        },
-        "cookies": {
-            "flour": "2",
-            "sugar": "2",
-            "eggs": "2",
-            "butter": "2"
+            "eggs":"1"
         }
     },
     "stock": {
-        "flour": "10",
-        "sugar": "10",
-        "eggs": "10",
-        "butter": "10",
-        "milk": "10"
+        "flour": "2",
+        "eggs":"2"
     },
     "costumers": {
         "John": [
             "cake",
             "pancakes"
-        ],
-        "Alice": [
-            "cookies"
-        ],
-        "Bob": [
-            "cake",
-            "cookies"
         ]
     },
-    "islands":"3"
+    "islands":"2"
 }

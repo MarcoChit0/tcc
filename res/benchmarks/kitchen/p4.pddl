@@ -3,31 +3,40 @@
 	(:objects
 		1 - number
 		2 - number
+		3 - number
 		ingredient-flour - ingredient
-		ingredient-eggs - ingredient
+		ingredient-milk - ingredient
 		recipe-cake - recipe
 		recipe-pancakes - recipe
+		recipe-cookies - recipe
 		costumer-John - costumer
 
 	)
 	(:init
 		(next 0 1)
 		(next 1 2)
+		(next 2 3)
 		(not (finished 0))
 		(on-chef-island ingredient-flour 0 0)
-		(on-chef-island ingredient-eggs 0 0)
+		(on-chef-island ingredient-milk 0 0)
 		(not (finished 1))
 		(on-chef-island ingredient-flour 0 1)
-		(on-chef-island ingredient-eggs 0 1)
+		(on-chef-island ingredient-milk 0 1)
+		(not (finished 2))
+		(on-chef-island ingredient-flour 0 2)
+		(on-chef-island ingredient-milk 0 2)
 		(on-recipe ingredient-flour 1 recipe-cake)
-		(on-recipe ingredient-eggs 1 recipe-cake)
+		(on-recipe ingredient-milk 1 recipe-cake)
 		(on-recipe ingredient-flour 1 recipe-pancakes)
-		(on-recipe ingredient-eggs 1 recipe-pancakes)
-		(on-stock ingredient-flour 2)
-		(on-stock ingredient-eggs 2)
+		(on-recipe ingredient-milk 1 recipe-pancakes)
+		(on-recipe ingredient-flour 1 recipe-cookies)
+		(not-on-recipe ingredient-milk recipe-cookies)
+		(on-stock ingredient-flour 3)
+		(on-stock ingredient-milk 2)
 		(can-accept costumer-John recipe-cake)
 		(can-accept costumer-John recipe-pancakes)
-		(num-recipes-to-refuse costumer-John 1)
+		(can-accept costumer-John recipe-cookies)
+		(num-recipes-to-refuse costumer-John 2)
 
 	)
 	(:goal

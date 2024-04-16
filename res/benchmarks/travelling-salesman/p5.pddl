@@ -1,4 +1,4 @@
-(define (problem p2-travelling-salesman)
+(define (problem p5-travelling-salesman)
 	(:domain travelling-salesman)
 	(:objects
 		a - city

@@ -9,6 +9,8 @@
 		recipe-pancakes - recipe
 		recipe-cookies - recipe
 		costumer-John - costumer
+		costumer-Alice - costumer
+		costumer-Bob - costumer
 
 	)
 	(:init
@@ -27,13 +29,19 @@
 		(on-stock ingredient-flour 3)
 		(can-accept costumer-John recipe-cake)
 		(can-accept costumer-John recipe-pancakes)
-		(can-accept costumer-John recipe-cookies)
-		(num-recipes-to-refuse costumer-John 2)
+		(num-recipes-to-refuse costumer-John 1)
+		(can-accept costumer-Alice recipe-cake)
+		(can-accept costumer-Alice recipe-cookies)
+		(num-recipes-to-refuse costumer-Alice 1)
+		(can-accept costumer-Bob recipe-cookies)
+		(num-recipes-to-refuse costumer-Bob 0)
 
 	)
 	(:goal
 		(and
 			(satisfied costumer-John)
+			(satisfied costumer-Alice)
+			(satisfied costumer-Bob)
 		)
 	)
 )

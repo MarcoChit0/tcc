@@ -154,7 +154,7 @@ Policy AndStar::get_solution(const Task &task)
         queue.pop();
         number_of_removed_policies++;
 
-        std::cout << number_of_removed_policies << " " << this->policy_heuristic[policy] << " " << policy.size() << " " << policy.id << std::endl;
+        // std::cout << number_of_removed_policies << " " << this->policy_heuristic[policy] << " " << policy.size() << " " << policy.id << std::endl;
 
         if (policy.outgoing_non_goal_states(task.goal_condition()).empty())
         {

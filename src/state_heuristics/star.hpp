@@ -1,11 +1,14 @@
 #pragma once
 
 #include "../state.hpp"
+#include "../dead_end_detectors/dead_end_detector.hpp"
 class Star : public State::Heuristic
 {
+protected:
+    const opt<std::shared_ptr<DeadEndDetector>> &dead_end_detector;
 public:
 
-    Star(const Task &task);
+    Star(const Task &task, const opt<std::shared_ptr<DeadEndDetector>>&dead_end_detector = std::nullopt);
 
     int operator[](const State &state) const;
 

@@ -5,9 +5,6 @@
         },
         "pancakes": {
             "flour": "1"
-        },
-        "cookies": {
-            "flour": "1"
         }
     },
     "stock": {
@@ -19,11 +16,10 @@
             "pancakes"
         ],
         "Alice": [
-            "cake",
-            "cookies"
+            "cake"
         ],
-        "Bob": [
-            "cookies"
+        "Charlie": [
+            "pancakes"
         ]
     },
     "islands":"3"

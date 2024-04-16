@@ -66,7 +66,7 @@ Policy::Heuristic *parse_policies_heuristics(const Task &task, State::Heuristic 
     }
 }
 
-State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_string)
+State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_string, const opt<std::shared_ptr<DeadEndDetector>>& dead_end_detector)
 {
 
     if (state_heuristic_string == "blind")
@@ -91,7 +91,7 @@ State::Heuristic *parse_states_heuristics(const Task &task, str state_heuristic_
     }
     else if (state_heuristic_string == "star")
     {
-        return new Star(task);
+        return new Star(task, dead_end_detector);
     }
     else if (state_heuristic_string == "trie-star")
     {
@@ -448,7 +448,7 @@ int main(int argc, char **argv)
     percentage_memory_limit = std::atof(argv[12]);
     parse_concrete_states_generator(str(argv[14]));
     RandomWalk::Walker *walker = parse_random_walk_walker(str(argv[13]));
-    State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]));
+    State::Heuristic *state_heuristic = parse_states_heuristics(task, str(argv[4]), optional_dead_end_detector);
     SampleGenerator *samples_generator = parse_samples_generator(str(argv[8]), task, *state_heuristic, *walker, number_of_samples, length, porcentage);
     Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);

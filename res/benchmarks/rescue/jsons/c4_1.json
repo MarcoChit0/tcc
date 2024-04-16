@@ -1,6 +1,7 @@
 {
     "victim": {
-        "v1": "dying"
+        "v1": "dying",
+        "v2": "healthy"
     },
     "fire-unit": ["f1"],
     "medical-unit": ["m1"],
@@ -8,7 +9,7 @@
         "l1": {
             "objects": {
                 "fire-unit":["f1"],
-                "medical-unit": ["m1"]
+                "victim": ["v2"]
             },
             "predicates": ["fire-at", "water-at"],
             "adjacent": ["l2"],
@@ -16,16 +17,17 @@
         },
         "l2": {
             "objects": {
-                "victim": ["v1"]
+                "victim": ["v1"],
+                "medical-unit": ["m1"]
             },
             "adjacent": ["l1", "l3"],
-            "spreading-time": "4"
+            "spreading-time": "2"
         },
         "l3": {
-            "predicates": ["hospital-at"],
             "adjacent": ["l2"],
-            "spreading-time": "5"
+            "predicates" : ["hospital-at"],
+            "spreading-time": "3"
         }
     },
-    "clock": ["0", "8"]
+    "clock": ["0", "10"]
 }

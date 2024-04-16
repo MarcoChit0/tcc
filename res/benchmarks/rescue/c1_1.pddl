@@ -1,4 +1,4 @@
-(define (problem p2-rescue)
+(define (problem c1_1-rescue)
 	(:domain rescue)
 	(:objects
 		0 - number
@@ -9,10 +9,15 @@
 		5 - number
 		6 - number
 		7 - number
-		8 - number
 		l1 - location
 		l2 - location
 		l3 - location
+		l4 - location
+		l5 - location
+		l6 - location
+		l7 - location
+		l8 - location
+		l9 - location
 		v1 - victim
 		f1 - fire-unit
 		m1 - medical-unit
@@ -64,37 +69,66 @@
 		(is-greater-or-equal  7 5)
 		(is-greater-or-equal  7 6)
 		(is-greater-or-equal  7 7)
-		(inc 7 8)
-		(is-greater-or-equal  8 0)
-		(is-greater-or-equal  8 1)
-		(is-greater-or-equal  8 2)
-		(is-greater-or-equal  8 3)
-		(is-greater-or-equal  8 4)
-		(is-greater-or-equal  8 5)
-		(is-greater-or-equal  8 6)
-		(is-greater-or-equal  8 7)
-		(is-greater-or-equal  8 8)
 		(fire-unit-at f1 l1)
 		(medical-unit-at m1 l1)
 		(fire-at l1)
-		(water-at l1)
 		(adjacent l1 l2)
+		(adjacent l1 l4)
 		(adjacent l1 l1)
 		(spreading-time 0 l1)
-		(victim-at v1 l2)
+		(water-at l2)
 		(adjacent l2 l1)
 		(adjacent l2 l3)
+		(adjacent l2 l4)
 		(adjacent l2 l2)
-		(spreading-time 4 l2)
-		(hospital-at l3)
+		(spreading-time 2 l2)
+		(victim-at v1 l3)
 		(adjacent l3 l2)
+		(adjacent l3 l6)
 		(adjacent l3 l3)
-		(spreading-time 5 l3)
-		(dying v1)
+		(spreading-time 3 l3)
+		(water-at l4)
+		(adjacent l4 l1)
+		(adjacent l4 l5)
+		(adjacent l4 l7)
+		(adjacent l4 l4)
+		(spreading-time 2 l4)
+		(adjacent l5 l4)
+		(adjacent l5 l2)
+		(adjacent l5 l8)
+		(adjacent l5 l6)
+		(adjacent l5 l5)
+		(spreading-time 3 l5)
+		(adjacent l6 l3)
+		(adjacent l6 l5)
+		(adjacent l6 l9)
+		(adjacent l6 l6)
+		(spreading-time 4 l6)
+		(adjacent l7 l4)
+		(adjacent l7 l8)
+		(adjacent l7 l7)
+		(spreading-time 3 l7)
+		(adjacent l8 l5)
+		(adjacent l8 l7)
+		(adjacent l8 l9)
+		(adjacent l8 l8)
+		(spreading-time 4 l8)
+		(hospital-at l9)
+		(adjacent l9 l6)
+		(adjacent l9 l8)
+		(adjacent l9 l9)
+		(spreading-time 5 l9)
+		(hurt v1)
 		(first-victim v1)
 		(first-location l1)
 		(predecessor-location l1 l2)
 		(predecessor-location l2 l3)
+		(predecessor-location l3 l4)
+		(predecessor-location l4 l5)
+		(predecessor-location l5 l6)
+		(predecessor-location l6 l7)
+		(predecessor-location l7 l8)
+		(predecessor-location l8 l9)
 
 	)
 	(:goal

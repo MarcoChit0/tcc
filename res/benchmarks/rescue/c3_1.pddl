@@ -1,4 +1,4 @@
-(define (problem p3-rescue)
+(define (problem c3_1-rescue)
 	(:domain rescue)
 	(:objects
 		0 - number
@@ -10,14 +10,15 @@
 		6 - number
 		7 - number
 		8 - number
-		9 - number
 		l1 - location
 		l2 - location
 		l3 - location
 		l4 - location
 		v1 - victim
+		v2 - victim
 		f1 - fire-unit
 		m1 - medical-unit
+		m2 - medical-unit
 
 	)
 	(:init
@@ -76,19 +77,7 @@
 		(is-greater-or-equal  8 6)
 		(is-greater-or-equal  8 7)
 		(is-greater-or-equal  8 8)
-		(inc 8 9)
-		(is-greater-or-equal  9 0)
-		(is-greater-or-equal  9 1)
-		(is-greater-or-equal  9 2)
-		(is-greater-or-equal  9 3)
-		(is-greater-or-equal  9 4)
-		(is-greater-or-equal  9 5)
-		(is-greater-or-equal  9 6)
-		(is-greater-or-equal  9 7)
-		(is-greater-or-equal  9 8)
-		(is-greater-or-equal  9 9)
 		(fire-unit-at f1 l1)
-		(medical-unit-at m1 l1)
 		(fire-at l1)
 		(water-at l1)
 		(adjacent l1 l2)
@@ -96,11 +85,15 @@
 		(adjacent l1 l1)
 		(spreading-time 0 l1)
 		(victim-at v1 l2)
+		(medical-unit-at m1 l2)
 		(adjacent l2 l1)
 		(adjacent l2 l4)
 		(adjacent l2 l2)
 		(spreading-time 2 l2)
-		(adjacent l3 l2)
+		(victim-at v2 l3)
+		(medical-unit-at m2 l3)
+		(adjacent l3 l1)
+		(adjacent l3 l4)
 		(adjacent l3 l3)
 		(spreading-time 2 l3)
 		(hospital-at l4)
@@ -108,8 +101,10 @@
 		(adjacent l4 l2)
 		(adjacent l4 l4)
 		(spreading-time 3 l4)
-		(dying v1)
+		(hurt v1)
+		(hurt v2)
 		(first-victim v1)
+		(predecessor-victim v1 v2)
 		(first-location l1)
 		(predecessor-location l1 l2)
 		(predecessor-location l2 l3)
@@ -119,6 +114,7 @@
 	(:goal
 		(and
 			(healthy v1)
+			(healthy v2)
 		)
 	)
 )

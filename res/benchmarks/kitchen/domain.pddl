@@ -8,7 +8,7 @@
 ;; Please note that this methodology introduces a requirement to manage island availability within the instance files, which may impact how you plan and execute your cooking simulations.
 (define
     (domain kitchen)
-    (:requirements :strips :typing :non-deterministic :disjunctive-preconditions :existential-preconditions :universal-preconditions)
+    (:requirements :strips :typing :non-deterministic :disjunctive-preconditions :existential-preconditions :universal-preconditions :equality)
     (:types recipe ingredient costumer number - object)
     (:constants
         0 - number
@@ -25,8 +25,30 @@
         (can-accept ?c - costumer ?r - recipe)
         (num-recipes-to-refuse ?c - costumer ?n - number)
         (properly-added ?i - ingredient ?r - recipe ?isl - number)
+        (can-use-chef-island ?isl - number)
     )
 
+    (:action select-chef-island
+        :parameters (?chef_island - number)
+        :precondition (and 
+            (not (finished ?chef_island))
+            (or
+                ;; first island
+                (= ?chef_island 0) 
+                ;; ended work on previous island
+                (and
+                    (exists (?island - number) 
+                        (and
+                            (next ?island ?chef_island)
+                            (finished ?island)
+                        )
+                    )
+                )
+            )
+        )
+        :effect (and (can-use-chef-island ?chef_island))
+    )
+    
 
     ;; move one unit of the ingredient ing from the stock to the chef island chef-island
     (:action from-stock-to-chef-island
@@ -46,6 +68,7 @@
 
             ;; check possibility of changing the ingredient on chef's island
             (not (finished ?chef_island))
+            (can-use-chef-island ?chef_island)
         )
         
         :effect 
@@ -69,7 +92,9 @@
 
             (on-stock ?ing ?iStock)
             (on-chef-island ?ing ?iChefIsland ?chef_island)
+            
             (not (finished ?chef_island))
+            (can-use-chef-island ?chef_island)    
         )
         :effect 
         (and
@@ -87,6 +112,7 @@
         (and
             ;; the chef island chef_island contains the exaclty quantity of ingredient the recipe r requires
             (not (finished ?chef_island))
+            (can-use-chef-island ?chef_island)
             (forall (?ing - ingredient)
                 ;; if is on recipe, then must also be on chef island
                 ;; on-recipe -> on-chef-island <=> ((on-recipe ^ on-chef-island) v ~on-recipe)
@@ -97,6 +123,7 @@
         (and
             (prepared ?r)
             (finished ?chef_island)
+            (not (can-use-chef-island ?chef_island))
         )
     )    
     (:action on-recipe-add-to-recipe
@@ -105,6 +132,9 @@
         (and 
             (on-recipe ?ing ?n ?r)
             (on-chef-island ?ing ?n ?chef_island)
+
+            (can-use-chef-island ?chef_island)
+            (not (finished ?chef_island))
         )
         :effect 
         (and 
@@ -115,7 +145,7 @@
     )
     (:action not-on-recipe-add-to-recipe
         :parameters (?ing - ingredient ?r - recipe ?chef_island - number)
-        :precondition (and (not-on-recipe ?ing ?r))
+        :precondition (and (not-on-recipe ?ing ?r) (can-use-chef-island ?chef_island) (not (finished ?chef_island)))
         :effect (and (properly-added ?ing ?r ?chef_island))
     )
     

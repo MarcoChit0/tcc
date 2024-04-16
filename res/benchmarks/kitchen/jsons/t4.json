@@ -5,26 +5,26 @@
         },
         "pancakes": {
             "flour": "1"
-        },
-        "cookies": {
-            "flour": "1"
         }
     },
     "stock": {
-        "flour": "3"
+        "flour": "4"
     },
     "costumers": {
         "John": [
+            "cake"
+        ],
+        "Jane": [
             "cake",
             "pancakes"
         ],
-        "Alice": [
-            "cake",
-            "cookies"
+        "Doe": [
+            "pancakes"
         ],
-        "Bob": [
-            "cookies"
+        "Brown": [
+            "cake",
+            "pancakes"
         ]
     },
-    "islands":"3"
+    "islands":"4"
 }

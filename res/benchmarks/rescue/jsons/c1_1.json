@@ -1,0 +1,57 @@
+{
+    "victim": {
+        "v1": "hurt"
+    },
+    "fire-unit": ["f1"],
+    "medical-unit": ["m1"],
+    "location": {
+        "l1": {
+            "objects": {
+                "fire-unit":["f1"],
+                "medical-unit": ["m1"]
+            },
+            "predicates": ["fire-at"],
+            "adjacent": ["l2", "l4"],
+            "spreading-time": "0"
+        },
+        "l2": {
+            "adjacent": ["l1", "l3", "l4"],
+            "predicates" : ["water-at"],
+            "spreading-time": "2"
+        },
+        "l3": {
+            "objects": {
+                "victim": ["v1"]
+            },
+            "adjacent": ["l2", "l6"],
+            "spreading-time": "3"
+        },
+        "l4": {
+            "adjacent": ["l1", "l5", "l7"],
+            "predicates" : ["water-at"],
+            "spreading-time": "2"
+        },
+        "l5": {
+            "adjacent": ["l4", "l2", "l8", "l6"],
+            "spreading-time": "3"
+        },
+        "l6": {
+            "adjacent": ["l3", "l5", "l9"],
+            "spreading-time": "4"
+        },
+        "l7": {
+            "adjacent": ["l4", "l8"],
+            "spreading-time": "3"
+        },
+        "l8": {
+            "adjacent": ["l5", "l7", "l9"],
+            "spreading-time": "4"
+        },
+        "l9": {
+            "adjacent": ["l6", "l8"],
+            "predicates": ["hospital-at"],
+            "spreading-time": "5"
+        }
+    },
+    "clock": ["0", "7"]
+}

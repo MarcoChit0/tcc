@@ -1,49 +1,66 @@
 {
     "city": {
         "a": [
-            "b", "c"
+            "b"
         ],
         "b": [
-            "d", "e"
+            "c"
         ],
         "c": [
-            "d", "a"
-        ],
-        "d": [
-            "f"
-        ],
-        "e": [
             "d"
         ],
+        "d": [
+            "e"
+        ],
+        "e": [
+            "f"
+        ],
         "f": [
-            "c"
+            "g"
+        ],
+        "g": [
+            "h"
+        ],
+        "h": [
+            "i"
+        ],
+        "i": [
+            "j"
+        ],
+        "j": [
+            "a"
         ]
     },
     "state": {
         "s0": {
             "city": [
                 "a",
-                "b"
+                "b",
+                "c",
+                "d"
             ],
             "map": {
-                "buying-price": "1",
-                "selling-price": "0"
+                "buying-price": "3",
+                "selling-price": "2"
             }
         },
         "s1": {
             "city": [
                 "a",
-                "c"
+                "j",
+                "d"
             ],
             "map": {
-                "buying-price": "1",
-                "selling-price": "0"
+                "buying-price": "2",
+                "selling-price": "1"
             }
         },
         "s2": {
             "city": [
                 "b",
-                "d"
+                "d",
+                "e",
+                "f"
             ],
             "map": {
                 "buying-price": "1",
@@ -53,21 +70,24 @@
         "s3": {
             "city": [
                 "b",
-                "e"
+                "e",
+                "f"
             ],
             "map": {
-                "buying-price": "1",
-                "selling-price": "0"
+                "buying-price": "2",
+                "selling-price": "2"
             }
         },
         "s4": {
             "city": [
                 "c",
-                "d"
+                "d",
+                "e",
+                "f"
             ],
             "map": {
                 "buying-price": "1",
-                "selling-price": "0"
+                "selling-price": "1"
             }
         },
         "s5": {
@@ -76,24 +96,26 @@
                 "f"
             ],
             "map": {
-                "buying-price": "1",
+                "buying-price": "2",
                 "selling-price": "0"
             }
         },
         "s6": {
             "city": [
                 "e",
-                "d"
+                "d",
+                "a"
             ],
             "map": {
-                "buying-price": "1",
+                "buying-price": "3",
                 "selling-price": "0"
             }
         },
         "s7": {
             "city": [
                 "f",
-                "c"
+                "c",
+                "j"
             ],
             "map": {
                 "buying-price": "1",
@@ -167,12 +189,33 @@
                 "buying": ["bottle-of-wine"],
                 "selling": ["bottle-of-beer"]
             }
+        },
+        "p6": {
+            "at": "j",
+            "is": {
+                "buying": ["bottle-of-beer"],
+                "selling": ["bottle-of-wine"]
+            }
+        },
+        "p7": {
+            "at": "h",
+            "is": {
+                "buying": ["bottle-of-beer"],
+                "selling": ["bottle-of-wine"]
+            }
+        },
+        "p8": {
+            "at": "i",
+            "is": {
+                "buying": ["bottle-of-beer"],
+                "selling": ["bottle-of-wine"]
+            }
         }
     },
     "backpack": {
-        "total-space": "3"
+        "total-space": "4"
     },
-    "money": "4",
-    "biggest-number": "7",
+    "money": "5",
+    "biggest-number": "10",
     "initial-city": "a"
 }

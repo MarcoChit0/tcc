@@ -1,0 +1,210 @@
+{
+    "city": {
+        "a0": ["a1"],
+        "a1": ["a2"],
+        "a2": ["a3"],
+        "a3": ["a4"],
+        "a4": ["a5"],
+        "a5": ["a6"],
+        "a6": ["a0", "a1", "a2", "a3", "a4", "a5"]
+    },
+    "state": {
+        "s0": {
+            "city": [
+                "a0",
+                "a6"
+            ],
+            "map": {
+                "buying-price": "7",
+                "selling-price": "0"
+            }
+        },
+        "s1": {
+            "city": [
+                "a1",
+                "a6"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s2": {
+            "city": [
+                "a2",
+                "a6"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s3": {
+            "city": [
+                "a3",
+                "a6"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s4": {
+            "city": [
+                "a4",
+                "a6"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s5": {
+            "city": [
+                "a5",
+                "a6"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s_0": {
+            "city": [
+                "a0",
+                "a1"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s_1": {
+            "city": [
+                "a1",
+                "a2"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s_2": {
+            "city": [
+                "a2",
+                "a3"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s_3": {
+            "city": [
+                "a3",
+                "a4"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        },
+        "s_4": {
+            "city": [
+                "a4",
+                "a5"
+            ],
+            "map": {
+                "buying-price": "1",
+                "selling-price": "0"
+            }
+        }
+    },
+    "item": {
+        "item0": {
+            "volumn": "1",
+            "buying-price": "1",
+            "selling-price": "2"
+        },
+        "item1": {
+            "volumn": "2",
+            "buying-price": "2",
+            "selling-price": "3"
+        },
+        "item2": {
+            "volumn": "3",
+            "buying-price": "3",
+            "selling-price": "4"
+        },
+        "item3": {
+            "volumn": "4",
+            "buying-price": "4",
+            "selling-price": "5"
+        },
+        "item4": {
+            "volumn": "5",
+            "buying-price": "5",
+            "selling-price": "6"
+        },
+        "item5": {
+            "volumn": "6",
+            "buying-price": "6",
+            "selling-price": "7"
+        }
+    },
+    "person": {
+        "p0": {
+            "at": "a0",
+            "is": {
+                "selling" : ["item0"]
+            }
+        },
+        "p1": {
+            "at": "a1",
+            "is": {
+                "buying" : ["item0"],
+                "selling" : ["item1"]
+            }
+        },
+        "p2": {
+            "at": "a2",
+            "is": {
+                "buying" : ["item1"],
+                "selling" : ["item2"]
+            }
+        },
+        "p3": {
+            "at": "a3",
+            "is": {
+                "buying" : ["item2"],
+                "selling" : ["item3"]
+            }
+        },
+        "p4": {
+            "at": "a4",
+            "is": {
+                "buying" : ["item3"],
+                "selling" : ["item4"]
+            }
+        },
+        "p5": {
+            "at": "a5",
+            "is": {
+                "buying" : ["item4"],
+                "selling" : ["item5"]
+            }
+        },
+        "p6": {
+            "at": "a6",
+            "is": {
+                "buying" : ["item5"]
+            }
+        }
+    },
+    "backpack": {
+        "total-space": "6"
+    },
+    "money": "1",
+    "biggest-number": "7",
+    "initial-city": "a0"
+}

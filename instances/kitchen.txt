@@ -1,1 +1,2 @@
-kitchen,p5
+kitchen,c1_1
+kitchen,c2_1

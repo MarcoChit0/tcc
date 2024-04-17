@@ -1,0 +1,35 @@
+{
+    "recipes": {
+        "cake": {
+            "flour": "1",
+            "sugar": "1"
+        },
+        "pancakes": {
+            "flour": "1",
+            "butter": "1"
+        },
+        "cookies": {
+            "butter": "1",
+            "sugar": "1"
+        }
+    },
+    "stock": {
+        "flour": "4",
+        "butter": "4",
+        "sugar": "4"
+    },
+    "costumers": {
+        "John": [
+            "cake",
+            "pancakes"
+        ],
+        "Alice": [
+            "cookies"
+        ],
+        "Charlie": [
+            "pancakes",
+            "cookies"
+        ]
+    },
+    "islands":"4"
+}

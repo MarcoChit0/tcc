@@ -1,5 +1,4 @@
-sokoban,p1
-sokoban,p2
-sokoban,p3
-sokoban,p4
-sokoban,p5
+sokoban,c1_1
+sokoban,c2_1
+sokoban,c3_1
+sokoban,c4_1

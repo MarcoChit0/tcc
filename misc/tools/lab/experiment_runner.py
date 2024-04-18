@@ -69,6 +69,7 @@ class ArgParsingNamespace(tap.Tap):
     dead_end_detector: str
     dead_end_labels_program_flow: DeadEndProgramFlow
     solver: str
+    dead_end_time_limit_for_state_space_creation: int
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=7)
@@ -94,7 +95,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-ded", "--dead-end-detector", type=str, default="reachable")
         self.add_argument("-delpf", "--dead_end_labels_program_flow",choices=list(DeadEndProgramFlow) ,default=DeadEndProgramFlow.GENERATE_LABELS_AND_CONTINUE_PROGRAM, type=DeadEndProgramFlow, help=f"{list(DeadEndProgramFlow)}")
         self.add_argument("-s", "--solver", type=str, default="and-star") # choices in {and-star, weighted-and-star, depth-first-and-star, greedy-and-star}
-
+        self.add_argument("-detl", "--dead-end-time-limit-for-state-space-creation", type=int, default=None)
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
@@ -134,7 +135,8 @@ class ThreadArguments:
         regressor: str,
         dead_end_detector: str,
         dead_end_labels_program_flow: DeadEndProgramFlow,
-        solver: str
+        solver: str,
+        dead_end_time_limit_for_state_space_creation: int
         ):
         global base_dir_structure
         self.task_info = task_info
@@ -159,6 +161,10 @@ class ThreadArguments:
         self.save_folder_path = f'{basic_dir_structure}/{self.params}/{self.task}/'
         self.cerr = os.path.join(self.save_folder_path, 'log.txt')
         self.cout = os.path.join(self.save_folder_path, 'results.csv')
+        if dead_end_time_limit_for_state_space_creation != None:
+            self.dead_end_time_limit_for_state_space_creation = dead_end_time_limit_for_state_space_creation
+        else:
+            self.dead_end_time_limit_for_state_space_creation = "none"
 
     def get_splitted_command(self) -> list[str]:
         return [
@@ -181,6 +187,7 @@ class ThreadArguments:
             f'{self.dead_end_detector}',
             f'{self.dead_end_labels_program_flow.value}',
             f'{self.solver}',
+            f'{self.dead_end_time_limit_for_state_space_creation}',
             f'{self.save_folder_path}'
         ]
     
@@ -209,6 +216,7 @@ class ThreadArguments:
             "regressor": self.regressor,
             "dead_end_detector": self.dead_end_detector,
             "dead_end_labels_program_flow": self.dead_end_labels_program_flow.value,
+            "dead_end_time_limit_for_state_space_creation": self.dead_end_time_limit_for_state_space_creation,
             "task": self.task,
             "params": self.params,
             "save_folder_path": self.save_folder_path,
@@ -243,6 +251,7 @@ def run_thread(thread_arguments: ThreadArguments) -> None:
         # kill the process
         process.kill()
         stdout, stderr = process.communicate()
+        stderr += f"\n\nTime limit has been reached. The process has been killed.\n"
 
     print_lock.acquire(); time.sleep(0.1)
     print(thread_arguments.to_json())
@@ -302,7 +311,7 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                                     for regressor in apn.regressor.split(','):
                                                         for dead_end_detector in apn.dead_end_detector.split(','):
                                                             for solver in apn.solver.split(','):
-                                                                args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow, solver)
+                                                                args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow, solver, apn.dead_end_time_limit_for_state_space_creation)
                                                                 yield Thread(target=run_thread, args=[args])
 
                                         

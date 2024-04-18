@@ -72,5 +72,7 @@ void CompleteDeadEndDetector::mark_goal_states_as_alive(
     assert(states.size() == goal_states.size() + non_goal_states.size());
 }
 
-CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task) : ReachableDeadEndDetector(task)
-{}
+CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const opt<int> &time_limit_seconds)
+    : ReachableDeadEndDetector(task, time_limit_seconds)
+{
+}

@@ -353,15 +353,15 @@ enum DeadEndLabelsProgramFlow
 };
 
 
-void select_dead_end_detector(const Task &task, str dead_end_detector, int dead_end_labels_program_flow, std::optional<std::shared_ptr<DeadEndDetector>> &optional_dead_end_detector)
+void select_dead_end_detector(const Task &task, str dead_end_detector, int dead_end_labels_program_flow, std::optional<std::shared_ptr<DeadEndDetector>> &optional_dead_end_detector, const opt<int> &time_limit_to_generate_state_space = std::nullopt)
 {
     if (dead_end_detector == "complete")
     {
-        optional_dead_end_detector = std::make_shared<CompleteDeadEndDetector>(task);
+        optional_dead_end_detector = std::make_shared<CompleteDeadEndDetector>(task, time_limit_to_generate_state_space);
     }
     else if(dead_end_detector == "reachable")
     {
-        optional_dead_end_detector = std::make_shared<ReachableDeadEndDetector>(task);
+        optional_dead_end_detector = std::make_shared<ReachableDeadEndDetector>(task, time_limit_to_generate_state_space);
     }
     else if (dead_end_detector == "none")
     {
@@ -436,7 +436,12 @@ int main(int argc, char **argv)
     Task::Regressor *regressor = parse_regressor(str(argv[15]));
     Task task = Task(str(argv[1]), str(argv[2]), *regressor);
     std::optional<std::shared_ptr<DeadEndDetector>> optional_dead_end_detector;
-    select_dead_end_detector(task, str(argv[16]), std::atoi(argv[17]), optional_dead_end_detector);
+    std::optional<int> time_limit_to_generate_state_space = std::nullopt;
+    if(str(argv[19]) != "none")
+    {
+        time_limit_to_generate_state_space = std::atoi(argv[19]);
+    }
+    select_dead_end_detector(task, str(argv[16]), std::atoi(argv[17]), optional_dead_end_detector, time_limit_to_generate_state_space);
 
     // commented for running only dead-end detector on server 
     int number_of_samples = std::atoi(argv[5]);

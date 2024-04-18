@@ -21,7 +21,7 @@ void ReachableDeadEndDetector::create_states(const vec<Fact> &facts, set<State> 
         State state = stack.top();
         stack.pop();
         states.insert(state);
-        
+
         if (state.is_goal(this->task.goal_condition()))
         {
             continue;
@@ -99,7 +99,7 @@ void ReachableDeadEndDetector::find_easy_dead_end_states(
     {
         if (this->labeled_states[state.id] == NO_LABEL)
         {
-            if(this->first_dead_end_detected_time == -1)
+            if (this->first_dead_end_detected_time == -1)
             {
                 this->first_dead_end_detected_time = get_ellapsed_time();
             }
@@ -126,7 +126,7 @@ void ReachableDeadEndDetector::find_hard_dead_end_states(
     {
         if (this->labeled_states[state.id] == NO_LABEL)
         {
-            if(this->first_hard_dead_end_detected_time == -1)
+            if (this->first_hard_dead_end_detected_time == -1)
             {
                 this->first_hard_dead_end_detected_time = get_ellapsed_time();
             }
@@ -195,7 +195,7 @@ void ReachableDeadEndDetector::count_and_print(
     int hard_dead_end_count = 0, alive_count = 0, weak_alive_count = 0, easy_dead_end_count = 0;
 
     // commented for not to exceed memory limit on server
-    std::ofstream labels_file(dead_end_directory+DEAD_END_LABEL_TO_IP_FILE);
+    std::ofstream labels_file(dead_end_directory + DEAD_END_LABEL_TO_IP_FILE);
     if (not labels_file.is_open())
     {
         std::cerr << "LOG::ReachableDeadEndDetector::save_states::Error opening states file." << std::endl;
@@ -276,7 +276,7 @@ void ReachableDeadEndDetector::mark_bad_state_action_pairs(
         State predecessor_state = pair_state_action.first;
         if (not have_good_actions(predecessor_state, is_bad_state_action_pair) and not this->labeled_states[predecessor_state.id] == ALIVE and not this->labeled_states[predecessor_state.id] == EASY_DEAD_END)
         {
-            if(this->first_dead_end_detected_time == -1)
+            if (this->first_dead_end_detected_time == -1)
             {
                 this->first_dead_end_detected_time = get_ellapsed_time();
             }
@@ -308,17 +308,43 @@ double ReachableDeadEndDetector::is_deadend(const State &state) const
     }
 }
 
-ReachableDeadEndDetector::ReachableDeadEndDetector(const Task &task) : DeadEndDetector(task){};
+ReachableDeadEndDetector::ReachableDeadEndDetector(const Task &task, const opt<int> &time_limit_seconds) : DeadEndDetector(task),
+                                                                                                           time_limit_seconds(time_limit_seconds)
+                                                                                                           {};
 
 void ReachableDeadEndDetector::label_states(const bool save_metadata)
 {
     std::ofstream log_file(dead_end_directory + DEAD_END_LOG_FILE);
     // 1.
-    log_file << "1. Creating states\n";
     set<State> states;
-    create_states(vec<Fact>(), states);
-    log_file << "1. States created: " << states.size() << std::endl;
-    log_file << "1. Ended at " << get_ellapsed_time() << std::endl;
+    // create_states(vec<Fact>(), states);
+    if (this->time_limit_seconds.has_value())
+    {
+        log_file << "1. Creating states with time constraints of " <<  this->time_limit_seconds.value() << " seconds\n";
+        log_file << "1. Started at " << get_ellapsed_time() << std::endl;
+        std::future<void> response = std::async(std::launch::async, &ReachableDeadEndDetector::create_states, this, vec<Fact>(), std::ref(states));
+        if (response.wait_for(std::chrono::seconds(this->time_limit_seconds.value())) == std::future_status::ready)
+        {
+            response.get();
+            log_file << "1. States sucessfully created within the time limit." << std::endl;
+            log_file << "1. States created: " << states.size() << std::endl;
+            log_file << "1. Ended at " << get_ellapsed_time() << std::endl;
+        }
+        else
+        {
+            log_file << "1. States creation failed within the time limit." << std::endl;
+            log_file << "1. Ending program execution at " << get_ellapsed_time() << std::endl;
+            exit(1);
+        }
+    }
+    else
+    {
+        log_file << "1. Creating states without time constraints\n";
+        log_file << "1. Started at " << get_ellapsed_time() << std::endl;
+        create_states(vec<Fact>(), states);
+        log_file << "1. States created: " << states.size() << std::endl;
+        log_file << "1. Ended at " << get_ellapsed_time() << std::endl;
+    }
 
     // 2.
     map<int64_t, int64_t> predecessor;
@@ -362,12 +388,12 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
         { // dead ends that are not that interessing
             this->find_easy_dead_end_states(reversed_edges, states, dead_end_states, is_bad_state_action_pair);
         }
-        if(this->first_dead_end_detected_time != -1 and not first_dead_end_detected)
+        if (this->first_dead_end_detected_time != -1 and not first_dead_end_detected)
         {
             log_file << "4. First dead end detected at " << this->first_dead_end_detected_time << std::endl;
             first_dead_end_detected = true;
         }
-        if(this->first_hard_dead_end_detected_time != -1 and not first_hard_dead_end_detected)
+        if (this->first_hard_dead_end_detected_time != -1 and not first_hard_dead_end_detected)
         {
             log_file << "4. First hard dead end detected at " << this->first_hard_dead_end_detected_time << std::endl;
             first_hard_dead_end_detected = true;

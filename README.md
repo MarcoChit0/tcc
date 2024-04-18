@@ -39,3 +39,10 @@ ModuleNotFoundError: No module named 'res'
 ```
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 ```
+### Problem
+```
+CMake Error at CMakeLists.txt:17 (find_package): By not providing "FindTorch.cmake" in CMAKE_MODULE_PATH this project has asked CMake to find a package configuration file provided by "Torch", but CMake did not find one.
+```
+### Solution
+```
+```

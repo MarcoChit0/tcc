@@ -22,5 +22,5 @@ protected:
         StateActionPairToBoolMap &is_bad_state_action_pair) override;
 
 public:
-    CompleteDeadEndDetector(const Task &task);
+    CompleteDeadEndDetector(const Task &task, const opt<int>& time_limit_seconds = std::nullopt);
 };

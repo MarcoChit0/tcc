@@ -7,6 +7,7 @@
 class ReachableDeadEndDetector : public DeadEndDetector
 {
     protected:
+        const opt<int>& time_limit_seconds;
         void find_weak_alive_states(
             map<State, StateActionPairSet> &reversed_edges,
             const set<State> &goal_states,
@@ -55,7 +56,7 @@ class ReachableDeadEndDetector : public DeadEndDetector
         virtual void create_states(const vec<Fact> &facts, set<State> &states);
 
     public:    
-        ReachableDeadEndDetector(const Task &task);
+        ReachableDeadEndDetector(const Task &task, const opt<int>& time_limit_seconds = std::nullopt);
         double is_deadend(const State &state) const;
         void label_states(const bool save_metadata) override;
 

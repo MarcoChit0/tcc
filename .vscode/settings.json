@@ -98,7 +98,9 @@
         "__hash_table": "cpp",
         "target": "cpp",
         "span": "cpp",
-        "format": "cpp"
+        "format": "cpp",
+        "__mutex_base": "cpp",
+        "__functional_base": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "python.analysis.autoImportCompletions": true,

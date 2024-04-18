@@ -4,25 +4,23 @@
         "a1": ["a2"],
         "a2": ["a3"],
         "a3": ["a4"],
-        "a4": ["a5"],
-        "a5": ["a6"],
-        "a6": ["a0", "a1", "a2", "a3", "a4", "a5"]
+        "a4": ["a0", "a1", "a2", "a3"]
     },
     "state": {
         "s0": {
             "city": [
                 "a0",
-                "a6"
+                "a4"
             ],
             "map": {
-                "buying-price": "7",
+                "buying-price": "5",
                 "selling-price": "0"
             }
         },
         "s1": {
             "city": [
                 "a1",
-                "a6"
+                "a4"
             ],
             "map": {
                 "buying-price": "1",
@@ -32,7 +30,7 @@
         "s2": {
             "city": [
                 "a2",
-                "a6"
+                "a4"
             ],
             "map": {
                 "buying-price": "1",
@@ -42,27 +40,7 @@
         "s3": {
             "city": [
                 "a3",
-                "a6"
-            ],
-            "map": {
-                "buying-price": "1",
-                "selling-price": "0"
-            }
-        },
-        "s4": {
-            "city": [
-                "a4",
-                "a6"
-            ],
-            "map": {
-                "buying-price": "1",
-                "selling-price": "0"
-            }
-        },
-        "s5": {
-            "city": [
-                "a5",
-                "a6"
+                "a4"
             ],
             "map": {
                 "buying-price": "1",
@@ -98,26 +76,6 @@
                 "buying-price": "1",
                 "selling-price": "0"
             }
-        },
-        "s_3": {
-            "city": [
-                "a3",
-                "a4"
-            ],
-            "map": {
-                "buying-price": "1",
-                "selling-price": "0"
-            }
-        },
-        "s_4": {
-            "city": [
-                "a4",
-                "a5"
-            ],
-            "map": {
-                "buying-price": "1",
-                "selling-price": "0"
-            }
         }
     },
     "item": {
@@ -140,16 +98,6 @@
             "volumn": "4",
             "buying-price": "4",
             "selling-price": "5"
-        },
-        "item4": {
-            "volumn": "5",
-            "buying-price": "5",
-            "selling-price": "6"
-        },
-        "item5": {
-            "volumn": "6",
-            "buying-price": "6",
-            "selling-price": "7"
         }
     },
     "person": {
@@ -183,28 +131,14 @@
         "p4": {
             "at": "a4",
             "is": {
-                "buying" : ["item3"],
-                "selling" : ["item4"]
-            }
-        },
-        "p5": {
-            "at": "a5",
-            "is": {
-                "buying" : ["item4"],
-                "selling" : ["item5"]
-            }
-        },
-        "p6": {
-            "at": "a6",
-            "is": {
-                "buying" : ["item5"]
+                "buying" : ["item3"]
             }
         }
     },
     "backpack": {
-        "total-space": "6"
+        "total-space": "4"
     },
     "money": "1",
-    "biggest-number": "7",
+    "biggest-number": "5",
     "initial-city": "a0"
 }

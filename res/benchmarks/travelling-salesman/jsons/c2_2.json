@@ -1,0 +1,272 @@
+{
+    "city": {
+        "a": [
+            "b", "c", "d", "e"
+        ],
+        "b": [
+            "d", "c", "a", "e"
+        ],
+        "c": [
+            "d", "b", "a", "e"
+        ],
+        "d": [
+            "b", "c", "e", "a"
+        ],
+        "e": [
+            "a", "b", "c", "d"
+        ]
+    },
+    "cities-to-visit": "all",
+    "state": {
+        "s0" : {
+            "city": [
+                "a",
+                "b"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s1" : {
+            "city": [
+                "a",
+                "c"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s2" : {
+            "city": [
+                "a",
+                "d"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s3" : {
+            "city": [
+                "a",
+                "e"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s4" : {
+            "city": [
+                "b",
+                "c"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "1"
+            }
+        },
+        "s5" : {
+            "city": [
+                "b",
+                "d"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s6" : {
+            "city": [
+                "b",
+                "e"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s7" : {
+            "city": [
+                "c",
+                "d"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s8" : {
+            "city": [
+                "c",
+                "e"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "1"
+            }
+        },
+        "s9" : {
+            "city": [
+                "d",
+                "e"
+            ],
+            "map": {
+                "buying-price": "2",
+                "selling-price": "0"
+            }
+        },
+        "s10" : {
+            "city": [
+                "a",
+                "b",
+                "c"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s11" : {
+            "city": [
+                "a",
+                "b",
+                "d"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s12" : {
+            "city": [
+                "a",
+                "b",
+                "e"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s13" : {
+            "city": [
+                "a",
+                "c",
+                "d"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s14" : {
+            "city": [
+                "a",
+                "c",
+                "e"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s15" : {
+            "city": [
+                "a",
+                "d",
+                "e"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "2"
+            }
+        },
+        "s16" : {
+            "city": [
+                "b",
+                "c",
+                "d"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s17" : {
+            "city": [
+                "b",
+                "c",
+                "e"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s18" : {
+            "city": [
+                "b",
+                "d",
+                "e"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        },
+        "s19" : {
+            "city": [
+                "c",
+                "d",
+                "e"
+            ],
+            "map": {
+                "buying-price": "3",
+                "selling-price": "0"
+            }
+        }
+    },
+    "item":{
+        "item1": {
+            "volumn": "1",
+            "buying-price": "1",
+            "selling-price": "1"
+        },
+        "item2": {
+            "volumn": "2",
+            "buying-price": "2",
+            "selling-price": "2"
+        }
+    },
+    "person":{
+        "p1": {
+            "at": "a",
+            "is": {
+                "selling" : ["item1", "item2"]
+            }
+        },
+        "p2": {
+            "at": "b",
+            "is": {
+                "buying" : ["item1"],
+                "selling" : ["item2"]
+            }
+        },
+        "p3": {
+            "at": "c",
+            "is": {
+                "buying" : ["item2"],
+                "selling" : ["item1"]
+            }
+        }
+    },
+    "backpack": {
+        "total-space": "2"
+    },
+    "money": "5",
+    "biggest-number": "5",
+    "initial-city": "a"
+}

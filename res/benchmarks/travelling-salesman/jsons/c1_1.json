@@ -1,7 +1,7 @@
 {
     "city": {
         "a": [
-            "b", "c"
+            "b", "c", "d", "e"
         ],
         "b": [
             "a", "e", "d"
@@ -10,15 +10,13 @@
             "d", "e", "a"
         ],
         "d": [
-            "b", "c", "f"
+            "b", "c", "e"
         ],
         "e": [
-            "b", "c", "f"
-        ],
-        "f": [
-            "d", "e"
+            "b", "c", "e"
         ]
     },
+    "cities-to-visit": "all",
     "state": {
         "s1": {
             "city": [
@@ -34,13 +32,12 @@
         "s2": {
             "city": [
                 "b",
-                "c",
                 "d",
                 "e"
             ],
             "map": {
                 "buying-price": "3",
-                "selling-price": "0"
+                "selling-price": "1"
             }
         },
         "s3": {
@@ -49,19 +46,18 @@
                 "d"
             ],
             "map": {
-                "buying-price": "4",
+                "buying-price": "3",
                 "selling-price": "0"
             }
         },
         "s4": {
             "city": [
-                "c",
-                "d",
                 "e",
-                "f"
+                "c",
+                "d"
             ],
             "map": {
-                "buying-price": "4",
+                "buying-price": "3",
                 "selling-price": "0"
             }
         },
@@ -84,8 +80,8 @@
         },
         "bottle-of-coke": {
             "volumn": "1",
-            "buying-price": "3",
-            "selling-price": "5"
+            "buying-price": "2",
+            "selling-price": "3"
         },
         "bottle-of-beer": {
             "volumn": "2",
@@ -118,25 +114,12 @@
             "is": {
                 "buying" : ["bottle-of-beer"]
             }
-        },
-        "p5": {
-            "at": "f",
-            "is": {
-                "buying" : ["bottle-of-coke"],
-                "selling": ["bottle-of-water"]
-            }
-        },
-        "p6": {
-            "at": "c",
-            "is": {
-                "selling": ["bottle-of-water"]
-            }
         }
     },
     "backpack": {
         "total-space": "2"
     },
-    "money": "5",
-    "biggest-number": "5",
+    "money": "4",
+    "biggest-number": "4",
     "initial-city": "a"
 }

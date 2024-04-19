@@ -79,5 +79,8 @@ if __name__ == "__main__":
 
                 initial_predicates.append(f"(person-at {person} {instance['person'][person]['at']})")
 
-            goal_predicates = [f"(visited-once {city})" for city in instance["city"].keys()]
+            if "cities-to-visit" not in instance or instance["cities-to-visit"] == "all":
+                goal_predicates = [f"(visited-once {city})" for city in instance["city"].keys()]
+            else:
+                goal_predicates = [f"(visited-once {city})" for city in instance["cities-to-visit"]]
             write_instance("travelling-salesman", path, json_file.replace(".json", ""), objets_predicates, initial_predicates, goal_predicates)

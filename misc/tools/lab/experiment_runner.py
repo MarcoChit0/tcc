@@ -79,7 +79,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-wl", "--white-list-file-path", type=str, default='./white-list.txt')
         self.add_argument("-bl", "--black-list-file-path", type=str, default='./black-list.txt')
         self.add_argument("-p", "--save-folder-name-prefix", type=str, default=f'test,v{datetime.date.today().isoformat()}')
-        self.add_argument("-sh", "--state-heuristic", type=str, default='trie-star')
+        self.add_argument("-sh", "--state-heuristic", type=str, default='star')
         self.add_argument("-ph", "--policy-heuristic", type=str, default='delta-nearest')
         self.add_argument("-ns", "--number-of-samples", type=str, default="100")
         self.add_argument("-l", "--length", type=str, default="facts-over-effects-mean-over-actions-mean")
@@ -92,7 +92,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-w", "--walker", type=str, default="stop")
         self.add_argument("-csg", "--concrete-states-generator", type=str, default="all")
         self.add_argument("-r", "--regressor", type=str, default="action-proportionality")
-        self.add_argument("-ded", "--dead-end-detector", type=str, default="reachable")
+        self.add_argument("-ded", "--dead-end-detector", type=str, default="none")
         self.add_argument("-delpf", "--dead_end_labels_program_flow",choices=list(DeadEndProgramFlow) ,default=DeadEndProgramFlow.GENERATE_LABELS_AND_CONTINUE_PROGRAM, type=DeadEndProgramFlow, help=f"{list(DeadEndProgramFlow)}")
         self.add_argument("-s", "--solver", type=str, default="and-star") # choices in {and-star, weighted-and-star, depth-first-and-star, greedy-and-star}
         self.add_argument("-detl", "--dead-end-time-limit-for-state-space-creation", type=int, default=None)

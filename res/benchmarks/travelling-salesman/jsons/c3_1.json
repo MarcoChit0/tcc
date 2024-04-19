@@ -6,6 +6,7 @@
         "a3": ["a4"],
         "a4": ["a0", "a1", "a2", "a3"]
     },
+    "cities-to-visit": "all",
     "state": {
         "s0": {
             "city": [

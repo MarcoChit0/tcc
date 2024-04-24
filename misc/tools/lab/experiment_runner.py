@@ -72,7 +72,7 @@ class ArgParsingNamespace(tap.Tap):
     dead_end_time_limit_for_state_space_creation: int
 
     def configure(self) -> None:
-        self.add_argument("-n", "--number-of-threads", type=int, default=7)
+        self.add_argument("-n", "--number-of-threads", type=int, default=3)
         self.add_argument("-t", "--time-limit", help="(in minutes)", type=float, default=5)
         self.add_argument("-m", "--memory-limit", help="(in Gb)", type=float, default=64)
         self.add_argument("-ra", "--run-again-if-done", default=False, action='store_true')

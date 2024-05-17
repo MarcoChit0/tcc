@@ -1,0 +1,45 @@
+{
+    "recipes": {
+        "cake": {
+            "flour": "1",
+            "eggs": "1"
+        },
+        "pancakes": {
+            "flour": "1",
+            "butter": "1"
+        }
+    },
+    "stock": {
+        "flour": "7",
+        "eggs": "5",
+        "butter": "5"
+    },
+    "costumers": {
+        "John": [
+            "cake",
+            "pancakes"
+        ],
+        "Alice": [
+            "cake"
+        ],
+        "Charlie": [
+            "pancakes",
+            "cake"
+        ],
+        "Bob": [
+            "pancakes"
+        ],
+        "David": [
+            "cake"
+        ],
+        "Margaret":
+        [
+            "cake",
+            "pancakes"
+        ],
+        "Eve": [
+            "pancakes"
+        ]
+    },
+    "islands":"7"
+}

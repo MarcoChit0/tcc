@@ -121,6 +121,7 @@ if __name__ == "__main__":
         object_predicates = ["r{}c{} - location".format(i, j) for i in range(row) for j in range(column)] + ["{} - direction".format(dir) for dir in directions.keys()]
         initial_predicates = []
         goal_predicates = []
+        box_counter = 0
 
         for i in range(row):
             for j in range(column):
@@ -141,7 +142,9 @@ if __name__ == "__main__":
                     initial_predicates.append(f"(alive)")
                 
                 if grid[i][j] in box_values:
-                    initial_predicates.append(f"(box-at r{i}c{j})")
+                    initial_predicates.append(f"(box-at box_{box_counter} r{i}c{j})")
+                    goal_predicates.append(f"(at-goal box_{box_counter})")
+                    box_counter += 1
                 
                 if grid[i][j] in boots_values:
                     initial_predicates.append(f"(boots-at r{i}c{j})")
@@ -150,15 +153,16 @@ if __name__ == "__main__":
                     initial_predicates.append(f"(is-slippery r{i}c{j})")
 
                 if grid[i][j] in goal_values:
-                    goal_predicates.append(f"(box-at r{i}c{j})")
-                #    initial_predicates.append(f"(is-goal r{i}c{j})")
+                    initial_predicates.append(f"(is-goal r{i}c{j})")
 
                 if grid[i][j] == grid_elements['wall']:
                     initial_predicates.append(f"(not (is-clear r{i}c{j}))")
 
                 initial_predicates.extend(apply_movements(i, j))
 
-
+        for i in range(box_counter):
+            object_predicates.append(f"box_{i} - box")
+    
         parser_input = []
         for i in range(row):
             s = ''

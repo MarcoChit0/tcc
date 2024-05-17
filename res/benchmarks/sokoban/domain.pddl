@@ -2,16 +2,18 @@
     define 
         (domain sokoban-non-deterministic)
         (:requirements :typing :strips :non-deterministic :disjunctive-preconditions :existential-preconditions)
-        (:types location direction)
+        (:types location direction box)
         (:predicates 
             (is-clear ?loc - location)
-            (box-at ?loc - location)
+            (box-at ?b - box ?loc - location)
             (player-at ?loc - location)
             (boots-at ?loc - location)
             (is-slippery ?loc - location)
             (using-non-slippery-boots)
             (alive)
             (move-dir ?from ?to - location ?dir - direction)
+            (at-goal ?b - box)
+            (is-goal ?loc - location)
         )
         (
             :action move-slippery
@@ -70,6 +72,7 @@
             (
                 ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
                 ?dir - direction
+                ?b - box
             )
             :precondition
             (
@@ -78,7 +81,7 @@
 
                     ;; player and box at defined positions
                     (player-at ?player_pos)
-                    (box-at ?box_pos)
+                    (box-at ?b ?box_pos)
                     
                     ;; all positions must be connected
                     (move-dir ?player_pos ?box_pos ?dir)
@@ -97,7 +100,8 @@
                 and
                     ;; remove player and box from theirs previous positions
                     (not (player-at ?player_pos))
-                    (not (box-at ?box_pos))
+                    (not (box-at ?b ?box_pos))
+                    (not (at-goal ?b))
 
                     ;; place player on box's previous position and clear theirs previous position
                     (player-at ?box_pos)
@@ -108,13 +112,13 @@
                         ;; place box on desired box position and mark desired box position as occupied
                         (
                             and
-                                (box-at ?desired_box_pos)
+                                (box-at ?b ?desired_box_pos)
                                 (not (is-clear ?desired_box_pos))
                         )
                         ;; place box on undesired box position and mark undesired box position as occupied
                         (
                             and
-                                (box-at ?undesired_box_pos)
+                                (box-at ?b ?undesired_box_pos)
                                 (not (is-clear ?undesired_box_pos))
                         )
                     )
@@ -127,6 +131,7 @@
             (
                 ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
                 ?dir - direction
+                ?b - box
             )
             :precondition
             (
@@ -135,7 +140,7 @@
 
                     ;; player and box at defined positions
                     (player-at ?player_pos)
-                    (box-at ?box_pos)
+                    (box-at ?b ?box_pos)
                     
                     ;; all positions must be connected
                     (move-dir ?player_pos ?box_pos ?dir)
@@ -157,15 +162,35 @@
 
                     ;; remove player and box from theirs previous positions
                     (not (player-at ?player_pos))
-                    (not (box-at ?box_pos))
+                    (not (box-at ?b ?box_pos))
+                    (not (at-goal ?b))
 
                     ;; place player on box's previous position and box on desired box position
                     (player-at ?box_pos)
-                    (box-at ?desired_box_pos)
+                    (box-at ?b ?desired_box_pos)
 
                     ;; clear player position and mark desired box position as occupied
                     (is-clear ?player_pos)
                     (not (is-clear ?desired_box_pos))
+            )
+        )
+        (
+            :action box-at-goal
+            :parameters 
+            (
+                ?loc - location ?b - box
+            )
+            :precondition
+            (
+                and
+                    (alive)
+                    (is-goal ?loc)
+                    (box-at ?b ?loc)
+            )
+            :effect
+            (
+                and
+                    (at-goal ?b)
             )
         )
         (

@@ -40,6 +40,7 @@ void ReachableDeadEndDetector::create_states(const vec<Fact> &facts, set<State> 
     }
 }
 
+// TODO: it could be a simple queue instead of two vectors
 void ReachableDeadEndDetector::find_weak_alive_states(
     map<State, StateActionPairSet> &reversed_edges,
     const set<State> &goal_states,

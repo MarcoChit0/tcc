@@ -1,0 +1,50 @@
+{
+    "recipes": {
+        "pancakes": {
+            "flour": "1"
+        },
+        "cookies": {
+            "flour": "1"
+        },
+        "bread": {
+            "flour": "2"
+        },
+        "pizza": {
+            "flour": "2"
+        },
+        "pasta": {
+            "flour": "2"
+        },
+        "pie": {
+            "flour": "1"
+        },
+        "muffin": {
+            "flour": "1"
+        },
+        "waffle": {
+            "flour": "2"
+        }
+    },
+    "stock": {
+        "flour": "9"
+    },
+    "costumers": {
+        "Doe": [
+            "pizza",
+            "muffin"
+        ],
+        "Smith": [
+            "pasta",
+            "cookies"
+        ],
+        "Johnson": [
+            "pizza",
+            "pasta"
+        ],
+        "Brown": [
+            "pie",
+            "waffle"
+        ]
+    },
+    "islands":"6"
+}

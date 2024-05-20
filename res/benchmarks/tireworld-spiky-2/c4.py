@@ -38,7 +38,7 @@ def generate_road_connections(n):
             connections.append(f'(spiky-road b{i} b{i-1})')
     return '\n'.join(connections)
 
-n = 16
+n = 24
 instance = generate_instance(n)
 print(instance)
 # (define (problem tw-spiky-two-2)

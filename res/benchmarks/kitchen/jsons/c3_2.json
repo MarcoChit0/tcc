@@ -3,21 +3,20 @@
         "cake": {
             "flour": "2",
             "butter": "1",
-            "suggar": "1",
-            "dry yeast": "1"
+            "suggar": "1"
         },
         "pancakes": {
             "flour": "1",
             "milk": "1",
-            "butter":"1"
+            "butter":"1",
+            "sugar": "1"
         },
         "cookie":{
             "flour": "1",
             "milk": "1",
             "eggs": "1",
             "sugar": "1",
-            "butter": "1",
-            "dry yeast": "1"
+            "butter": "1"
         },
         "omelette":{
             "eggs": "3",
@@ -25,12 +24,11 @@
         }
     },
     "stock": {
-        "flour": "10",
-        "butter": "8",
-        "milk": "6",
-        "eggs": "10",
-        "suggar": "6",
-        "dry yeast": "6"
+        "flour": "5",
+        "butter": "4",
+        "milk": "3",
+        "eggs": "5",
+        "suggar": "4"
     },
     "costumers": {
         "John": [
@@ -44,19 +42,7 @@
         "Jack": [
             "cake",
             "cookie"
-        ],
-        "Alice": [
-            "cake",
-            "pancakes"
-        ],
-        "Bob": [
-            "cookie",
-            "omelette"
-        ],
-        "Cleber": [
-            "cake",
-            "cookie"
         ]
     },
-    "islands":"8"
+    "islands":"4"
 }

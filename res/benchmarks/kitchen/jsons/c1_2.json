@@ -7,13 +7,13 @@
             "flour": "1"
         },
         "bread": {
-            "flour": "2"
+            "flour": "1"
         },
         "pizza": {
-            "flour": "2"
+            "flour": "1"
         },
         "pasta": {
-            "flour": "2"
+            "flour": "1"
         },
         "pie": {
             "flour": "1"
@@ -22,29 +22,28 @@
             "flour": "1"
         },
         "waffle": {
-            "flour": "2"
+            "flour": "1"
         }
     },
     "stock": {
-        "flour": "9"
+        "flour": "7"
     },
     "costumers": {
         "Doe": [
             "pizza",
+            "waffle",
             "muffin"
         ],
         "Smith": [
             "pasta",
-            "cookies"
-        ],
-        "Johnson": [
-            "pizza",
-            "pasta"
+            "pie",
+            "bread"
         ],
         "Brown": [
-            "pie",
-            "waffle"
+            "pizza",
+            "pasta",
+            "pancakes"
         ]
     },
-    "islands":"6"
+    "islands":"7"
 }

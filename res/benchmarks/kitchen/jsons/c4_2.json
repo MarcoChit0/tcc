@@ -14,9 +14,9 @@
         }
     },
     "stock": {
-        "flour": "5",
-        "butter": "5",
-        "sugar": "5"
+        "flour": "4",
+        "butter": "4",
+        "sugar": "4"
     },
     "costumers": {
         "John": [
@@ -34,9 +34,8 @@
             "pancakes",
             "cookies"
         ],
-        "David":[
-            "pancakes",
-            "cookies"
+        "David": [
+            "pancakes"
         ]
     },
     "islands":"5"

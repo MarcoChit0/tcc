@@ -10,9 +10,9 @@
         }
     },
     "stock": {
-        "flour": "7",
-        "eggs": "5",
-        "butter": "5"
+        "flour": "6",
+        "eggs": "4",
+        "butter": "4"
     },
     "costumers": {
         "John": [
@@ -32,14 +32,9 @@
         "David": [
             "cake"
         ],
-        "Margaret":
-        [
-            "cake",
-            "pancakes"
-        ],
         "Eve": [
             "pancakes"
         ]
     },
-    "islands":"7"
+    "islands":"6"
 }

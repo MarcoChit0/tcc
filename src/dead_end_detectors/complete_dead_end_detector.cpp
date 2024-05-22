@@ -18,20 +18,15 @@ void CompleteDeadEndDetector::create_states_recursive_procedure(const int depth,
     }
 }
 
-void CompleteDeadEndDetector::create_states(const vec<Fact> &facts, set<State> &states)
-{
-    create_states_recursive_procedure(0, facts, states);
-}
-
 void CompleteDeadEndDetector::mark_goal_states_as_alive(
     map<State, StateActionPairSet> &reversed_edges,
-    const set<State> &states,
     set<State> &goal_states,
     set<State> &non_goal_states,
     StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     vec<State> stack;
-    set<State> states_to_explore = states;
+    set<State> states_to_explore;
+    create_states_recursive_procedure(0, vec<Fact>(), states_to_explore);
     stack.push_back(this->task.initial_state());
     while (not states_to_explore.empty() or not stack.empty())
     {
@@ -69,7 +64,6 @@ void CompleteDeadEndDetector::mark_goal_states_as_alive(
             states_to_explore.erase(states_to_explore.begin());
         }
     }
-    assert(states.size() == goal_states.size() + non_goal_states.size());
 }
 
 CompleteDeadEndDetector::CompleteDeadEndDetector(const Task &task, const opt<int> &time_limit_seconds)

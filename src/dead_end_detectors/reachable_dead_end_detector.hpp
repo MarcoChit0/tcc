@@ -16,19 +16,18 @@ class ReachableDeadEndDetector : public DeadEndDetector
 
         void find_hard_dead_end_states(
             map<State, StateActionPairSet> &reversed_edges,
-            const set<State> &states,
             set<State> &dead_end_states,
+            set<State> &previous_weak_alive_states,
             StateActionPairToBoolMap &is_bad_state_action_pair);
 
         void find_easy_dead_end_states(
             map<State, StateActionPairSet> &reversed_edges,
-            const set<State> &states,
             set<State> &dead_end_states,
+            set<State> &previous_weak_alive_states,
             StateActionPairToBoolMap &is_bad_state_action_pair);
 
         virtual void mark_goal_states_as_alive(
             map<State, StateActionPairSet> &reversed_edges,
-            const set<State> &states,
             set<State> &goal_states,
             set<State> &non_goal_states,
             StateActionPairToBoolMap &is_bad_state_action_pair);
@@ -50,10 +49,7 @@ class ReachableDeadEndDetector : public DeadEndDetector
 
         void count_and_print(
             const set<State> &goal_states,
-            const set<State> &non_goal_states,
-            const set<State> &states);
-
-        virtual void create_states(const vec<Fact> &facts, set<State> &states);
+            const set<State> &non_goal_states);
 
     public:    
         ReachableDeadEndDetector(const Task &task, const opt<int>& time_limit_seconds = std::nullopt);

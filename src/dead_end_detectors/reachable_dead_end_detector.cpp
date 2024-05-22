@@ -370,6 +370,7 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
     log_file << "4. Weak alive states transformed into alive states\n";
     log_file << "4. Alive states: " << current_weak_alive_states.size() << std::endl;
     log_file << "4. Dead end states: " << dead_end_states.size() << std::endl;
+    log_file << "4. Memory spent on this process " << get_memory_usage() << " GB" << std::endl;
     log_file << "4. Ended at " << get_ellapsed_time() << std::endl;
 
     if (save_metadata)

@@ -27,6 +27,22 @@ void DeadEndDetector::save_labeled_states() const
     file.close();
 }
 
+str print_state_label(const int state_label)
+{
+    if (ALIVE <= state_label and state_label <= WEAK_ALIVE)
+    {
+        return state_label_to_string.at(state_label);
+    }
+    else if(state_label > WEAK_ALIVE)
+    {
+        return state_label_to_string.at(WEAK_ALIVE);
+    }
+    else
+    {
+        throw std::invalid_argument("LOG::print_state_label::invalid_state_label::" + std::to_string(state_label) + " is not a valid state label id");
+    }
+}
+
 void DeadEndDetector::load_labeled_states()
 {
     std::ifstream file;

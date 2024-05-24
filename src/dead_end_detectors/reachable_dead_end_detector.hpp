@@ -6,55 +6,43 @@
 
 class ReachableDeadEndDetector : public DeadEndDetector
 {
-    protected:
-        const opt<int>& time_limit_seconds;
-        void find_weak_alive_states(
-            map<State, StateActionPairSet> &reversed_edges,
-            const set<State> &goal_states,
-            set<State> &weak_alive_states,
-            const StateActionPairToBoolMap &is_bad_state_action_pair);
+protected:
+    const opt<int> &time_limit_seconds;
+    void find_weak_alive_states(
+        int iteration,
+        map<State, StateActionPairSet> &reversed_edges,
+        const set<State> &goal_states,
+        set<State> &weak_alive_states,
+        const StateActionPairToBoolMap &is_bad_state_action_pair);
 
-        void find_hard_dead_end_states(
-            map<State, StateActionPairSet> &reversed_edges,
-            set<State> &dead_end_states,
-            set<State> &previous_weak_alive_states,
-            StateActionPairToBoolMap &is_bad_state_action_pair);
+    void find_dead_end_states(
+        int iteration,
+        int dead_end_state_label,
+        map<State, StateActionPairSet> &reversed_edges,
+        set<State> &previous_weak_alive_states,
+        StateActionPairToBoolMap &is_bad_state_action_pair);
 
-        void find_easy_dead_end_states(
-            map<State, StateActionPairSet> &reversed_edges,
-            set<State> &dead_end_states,
-            set<State> &previous_weak_alive_states,
-            StateActionPairToBoolMap &is_bad_state_action_pair);
+    virtual void mark_goal_states_as_alive(
+        map<State, StateActionPairSet> &reversed_edges,
+        set<State> &goal_states,
+        set<State> &non_goal_states,
+        StateActionPairToBoolMap &is_bad_state_action_pair);
 
-        virtual void mark_goal_states_as_alive(
-            map<State, StateActionPairSet> &reversed_edges,
-            set<State> &goal_states,
-            set<State> &non_goal_states,
-            StateActionPairToBoolMap &is_bad_state_action_pair);
+    void transform_weak_alive_states_into_alive_states(const set<State> &weak_alive_states);
 
-        void transform_weak_alive_states_into_alive_states(const set<State> &weak_alive_states);
+    void mark_bad_state_action_pairs(
+        map<State, StateActionPairSet> &reversed_edges,
+        const State &dead_end_state,
+        StateActionPairToBoolMap &is_bad_state_action_pair);
 
-        void unlabel_weak_alive_states_before_performing_loop(set<State> &weak_alive_states);
+    bool have_good_actions(
+        const State &state,
+        const StateActionPairToBoolMap &is_bad_state_action_pair);
 
-        void mark_bad_state_action_pairs(
-            map<State, StateActionPairSet> &reversed_edges,
-            const State &dead_end_state,
-            set<State> &dead_end_states,
-            StateActionPairToBoolMap &is_bad_state_action_pair);
+    void count_and_print(const set<State> &goal_states);
 
-
-        bool have_good_actions(
-            const State &state,
-            const StateActionPairToBoolMap &is_bad_state_action_pair);
-
-        void count_and_print(
-            const set<State> &goal_states,
-            const set<State> &non_goal_states);
-
-    public:    
-        ReachableDeadEndDetector(const Task &task, const opt<int>& time_limit_seconds = std::nullopt);
-        double is_deadend(const State &state) const;
-        void label_states(const bool save_metadata) override;
-
-
+public:
+    ReachableDeadEndDetector(const Task &task, const opt<int> &time_limit_seconds = std::nullopt);
+    double is_deadend(const State &state) const;
+    void label_states(const bool save_metadata) override;
 };

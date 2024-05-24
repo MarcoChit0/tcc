@@ -44,7 +44,7 @@ void CompleteDeadEndDetector::mark_goal_states_as_alive(
             }
 
             non_goal_states.insert(state);
-            this->labeled_states[state.id] = NO_LABEL;
+            this->labeled_states[state.id] = WEAK_ALIVE;
             for (const Action &action : state.get_applicable_actions(this->task.actions()))
             {
                 is_bad_state_action_pair[std::make_pair(state, action)] = false;

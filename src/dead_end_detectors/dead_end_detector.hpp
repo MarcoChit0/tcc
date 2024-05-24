@@ -10,23 +10,22 @@
 
 enum StateLabel
 {
-    NO_LABEL,
-    HARD_DEAD_END,
-    EASY_DEAD_END,
-    WEAK_ALIVE,
-    ALIVE,
+    ALIVE = -3,
+    HARD_DEAD_END = -2,
+    EASY_DEAD_END = -1,
+    WEAK_ALIVE = 0,
 };
 
 static std::map<int, str> state_label_to_string = {
-    {NO_LABEL, "no label"},
     {HARD_DEAD_END, "hard dead end"},
     {EASY_DEAD_END, "easy dead end"},
     {WEAK_ALIVE, "weak alive"},
     {ALIVE, "alive"},
-}; 
+};
+
+str print_state_label(const int state_label);
 
 static std::map<str, int> string_to_state_label = {
-    {"no label", NO_LABEL},
     {"hard dead end", HARD_DEAD_END},
     {"easy dead end", EASY_DEAD_END},
     {"weak alive", WEAK_ALIVE},

@@ -1,1 +1,1 @@
-tireworld-truck,p1
+tireworld-spiky-2,c1_1

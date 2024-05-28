@@ -26,6 +26,7 @@
 #include "./dead_end_detectors/dead_end_detector.hpp"
 #include "./dead_end_detectors/complete_dead_end_detector.hpp"
 #include "./dead_end_detectors/reachable_dead_end_detector.hpp"
+#include "./dead_end_detectors/easy_reachable_dead_end_detector.hpp"
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
@@ -362,6 +363,10 @@ void select_dead_end_detector(const Task &task, str dead_end_detector, int dead_
     else if(dead_end_detector == "reachable")
     {
         optional_dead_end_detector = std::make_shared<ReachableDeadEndDetector>(task, time_limit_to_generate_state_space);
+    }
+    else if (dead_end_detector == "easy-reachable")
+    {
+        optional_dead_end_detector = std::make_shared<EasyReachableDeadEndDetector>(task, time_limit_to_generate_state_space);
     }
     else if (dead_end_detector == "none")
     {

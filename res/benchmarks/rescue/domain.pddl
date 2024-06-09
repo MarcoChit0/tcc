@@ -1,17 +1,14 @@
 (define (domain rescue)
     (:requirements :typing :equality :negative-preconditions :disjunctive-preconditions :universal-preconditions :conditional-effects :existential-preconditions :non-deterministic)
     (:types
-        location victim fire-unit medical-unit number - object
+        location victim fire-unit medical-unit number
     )
     (:predicates
-        ;; -- when porcessing clock --
         (clock ?t - number)
         (adjusted-clock)
 
-        (is-greater-or-equal ?n1 ?n2 - number) ;; n1 >= n2 -> true, else false
+        (is-greater-or-equal ?n1 ?n2 - number)
         (inc ?op ?res - number)
-        ;; ---------------------------
-        ;; -- when porcessing location --
         (fire-at ?l - location)
         (water-at ?l - location)
         (hospital-at ?l - location)
@@ -23,23 +20,17 @@
         (adjacent ?l1 ?l2 - location)
 
         (spreading-time ?t - number ?l - location)
-        ;; ------------------------------
-        ;; -- when porcessing victim --
         (healthy ?v - victim)
         (hurt ?v - victim)
         (dying ?v - victim)
         (deceased ?v - victim)
-        ;; ----------------------------
-        ;; -- do not appear on instance json --
         (spread-out ?t - number ?l - location)
         (adjusted-status ?t - number ?v - victim)
         (need-to-adjust-clock)
         (have-water ?u - fire-unit)
         (have-victim-in-unit ?v - victim ?u - medical-unit)
         (on-hospital ?v - victim)
-        ;; ------------------------------------
 
-        ;; TODO: create partial orders
         (predecessor-victim ?v1 ?v2 - victim)
         (predecessor-location ?l1 ?l2 - location)
         (all-locations-spread-out ?t - number)
@@ -154,27 +145,27 @@
         )
     )
     (:action adjust-status-helthy-to-hurt
-        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :parameters (?l - location ?v - victim ?t1 ?t2 - number)
         :precondition (and
 
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (all-locations-spread-out ?next_t)
+            (all-locations-spread-out ?t2)
             (or
                 (first-victim ?v)
                 (exists
                     (?v1 - victim)
-                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?t2 ?v1)))
             )
             (victim-at ?v ?l)
             (fire-at ?l)
             (healthy ?v)
             (not (on-hospital ?v))
-            (not (adjusted-status ?next_t ?v))
+            (not (adjusted-status ?t2 ?v))
         )
         :effect (and
-            (adjusted-status ?next_t ?v)
+            (adjusted-status ?t2 ?v)
             (oneof
                 (and (hurt ?v) (not (healthy ?v)))
                 (and)
@@ -182,26 +173,26 @@
         )
     )
     (:action adjust-status-hurt-to-dying
-        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :parameters (?l - location ?v - victim ?t1 ?t2 - number)
         :precondition (and
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (all-locations-spread-out ?next_t)
+            (all-locations-spread-out ?t2)
             (or
                 (first-victim ?v)
                 (exists
                     (?v1 - victim)
-                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?t2 ?v1)))
             )
             (victim-at ?v ?l)
             (fire-at ?l)
             (hurt ?v)
             (not (on-hospital ?v))
-            (not (adjusted-status ?next_t ?v))
+            (not (adjusted-status ?t2 ?v))
         )
         :effect (and
-            (adjusted-status ?next_t ?v)
+            (adjusted-status ?t2 ?v)
             (oneof
                 (and (dying ?v) (not (hurt ?v)))
                 (and)
@@ -209,26 +200,26 @@
         )
     )
     (:action adjust-status-dying-to-deceased
-        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :parameters (?l - location ?v - victim ?t1 ?t2 - number)
         :precondition (and
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (all-locations-spread-out ?next_t)
+            (all-locations-spread-out ?t2)
             (or
                 (first-victim ?v)
                 (exists
                     (?v1 - victim)
-                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?t2 ?v1)))
             )
             (victim-at ?v ?l)
             (fire-at ?l)
             (dying ?v)
             (not (on-hospital ?v))
-            (not (adjusted-status ?next_t ?v))
+            (not (adjusted-status ?t2 ?v))
         )
         :effect (and
-            (adjusted-status ?next_t ?v)
+            (adjusted-status ?t2 ?v)
             (oneof
                 (and (deceased ?v) (not (dying ?v)))
                 (and)
@@ -236,18 +227,18 @@
         )
     )
     (:action adjust-status-no-fire-at-location
-        :parameters (?l - location ?v - victim ?t ?next_t - number)
+        :parameters (?l - location ?v - victim ?t1 ?t2 - number)
         :precondition (and
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (not (adjusted-status ?next_t ?v))
-            (all-locations-spread-out ?next_t)
+            (not (adjusted-status ?t2 ?v))
+            (all-locations-spread-out ?t2)
             (or
                 (first-victim ?v)
                 (exists
                     (?v1 - victim)
-                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?t2 ?v1)))
             )
             (and
                 (not (fire-at ?l))
@@ -255,42 +246,42 @@
             )
         )
         :effect (and
-            (adjusted-status ?next_t ?v)
+            (adjusted-status ?t2 ?v)
         )
     )
     (:action adjust-status-victim-on-hospital
-        :parameters (?v - victim ?t ?next_t - number)
+        :parameters (?v - victim ?t1 ?t2 - number)
         :precondition (and
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (not (adjusted-status ?next_t ?v))
-            (all-locations-spread-out ?next_t)
+            (not (adjusted-status ?t2 ?v))
+            (all-locations-spread-out ?t2)
             (or
                 (first-victim ?v)
                 (exists
                     (?v1 - victim)
-                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?t2 ?v1)))
             )
             (on-hospital ?v)
         )
         :effect (and
-            (adjusted-status ?next_t ?v)
+            (adjusted-status ?t2 ?v)
         )
     )
     (:action adjust-status-victim-on-medical-unit
-        :parameters (?v - victim ?t ?next_t - number)
+        :parameters (?v - victim ?t1 ?t2 - number)
         :precondition (and
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (not (adjusted-status ?next_t ?v))
-            (all-locations-spread-out ?next_t)
+            (not (adjusted-status ?t2 ?v))
+            (all-locations-spread-out ?t2)
             (or
                 (first-victim ?v)
                 (exists
                     (?v1 - victim)
-                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?t2 ?v1)))
             )
             (exists
                 (?m - medical-unit)
@@ -300,29 +291,29 @@
             )
         )
         :effect (and
-            (adjusted-status ?next_t ?v)
+            (adjusted-status ?t2 ?v)
         )
     )
 
     (:action adjust-status-deceased-stays-deceased
-        :parameters (?v - victim ?t ?next_t - number)
+        :parameters (?v - victim ?t1 ?t2 - number)
         :precondition (and
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (all-locations-spread-out ?next_t)
+            (all-locations-spread-out ?t2)
             (deceased ?v)
             (not (on-hospital ?v))
-            (not (adjusted-status ?next_t ?v))
+            (not (adjusted-status ?t2 ?v))
             (or
                 (first-victim ?v)
                 (exists
                     (?v1 - victim)
-                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?next_t ?v1)))
+                    (and (predecessor-victim ?v1 ?v) (adjusted-status ?t2 ?v1)))
             )
         )
         :effect (and
-            (adjusted-status ?next_t ?v)
+            (adjusted-status ?t2 ?v)
         )
     )
     (:action enter-hospital
@@ -339,12 +330,12 @@
     )
 
     (:action spread-fire-without-fire-on-location
-        :parameters (?l - location ?t ?next_t ?spreading_t - number)
+        :parameters (?l - location ?t1 ?t2 ?st - number)
         :precondition (and
-            (clock ?t)
-            (spreading-time ?spreading_t ?l)
-            (inc ?t ?next_t)
-            (is-greater-or-equal ?next_t ?spreading_t)
+            (clock ?t1)
+            (spreading-time ?st ?l)
+            (inc ?t1 ?t2)
+            (is-greater-or-equal ?t2 ?st)
             (need-to-adjust-clock)
             (not (fire-at ?l))
             (exists
@@ -354,16 +345,16 @@
                     (fire-at ?l1)
                 )
             )
-            (not (spread-out ?next_t ?l))
+            (not (spread-out ?t2 ?l))
             (or
                 (first-location ?l)
                 (exists
                     (?l1 - location)
-                    (and (predecessor-location ?l1 ?l) (spread-out ?next_t ?l1)))
+                    (and (predecessor-location ?l1 ?l) (spread-out ?t2 ?l1)))
             )
         )
         :effect (and
-            (spread-out ?next_t ?l)
+            (spread-out ?t2 ?l)
             (oneof
                 (and)
                 (fire-at ?l)
@@ -371,44 +362,44 @@
         )
     )
     (:action spread-fire-with-location-on-fire
-        :parameters (?l - location ?t ?next_t ?spreading_t - number)
+        :parameters (?l - location ?t1 ?t2 ?st - number)
         :precondition (and
-            (clock ?t)
-            (spreading-time ?spreading_t ?l)
-            (inc ?t ?next_t)
-            (is-greater-or-equal ?next_t ?spreading_t)
+            (clock ?t1)
+            (spreading-time ?st ?l)
+            (inc ?t1 ?t2)
+            (is-greater-or-equal ?t2 ?st)
             (need-to-adjust-clock)
             (fire-at ?l)
-            (not (spread-out ?next_t ?l))
+            (not (spread-out ?t2 ?l))
             (or
                 (first-location ?l)
                 (exists
                     (?l1 - location)
-                    (and (predecessor-location ?l1 ?l) (spread-out ?next_t ?l1)))
+                    (and (predecessor-location ?l1 ?l) (spread-out ?t2 ?l1)))
             )
         )
         :effect (and
-            (spread-out ?next_t ?l)
+            (spread-out ?t2 ?l)
         )
     )
     (:action not-spread-fire
-        :parameters (?l - location ?t ?next_t ?spreading_t - number)
+        :parameters (?l - location ?t1 ?t2 ?st - number)
         :precondition (and
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (need-to-adjust-clock)
-            (spreading-time ?spreading_t ?l)
-            (not (spread-out ?next_t ?l))
+            (spreading-time ?st ?l)
+            (not (spread-out ?t2 ?l))
             (or
                 (first-location ?l)
                 (exists
                     (?l1 - location)
-                    (and (predecessor-location ?l1 ?l) (spread-out ?next_t ?l1)))
+                    (and (predecessor-location ?l1 ?l) (spread-out ?t2 ?l1)))
             )
             (or
-                (and (is-greater-or-equal ?spreading_t ?next_t) (not (= ?spreading_t ?next_t)))
+                (and (is-greater-or-equal ?st ?t2) (not (= ?st ?t2)))
                 (and
-                    (is-greater-or-equal ?next_t ?spreading_t)
+                    (is-greater-or-equal ?t2 ?st)
                     ;; there is no fire in the adjacent locations
                     (forall
                         (?l1 - location)
@@ -424,53 +415,53 @@
             )
         )
         :effect (and
-            (spread-out ?next_t ?l)
+            (spread-out ?t2 ?l)
         )
 
     )
 
     (:action adjust-clock
-        :parameters (?t ?next_t - number)
+        :parameters (?t1 ?t2 - number)
         :precondition (and
             (need-to-adjust-clock)
-            (clock ?t)
-            (inc ?t ?next_t)
-            (all-victims-adjusted ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
+            (all-victims-adjusted ?t2)
         )
         :effect (and
-            (not (clock ?t))
-            (clock ?next_t)
+            (not (clock ?t1))
+            (clock ?t2)
             (not (need-to-adjust-clock))
             (adjusted-clock)
         )
     )
     (:action get-all-victims-adjusted
-        :parameters (?t ?next_t - number)
+        :parameters (?t1 ?t2 - number)
         :precondition (and
             (need-to-adjust-clock)
-            (clock ?t)
-            (inc ?t ?next_t)
-            (all-locations-spread-out ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
+            (all-locations-spread-out ?t2)
             (forall
                 (?v - victim)
-                (adjusted-status ?next_t ?v)
+                (adjusted-status ?t2 ?v)
             )
         )
-        :effect (and (all-victims-adjusted ?next_t))
+        :effect (and (all-victims-adjusted ?t2))
     )
 
     (:action get-all-locations-spread-out
-        :parameters (?t ?next_t - number)
+        :parameters (?t1 ?t2 - number)
         :precondition (and
             (need-to-adjust-clock)
-            (clock ?t)
-            (inc ?t ?next_t)
+            (clock ?t1)
+            (inc ?t1 ?t2)
             (forall
                 (?l - location)
-                (spread-out ?next_t ?l)
+                (spread-out ?t2 ?l)
             )
         )
-        :effect (and (all-locations-spread-out ?next_t))
+        :effect (and (all-locations-spread-out ?t2))
     )
 
     (:action treat-dying-victim-on-hospital

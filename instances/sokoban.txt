@@ -1,4 +1,1 @@
-sokoban,c1_1
-sokoban,c2_1
 sokoban,c3_1
-sokoban,c4_1

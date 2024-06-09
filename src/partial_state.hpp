@@ -22,8 +22,10 @@ public:
 
     bool does_model(const PartialState &other) const;
     friend std::ostream &operator<<(std::ostream &out, const PartialState &self);
-
+    friend bool operator<(const PartialState &lhs, const PartialState &rhs);
+    friend bool operator==(const PartialState &lhs, const PartialState &rhs);
     bool contains(const Fact &fact, const int variable_index) const;
+
 };
 DEFINE_OBJECT_HASH(PartialState);
 #include "./task.hpp"

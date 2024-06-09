@@ -1,6 +1,4 @@
-(
-    define 
-        (domain sokoban-non-deterministic)
+(define (domain sokoban-non-deterministic)
         (:requirements :typing :strips :non-deterministic :disjunctive-preconditions :existential-preconditions)
         (:types location direction box)
         (:predicates 
@@ -15,8 +13,7 @@
             (at-goal ?b - box)
             (is-goal ?loc - location)
         )
-        (
-            :action move-slippery
+        (:action move-slippery
             :parameters (?from ?to - location ?dir - direction)
             :precondition 
             (
@@ -42,8 +39,7 @@
                     
             )
         )
-        (
-            :action move-non-slippery
+        (:action move-non-slippery
             :parameters (?from ?to - location ?dir - direction)
             :precondition 
             (
@@ -66,94 +62,82 @@
                     (player-at ?to)
             )
         )
-        (
-            :action push-box-slippery
-            :parameters 
-            (
-                ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
-                ?dir - direction
-                ?b - box
-            )
+        (:action push-box-slippery
+            :parameters (?ppos ?bpos ?dpos ?upos - location ?dir - direction ?b - box)
             :precondition
             (
                 and
                     (alive)
 
                     ;; player and box at defined positions
-                    (player-at ?player_pos)
-                    (box-at ?b ?box_pos)
+                    (player-at ?ppos)
+                    (box-at ?b ?bpos)
                     
                     ;; all positions must be connected
-                    (move-dir ?player_pos ?box_pos ?dir)
-                    (move-dir ?box_pos ?desired_box_pos ?dir)
-                    (move-dir ?desired_box_pos ?undesired_box_pos ?dir)
+                    (move-dir ?ppos ?bpos ?dir)
+                    (move-dir ?bpos ?dpos ?dir)
+                    (move-dir ?dpos ?upos ?dir)
 
                     ;; desired poistion must be clear
-                    (is-clear ?desired_box_pos)
+                    (is-clear ?dpos)
 
                     ;; desired position is slippery & undesired position is clear -> move box to desired position | move box to undesired position 
-                    (is-slippery ?desired_box_pos)
-                    (is-clear ?undesired_box_pos)
+                    (is-slippery ?dpos)
+                    (is-clear ?upos)
             )
             :effect
             (
                 and
                     ;; remove player and box from theirs previous positions
-                    (not (player-at ?player_pos))
-                    (not (box-at ?b ?box_pos))
+                    (not (player-at ?ppos))
+                    (not (box-at ?b ?bpos))
                     (not (at-goal ?b))
 
                     ;; place player on box's previous position and clear theirs previous position
-                    (player-at ?box_pos)
-                    (is-clear ?player_pos)
+                    (player-at ?bpos)
+                    (is-clear ?ppos)
                     
                     (
                         oneof        
                         ;; place box on desired box position and mark desired box position as occupied
                         (
                             and
-                                (box-at ?b ?desired_box_pos)
-                                (not (is-clear ?desired_box_pos))
+                                (box-at ?b ?dpos)
+                                (not (is-clear ?dpos))
                         )
                         ;; place box on undesired box position and mark undesired box position as occupied
                         (
                             and
-                                (box-at ?b ?undesired_box_pos)
-                                (not (is-clear ?undesired_box_pos))
+                                (box-at ?b ?upos)
+                                (not (is-clear ?upos))
                         )
                     )
             )
 
         )
-        (
-            :action push-box-not-slippery
-            :parameters 
-            (
-                ?player_pos ?box_pos ?desired_box_pos ?undesired_box_pos - location
-                ?dir - direction
-                ?b - box
-            )
+        (:action push-box-not-slippery
+            :parameters  (?ppos ?bpos ?dpos ?upos - location ?dir - direction ?b - box)
             :precondition
             (
                 and
                     (alive)
 
                     ;; player and box at defined positions
-                    (player-at ?player_pos)
-                    (box-at ?b ?box_pos)
+                    (player-at ?ppos)
+                    (box-at ?b ?bpos)
                     
                     ;; all positions must be connected
-                    (move-dir ?player_pos ?box_pos ?dir)
-                    (move-dir ?box_pos ?desired_box_pos ?dir)
-                    (move-dir ?desired_box_pos ?undesired_box_pos ?dir)
+                    (move-dir ?ppos ?bpos ?dir)
+                    (move-dir ?bpos ?dpos ?dir)
+                    (move-dir ?dpos ?upos ?dir)
 
                     ;; desired poistion must be clear
-                    (is-clear ?desired_box_pos)
+                    (is-clear ?dpos)
 
                     ;; desired location is not slippery | undesired location is not clear -> box goes to desired position
                     (or
-                        (not (is-slippery ?desired_box_pos))
-                        (not (is-clear ?undesired_box_pos))
+                        (not (is-slippery ?dpos))
+                        (not (is-clear ?upos))
                     )
             )
             :effect
@@ -161,21 +145,20 @@
                 and
 
                     ;; remove player and box from theirs previous positions
-                    (not (player-at ?player_pos))
-                    (not (box-at ?b ?box_pos))
+                    (not (player-at ?ppos))
+                    (not (box-at ?b ?bpos))
                     (not (at-goal ?b))
 
                     ;; place player on box's previous position and box on desired box position
-                    (player-at ?box_pos)
-                    (box-at ?b ?desired_box_pos)
+                    (player-at ?bpos)
+                    (box-at ?b ?dpos)
 
                     ;; clear player position and mark desired box position as occupied
-                    (is-clear ?player_pos)
-                    (not (is-clear ?desired_box_pos))
+                    (is-clear ?ppos)
+                    (not (is-clear ?dpos))
             )
         )
-        (
-            :action box-at-goal
+        (:action box-at-goal
             :parameters 
             (
                 ?loc - location ?b - box
@@ -193,22 +176,21 @@
                     (at-goal ?b)
             )
         )
-        (
-            :action put-boots
-            :parameters (?player_pos ?boots_pos - location)
+        (:action put-boots
+            :parameters (?ppos ?boots_pos - location)
             :precondition
             (
                 and
                     (alive)
 
-                    (player-at ?player_pos)
+                    (player-at ?ppos)
                     (boots-at ?boots_pos)
 
                     (not (using-non-slippery-boots))
                     
                     ;; boots should be on reach 
                     (exists (?dir - direction)
-                        (move-dir ?player_pos ?boots_pos ?dir)
+                        (move-dir ?ppos ?boots_pos ?dir)
                     )
             )
             :effect

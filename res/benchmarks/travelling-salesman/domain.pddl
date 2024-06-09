@@ -12,16 +12,15 @@
         0 1 2 3 4 5 - number
     )
 
-    (:predicates ;todo: define predicates here
-        ;; number predicates
-        (inc ?n1 - number ?n2 - number)
-        (dec ?n1 - number ?n2 - number)
+    (:predicates
+        (inc ?n1 ?n2 - number)
+        (dec ?n1 ?n2 - number)
 
         (buying-price-state-map ?n - number ?s - state)
         (selling-price-state-map ?n - number ?s - state)
         (at ?c - city ?s - state)
         
-        (connected ?c1 - city ?c2 - city)
+        (connected ?c1 ?c2 - city)
         (has-adjacent-cities ?c - city ?n - number)
 
         (money ?n - number)
@@ -46,7 +45,6 @@
         (selling-price ?i - item ?n - number)
         (person-at ?p - person ?c - city)
 
-        ;; goal condition
         (visiting ?c - city)
         (visited-once ?c - city)
         (visited-more-than-once ?c - city)
@@ -55,7 +53,7 @@
     ;; cities belong to multiple states 
     ;define actions here
     (:action move-with-map-inside-state
-        :parameters ( ?c1 ?c2 - city ?s - state )
+        :parameters (?c1 ?c2 - city ?s - state)
         :precondition (and
             (at ?c1 ?s)
             (at ?c2 ?s)
@@ -74,7 +72,7 @@
     )
 
     (:action move-without-map-1-adjacent-cities
-        :parameters (?c1 ?c2 - city )
+        :parameters (?c1 ?c2 - city)
         :precondition (and
             (on-city ?c1)
             (not (visiting ?c1))
@@ -96,7 +94,7 @@
     ;; ou diferentes moves com diferentes quantidades de cidades adjacentes
 
     (:action move-without-map-2-adjacent-cities
-        :parameters ( ?c1 ?c2 ?c3 - city )
+        :parameters (?c1 ?c2 ?c3 - city)
         :precondition (and
             (connected ?c1 ?c2)
             (connected ?c1 ?c3)
@@ -249,59 +247,59 @@
 
     ;; TODO: make sense to the salesman to possibly buy other item that it already has?
     (:action seller-sells-item-to-travelling-salesman
-        :parameters ( ?i - item ?item_price ?item_capacity - number ?p - person ?c - city)
+        :parameters (?i - item ?price ?capacity - number ?p - person ?c - city)
         :precondition (and
             (not (visiting ?c))
             (on-city ?c)
             
             (is-seller ?p)
-            (buying-price ?i ?item_price)
+            (buying-price ?i ?price)
             (is-selling ?p ?i)
             (person-at ?p ?c)
 
-            (wallet ?item_price)
-            (volumn ?i ?item_capacity)
-            (backpack-allocated-space ?item_capacity)
+            (wallet ?price)
+            (volumn ?i ?capacity)
+            (backpack-allocated-space ?capacity)
         )
         :effect (and
-            (not (wallet ?item_price))
+            (not (wallet ?price))
             (wallet 0)
 
             (has ?i)
 
-            (not (backpack-allocated-space ?item_capacity))
+            (not (backpack-allocated-space ?capacity))
             (backpack-allocated-space 0)
         )
     )
 
     (:action buyer-buys-item-from-travelling-salesman
-        :parameters ( ?i - item ?item_price ?item_capacity - number ?p - person ?c - city)
+        :parameters (?i - item ?price ?capacity - number ?p - person ?c - city)
         :precondition (and
             (not (visiting ?c))
             (on-city ?c)
 
             (is-buyer ?p)
-            (selling-price ?i ?item_price)
+            (selling-price ?i ?price)
             (is-buying ?p ?i)
             (person-at ?p ?c)
 
             (wallet 0)
             (has ?i)
-            (volumn ?i ?item_capacity)
+            (volumn ?i ?capacity)
             (backpack-allocated-space 0)
         )
         :effect (and
             (not (wallet 0))
-            (wallet ?item_price)
+            (wallet ?price)
 
             (not (has ?i))
             (not (backpack-allocated-space 0))
-            (backpack-allocated-space ?item_capacity)
+            (backpack-allocated-space ?capacity)
         )
     )
 
     (:action deallocate-backpack-space
-        :parameters ( ?a1 ?a2 ?b1 ?b2 - number ?c - city)
+        :parameters (?a1 ?a2 ?b1 ?b2 - number ?c - city)
         :precondition (and
             (not (visiting ?c))
             (on-city ?c)
@@ -343,36 +341,36 @@
     )
 
     (:action buy-state-map
-        :parameters (?s - state ?map_price - number ?c - city)
+        :parameters (?s - state ?price - number ?c - city)
         :precondition (and
             (not (visiting ?c))
             (on-city ?c)
 
             (not (has-state-map ?s))
-            (wallet ?map_price)
-            (buying-price-state-map ?map_price ?s)
+            (wallet ?price)
+            (buying-price-state-map ?price ?s)
         )
         :effect (and
             (has-state-map ?s)
-            (not (wallet ?map_price))
+            (not (wallet ?price))
             (wallet 0)
         )
     )
 
     (:action sell-state-map
-        :parameters (?s - state ?map_price - number ?c - city)
+        :parameters (?s - state ?price - number ?c - city)
         :precondition (and
             (not (visiting ?c))
             (on-city ?c)
 
             (has-state-map ?s)
-            (selling-price-state-map ?map_price ?s)
+            (selling-price-state-map ?price ?s)
             (wallet 0)
         )
         :effect (and
             (not (has-state-map ?s))
             (not (wallet 0))
-            (wallet ?map_price)
+            (wallet ?price)
         )
     )
 

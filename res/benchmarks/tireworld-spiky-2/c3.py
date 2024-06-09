@@ -2,7 +2,7 @@
 from operator import le
 
 
-n = 3
+n = 2
 locations = ["source", "sink"] +\
     [f"t_{i}{j}" for i in range(1,n+1) for j in range(1,i+1)] +\
     [f"nt_{i}{j}" for i in range(1,n) for j in range(1,i+1)] +\

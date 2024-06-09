@@ -4,6 +4,7 @@ NeuralNetworkLookUp::NeuralNetworkLookUp(const Task &task, const State::Heuristi
 LookUp(task, state_heuristic, samples_generator, sample_treatment),
 state_network(task, NUMBER_OF_HIDDEN_UNITS)
 {
+    std::cout << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::start" << "\n";
     vec<int64_t> states = {};
     vec<double> targets = {};
     for (auto pair : this->table_nd)
@@ -11,6 +12,7 @@ state_network(task, NUMBER_OF_HIDDEN_UNITS)
         states.push_back(pair.first);
         targets.push_back(pair.second);
     }
+    std::cout << "LOG::NeuralNetworkLookUp::NeuralNetworkLookUp::states size : " << states.size() << std::endl;
     auto optimizer = torch::optim::Adam(state_network.parameters(), torch::optim::AdamOptions(1e-5));
     state_network.training(
         optimizer,

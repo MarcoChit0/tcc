@@ -14,11 +14,12 @@ LookUp::LookUp(const Task &task, const State::Heuristic &state_heuristic, const 
     set<Sample> samples = this->samples_generator.generate_samples();
     std::fstream file;
     file.open(file_name, std::ios::out);
-    file << "state_id,state,h_nd,h_d,policy_type\n";
+    std::cerr << "LOG::LookUp::LookUp::file_name::" << file_name << "\n";
     if (not file.is_open())
     {
         throw std::runtime_error("LOG::LookUp::LookUp::file not open");
     }
+    file << "state_id,state,h_nd,h_d,policy_type\n";
     for (Sample sample : samples)
     {
         this->sample_treatment(sample);

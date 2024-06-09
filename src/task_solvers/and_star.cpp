@@ -144,10 +144,10 @@ Policy AndStar::get_solution(const Task &task)
 
     while (not queue.empty())
     {
-        if (get_ellapsed_time() - last_recurrent_procedure_time >= 1)
+        if (get_elapsed_time() - last_recurrent_procedure_time >= 1)
         {
             recurrent_procedure();
-            last_recurrent_procedure_time = get_ellapsed_time();
+            last_recurrent_procedure_time = get_elapsed_time();
         }
 
         Policy policy = queue.top();

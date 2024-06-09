@@ -1,4 +1,1 @@
-kitchen,c1_2
-kitchen,c2_2
-kitchen,c3_2
-kitchen,c4_2
+kitchen,c1_1

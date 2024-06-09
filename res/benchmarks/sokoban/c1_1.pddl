@@ -82,6 +82,8 @@
 		down - direction
 		left - direction
 		right - direction
+		box_0 - box
+		box_1 - box
 
 	)
 	(:init
@@ -260,7 +262,7 @@
 		
 
 		;; r3c2 - box_on_slipper_floor
-		(box-at r3c2)
+		(box-at box_0 r3c2)
 		(is-slippery r3c2)
 		(move-dir r3c2 r2c2 up)
 		(move-dir r3c2 r4c2 down)
@@ -320,6 +322,7 @@
 		;; r4c2 - goal_on_slipper_floor
 		(is-clear r4c2)
 		(is-slippery r4c2)
+		(is-goal r4c2)
 		(move-dir r4c2 r3c2 up)
 		(move-dir r4c2 r5c2 down)
 		(move-dir r4c2 r4c1 left)
@@ -385,7 +388,7 @@
 		
 
 		;; r5c3 - box_on_slipper_floor
-		(box-at r5c3)
+		(box-at box_1 r5c3)
 		(is-slippery r5c3)
 		(move-dir r5c3 r4c3 up)
 		(move-dir r5c3 r6c3 down)
@@ -436,6 +439,7 @@
 		;; r6c2 - goal_on_slipper_floor
 		(is-clear r6c2)
 		(is-slippery r6c2)
+		(is-goal r6c2)
 		(move-dir r6c2 r5c2 up)
 		(move-dir r6c2 r7c2 down)
 		(move-dir r6c2 r6c1 left)
@@ -690,8 +694,8 @@
 	)
 	(:goal
 		(and
-			(box-at r4c2)
-			(box-at r6c2)
+			(at-goal box_0)
+			(at-goal box_1)
 		)
 	)
 )

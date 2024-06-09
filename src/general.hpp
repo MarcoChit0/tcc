@@ -148,7 +148,7 @@ struct std::hash<mpz_class>
     }
 };
 
-double get_ellapsed_time();
+double get_elapsed_time();
 double get_memory_usage();
 
 double get_time_limit();
@@ -190,6 +190,9 @@ static map<int, str> policy_types_names = {
     {SUBOPTIMAL_POLICY, "suboptimal"},
     {UNSOLVABLE_POLICY, "unsolvable"},
 };
+
+extern double time_limit;
+extern double timer;
 
 str get_output(const str &label, const str &command, const str &input = {}, const opt<double> &opt_time_limit = std::nullopt);
 

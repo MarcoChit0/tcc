@@ -68,6 +68,11 @@
 		down - direction
 		left - direction
 		right - direction
+		box_0 - box
+		box_1 - box
+		box_2 - box
+		box_3 - box
+		box_4 - box
 
 	)
 	(:init
@@ -143,6 +148,7 @@
 
 		;; r1c1 - goal
 		(is-clear r1c1)
+		(is-goal r1c1)
 		(move-dir r1c1 r0c1 up)
 		(move-dir r1c1 r2c1 down)
 		(move-dir r1c1 r1c0 left)
@@ -150,7 +156,7 @@
 		
 
 		;; r1c2 - box
-		(box-at r1c2)
+		(box-at box_0 r1c2)
 		(move-dir r1c2 r0c2 up)
 		(move-dir r1c2 r2c2 down)
 		(move-dir r1c2 r1c1 left)
@@ -182,7 +188,7 @@
 		
 
 		;; r1c6 - box
-		(box-at r1c6)
+		(box-at box_1 r1c6)
 		(move-dir r1c6 r0c6 up)
 		(move-dir r1c6 r2c6 down)
 		(move-dir r1c6 r1c5 left)
@@ -191,6 +197,7 @@
 
 		;; r1c7 - goal
 		(is-clear r1c7)
+		(is-goal r1c7)
 		(move-dir r1c7 r0c7 up)
 		(move-dir r1c7 r2c7 down)
 		(move-dir r1c7 r1c6 left)
@@ -294,7 +301,7 @@
 		
 
 		;; r3c2 - box
-		(box-at r3c2)
+		(box-at box_2 r3c2)
 		(move-dir r3c2 r2c2 up)
 		(move-dir r3c2 r4c2 down)
 		(move-dir r3c2 r3c1 left)
@@ -304,6 +311,7 @@
 		;; r3c3 - goal_on_slipper_floor
 		(is-clear r3c3)
 		(is-slippery r3c3)
+		(is-goal r3c3)
 		(move-dir r3c3 r2c3 up)
 		(move-dir r3c3 r4c3 down)
 		(move-dir r3c3 r3c2 left)
@@ -429,6 +437,7 @@
 
 		;; r5c1 - goal
 		(is-clear r5c1)
+		(is-goal r5c1)
 		(move-dir r5c1 r4c1 up)
 		(move-dir r5c1 r6c1 down)
 		(move-dir r5c1 r5c0 left)
@@ -436,7 +445,7 @@
 		
 
 		;; r5c2 - box
-		(box-at r5c2)
+		(box-at box_3 r5c2)
 		(move-dir r5c2 r4c2 up)
 		(move-dir r5c2 r6c2 down)
 		(move-dir r5c2 r5c1 left)
@@ -468,7 +477,7 @@
 		
 
 		;; r5c6 - box
-		(box-at r5c6)
+		(box-at box_4 r5c6)
 		(move-dir r5c6 r4c6 up)
 		(move-dir r5c6 r6c6 down)
 		(move-dir r5c6 r5c5 left)
@@ -477,6 +486,7 @@
 
 		;; r5c7 - goal
 		(is-clear r5c7)
+		(is-goal r5c7)
 		(move-dir r5c7 r4c7 up)
 		(move-dir r5c7 r6c7 down)
 		(move-dir r5c7 r5c6 left)
@@ -553,11 +563,11 @@
 	)
 	(:goal
 		(and
-			(box-at r1c1)
-			(box-at r1c7)
-			(box-at r3c3)
-			(box-at r5c1)
-			(box-at r5c7)
+			(at-goal box_0)
+			(at-goal box_1)
+			(at-goal box_2)
+			(at-goal box_3)
+			(at-goal box_4)
 		)
 	)
 )

@@ -20,31 +20,31 @@
     )
 
     (:action move-car-normal
-        :parameters (?from - location ?to - location)
+        :parameters (?from ?to - location)
         :precondition (and (vehicle-at ?from) (normal-road ?from ?to) (not (flat-tire)))
         :effect (and (not (vehicle-at ?from)) (vehicle-at ?to))
     )
 
     (:action move-car-spiky
-        :parameters (?from - location ?to - location)
+        :parameters (?from ?to - location)
         :precondition (and (vehicle-at ?from) (spiky-road ?from ?to) (not (flat-tire)))
         :effect (and (not (vehicle-at ?from)) (vehicle-at ?to) (oneof (and) (flat-tire)))
     )
 
     (:action load-tire
-        :parameters (?loc - location ?n - number ?m - number)
+        :parameters (?loc - location ?n ?m - number)
         :precondition (and (vehicle-at ?loc) (tire-at ?loc) (has-many-spares ?n) (next ?n ?m))
         :effect (and (not (tire-at ?loc)) (not (has-many-spares ?n)) (has-many-spares ?m))
     )
 
     (:action drop-tire
-        :parameters (?loc - location ?n - number ?m - number)
+        :parameters (?loc - location ?n ?m - number)
         :precondition (and (vehicle-at ?loc) (not (tire-at ?loc)) (has-many-spares ?m) (next ?n ?m))
         :effect (and (tire-at ?loc) (not (has-many-spares ?m)) (has-many-spares ?n))
     )
 
     (:action fix
-        :parameters (?n - number ?m - number)
+        :parameters (?n ?m - number)
         :precondition (and (flat-tire) (has-many-spares ?m) (next ?n ?m))
         :effect (and (not (flat-tire)) (not (has-many-spares ?m)) (has-many-spares ?n))
     )

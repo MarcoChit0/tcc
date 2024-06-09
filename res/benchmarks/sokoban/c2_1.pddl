@@ -71,10 +71,19 @@
 		r9c4 - location
 		r9c5 - location
 		r9c6 - location
+		r10c0 - location
+		r10c1 - location
+		r10c2 - location
+		r10c3 - location
+		r10c4 - location
+		r10c5 - location
+		r10c6 - location
 		up - direction
 		down - direction
 		left - direction
 		right - direction
+		box_0 - box
+		box_1 - box
 
 	)
 	(:init
@@ -270,7 +279,7 @@
 		
 
 		;; r3c3 - box_on_slipper_floor
-		(box-at r3c3)
+		(box-at box_0 r3c3)
 		(is-slippery r3c3)
 		(move-dir r3c3 r2c3 up)
 		(move-dir r3c3 r4c3 down)
@@ -312,6 +321,7 @@
 		;; r4c1 - goal_on_slipper_floor
 		(is-clear r4c1)
 		(is-slippery r4c1)
+		(is-goal r4c1)
 		(move-dir r4c1 r3c1 up)
 		(move-dir r4c1 r5c1 down)
 		(move-dir r4c1 r4c0 left)
@@ -349,6 +359,7 @@
 		;; r4c5 - goal_on_slipper_floor
 		(is-clear r4c5)
 		(is-slippery r4c5)
+		(is-goal r4c5)
 		(move-dir r4c5 r3c5 up)
 		(move-dir r4c5 r5c5 down)
 		(move-dir r4c5 r4c4 left)
@@ -387,7 +398,7 @@
 		
 
 		;; r5c3 - box_on_slipper_floor
-		(box-at r5c3)
+		(box-at box_1 r5c3)
 		(is-slippery r5c3)
 		(move-dir r5c3 r4c3 up)
 		(move-dir r5c3 r6c3 down)
@@ -599,6 +610,7 @@
 		;; r9c0 - wall
 		(not (is-clear r9c0))
 		(move-dir r9c0 r8c0 up)
+		(move-dir r9c0 r10c0 down)
 		(move-dir r9c0 r9c1 right)
 		
 
@@ -606,6 +618,7 @@
 		(is-clear r9c1)
 		(is-slippery r9c1)
 		(move-dir r9c1 r8c1 up)
+		(move-dir r9c1 r10c1 down)
 		(move-dir r9c1 r9c0 left)
 		(move-dir r9c1 r9c2 right)
 		
@@ -614,6 +627,7 @@
 		(is-clear r9c2)
 		(is-slippery r9c2)
 		(move-dir r9c2 r8c2 up)
+		(move-dir r9c2 r10c2 down)
 		(move-dir r9c2 r9c1 left)
 		(move-dir r9c2 r9c3 right)
 		
@@ -622,6 +636,7 @@
 		(is-clear r9c3)
 		(is-slippery r9c3)
 		(move-dir r9c3 r8c3 up)
+		(move-dir r9c3 r10c3 down)
 		(move-dir r9c3 r9c2 left)
 		(move-dir r9c3 r9c4 right)
 		
@@ -630,6 +645,7 @@
 		(is-clear r9c4)
 		(is-slippery r9c4)
 		(move-dir r9c4 r8c4 up)
+		(move-dir r9c4 r10c4 down)
 		(move-dir r9c4 r9c3 left)
 		(move-dir r9c4 r9c5 right)
 		
@@ -638,6 +654,7 @@
 		(is-clear r9c5)
 		(is-slippery r9c5)
 		(move-dir r9c5 r8c5 up)
+		(move-dir r9c5 r10c5 down)
 		(move-dir r9c5 r9c4 left)
 		(move-dir r9c5 r9c6 right)
 		
@@ -645,13 +662,61 @@
 		;; r9c6 - wall
 		(not (is-clear r9c6))
 		(move-dir r9c6 r8c6 up)
+		(move-dir r9c6 r10c6 down)
 		(move-dir r9c6 r9c5 left)
+		
+
+		;; r10c0 - wall
+		(not (is-clear r10c0))
+		(move-dir r10c0 r9c0 up)
+		(move-dir r10c0 r10c1 right)
+		
+
+		;; r10c1 - wall
+		(not (is-clear r10c1))
+		(move-dir r10c1 r9c1 up)
+		(move-dir r10c1 r10c0 left)
+		(move-dir r10c1 r10c2 right)
+		
+
+		;; r10c2 - wall
+		(not (is-clear r10c2))
+		(move-dir r10c2 r9c2 up)
+		(move-dir r10c2 r10c1 left)
+		(move-dir r10c2 r10c3 right)
+		
+
+		;; r10c3 - wall
+		(not (is-clear r10c3))
+		(move-dir r10c3 r9c3 up)
+		(move-dir r10c3 r10c2 left)
+		(move-dir r10c3 r10c4 right)
+		
+
+		;; r10c4 - wall
+		(not (is-clear r10c4))
+		(move-dir r10c4 r9c4 up)
+		(move-dir r10c4 r10c3 left)
+		(move-dir r10c4 r10c5 right)
+		
+
+		;; r10c5 - wall
+		(not (is-clear r10c5))
+		(move-dir r10c5 r9c5 up)
+		(move-dir r10c5 r10c4 left)
+		(move-dir r10c5 r10c6 right)
+		
+
+		;; r10c6 - wall
+		(not (is-clear r10c6))
+		(move-dir r10c6 r9c6 up)
+		(move-dir r10c6 r10c5 left)
 
 	)
 	(:goal
 		(and
-			(box-at r4c1)
-			(box-at r4c5)
+			(at-goal box_0)
+			(at-goal box_1)
 		)
 	)
 )

@@ -48,6 +48,7 @@ void StateNetwork::training(torch::optim::Optimizer &optimizer, const vec<long i
 {
     int train_size = std::ceil(states_ids.size() * 0.8);
     int num_batches = std::max(static_cast<int>(std::ceil(train_size / batch_size)), 1);
+    std::cout << "LOG::StateNetwork::train::states size : " << states_ids.size() << std::endl;
 
     for (int epoch = 0; epoch < epochs; epoch++)
     {

@@ -67,6 +67,10 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs() const
                         }
                         if (bfs_return.samples.size() >= this->number_of_samples or not enough_memory() or not enough_time(ALARM_TYPE_SAMPLE_GENERATION))
                         {
+                            std::cout << ((bfs_return.samples.size() >= this->number_of_samples) ? 1 : 0) << std::endl;
+                            std::cout << not enough_memory() << std::endl;
+                            std::cout << not enough_time(ALARM_TYPE_SAMPLE_GENERATION) << std::endl;
+                            std::cout << "LOG::BFS::EXIT 0" << std::endl;
                             return bfs_return;
                         }
                         else
@@ -78,5 +82,6 @@ BreadthFirstSearch::BFSReturn BreadthFirstSearch::bfs() const
             }
         }
     }
+    std::cout << "LOG::BFS::EXIT 1" << std::endl;
     return bfs_return;
 }

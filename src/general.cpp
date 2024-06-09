@@ -4,7 +4,8 @@ std::default_random_engine rng;
 
 Object::Id Object::last_used_id = EMPTY_OBJECT;
 
-static double timer = get_time_limit();
+// static double time_limit = 0.0f;
+
 static bool timer_is_set = false;
 static int policy_type = 0;
 
@@ -41,7 +42,7 @@ bool directory_created_successfully(const str &directory)
     return true;
 }
 
-double get_ellapsed_time()
+double get_elapsed_time()
 {
     return double(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - start_time).count()) / double(1000) / double(1000) / double(1000);
 }
@@ -65,12 +66,7 @@ double get_memory_usage()
 
 double get_time_limit()
 {
-    struct rlimit lim;
-    getrlimit(RLIMIT_CPU, &lim); // Get the CPU time limit in seconds
-    if (lim.rlim_max == RLIM_INFINITY) {
-        return -1; // Return -1 or some other indication for 'unlimited'
-    }
-    return static_cast<double>(lim.rlim_max); // Return the limit in seconds
+    return time_limit;
 }
 
 double get_memory_limit()
@@ -88,7 +84,7 @@ str get_output(const str &label, const str &command, const str &input, const opt
     boost::process::ipstream std_err_pstream;
     boost::process::opstream std_in_pstream;
 
-    double start_time = get_ellapsed_time();
+    double start_time = get_elapsed_time();
     boost::process::child cp(
         command,
         boost::process::std_out > std_out_pstream,
@@ -143,7 +139,7 @@ str get_output(const str &label, const str &command, const str &input, const opt
     std::future<void> err_reader = std::async(read_err);
     do
     {
-        if (opt_time_limit.has_value() and get_ellapsed_time() - start_time > *opt_time_limit)
+        if (opt_time_limit.has_value() and get_elapsed_time() - start_time > *opt_time_limit)
         {
             cp.terminate();
             throw std::runtime_error("Timeout: " + label + " exceeded time limit.");
@@ -176,18 +172,27 @@ FunctionsCache functions_storage;
 
 bool enough_time(int alarm_type = ALARM_TYPE_SAMPLE_GENERATION)
 {
-    double time_limit = get_time_limit();
-    double ellapsed_time = get_ellapsed_time();
-    if (alarm_type == ALARM_TYPE_SAMPLE_GENERATION)
+    try
     {
-        time_limit *= sample_generation_alarm;
+        double t_lim = get_time_limit();
+        double ellapsed_time = get_elapsed_time();
+        std::cout << "LOG::General::enough_time::t_lim::" << t_lim << std::endl;
+        std::cout << "LOG::General::enough_time::ellapsed_time::" << ellapsed_time << std::endl;
+        if (t_lim < 0)
+        {
+            return true;
+        }
+
+        if (alarm_type == ALARM_TYPE_SAMPLE_GENERATION)
+        {
+            t_lim *= sample_generation_alarm;
+        }
+        
+        return ellapsed_time < t_lim;
     }
-    if (ellapsed_time < time_limit)
+    catch(const std::exception& e)
     {
-        return true;
-    }
-    else
-    {
+        std::cerr << "LOG::enough_time::Error on try-catch block::" << e.what() << std::endl;
         return false;
     }
 }
@@ -209,12 +214,12 @@ bool enough_memory()
 void set_timer()
 {
     timer_is_set = true;
-    timer = get_ellapsed_time() + step;
+    timer = get_elapsed_time() + step;
 }
 
 bool timer_expired()
 {
-    return timer_is_set and get_ellapsed_time() > timer;
+    return timer_is_set and get_elapsed_time() > timer;
 }
 
 void unset_timer()

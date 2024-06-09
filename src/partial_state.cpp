@@ -1,5 +1,10 @@
 #include "./partial_state.hpp"
 
+bool operator<(const PartialState &lhs, const PartialState &rhs)
+{
+    return lhs.id < rhs.id;
+};
+
 vec<Fact> &PartialState::true_facts() const
 {
     return partial_states_true_factss[this->id];
@@ -85,4 +90,9 @@ boost::bimap<PartialState::Id, mpz_class> PartialState::partial_states_hashes;
 bool PartialState::contains(const Fact &fact, const int variable_index) const
 {
     return this->true_facts()[variable_index] == fact;
+};
+
+bool operator==(const PartialState &lhs, const PartialState &rhs)
+{
+    return lhs.id == rhs.id;
 };

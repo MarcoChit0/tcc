@@ -78,12 +78,13 @@ void ReachableDeadEndDetector::find_dead_end_states(
         {
             if (this->first_dead_end_detected_time == -1)
             {
-                this->first_dead_end_detected_time = get_ellapsed_time();
+                this->first_dead_end_detected_time = get_elapsed_time();
             }
             this->labeled_states[state.id] = dead_end_state_label;
             stack.push(state);
         }
     }
+    // TODO: comment this to check whteher this impacts on the correctess of the algorithm
     while (not stack.empty())
     {
         State state = stack.top();
@@ -224,7 +225,7 @@ void ReachableDeadEndDetector::mark_bad_state_action_pairs(
         {
             if (this->first_dead_end_detected_time == -1)
             {
-                this->first_dead_end_detected_time = get_ellapsed_time();
+                this->first_dead_end_detected_time = get_elapsed_time();
             }
             this->labeled_states[predecessor_state.id] = HARD_DEAD_END;
             mark_bad_state_action_pairs(reversed_edges, predecessor_state, is_bad_state_action_pair);
@@ -271,7 +272,7 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
     if (this->time_limit_seconds.has_value())
     {
         log_file << "1. Running forward search with time constraints of " <<  this->time_limit_seconds.value() << " seconds\n";
-        log_file << "1. Started at " << get_ellapsed_time() << std::endl;
+        log_file << "1. Started at " << get_elapsed_time() << std::endl;
         std::future<void> response = std::async(std::launch::async, &ReachableDeadEndDetector::mark_goal_states_as_alive, this, std::ref(reversed_edges), std::ref(goal_states), std::ref(current_weak_alive_states), std::ref(is_bad_state_action_pair));
         if (response.wait_for(std::chrono::seconds(this->time_limit_seconds.value())) == std::future_status::ready)
         {
@@ -281,21 +282,21 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
         else
         {
             log_file << "1. States creation failed within the time limit." << std::endl;
-            log_file << "1. Ending program execution at " << get_ellapsed_time() << std::endl;
+            log_file << "1. Ending program execution at " << get_elapsed_time() << std::endl;
             exit(1);
         }
     }
     else
     {
         log_file << "1. Running forward search without time constraints.\n";
-        log_file << "1. Started at " << get_ellapsed_time() << std::endl;
+        log_file << "1. Started at " << get_elapsed_time() << std::endl;
         this->mark_goal_states_as_alive(reversed_edges, goal_states, current_weak_alive_states, is_bad_state_action_pair);
     }
     log_file << "1. Reversed edges created" << std::endl;
     log_file << "1. Goal states: " << goal_states.size() << std::endl;
     log_file << "1. Non goal states: " << current_weak_alive_states.size() << std::endl;
     log_file << "1. Total states: " << goal_states.size() + current_weak_alive_states.size() << std::endl;
-    log_file << "1. Ended at " << get_ellapsed_time() << std::endl;
+    log_file << "1. Ended at " << get_elapsed_time() << std::endl;
 
     int iteration = WEAK_ALIVE;
     bool first_dead_end_detected = false, first_hard_dead_end_detected = false;
@@ -312,27 +313,27 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
         previous_weak_alive_states = current_weak_alive_states;
 
         log_file << "2. Iteration: " << iteration << std::endl;
-        log_file << "2. Started at " << get_ellapsed_time() << std::endl;
+        log_file << "2. Started at " << get_elapsed_time() << std::endl;
         log_file << "2. Previous weak alive states: " << previous_weak_alive_states.size() << std::endl;
 
         this->find_weak_alive_states(iteration, reversed_edges, goal_states, current_weak_alive_states, is_bad_state_action_pair);
 
         log_file << "2. Current weak alive states: " << current_weak_alive_states.size() << std::endl;
-        log_file << "2. Ended at " << get_ellapsed_time() << std::endl;
+        log_file << "2. Ended at " << get_elapsed_time() << std::endl;
 
         if (previous_weak_alive_states.size() == current_weak_alive_states.size())
         {
             log_file << "2. No new weak alive states found." << std::endl;
-            log_file << "2. Ending loop at " << get_ellapsed_time() << std::endl;
+            log_file << "2. Ending loop at " << get_elapsed_time() << std::endl;
             break;
         }
 
         // 3.
-        log_file << "3. Started at " << get_ellapsed_time() << std::endl;
+        log_file << "3. Started at " << get_elapsed_time() << std::endl;
         log_file << "3. Dead end label: " << print_state_label(dead_end_label) << std::endl;
         this->find_dead_end_states(iteration, dead_end_label, reversed_edges, previous_weak_alive_states, is_bad_state_action_pair);
         log_file << "3. " << previous_weak_alive_states.size() - current_weak_alive_states.size() << " dead end states found." << std::endl;
-        log_file << "3. Ended at " << get_ellapsed_time() << std::endl;
+        log_file << "3. Ended at " << get_elapsed_time() << std::endl;
 
         if (this->first_dead_end_detected_time != -1 and not first_dead_end_detected)
         {
@@ -353,7 +354,7 @@ void ReachableDeadEndDetector::label_states(const bool save_metadata)
     log_file << "4. Alive states: " << alive_states << std::endl;
     log_file << "4. Dead end states: " << this->labeled_states.size() - alive_states << std::endl;
     log_file << "4. Memory spent on this process " << get_memory_usage() << " GB" << std::endl;
-    log_file << "4. Ended at " << get_ellapsed_time() << std::endl;
+    log_file << "4. Ended at " << get_elapsed_time() << std::endl;
 
     if (save_metadata)
     {

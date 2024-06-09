@@ -10,10 +10,10 @@
 
 enum StateLabel
 {
-    ALIVE = -3,
-    HARD_DEAD_END = -2,
-    EASY_DEAD_END = -1,
-    WEAK_ALIVE = 0,
+    ALIVE = INFTY,
+    HARD_DEAD_END = -INFTY,
+    EASY_DEAD_END = 0,
+    WEAK_ALIVE = 1,
 };
 
 static std::map<int, str> state_label_to_string = {
@@ -52,6 +52,7 @@ class DeadEndDetector
         const str dead_end_directory = default_directory + DEAD_END_DIR;
         double first_dead_end_detected_time = -1;
         double first_hard_dead_end_detected_time = -1;
+        void set_labeled_states(const map<int64_t, int> &labeled_states);
         
     public:
         static int64_t number_of_lookups;
@@ -69,6 +70,7 @@ class DeadEndDetector
         virtual void label_states(const bool save_metadata=true) = 0;
         str get_statistics() const;
         str get_statistics_header() const;
-        void save_labeled_states() const;
-        void load_labeled_states();
+        virtual void save_labeled_states() const;
+        virtual void load_labeled_states();
+        map<int64_t, int> get_labeled_states() const;
 };

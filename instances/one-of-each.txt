@@ -1,0 +1,5 @@
+sokoban,c1_1
+kitchen,c1_1
+travelling-salesman,c1_1
+rescue,c1_1
+tireworld-spiky-2,c1_1

@@ -108,7 +108,7 @@ process_creation_lock = Lock()
 print_lock = Lock()
 
 def limit_virtual_memory(): resource.setrlimit(resource.RLIMIT_AS, (round(apn.memory_limit * 1000 * 1000 * 1000 / 8), round(apn.memory_limit * 1000 * 1000 * 1000 / 8)))
-def limit_cpu_time(): resource.setrlimit(resource.RLIMIT_CPU, (round(apn.time_limit * 60 ), round(apn.time_limit * 60 )))
+# def limit_cpu_time(): resource.setrlimit(resource.RLIMIT_CPU, (round(apn.time_limit * 60 ), round(apn.time_limit * 60 )))
 def apply_limits(): limit_virtual_memory()
 
 @dataclasses.dataclass()
@@ -136,7 +136,8 @@ class ThreadArguments:
         dead_end_detector: str,
         dead_end_labels_program_flow: DeadEndProgramFlow,
         solver: str,
-        dead_end_time_limit_for_state_space_creation: int
+        dead_end_time_limit_for_state_space_creation: int,
+        time_limit: float
         ):
         global base_dir_structure
         self.task_info = task_info
@@ -165,6 +166,7 @@ class ThreadArguments:
             self.dead_end_time_limit_for_state_space_creation = dead_end_time_limit_for_state_space_creation
         else:
             self.dead_end_time_limit_for_state_space_creation = "none"
+        self.time_limit = round(time_limit * 60 ) 
 
     def get_splitted_command(self) -> list[str]:
         return [
@@ -188,6 +190,7 @@ class ThreadArguments:
             f'{self.dead_end_labels_program_flow.value}',
             f'{self.solver}',
             f'{self.dead_end_time_limit_for_state_space_creation}',
+            f'{self.time_limit}',
             f'{self.save_folder_path}'
         ]
     
@@ -195,6 +198,7 @@ class ThreadArguments:
         # Convert the instance attributes to a dictionary
         params_dict = {
             "solver": self.solver,
+            "time_limit": self.time_limit,
             "task_info": {
                 "domain_label": self.task_info.domain_label,
                 "task_label": self.task_info.task_label,
@@ -311,7 +315,7 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                                     for regressor in apn.regressor.split(','):
                                                         for dead_end_detector in apn.dead_end_detector.split(','):
                                                             for solver in apn.solver.split(','):
-                                                                args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow, solver, apn.dead_end_time_limit_for_state_space_creation)
+                                                                args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow, solver, apn.dead_end_time_limit_for_state_space_creation, apn.time_limit)
                                                                 yield Thread(target=run_thread, args=[args])
 
                                         

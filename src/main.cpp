@@ -27,6 +27,11 @@
 #include "./dead_end_detectors/complete_dead_end_detector.hpp"
 #include "./dead_end_detectors/reachable_dead_end_detector.hpp"
 #include "./dead_end_detectors/easy_reachable_dead_end_detector.hpp"
+#include "./dead_end_detectors/neural_network_dead_end_detector.hpp"
+#include "./dead_end_detectors/set_dead_end_detector.hpp"
+#include "./neural_networks/dead_end_neural_network.hpp"
+#include "./neural_networks/state_neural_network.hpp"
+
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
@@ -318,7 +323,7 @@ void print_end(char **argv, const Task &task, Policy::Heuristic *policy_heuristi
     std::cout << "," << str(argv[15]);                                                                                // regressor
     std::cout << "," << policy_types_names[get_policy_type()];                                                        // termination
     std::cout << "," << get_memory_usage();                                                                           // memory_usage
-    std::cout << "," << get_ellapsed_time();                                                                          // time
+    std::cout << "," << get_elapsed_time();                                                                          // time
     std::cout << "," << solver->number_of_generated_policies;                                                        // number_of_generated_policies
     std::cout << "," << solver->number_of_inserted_policies;                                                         // number_of_inserted_policies
     std::cout << "," << solver->number_of_removed_policies;                                                          // number_of_removed_policies
@@ -337,12 +342,15 @@ double percentage_memory_limit = 0.9;
 double sample_generation_alarm = 0.7;
 double policy_alarm;
 double step;
+double timer = INFTY; 
+double time_limit = INFTY;
+
 str default_directory;
 
 void set_step_and_policy_alarm()
 {
     assert(0 <= sample_generation_alarm and sample_generation_alarm <= 1);
-    step = percentage_timer * sample_generation_alarm * (get_time_limit() - get_ellapsed_time());
+    step = percentage_timer * sample_generation_alarm * (get_time_limit() - get_elapsed_time());
     policy_alarm = 1 - sample_generation_alarm;
 }
 
@@ -350,27 +358,62 @@ enum DeadEndLabelsProgramFlow
 {
     GENERATE_LABELS_AND_END_PROGRAM = 0,
     GENERATE_LABELS_AND_CONTINUE_PROGRAM = 1,
-    LOAD_LABELS_AND_CONTINUE_PROGRAM = 2,
+    LOAD_LABELS_AND_CONTINUE_PROGRAM = 2
 };
 
-
-void select_dead_end_detector(const Task &task, str dead_end_detector, int dead_end_labels_program_flow, std::optional<std::shared_ptr<DeadEndDetector>> &optional_dead_end_detector, const opt<int> &time_limit_to_generate_state_space = std::nullopt)
+void select_dead_end_detector(const Task &task, str dead_end_detector_str, int dead_end_labels_program_flow, std::optional<std::shared_ptr<DeadEndDetector>> &optional_dead_end_detector, const opt<int> &time_limit_to_generate_state_space = std::nullopt)
 {
-    if (dead_end_detector == "complete")
+    if (dead_end_detector_str.find("neural-network") != std::string::npos)
+    {
+        // // TODO: transform this into a json object
+        // dead_end_detector_str = neural-network(<dead-end-detector>)
+        std::string dead_end_detector_substr = dead_end_detector_str.substr(dead_end_detector_str.find("[") + 1, dead_end_detector_str.find("]") - dead_end_detector_str.find("[") - 1);
+       
+        DeadEndNeuralNetwork neural_network = DeadEndNeuralNetwork(task); // TODO: CHANGE THIS TO RECEIVE THE NETWORK PARAMETERS OVER JSON FILE
+
+        std::optional<std::shared_ptr<DeadEndDetector>> dead_end_detector;
+
+        if(dead_end_labels_program_flow == GENERATE_LABELS_AND_CONTINUE_PROGRAM or dead_end_labels_program_flow == GENERATE_LABELS_AND_END_PROGRAM)
+        {
+            // generate dead end labels and continue program so that the neural network could be generated
+            std::cerr << "LOG::main::select_dead_end_detector::generate dead end labels and continue program" << std::endl;
+            std::cerr << "LOG::main::select_dead_end_detector::started at time " << get_elapsed_time() << std::endl;
+            select_dead_end_detector(task, dead_end_detector_substr, GENERATE_LABELS_AND_CONTINUE_PROGRAM, dead_end_detector, time_limit_to_generate_state_space);
+            std::cerr << "LOG::main::select_dead_end_detector::finished at time " << get_elapsed_time() << std::endl;
+        }        
+        else
+        {
+            // load dead end labels and continue program so that the neural network could be loaded
+            std::cerr << "LOG::main::select_dead_end_detector::load dead end labels and continue program" << std::endl;
+            std::cerr << "LOG::main::select_dead_end_detector::started at time " << get_elapsed_time() << std::endl;
+            select_dead_end_detector(task, dead_end_detector_substr, LOAD_LABELS_AND_CONTINUE_PROGRAM, dead_end_detector, time_limit_to_generate_state_space);
+            std::cerr << "LOG::main::select_dead_end_detector::finished at time " << get_elapsed_time() << std::endl;
+        }
+        if(not dead_end_detector.has_value())
+        {
+            throw std::domain_error("Dead end detector to be passed to neural network is null.");
+        }
+        optional_dead_end_detector = std::make_shared<NeuralNetworkDeadEndDetector>(task, dead_end_detector.value(), neural_network, std::nullopt);
+    }
+    else if (dead_end_detector_str == "complete")
     {
         optional_dead_end_detector = std::make_shared<CompleteDeadEndDetector>(task, time_limit_to_generate_state_space);
     }
-    else if(dead_end_detector == "reachable")
+    else if(dead_end_detector_str == "reachable")
     {
         optional_dead_end_detector = std::make_shared<ReachableDeadEndDetector>(task, time_limit_to_generate_state_space);
     }
-    else if (dead_end_detector == "easy-reachable")
+    else if (dead_end_detector_str == "easy-reachable")
     {
         optional_dead_end_detector = std::make_shared<EasyReachableDeadEndDetector>(task, time_limit_to_generate_state_space);
     }
-    else if (dead_end_detector == "none")
+    else if (dead_end_detector_str == "none")
     {
         optional_dead_end_detector = std::nullopt;
+    }
+    else if (dead_end_detector_str == "set")
+    {
+        optional_dead_end_detector = std::make_shared<SetDeadEndDetector>(task, time_limit_to_generate_state_space);
     }
     else
     {
@@ -434,6 +477,8 @@ std::unique_ptr<Task::Solver> parse_task_solver(const std::string& task_solver, 
 
 int main(int argc, char **argv)
 {
+    time_limit = std::atof(argv[20]); 
+    timer = time_limit;
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
     default_directory = argv[argc - 1]; 

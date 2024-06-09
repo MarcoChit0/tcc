@@ -27,13 +27,18 @@ void DeadEndDetector::save_labeled_states() const
     file.close();
 }
 
+void DeadEndDetector::set_labeled_states(const map<int64_t, int> &labeled_states)
+{
+    this->labeled_states = labeled_states;
+}
+
 str print_state_label(const int state_label)
 {
-    if (ALIVE <= state_label and state_label <= WEAK_ALIVE)
+    if (WEAK_ALIVE <= state_label and state_label < ALIVE)
     {
-        return state_label_to_string.at(state_label);
+        return state_label_to_string.at(WEAK_ALIVE);
     }
-    else if(state_label > WEAK_ALIVE)
+    else if(state_label == EASY_DEAD_END or state_label == ALIVE or state_label == HARD_DEAD_END)
     {
         return state_label_to_string.at(WEAK_ALIVE);
     }
@@ -81,4 +86,9 @@ str DeadEndDetector::get_statistics() const
     statistics += std::to_string(number_of_hard_dead_end_lookups) + ",";
     statistics += std::to_string(number_of_easy_dead_end_lookups);
     return statistics;
+}
+
+map<int64_t, int> DeadEndDetector::get_labeled_states() const
+{
+    return this->labeled_states;
 }

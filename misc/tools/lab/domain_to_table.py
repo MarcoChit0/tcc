@@ -114,26 +114,28 @@ def prepare_dataframe(df):
 
 def dataframe_to_latex_table(df, output_path):
     # Convert DataFrame to LaTeX
-    def break_and_color(text, name_color, type_color, variable_color):
-        value = ""
+    def break_and_color(text, function_name_style, type_style, variable_style):
         splitted_text = text.split("(")
         name, params = splitted_text[0], splitted_text[1].strip(")")
-        value = f"\\textcolor{{{name_color}}}{{{name}}} ("
+        value = f"\\{function_name_style}{{{name}}} ("
         for param_types in params.split(";"):
             if not param_types:
                 continue
             params_by_type, type = param_types.split(":")
             for i in range(len(params_by_type.split(","))-1):
-                value += f"\\textcolor{{{variable_color}}}{{{params_by_type.split(',')[i]}}}, "
-            value += f"\\textcolor{{{variable_color}}}{{{params_by_type.split(',')[-1]}}}"
-            value += f" : \\textcolor{{{type_color}}}{{{type}}}; "
-        value = value[:-2] + ")"
+                value += f"\\{variable_style}{{{params_by_type.split(',')[i]}}}, "
+            value += f"\\{variable_style}{{{params_by_type.split(',')[-1]}}}"
+            value += f" : \\{type_style}{{{type}}}; "
+        if params:
+            value = value[:-2] + ")"
+        else:
+            value = value + ")"
         return value
 
     with open(output_path, 'w') as f:
         f.write('\\begin{table}[ht]\n')
         f.write('\\centering\n')
-        f.write('\\begin{tabular}{ll}\n')
+        f.write('\\begin{tabular}{|l|l|}\n')
         f.write('\\hline\n')
         last_key = ""
         for index, row in df.iterrows():
@@ -141,26 +143,28 @@ def dataframe_to_latex_table(df, output_path):
                 f.write('\\hline\n')
             else:
                 # colors defined on latex file
-                type_color = "type_color"
-                action_color = "action_color"
-                predicate_color = "predicate_color"
-                variable_color = "variable_color"
+                type_style = "typestyle"
+                action_style = "actionstyle"
+                predicate_style = "predicatestyle"
+                variable_style = "variablestyle"
+                key_style = "keystyle"
+                name_style = "namestyle"
                 value = ""
                 if row['key'] == 'Type' or row['key'] == '' and last_key == 'Type':
-                    value = f"\\textcolor{{{type_color}}}{{{row['value']}}}"
+                    value = f"\\{type_style}{{{row['value']}}}"
                     last_key = 'Type'
                 elif row["key"] == 'Name' or row['key'] == '' and last_key == 'Name':
-                    value = f"\\textbf{{{row['value']}}}"
+                    value = f"\\{name_style}{{{row['value']}}}"
                     last_key = 'Name'
                 elif row['key'] == 'Predicate' or row['key'] == '' and last_key == 'Predicate':
-                    value = break_and_color(row['value'], predicate_color, type_color, variable_color)
+                    value = break_and_color(row['value'], predicate_style, type_style, variable_style)
                     last_key = 'Predicate'
                 elif row['key'] == 'Action' or row['key'] == '' and last_key == 'Action':
-                    value = break_and_color(row['value'], action_color, type_color, variable_color)
+                    value = break_and_color(row['value'], action_style, type_style, variable_style)
                     last_key = 'Action'
 
                 # f.write(f"{row['key']} & {row['value']} \\\\\n")
-                f.write(f"\\textbf{{{row['key']}}} & {value}\\\\\n")
+                f.write(f"\\{key_style}{{{row['key']}}} & {value}\\\\\n")
         f.write('\\hline\n')
         f.write('\\end{tabular}\n')
         f.write('\\caption{Domain Specifications}\n')

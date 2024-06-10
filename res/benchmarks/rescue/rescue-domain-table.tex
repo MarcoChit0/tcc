@@ -1,68 +1,68 @@
 \begin{table}[ht]
 \centering
-\begin{tabular}{ll}
+\begin{tabular}{|l|l|}
 \hline
-\textbf{Name} & \textbf{rescue}\\
+\keystyle{Name} & \namestyle{rescue}\\
 \hline
-\textbf{Type} & \textcolor{type_color}{location}\\
-\textbf{} & \textcolor{type_color}{victim}\\
-\textbf{} & \textcolor{type_color}{fire-unit}\\
-\textbf{} & \textcolor{type_color}{medical-unit}\\
-\textbf{} & \textcolor{type_color}{number}\\
+\keystyle{Type} & \typestyle{location}\\
+\keystyle{} & \typestyle{victim}\\
+\keystyle{} & \typestyle{fire-unit}\\
+\keystyle{} & \typestyle{medical-unit}\\
+\keystyle{} & \typestyle{number}\\
 \hline
-\textbf{Predicate} & \textcolor{predicate_color}{clock } (\textcolor{variable_color}{t } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{predicate_color}{adjusted-clock })\\
-\textbf{} & \textcolor{predicate_color}{is-greater-or-equal } (\textcolor{variable_color}{n1}, \textcolor{variable_color}{ n2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{predicate_color}{inc } (\textcolor{variable_color}{op}, \textcolor{variable_color}{ res } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{predicate_color}{fire-at } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{water-at } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{hospital-at } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{victim-at } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{fire-unit-at } (\textcolor{variable_color}{u } : \textcolor{type_color}{ fire}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{medical-unit-at } (\textcolor{variable_color}{u } : \textcolor{type_color}{ medical}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{adjacent } (\textcolor{variable_color}{l1}, \textcolor{variable_color}{ l2 } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{spreading-time } (\textcolor{variable_color}{t } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{healthy } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{hurt } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{dying } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{deceased } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{spread-out } (\textcolor{variable_color}{t } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{adjusted-status } (\textcolor{variable_color}{t } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{need-to-adjust-clock })\\
-\textbf{} & \textcolor{predicate_color}{have-water } (\textcolor{variable_color}{u } : \textcolor{type_color}{ fire})\\
-\textbf{} & \textcolor{predicate_color}{have-victim-in-unit } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ u } : \textcolor{type_color}{ medical})\\
-\textbf{} & \textcolor{predicate_color}{on-hospital } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{predecessor-victim } (\textcolor{variable_color}{v1}, \textcolor{variable_color}{ v2 } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{predecessor-location } (\textcolor{variable_color}{l1}, \textcolor{variable_color}{ l2 } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{predicate_color}{all-locations-spread-out } (\textcolor{variable_color}{t } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{predicate_color}{all-victims-adjusted } (\textcolor{variable_color}{t } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{predicate_color}{first-victim } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{predicate_color}{first-location } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location})\\
+\keystyle{Predicate} & \predicatestyle{clock } (\variablestyle{t } : \typestyle{ number})\\
+\keystyle{} & \predicatestyle{adjusted-clock })\\
+\keystyle{} & \predicatestyle{is-greater-or-equal } (\variablestyle{n1}, \variablestyle{ n2 } : \typestyle{ number})\\
+\keystyle{} & \predicatestyle{inc } (\variablestyle{op}, \variablestyle{ res } : \typestyle{ number})\\
+\keystyle{} & \predicatestyle{fire-at } (\variablestyle{l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{water-at } (\variablestyle{l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{hospital-at } (\variablestyle{l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{victim-at } (\variablestyle{v } : \typestyle{ victim}; \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{fire-unit-at } (\variablestyle{u } : \typestyle{ fire}; \variablestyle{ unit}, \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{medical-unit-at } (\variablestyle{u } : \typestyle{ medical}; \variablestyle{ unit}, \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{adjacent } (\variablestyle{l1}, \variablestyle{ l2 } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{spreading-time } (\variablestyle{t } : \typestyle{ number}; \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{healthy } (\variablestyle{v } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{hurt } (\variablestyle{v } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{dying } (\variablestyle{v } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{deceased } (\variablestyle{v } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{spread-out } (\variablestyle{t } : \typestyle{ number}; \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{adjusted-status } (\variablestyle{t } : \typestyle{ number}; \variablestyle{ v } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{need-to-adjust-clock })\\
+\keystyle{} & \predicatestyle{have-water } (\variablestyle{u } : \typestyle{ fire})\\
+\keystyle{} & \predicatestyle{have-victim-in-unit } (\variablestyle{v } : \typestyle{ victim}; \variablestyle{ u } : \typestyle{ medical})\\
+\keystyle{} & \predicatestyle{on-hospital } (\variablestyle{v } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{predecessor-victim } (\variablestyle{v1}, \variablestyle{ v2 } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{predecessor-location } (\variablestyle{l1}, \variablestyle{ l2 } : \typestyle{ location})\\
+\keystyle{} & \predicatestyle{all-locations-spread-out } (\variablestyle{t } : \typestyle{ number})\\
+\keystyle{} & \predicatestyle{all-victims-adjusted } (\variablestyle{t } : \typestyle{ number})\\
+\keystyle{} & \predicatestyle{first-victim } (\variablestyle{v } : \typestyle{ victim})\\
+\keystyle{} & \predicatestyle{first-location } (\variablestyle{l } : \typestyle{ location})\\
 \hline
-\textbf{Action} & \textcolor{action_color}{drive-fire-unit } (\textcolor{variable_color}{u } : \textcolor{type_color}{ fire}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ from } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ to } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{action_color}{drive-medical-unit } (\textcolor{variable_color}{u } : \textcolor{type_color}{ medical}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ from } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ to } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{action_color}{load-fire-unit } (\textcolor{variable_color}{u } : \textcolor{type_color}{ fire}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{action_color}{load-medical-unit } (\textcolor{variable_color}{u } : \textcolor{type_color}{ medical}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{action_color}{unload-fire-unit } (\textcolor{variable_color}{u } : \textcolor{type_color}{ fire}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ l}, \textcolor{variable_color}{ l1 } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{action_color}{unload-medical-unit } (\textcolor{variable_color}{u } : \textcolor{type_color}{ medical}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{action_color}{adjust-status-helthy-to-hurt } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{adjust-status-hurt-to-dying } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{adjust-status-dying-to-deceased } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{adjust-status-no-fire-at-location } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{adjust-status-victim-on-hospital } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{adjust-status-victim-on-medical-unit } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{adjust-status-deceased-stays-deceased } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{enter-hospital } (\textcolor{variable_color}{v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{action_color}{spread-fire-without-fire-on-location } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2}, \textcolor{variable_color}{ st } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{spread-fire-with-location-on-fire } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2}, \textcolor{variable_color}{ st } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{not-spread-fire } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ t1}, \textcolor{variable_color}{ t2}, \textcolor{variable_color}{ st } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{adjust-clock } (\textcolor{variable_color}{t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{get-all-victims-adjusted } (\textcolor{variable_color}{t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{get-all-locations-spread-out } (\textcolor{variable_color}{t1}, \textcolor{variable_color}{ t2 } : \textcolor{type_color}{ number})\\
-\textbf{} & \textcolor{action_color}{treat-dying-victim-on-hospital } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{action_color}{treat-hurt-victim-on-hospital } (\textcolor{variable_color}{l } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim})\\
-\textbf{} & \textcolor{action_color}{treat-victim-on-fire-unit } (\textcolor{variable_color}{f } : \textcolor{type_color}{ fire}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
-\textbf{} & \textcolor{action_color}{treat-victim-on-medical-unit } (\textcolor{variable_color}{u } : \textcolor{type_color}{ medical}; \textcolor{variable_color}{ unit}, \textcolor{variable_color}{ v } : \textcolor{type_color}{ victim}; \textcolor{variable_color}{ l } : \textcolor{type_color}{ location})\\
+\keystyle{Action} & \actionstyle{drive-fire-unit } (\variablestyle{u } : \typestyle{ fire}; \variablestyle{ unit}, \variablestyle{ from } : \typestyle{ location}; \variablestyle{ to } : \typestyle{ location})\\
+\keystyle{} & \actionstyle{drive-medical-unit } (\variablestyle{u } : \typestyle{ medical}; \variablestyle{ unit}, \variablestyle{ from } : \typestyle{ location}; \variablestyle{ to } : \typestyle{ location})\\
+\keystyle{} & \actionstyle{load-fire-unit } (\variablestyle{u } : \typestyle{ fire}; \variablestyle{ unit}, \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \actionstyle{load-medical-unit } (\variablestyle{u } : \typestyle{ medical}; \variablestyle{ unit}, \variablestyle{ l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim})\\
+\keystyle{} & \actionstyle{unload-fire-unit } (\variablestyle{u } : \typestyle{ fire}; \variablestyle{ unit}, \variablestyle{ l}, \variablestyle{ l1 } : \typestyle{ location})\\
+\keystyle{} & \actionstyle{unload-medical-unit } (\variablestyle{u } : \typestyle{ medical}; \variablestyle{ unit}, \variablestyle{ l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim})\\
+\keystyle{} & \actionstyle{adjust-status-helthy-to-hurt } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim}; \variablestyle{ t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{adjust-status-hurt-to-dying } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim}; \variablestyle{ t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{adjust-status-dying-to-deceased } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim}; \variablestyle{ t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{adjust-status-no-fire-at-location } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim}; \variablestyle{ t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{adjust-status-victim-on-hospital } (\variablestyle{v } : \typestyle{ victim}; \variablestyle{ t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{adjust-status-victim-on-medical-unit } (\variablestyle{v } : \typestyle{ victim}; \variablestyle{ t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{adjust-status-deceased-stays-deceased } (\variablestyle{v } : \typestyle{ victim}; \variablestyle{ t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{enter-hospital } (\variablestyle{v } : \typestyle{ victim}; \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \actionstyle{spread-fire-without-fire-on-location } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ t1}, \variablestyle{ t2}, \variablestyle{ st } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{spread-fire-with-location-on-fire } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ t1}, \variablestyle{ t2}, \variablestyle{ st } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{not-spread-fire } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ t1}, \variablestyle{ t2}, \variablestyle{ st } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{adjust-clock } (\variablestyle{t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{get-all-victims-adjusted } (\variablestyle{t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{get-all-locations-spread-out } (\variablestyle{t1}, \variablestyle{ t2 } : \typestyle{ number})\\
+\keystyle{} & \actionstyle{treat-dying-victim-on-hospital } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim})\\
+\keystyle{} & \actionstyle{treat-hurt-victim-on-hospital } (\variablestyle{l } : \typestyle{ location}; \variablestyle{ v } : \typestyle{ victim})\\
+\keystyle{} & \actionstyle{treat-victim-on-fire-unit } (\variablestyle{f } : \typestyle{ fire}; \variablestyle{ unit}, \variablestyle{ v } : \typestyle{ victim}; \variablestyle{ l } : \typestyle{ location})\\
+\keystyle{} & \actionstyle{treat-victim-on-medical-unit } (\variablestyle{u } : \typestyle{ medical}; \variablestyle{ unit}, \variablestyle{ v } : \typestyle{ victim}; \variablestyle{ l } : \typestyle{ location})\\
 \hline
 \end{tabular}
 \caption{Domain Specifications}

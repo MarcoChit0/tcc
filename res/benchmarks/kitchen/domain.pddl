@@ -49,16 +49,16 @@
 
     ;; move one unit of the ingredient ing from the stock to the chef island chef-island
     (:action from-stock-to-chef-island
-        :parameters (?i - ingredient ?on_stock ?dec_on_stock ?on_isl ?inc_on_isl ?isl - number)
+        :parameters (?i - ingredient ?on-stock ?dec-on-stock ?on-isl ?inc-on-isl ?isl - number)
         :precondition
         (and
             ;; check numerical precedence 
-            (next ?dec_on_stock ?on_stock)
-            (next ?on_isl ?inc_on_isl)
+            (next ?dec-on-stock ?on-stock)
+            (next ?on-isl ?inc-on-isl)
             
             ;; check ingredient on chef's island/ kitchen's stock
-            (on-stock ?i ?on_stock)
-            (on-chef-island ?i ?on_isl ?isl)
+            (on-stock ?i ?on-stock)
+            (on-chef-island ?i ?on-isl ?isl)
 
             ;; check possibility of changing the ingredient on chef's island
             (not (finished ?isl))
@@ -67,32 +67,32 @@
         
         :effect 
         (and
-            (not (on-stock ?i ?on_stock))
-            (on-stock ?i ?dec_on_stock)
-            (not (on-chef-island ?i ?on_isl ?isl))
-            (on-chef-island ?i ?inc_on_isl ?isl)
+            (not (on-stock ?i ?on-stock))
+            (on-stock ?i ?dec-on-stock)
+            (not (on-chef-island ?i ?on-isl ?isl))
+            (on-chef-island ?i ?inc-on-isl ?isl)
         )
     )
     ;; move one unit of the ingredient ing from the chef island chef_island to the stock
     (:action from-chef-island-to-stock
-        :parameters (?i - ingredient ?on_stock ?inc_on_stock ?on_isl ?dec_on_isl ?isl - number)
+        :parameters (?i - ingredient ?on-stock ?inc-on-stock ?on-isl ?dec-on-isl ?isl - number)
         :precondition 
         (and
-            (next ?on_stock ?inc_on_stock)
-            (next ?dec_on_isl ?on_isl)        
+            (next ?on-stock ?inc-on-stock)
+            (next ?dec-on-isl ?on-isl)        
 
-            (on-stock ?i ?on_stock)
-            (on-chef-island ?i ?on_isl ?isl)
+            (on-stock ?i ?on-stock)
+            (on-chef-island ?i ?on-isl ?isl)
             
             (not (finished ?isl))
             (can-use-chef-island ?isl)    
         )
         :effect 
         (and
-            (not (on-stock ?i ?on_stock))
-            (on-stock ?i ?inc_on_stock)
-            (not (on-chef-island ?i ?on_isl ?isl))
-            (on-chef-island ?i ?dec_on_isl ?isl)
+            (not (on-stock ?i ?on-stock))
+            (on-stock ?i ?inc-on-stock)
+            (not (on-chef-island ?i ?on-isl ?isl))
+            (on-chef-island ?i ?dec-on-isl ?isl)
         )
         
     )
@@ -159,12 +159,12 @@
         )
     )
     (:action offer-refusable
-        :parameters (?c - costumer ?r - recipe ?refused ?dec_refused - number)
+        :parameters (?c - costumer ?r - recipe ?refused ?dec-refused - number)
         :precondition 
         (and
             ;; number of refused recipes by the client does not exceed its limit
             (num-recipes-to-refuse ?c ?refused)
-            (next ?dec_refused ?refused)
+            (next ?dec-refused ?refused)
 
             (prepared ?r)
             (can-accept ?c ?r)
@@ -183,7 +183,7 @@
                 ;; refuses the recipe -> increment the counter of refused recipes
                 (and 
                     (not (num-recipes-to-refuse ?c ?refused))
-                    (num-recipes-to-refuse ?c ?dec_refused)
+                    (num-recipes-to-refuse ?c ?dec-refused)
                 )
             )
         )

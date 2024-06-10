@@ -1,0 +1,32 @@
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+\hline
+\textbf{Name} & \textbf{sokoban-non-deterministic}\\
+\hline
+\textbf{Type} & \textcolor{type_color}{location}\\
+\textbf{} & \textcolor{type_color}{direction}\\
+\textbf{} & \textcolor{type_color}{box}\\
+\hline
+\textbf{Predicate} & \textcolor{predicate_color}{is-clear } (\textcolor{variable_color}{loc } : \textcolor{type_color}{ location})\\
+\textbf{} & \textcolor{predicate_color}{box-at } (\textcolor{variable_color}{b } : \textcolor{type_color}{ box}; \textcolor{variable_color}{ loc } : \textcolor{type_color}{ location})\\
+\textbf{} & \textcolor{predicate_color}{player-at } (\textcolor{variable_color}{loc } : \textcolor{type_color}{ location})\\
+\textbf{} & \textcolor{predicate_color}{boots-at } (\textcolor{variable_color}{loc } : \textcolor{type_color}{ location})\\
+\textbf{} & \textcolor{predicate_color}{is-slippery } (\textcolor{variable_color}{loc } : \textcolor{type_color}{ location})\\
+\textbf{} & \textcolor{predicate_color}{using-non-slippery-boots })\\
+\textbf{} & \textcolor{predicate_color}{alive })\\
+\textbf{} & \textcolor{predicate_color}{move-dir } (\textcolor{variable_color}{from}, \textcolor{variable_color}{ to } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ dir } : \textcolor{type_color}{ direction})\\
+\textbf{} & \textcolor{predicate_color}{at-goal } (\textcolor{variable_color}{b } : \textcolor{type_color}{ box})\\
+\textbf{} & \textcolor{predicate_color}{is-goal } (\textcolor{variable_color}{loc } : \textcolor{type_color}{ location})\\
+\hline
+\textbf{Action} & \textcolor{action_color}{move-slippery } (\textcolor{variable_color}{from}, \textcolor{variable_color}{ to } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ dir } : \textcolor{type_color}{ direction})\\
+\textbf{} & \textcolor{action_color}{move-non-slippery } (\textcolor{variable_color}{from}, \textcolor{variable_color}{ to } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ dir } : \textcolor{type_color}{ direction})\\
+\textbf{} & \textcolor{action_color}{push-box-slippery } (\textcolor{variable_color}{ppos}, \textcolor{variable_color}{ bpos}, \textcolor{variable_color}{ dpos}, \textcolor{variable_color}{ upos } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ dir } : \textcolor{type_color}{ direction}; \textcolor{variable_color}{ b } : \textcolor{type_color}{ box})\\
+\textbf{} & \textcolor{action_color}{push-box-not-slippery } (\textcolor{variable_color}{ppos}, \textcolor{variable_color}{ bpos}, \textcolor{variable_color}{ dpos}, \textcolor{variable_color}{ upos } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ dir } : \textcolor{type_color}{ direction}; \textcolor{variable_color}{ b } : \textcolor{type_color}{ box})\\
+\textbf{} & \textcolor{action_color}{box-at-goal } (\textcolor{variable_color}{loc } : \textcolor{type_color}{ location}; \textcolor{variable_color}{ b } : \textcolor{type_color}{ box})\\
+\textbf{} & \textcolor{action_color}{put-boots } (\textcolor{variable_color}{pos } : \textcolor{type_color}{ location})\\
+\hline
+\end{tabular}
+\caption{Domain Specifications}
+\label{tab:domain_specifications}
+\end{table}

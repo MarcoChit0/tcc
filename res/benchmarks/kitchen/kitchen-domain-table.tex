@@ -1,0 +1,37 @@
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+\hline
+\textbf{Name} & \textbf{kitchen}\\
+\hline
+\textbf{Type} & \textcolor{type_color}{recipe}\\
+\textbf{} & \textcolor{type_color}{ingredient}\\
+\textbf{} & \textcolor{type_color}{costumer}\\
+\textbf{} & \textcolor{type_color}{number}\\
+\hline
+\textbf{Predicate} & \textcolor{predicate_color}{next } (\textcolor{variable_color}{n1}, \textcolor{variable_color}{ n2 } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{finished } (\textcolor{variable_color}{isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{on-chef-island } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{on-recipe } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe})\\
+\textbf{} & \textcolor{predicate_color}{not-on-recipe } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe})\\
+\textbf{} & \textcolor{predicate_color}{on-stock } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{prepared } (\textcolor{variable_color}{r } : \textcolor{type_color}{ recipe})\\
+\textbf{} & \textcolor{predicate_color}{satisfied } (\textcolor{variable_color}{c } : \textcolor{type_color}{ costumer})\\
+\textbf{} & \textcolor{predicate_color}{can-accept } (\textcolor{variable_color}{c } : \textcolor{type_color}{ costumer}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe})\\
+\textbf{} & \textcolor{predicate_color}{num-recipes-to-refuse } (\textcolor{variable_color}{c } : \textcolor{type_color}{ costumer}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{properly-added } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe}; \textcolor{variable_color}{ isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{can-use-chef-island } (\textcolor{variable_color}{isl } : \textcolor{type_color}{ number})\\
+\hline
+\textbf{Action} & \textcolor{action_color}{select-chef-island } (\textcolor{variable_color}{isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{action_color}{from-stock-to-chef-island } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ isl}, \textcolor{variable_color}{ isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{action_color}{from-chef-island-to-stock } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ isl}, \textcolor{variable_color}{ isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{action_color}{select-recipe } (\textcolor{variable_color}{r } : \textcolor{type_color}{ recipe}; \textcolor{variable_color}{ isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{action_color}{on-recipe-add-to-recipe } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe}; \textcolor{variable_color}{ isl}, \textcolor{variable_color}{ n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{action_color}{not-on-recipe-add-to-recipe } (\textcolor{variable_color}{i } : \textcolor{type_color}{ ingredient}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe}; \textcolor{variable_color}{ isl } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{action_color}{offer-not-refusable } (\textcolor{variable_color}{c } : \textcolor{type_color}{ costumer}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe})\\
+\textbf{} & \textcolor{action_color}{offer-refusable } (\textcolor{variable_color}{c } : \textcolor{type_color}{ costumer}; \textcolor{variable_color}{ r } : \textcolor{type_color}{ recipe}; \textcolor{variable_color}{ refused } : \textcolor{type_color}{ number})\\
+\hline
+\end{tabular}
+\caption{Domain Specifications}
+\label{tab:domain_specifications}
+\end{table}

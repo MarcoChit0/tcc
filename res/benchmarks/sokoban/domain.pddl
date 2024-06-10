@@ -177,28 +177,28 @@
             )
         )
         (:action put-boots
-            :parameters (?ppos ?boots_pos - location)
+            :parameters (?ppos ?boots-pos - location)
             :precondition
             (
                 and
                     (alive)
 
                     (player-at ?ppos)
-                    (boots-at ?boots_pos)
+                    (boots-at ?boots-pos)
 
                     (not (using-non-slippery-boots))
                     
                     ;; boots should be on reach 
                     (exists (?dir - direction)
-                        (move-dir ?ppos ?boots_pos ?dir)
+                        (move-dir ?ppos ?boots-pos ?dir)
                     )
             )
             :effect
             (
                 and
                     (using-non-slippery-boots)
-                    (not (boots-at ?boots_pos))
-                    (is-clear ?boots_pos)
+                    (not (boots-at ?boots-pos))
+                    (is-clear ?boots-pos)
             )
         )
 )

@@ -1,0 +1,60 @@
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+\hline
+\textbf{Name} & \textbf{travelling-salesman}\\
+\hline
+\textbf{Type} & \textcolor{type_color}{state}\\
+\textbf{} & \textcolor{type_color}{city}\\
+\textbf{} & \textcolor{type_color}{number}\\
+\textbf{} & \textcolor{type_color}{item}\\
+\textbf{} & \textcolor{type_color}{person}\\
+\hline
+\textbf{Predicate} & \textcolor{predicate_color}{inc } (\textcolor{variable_color}{n1}, \textcolor{variable_color}{ n2 } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{dec } (\textcolor{variable_color}{n1}, \textcolor{variable_color}{ n2 } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{buying-price-state-map } (\textcolor{variable_color}{n } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ s } : \textcolor{type_color}{ state})\\
+\textbf{} & \textcolor{predicate_color}{selling-price-state-map } (\textcolor{variable_color}{n } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ s } : \textcolor{type_color}{ state})\\
+\textbf{} & \textcolor{predicate_color}{at } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city}; \textcolor{variable_color}{ s } : \textcolor{type_color}{ state})\\
+\textbf{} & \textcolor{predicate_color}{connected } (\textcolor{variable_color}{c1}, \textcolor{variable_color}{ c2 } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{predicate_color}{has-adjacent-cities } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{money } (\textcolor{variable_color}{n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{wallet } (\textcolor{variable_color}{n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{on-city } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{predicate_color}{backpack-total-space } (\textcolor{variable_color}{n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{backpack-allocated-space } (\textcolor{variable_color}{n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{volumn } (\textcolor{variable_color}{i } : \textcolor{type_color}{ item}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{has } (\textcolor{variable_color}{i } : \textcolor{type_color}{ item})\\
+\textbf{} & \textcolor{predicate_color}{has-state-map } (\textcolor{variable_color}{s } : \textcolor{type_color}{ state})\\
+\textbf{} & \textcolor{predicate_color}{is-buyer } (\textcolor{variable_color}{p } : \textcolor{type_color}{ person})\\
+\textbf{} & \textcolor{predicate_color}{is-seller } (\textcolor{variable_color}{p } : \textcolor{type_color}{ person})\\
+\textbf{} & \textcolor{predicate_color}{is-selling } (\textcolor{variable_color}{p } : \textcolor{type_color}{ person}; \textcolor{variable_color}{ i } : \textcolor{type_color}{ item})\\
+\textbf{} & \textcolor{predicate_color}{is-buying } (\textcolor{variable_color}{p } : \textcolor{type_color}{ person}; \textcolor{variable_color}{ i } : \textcolor{type_color}{ item})\\
+\textbf{} & \textcolor{predicate_color}{buying-price } (\textcolor{variable_color}{i } : \textcolor{type_color}{ item}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{selling-price } (\textcolor{variable_color}{i } : \textcolor{type_color}{ item}; \textcolor{variable_color}{ n } : \textcolor{type_color}{ number})\\
+\textbf{} & \textcolor{predicate_color}{person-at } (\textcolor{variable_color}{p } : \textcolor{type_color}{ person}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{predicate_color}{visiting } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{predicate_color}{visited-once } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{predicate_color}{visited-more-than-once } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city})\\
+\hline
+\textbf{Action} & \textcolor{action_color}{move-with-map-inside-state } (\textcolor{variable_color}{c1}, \textcolor{variable_color}{ c2 } : \textcolor{type_color}{ city}; \textcolor{variable_color}{ s } : \textcolor{type_color}{ state})\\
+\textbf{} & \textcolor{action_color}{move-without-map-1-adjacent-cities } (\textcolor{variable_color}{c1}, \textcolor{variable_color}{ c2 } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{move-without-map-2-adjacent-cities } (\textcolor{variable_color}{c1}, \textcolor{variable_color}{ c2}, \textcolor{variable_color}{ c3 } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{move-without-map-3-adjacent-cities } (\textcolor{variable_color}{c1}, \textcolor{variable_color}{ c2}, \textcolor{variable_color}{ c3}, \textcolor{variable_color}{ c4 } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{move-without-map-4-adjacent-cities } (\textcolor{variable_color}{c1}, \textcolor{variable_color}{ c2}, \textcolor{variable_color}{ c3}, \textcolor{variable_color}{ c4}, \textcolor{variable_color}{ c5 } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{move-without-map-5-adjacent-cities } (\textcolor{variable_color}{c1}, \textcolor{variable_color}{ c2}, \textcolor{variable_color}{ c3}, \textcolor{variable_color}{ c4}, \textcolor{variable_color}{ c5}, \textcolor{variable_color}{ c6 } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{visit-city-first-visit } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{visit-city-visited-again } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{visit-city-multiple-visits } (\textcolor{variable_color}{c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{seller-sells-item-to-travelling-salesman } (\textcolor{variable_color}{i } : \textcolor{type_color}{ item}; \textcolor{variable_color}{ price}, \textcolor{variable_color}{ capacity } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ p } : \textcolor{type_color}{ person}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{buyer-buys-item-from-travelling-salesman } (\textcolor{variable_color}{i } : \textcolor{type_color}{ item}; \textcolor{variable_color}{ price}, \textcolor{variable_color}{ capacity } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ p } : \textcolor{type_color}{ person}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{deallocate-backpack-space } (\textcolor{variable_color}{a1}, \textcolor{variable_color}{ a2}, \textcolor{variable_color}{ b1}, \textcolor{variable_color}{ b2 } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{allocate-backpack-space } (\textcolor{variable_color}{a1}, \textcolor{variable_color}{ a2}, \textcolor{variable_color}{ b1}, \textcolor{variable_color}{ b2 } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{buy-state-map } (\textcolor{variable_color}{s } : \textcolor{type_color}{ state}; \textcolor{variable_color}{ price } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{sell-state-map } (\textcolor{variable_color}{s } : \textcolor{type_color}{ state}; \textcolor{variable_color}{ price } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{inc-wallet } (\textcolor{variable_color}{w1}, \textcolor{variable_color}{ w2}, \textcolor{variable_color}{ m1}, \textcolor{variable_color}{ m2 } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\textbf{} & \textcolor{action_color}{dec-wallet } (\textcolor{variable_color}{w1}, \textcolor{variable_color}{ w2}, \textcolor{variable_color}{ m1}, \textcolor{variable_color}{ m2 } : \textcolor{type_color}{ number}; \textcolor{variable_color}{ c } : \textcolor{type_color}{ city})\\
+\hline
+\end{tabular}
+\caption{Domain Specifications}
+\label{tab:domain_specifications}
+\end{table}

@@ -26,25 +26,15 @@ def parse_domain_file(domain_file):
     # Extract domain name
     domain_name_match = re.search(r'\(define \(domain ([^\)]+)\)', domain_file)
     if domain_name_match:
-        data.append(['name', domain_name_match.group(1)])
+        data.append(['Name', domain_name_match.group(1)])
 
     # Extract types
     types_matches = re.findall(r'\(:types\s+([^\)]+)\)', domain_file)
     for types in types_matches:
         for type_ in types.split():
-            data.append(['type', type_])
+            data.append(['Type', type_])
 
     # Extract predicates
-    # (:predicates
-    #     (vehicle-at ?loc - location)
-    #     (tire-at ?loc - location)
-    #     (normal-road ?from - location ?to - location)
-    #     (spiky-road ?from - location ?to - location)
-    #     (flat-tire)
-    #     (has-many-spares ?count - number)
-    #     (next ?n - number ?m - number)
-    # )
-    # Regular expression pattern
     predicates = re.findall('(\([\w\?\s-]*\))', re.search(r'\(:predicates((\s|\n)|(\([\w\?\s-]*\)))*\)', domain_file).group(0), re.DOTALL)
 
     for predicate in predicates:
@@ -54,13 +44,13 @@ def parse_domain_file(domain_file):
             predicate_name = parts[0]
             predicate_params = " ".join(parts[1:])
             formatted_predicate = f"{predicate_name} ({parse_params(predicate_params)})"
-            data.append(['predicate', formatted_predicate])
+            data.append(['Predicate', formatted_predicate])
 
     # Extract actions
     actions_matches = re.findall(r'\(:action ([^\s]+)\s+:parameters\s+\(([^\)]+)\)', domain_file, re.DOTALL)
     for action, params in actions_matches:
         action_str = f"{action} ({parse_params(params)})"
-        data.append(['action', action_str])
+        data.append(['Action', action_str])
 
     # Create DataFrame
     df = pd.DataFrame(data, columns=['key', 'value'])
@@ -112,8 +102,70 @@ def prepare_dataframe(df):
             else:
                 new_keys.append('')  # Empty string for repeated keys
             new_values.append(value)
+        # Add a delimiter row after each key group
+        new_keys.append('delimiter')
+        new_values.append('delimiter')
+
+    # Remove the last delimiter
+    new_keys.pop()
+    new_values.pop()
 
     return pd.DataFrame({'key': new_keys, 'value': new_values})
+
+def dataframe_to_latex_table(df, output_path):
+    # Convert DataFrame to LaTeX
+    def break_and_color(text, name_color, type_color, variable_color):
+        value = ""
+        splitted_text = text.split("(")
+        name, params = splitted_text[0], splitted_text[1].strip(")")
+        value = f"\\textcolor{{{name_color}}}{{{name}}} ("
+        for param_types in params.split(";"):
+            if not param_types:
+                continue
+            params_by_type, type = param_types.split(":")
+            for i in range(len(params_by_type.split(","))-1):
+                value += f"\\textcolor{{{variable_color}}}{{{params_by_type.split(',')[i]}}}, "
+            value += f"\\textcolor{{{variable_color}}}{{{params_by_type.split(',')[-1]}}}"
+            value += f" : \\textcolor{{{type_color}}}{{{type}}}; "
+        value = value[:-2] + ")"
+        return value
+
+    with open(output_path, 'w') as f:
+        f.write('\\begin{table}[ht]\n')
+        f.write('\\centering\n')
+        f.write('\\begin{tabular}{ll}\n')
+        f.write('\\hline\n')
+        last_key = ""
+        for index, row in df.iterrows():
+            if row['key'] == 'delimiter':
+                f.write('\\hline\n')
+            else:
+                # colors defined on latex file
+                type_color = "type_color"
+                action_color = "action_color"
+                predicate_color = "predicate_color"
+                variable_color = "variable_color"
+                value = ""
+                if row['key'] == 'Type' or row['key'] == '' and last_key == 'Type':
+                    value = f"\\textcolor{{{type_color}}}{{{row['value']}}}"
+                    last_key = 'Type'
+                elif row["key"] == 'Name' or row['key'] == '' and last_key == 'Name':
+                    value = f"\\textbf{{{row['value']}}}"
+                    last_key = 'Name'
+                elif row['key'] == 'Predicate' or row['key'] == '' and last_key == 'Predicate':
+                    value = break_and_color(row['value'], predicate_color, type_color, variable_color)
+                    last_key = 'Predicate'
+                elif row['key'] == 'Action' or row['key'] == '' and last_key == 'Action':
+                    value = break_and_color(row['value'], action_color, type_color, variable_color)
+                    last_key = 'Action'
+
+                # f.write(f"{row['key']} & {row['value']} \\\\\n")
+                f.write(f"\\textbf{{{row['key']}}} & {value}\\\\\n")
+        f.write('\\hline\n')
+        f.write('\\end{tabular}\n')
+        f.write('\\caption{Domain Specifications}\n')
+        f.write('\\label{tab:domain_specifications}\n')
+        f.write('\\end{table}\n')
 
 def trim_image(image_path, output_path):
     # Open the image
@@ -155,8 +207,8 @@ def add_small_white_border(image_path, output_path):
 
 
 path = "res/benchmarks"
-# domains = ["tireworld-spiky-2", "sokoban", "travelling-salesman", "kitchen", "rescue"]
-domains = ["tireworld-spiky-2"]
+domains = ["tireworld-spiky-2", "sokoban", "travelling-salesman", "kitchen", "rescue"]
+# domains = ["tireworld-spiky-2"]
 for domain in domains:
     domain_file = os.path.join(path, domain, "domain.pddl")
     print(f"Processing {domain_file}")
@@ -164,19 +216,7 @@ for domain in domains:
     input_str = open(domain_file, "r").read()
     df = parse_domain_file(input_str)
     df = prepare_dataframe(df)
-    dataframe_to_image(df, output_path)
-    trim_image(output_path, output_path)
-    add_small_white_border(output_path, output_path)
-
-
-# not_to_be_included_on_table = {
-#     "kitchen" : {
-#         "predicate" : ["next", "can-use-chef-island", "properly-added", "not-on-recipe", "finished", "num-recipes-to-refuse"],
-#         "action" : ["select-chef-island", "on-recipe-add-to-recipe", "offer", "from-stock-to-chef-island", "from-chef-island-to-stock"]
-#     }
-# }
-#
-# to_be_included_on_table = {
-#     "kitchen" : {
-#     }
-# }
+    # dataframe_to_image(df, output_path)
+    # trim_image(output_path, output_path)
+    # add_small_white_border(output_path, output_path)
+    dataframe_to_latex_table(df, domain_file.replace("domain.pddl", f"{domain}-domain-table.tex"))

@@ -12,11 +12,11 @@
     (:predicates
         (vehicle-at ?loc - location)
         (tire-at ?loc - location)
-        (normal-road ?from - location ?to - location)
-        (spiky-road ?from - location ?to - location)
+        (normal-road ?from ?to - location)
+        (spiky-road ?from ?to - location)
         (flat-tire)
         (has-many-spares ?count - number)
-        (next ?n - number ?m - number)
+        (next ?n ?m - number)
     )
 
     (:action move-car-normal

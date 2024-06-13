@@ -1,8 +1,12 @@
 
 from operator import le
 
+# receive n as argument
+import os
+import sys
 
-n = 2
+n = int(sys.argv[1])
+
 locations = ["source", "sink"] +\
     [f"t_{i}{j}" for i in range(1,n+1) for j in range(1,i+1)] +\
     [f"nt_{i}{j}" for i in range(1,n) for j in range(1,i+1)] +\

@@ -11,19 +11,37 @@ bool &State::is_goal(const PartialState &goal_condition) const
 
 vec<Action> &State::get_applicable_actions(const vec<Action> &actions) const
 {
-    if (not states_applicable_actionss.contains(this->id))
+    if (not cache_enabled)
     {
-        vec<Action> applicable_actions;
+        vec<Action>* applicable_actions = new vec<Action>();
         for (const Action &action: actions)
         {
             if (this->can_receive_action(action))
             {
-                applicable_actions.push_back(action);
+                applicable_actions->push_back(action);
             }
         }
-        states_applicable_actionss[this->id] = applicable_actions;
+        return *applicable_actions;
     }
-    return states_applicable_actionss[this->id];
+    else
+    {
+        if (not states_applicable_actionss.contains(this->id))
+        {
+            vec<Action> applicable_actions;
+            for (const Action &action: actions)
+            {
+                if (this->can_receive_action(action))
+                {
+                    applicable_actions.push_back(action);
+                }
+            }
+            states_applicable_actionss[this->id] = applicable_actions;
+
+
+        }
+        return states_applicable_actionss[this->id];
+    }
+
 }
 
 bool State::can_receive_action(const Action &action) const
@@ -33,16 +51,33 @@ bool State::can_receive_action(const Action &action) const
 
 vec<State> &State::get_successors(const Action &action) const
 {
-    if (not states_actions_successor_statess.contains(this->id) or not states_actions_successor_statess[this->id].contains(action.id))
+    if(not cache_enabled)
     {
-        vec<State> successors;
+    vec<State>* successors = new vec<State>();
         for (const PartialState &effect: action.effects())
         {
-            successors.push_back(this->get_successor(effect));
+            successors->push_back(this->get_successor(effect));
         }
-        states_actions_successor_statess[this->id][action.id] = successors;
+        return *successors;
     }
-    return states_actions_successor_statess[this->id][action.id];
+    else
+    {
+        if (not states_actions_successor_statess.contains(this->id) or not states_actions_successor_statess[this->id].contains(action.id))
+        {
+            vec<State> successors;
+            for (const PartialState &effect: action.effects())
+            {
+                successors.push_back(this->get_successor(effect));
+            }
+
+                states_actions_successor_statess[this->id][action.id] = successors;
+
+        }
+        return states_actions_successor_statess[this->id][action.id];
+    }
+
+
+
 }
 
 State State::get_successor(const PartialState &effect) const

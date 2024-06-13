@@ -344,6 +344,7 @@ double policy_alarm;
 double step;
 double timer = INFTY; 
 double time_limit = INFTY;
+bool cache_enabled = true;
 
 str default_directory;
 
@@ -479,6 +480,10 @@ int main(int argc, char **argv)
 {
     time_limit = std::atof(argv[20]); 
     timer = time_limit;
+    cache_enabled = std::atoi(argv[21]);
+    std::cout << "LOG::main::time limit: " << time_limit << std::endl;
+    std::cout << "LOG::main::timer: " << timer << std::endl;
+    std::cout << "LOG::main::cache enabled: " << cache_enabled << std::endl;
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
     default_directory = argv[argc - 1]; 

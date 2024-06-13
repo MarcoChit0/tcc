@@ -59,13 +59,14 @@ AndStar::AndStar(const Policy::Heuristic &policy_heuristic, const State::Heurist
                 return true;
             }
 
+            // gambiarra para ignorar as políticas que foram geradas a muito tempo
             if (policy_1.parent_policy().id != policy_2.parent_policy().id)
             {
                 return policy_1.parent_policy().id < policy_2.parent_policy().id;
             }
-
             int min_1 = INFTY;
             int min_2 = INFTY;
+            // escolhe a política com menor min_{s' in app(a, s)}{h(s')} sendo <s, a> o último mapeamento feito na política
             for (const State &succ_state: policy_1.state().get_successors(policy_1.action()))
             {
                 min_1 = std::min(min_1, this->state_heuristic[succ_state]);

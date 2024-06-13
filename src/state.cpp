@@ -9,19 +9,20 @@ bool &State::is_goal(const PartialState &goal_condition) const
     return are_states_goal[this->id];
 }
 
+static vec<Action> static_applicable_actions = vec<Action>();
 vec<Action> &State::get_applicable_actions(const vec<Action> &actions) const
 {
     if (not cache_enabled)
     {
-        vec<Action>* applicable_actions = new vec<Action>();
+        static_applicable_actions.clear();
         for (const Action &action: actions)
         {
             if (this->can_receive_action(action))
             {
-                applicable_actions->push_back(action);
+                static_applicable_actions.push_back(action);
             }
         }
-        return *applicable_actions;
+        return static_applicable_actions;
     }
     else
     {
@@ -49,16 +50,17 @@ bool State::can_receive_action(const Action &action) const
     return this->does_model(action.precondition());
 }
 
+static vec<State> static_successors = vec<State>();
 vec<State> &State::get_successors(const Action &action) const
 {
     if(not cache_enabled)
     {
-    vec<State>* successors = new vec<State>();
+        static_successors.clear();
         for (const PartialState &effect: action.effects())
         {
-            successors->push_back(this->get_successor(effect));
+            static_successors.push_back(this->get_successor(effect));
         }
-        return *successors;
+        return static_successors;
     }
     else
     {

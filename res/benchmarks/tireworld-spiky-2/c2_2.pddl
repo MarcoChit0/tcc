@@ -30,8 +30,8 @@
 (define (problem tw-spiky-two-2)
     (:domain tw-spiky-two)
     (:objects
-        source sink s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 n1 n2 n3 n4 n5 n6 n7 n8 n9 n10 - location
-        0 1 2 3 4 5 6 7 8 9 10 - number
+        source sink s1 s2 s3 s4 s5 s6 s7 s8 n1 n2 n3 n4 n5 n6 n7 n8 - location
+        0 1 2 3 4 5 6 7 8 - number
     )
     (:init
         (vehicle-at source)
@@ -47,8 +47,6 @@
         (next 5 6)
         (next 6 7)
         (next 7 8)
-        (next 8 9)
-        (next 9 10)
 
         
         (normal-road source n1) (normal-road n1 source)
@@ -59,9 +57,7 @@
         (normal-road source n6) (normal-road n6 source)
         (normal-road source n7) (normal-road n7 source)
         (normal-road source n8) (normal-road n8 source)
-        (normal-road source n9) (normal-road n9 source)
-        (normal-road source n10) (normal-road n10 source)
-        
+    
         (tire-at n1)
         (tire-at n2)
         (tire-at n3)
@@ -70,8 +66,6 @@
         (tire-at n6)
         (tire-at n7)
         (tire-at n8)
-        (tire-at n9)
-        (tire-at n10)
         
         (spiky-road source s1) (spiky-road s1 source)
         (spiky-road s1 s2) (spiky-road s2 s1)
@@ -81,9 +75,7 @@
         (spiky-road s5 s6) (spiky-road s6 s5)
         (spiky-road s6 s7) (spiky-road s7 s6)
         (spiky-road s7 s8) (spiky-road s8 s7)
-        (spiky-road s8 s9) (spiky-road s9 s8)
-        (spiky-road s9 s10) (spiky-road s10 s9)
-        (spiky-road s10 sink) (spiky-road sink s10)
+        (spiky-road s8 sink) (spiky-road sink s8)
     )
     (:goal (vehicle-at sink))
 )

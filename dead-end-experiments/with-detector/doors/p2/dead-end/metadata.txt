@@ -1,8 +1,0 @@
-Metric,Count
-HardDeadEndStates,4
-SoftDeadEndStates,4
-AliveStates,34
-WeakAliveStates,0
-TotalStates,42
-GoalStates,16
-NonGoalStates,26

@@ -14,7 +14,7 @@ kitchen,c1_1
 kitchen,c2_1
 kitchen,c3_1
 kitchen,c4_1
-tireworld-spiky-2,c1_1
-tireworld-spiky-2,c2_1
-tireworld-spiky-2,c3_1
-tireworld-spiky-2,c4_1
+tireworld-spiky-2,c1_2
+tireworld-spiky-2,c2_2
+tireworld-spiky-2,c3_2
+tireworld-spiky-2,c4_2

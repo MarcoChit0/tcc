@@ -239,18 +239,6 @@ RandomWalk::Walker *parse_random_walk_walker(str walker)
     }
 }
 
-DeadEndDetector *parse_dead_end_detector(str dead_end_detector, const Task &task)
-{
-    if (dead_end_detector == "complete")
-    {
-        return new CompleteDeadEndDetector(task);
-    }
-    else
-    {
-        throw std::domain_error("Invalid dead end detector.");
-    }
-}
-
 void parse_concrete_states_generator(str concrete_states_generator_string)
 {
     if (concrete_states_generator_string == "all")
@@ -453,19 +441,23 @@ std::unique_ptr<Task::Solver> parse_task_solver(const std::string& task_solver, 
     {
         return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::DEFAULT, dead_end_detector);
     }
-    else if(task_solver == "weighted-and-star")
+    else if(task_solver == "weighted-and-star" or task_solver == "wandstar")
     {
         return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::WEIGHTED, dead_end_detector);
     }
-    else if(task_solver == "greedy-and-star")
+    else if(task_solver == "greedy-and-star" or task_solver == "gbfsnd")
     {
         return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::GREEDY, dead_end_detector);
     }
-    else if(task_solver == "depth-first-and-star")
+    else if(task_solver == "dfsnd+backtracking" or task_solver == "depth-first-and-star-with-backtracking")
     {
-        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::DEPTH_FIRST, dead_end_detector);
+        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::DEPTH_FIRST_BACKTRACKING, dead_end_detector);
     }
-    else if(task_solver == "breadth-first-and-star")
+    else if(task_solver == "dfsnd" or task_solver == "depth-first-and-star")
+    {
+        return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::DEPTH_FIRST_THEORETICAL, dead_end_detector);
+    }
+    else if(task_solver == "breadth-first-and-star" or task_solver == "bfsnd")
     {
         return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::BREADTH_FIRST, dead_end_detector);
     }
@@ -481,9 +473,9 @@ int main(int argc, char **argv)
     time_limit = std::atof(argv[20]); 
     timer = time_limit;
     cache_enabled = std::atoi(argv[21]);
-    std::cout << "LOG::main::time limit: " << time_limit << std::endl;
-    std::cout << "LOG::main::timer: " << timer << std::endl;
-    std::cout << "LOG::main::cache enabled: " << cache_enabled << std::endl;
+    std::cerr << "LOG::main::time limit: " << time_limit << std::endl;
+    std::cerr << "LOG::main::timer: " << timer << std::endl;
+    std::cerr << "LOG::main::cache enabled: " << cache_enabled << std::endl;
     // assert(get_memory_limit() <= 8);
     // assert(get_time_limit() <= 1800);
     default_directory = argv[argc - 1]; 

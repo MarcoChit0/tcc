@@ -3,6 +3,7 @@ AndStar::AndStar(const Policy::Heuristic &policy_heuristic, const State::Heurist
                                                                                                                                                                                               state_heuristic(state_heuristic),
                                                                                                                                                                                               dead_end_detector(dead_end_detector)
 {
+    this->comparator = comparator;
     switch (comparator)
     {
     case GREEDY:
@@ -48,7 +49,8 @@ AndStar::AndStar(const Policy::Heuristic &policy_heuristic, const State::Heurist
             }
         };
     }; break;
-    case DEPTH_FIRST:
+    case DEPTH_FIRST_BACKTRACKING:
+    case DEPTH_FIRST_THEORETICAL:
     {
         this->is_policy_worse_than = [this](const Policy &policy_1, const Policy &policy_2)
         {
@@ -153,7 +155,13 @@ Policy AndStar::get_solution(const Task &task)
 
         Policy policy = queue.top();
         queue.pop();
-        number_of_removed_policies++;
+        if(number_of_removed_policies++ != policy.size() and this->comparator == DEPTH_FIRST_THEORETICAL)
+        {
+            set_policy_type(UNSOLVABLE_POLICY);
+            std::cerr << "LOG::task_solver::and_star::get_solution::policy_size_error::" << number_of_removed_policies << " " << policy.size() << std::endl;
+            std::cerr << "LOG::task_solver::and_star::get_solution::DFSND without backtracking failed::" << std::endl;
+            return Policy();
+        }
 
         // std::cout << number_of_removed_policies << " " << this->policy_heuristic[policy] << " " << policy.size() << " " << policy.id << std::endl;
 

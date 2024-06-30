@@ -246,7 +246,7 @@ def run_thread(thread_arguments: ThreadArguments) -> None:
     process_creation_lock.acquire(); time.sleep(0.1)
     with open('./misc/data/log.txt', 'a') as log_file: log_file.write(f'{datetime.datetime.now(), (thread_arguments.task_info.domain_label, thread_arguments.task_info.task_label, thread_arguments.policy_heuristic, thread_arguments.state_heuristic, apn.save_folder_name_prefix)}\n')
 
-    # for debugging purposes only:
+    # # for debugging purposes only:
     # print(" ".join(thread_arguments.get_splitted_command()))
     # exit(1)
     process = subprocess.Popen(thread_arguments.get_splitted_command(), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=apply_limits, text=True)

@@ -1,3 +1,1 @@
-tireworld-spiky-2,c3_2_3
-tireworld-spiky-2,c3_2_4
-tireworld-spiky-2,c3_2_5
+tireworld-spiky-2,c3_2_2

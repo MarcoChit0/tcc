@@ -32,6 +32,8 @@
 #include "./neural_networks/dead_end_neural_network.hpp"
 #include "./neural_networks/state_neural_network.hpp"
 
+#include "./metrics.hpp"
+
 
 static Trie trie = Trie();
 int concrete_states_generator = ConcreteStatesGenerator::ALL;
@@ -511,5 +513,7 @@ int main(int argc, char **argv)
     // std::cout << opt_solution << std::endl;
     print_end(argv, task, policy_heuristic, solver, opt_solution, optional_dead_end_detector, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
+
+    // find_reachable_states_that_do_not_lead_to_dead_end_states(task, *state_heuristic, optional_dead_end_detector);
     return 0;
 }

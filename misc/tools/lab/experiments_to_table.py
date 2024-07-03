@@ -192,7 +192,7 @@ def update_and2_cells(df, domain):
     return df
 
 def update_marker_cells(df, domain):
-    path = f"../Desktop/run-all-18-06-2024/marker/{domain}"
+    path = f"../Desktop/run-all-02-07-2024/marker/{domain}"
     final = "_2" if domain == "tireworld-spiky-2" else "_1"
     for instance in df:
         
@@ -207,7 +207,7 @@ def update_marker_cells(df, domain):
     return df
 
 def update_dfs_cells(df, domain, dfs_type="dfs"):
-    path = f"../Desktop/run-all-18-06-2024/{dfs_type}/{domain}"
+    path = f"../Desktop/run-all-02-07-2024/{dfs_type}/{domain}"
     # print(path)
     final = "_2" if domain == "tireworld-spiky-2" else "_1"
     header = "solver,domain,problem,policy_heuristic,state_heuristic,number_of_samples,length,percentage_fsm,sample_generator,sample_treatment_class,percentage_timer,percentage_time_limit,percentage_memory_limit,walker,concrete_states_generator,regressor,termination,memory_usage,time,number_of_generated_policies,number_of_inserted_policies,number_of_removed_policies,number_of_expanded_policies,solution_length,number_of_lookups,number_of_states_generated_on_state_heuristic_table"
@@ -230,7 +230,8 @@ def update_dfs_cells(df, domain, dfs_type="dfs"):
         if header_found:
             csv_df = pd.read_csv(f"{path}/{instance}{final}/results.csv")
             if not csv_df.empty:
-                if csv_df['termination'] == "optimal":
+                # check the first row on column termination if it is "optimal"
+                if csv_df["termination"].iloc[0] == "optimal":
                     df[instance][dfs_type] = "1"
 
     return df

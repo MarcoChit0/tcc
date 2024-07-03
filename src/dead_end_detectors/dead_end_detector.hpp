@@ -73,4 +73,5 @@ class DeadEndDetector
         virtual void save_labeled_states() const;
         virtual void load_labeled_states();
         map<int64_t, int> get_labeled_states() const;
+        int get_state_label(const State &state) const;
 };

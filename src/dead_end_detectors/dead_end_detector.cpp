@@ -40,7 +40,7 @@ str print_state_label(const int state_label)
     }
     else if(state_label == EASY_DEAD_END or state_label == ALIVE or state_label == HARD_DEAD_END)
     {
-        return state_label_to_string.at(WEAK_ALIVE);
+        return state_label_to_string.at(state_label);
     }
     else
     {
@@ -91,4 +91,15 @@ str DeadEndDetector::get_statistics() const
 map<int64_t, int> DeadEndDetector::get_labeled_states() const
 {
     return this->labeled_states;
+}
+
+int DeadEndDetector::get_state_label(const State &state) const
+{
+    if(not labeled_states.contains(state.id))
+    {
+        std::cerr << "LOG::DeadEndDetector::get_state_label::state not labeled::" + std::to_string(state.id) + "\n";
+        std::cerr << "LOG::DeadEndDetector::get_state_label::state not labeled:: " << state << "\n";
+        throw std::invalid_argument("LOG::DeadEndDetector::get_state_label::state not labeled::" + std::to_string(state.id));
+    }
+    return labeled_states[state.id];
 }

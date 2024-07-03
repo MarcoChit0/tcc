@@ -150,18 +150,18 @@ void ReachableDeadEndDetector::count_and_print(
     int hard_dead_end_count = 0, alive_count = 0, weak_alive_count = 0, easy_dead_end_count = 0;
 
     // commented for not to exceed memory limit on server
-    std::ofstream labels_file(dead_end_directory + DEAD_END_LABEL_TO_IP_FILE);
-    if (not labels_file.is_open())
-    {
-        std::cerr << "LOG::ReachableDeadEndDetector::save_states::Error opening states file." << std::endl;
-        return;
-    }
+    // std::ofstream labels_file(dead_end_directory + DEAD_END_LABEL_TO_IP_FILE);
+    // if (not labels_file.is_open())
+    // {
+    //     std::cerr << "LOG::ReachableDeadEndDetector::save_states::Error opening states file." << std::endl;
+    //     return;
+    // }
 
     for (auto [state_id, label] : labeled_states)
     {
         State state;
         state.id = state_id;
-        labels_file << state << " -> " << print_state_label(label) << std::endl;
+        // labels_file << state << " -> " << print_state_label(label) << std::endl;
 
         switch (label)
         {
@@ -188,7 +188,7 @@ void ReachableDeadEndDetector::count_and_print(
             break;
         }
     }
-    labels_file.close();
+    // labels_file.close();
 
     std::ofstream metadata_file(dead_end_directory + DEAD_END_METADATA_FILE);
     if (not metadata_file.is_open())

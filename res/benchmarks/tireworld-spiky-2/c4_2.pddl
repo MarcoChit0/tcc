@@ -1,74 +1,43 @@
 
-(define (problem tw-spiky-two-24)
+(define (problem tw-spiky-two-4-4-5)
     (:domain tw-spiky-two)
     (:objects
-        b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12 b13 b14 b15 b16 b17 b18 b19 b20 b21 b22 b23 b24 t - location
-        0 1 2 3 4 5 6 - number
+        source aux_0 aux_1 aux_2 target n0 n1 n2 n3 m0 m1 m2 m3 m4 s0 s1 s2 s3 s4 s5 s6 s7 s8 s9  - location
+        0 1 2 3 4 5 6 7 8 9 - number
     )
     (:init
-        (vehicle-at b6)
+        (vehicle-at source)
         (not (flat-tire))
-        (has-many-spares 6)
+        (has-many-spares 0)
 
-        (next 0 1)
-        (next 1 2)
-        (next 2 3)
-        (next 3 4)
-        (next 4 5)
-        (next 5 6)
-        (normal-road t b0)
-        (spiky-road b0 t)
-        (normal-road b0 b1)
-        (spiky-road b1 b0)
-        (normal-road b1 b2)
-        (spiky-road b2 b1)
-        (normal-road b2 b3)
-        (spiky-road b3 b2)
-        (normal-road b3 b4)
-        (spiky-road b4 b3)
-        (normal-road b4 b5)
-        (spiky-road b5 b4)
-        (normal-road b5 b6)
-        (spiky-road b6 b5)
-        (normal-road b6 b7)
-        (spiky-road b7 b6)
-        (normal-road b7 b8)
-        (spiky-road b8 b7)
-        (normal-road b8 b9)
-        (spiky-road b9 b8)
-        (normal-road b9 b10)
-        (spiky-road b10 b9)
-        (normal-road b10 b11)
-        (spiky-road b11 b10)
-        (normal-road b11 b12)
-        (spiky-road b12 b11)
-        (normal-road b12 b13)
-        (spiky-road b13 b12)
-        (normal-road b13 b14)
-        (spiky-road b14 b13)
-        (normal-road b14 b15)
-        (spiky-road b15 b14)
-        (normal-road b15 b16)
-        (spiky-road b16 b15)
-        (normal-road b16 b17)
-        (spiky-road b17 b16)
-        (normal-road b17 b18)
-        (spiky-road b18 b17)
-        (normal-road b18 b19)
-        (spiky-road b19 b18)
-        (normal-road b19 b20)
-        (spiky-road b20 b19)
-        (normal-road b20 b21)
-        (spiky-road b21 b20)
-        (normal-road b21 b22)
-        (spiky-road b22 b21)
-        (normal-road b22 b23)
-        (spiky-road b23 b22)
-        (normal-road b24 t)
-        (spiky-road t b24)
+        (next 0 1) (next 1 2) (next 2 3) (next 3 4) (next 4 5) (next 5 6) (next 6 7) (next 7 8) (next 8 9)
+
+        (spiky-road source aux_0)
+        (normal-road aux_0 target)
+
+        (normal-road source aux_1)
+        (normal-road aux_1 aux_2)
+
+        (normal-road aux_1 n0)
+        (normal-road n3 aux_1)
+
+        (normal-road aux_2 m0)
+        (normal-road m4 aux_2)
+
+        (normal-road aux_2 s0)
+        (normal-road s9 target)
+        
+        (normal-road n0 n1) (normal-road n1 n2) (normal-road n2 n3)
+        
+        (normal-road m0 m1) (normal-road m1 m2) (normal-road m2 m3) (normal-road m3 m4)
+
+        (spiky-road s0 s1) (spiky-road s1 s2) (spiky-road s2 s3) (spiky-road s3 s4) (spiky-road s4 s5) (spiky-road s5 s6) (spiky-road s6 s7) (spiky-road s7 s8) (spiky-road s8 s9)
+
+        (tire-at n0) (tire-at n1) (tire-at n2) (tire-at n3)
+
+        (tire-at m0) (tire-at m1) (tire-at m2) (tire-at m3) (tire-at m4)
 
     )
-    (:goal
-        (and (vehicle-at t) (not (flat-tire)))
-    )
+    (:goal (and (vehicle-at target) (not (flat-tire))))
 )
+

@@ -1,3 +1,6 @@
+;;; Authors: Marco Chitolina, Frederico Messa and  André Pereira ;;;
+
+
 (define (domain rescue)
     (:requirements :typing :equality :negative-preconditions :disjunctive-preconditions :universal-preconditions :conditional-effects :existential-preconditions :non-deterministic)
     (:types

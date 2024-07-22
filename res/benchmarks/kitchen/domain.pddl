@@ -1,3 +1,5 @@
+;;; Authors: Marco Chitolina, Frederico Messa and André Pereira ;;;
+
 ;; Disclaimer:
 ;; The introduction of multiple numbered islands as areas where chefs organize their ingredients addresses a specific limitation in our PDDL translator. 
 ;; Originally, our translator struggled with processing 'forall' statements in effects, which made it impossible to accurately track which ingredients had been used in a recipe. 
@@ -6,6 +8,7 @@
 ;; As a direct consequence of this approach, it's necessary to specify the number of available islands in the instance file, ensuring that the chef has sufficient space to prepare dishes. 
 ;; This solution, while not ideal, provided a practical workaround to the translator's limitations.
 ;; Please note that this methodology introduces a requirement to manage island availability within the instance files, which may impact how you plan and execute your cooking simulations.
+
 (define (domain kitchen)
     (:requirements :strips :typing :non-deterministic :disjunctive-preconditions :existential-preconditions :universal-preconditions :equality)
     (:types recipe ingredient costumer number)

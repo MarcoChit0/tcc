@@ -1,5 +1,6 @@
 #include "reachable_dead_end_detector.hpp"
 
+// TODO: MAKE THIS A HASH MAP
 bool ReachableDeadEndDetector::have_good_actions(const State &state, const StateActionPairToBoolMap &is_bad_state_action_pair)
 {
     for (const Action &action : state.get_applicable_actions(this->task.actions()))

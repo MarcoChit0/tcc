@@ -1,7 +1,7 @@
 ;;;  Authors: Michael Littman and David Weissman  ;;;
 ;;;  Modified: Blai Bonet for IPC 2006 ;;;
 ;;;  Modified: Christian Muise to make it a FOND domain
-;;;  Modified: Frederico Messa for interesting deadend learning analysis ;;;
+;;;  Modified: Frederico Messa, Marco Chitolina and André Pereira for deadend analysis ;;;
 
 (define (domain tw-spiky-two)
     (:requirements :typing :strips :non-deterministic)

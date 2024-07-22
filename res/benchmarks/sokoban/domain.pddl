@@ -1,3 +1,5 @@
+;;; Authors: André Pereira, Marco Chitolina and Frederico Messa -- adapting sokoban for FOND planning ;;;
+
 (define (domain sokoban-non-deterministic)
         (:requirements :typing :strips :non-deterministic :disjunctive-preconditions :existential-preconditions)
         (:types location direction box)

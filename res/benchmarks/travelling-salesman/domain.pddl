@@ -1,4 +1,4 @@
-;Header and description
+;;; Authors: Marco Chitolina, Frederico Messa and  André Pereira -- adapting travelling salesman problem for FOND planning ;;;
 
 (define (domain travelling-salesman)
 

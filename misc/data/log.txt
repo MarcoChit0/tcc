@@ -5861,3 +5861,6 @@
 (datetime.datetime(2024, 7, 19, 15, 59, 47, 224886), ('travelling-salesman', 'c2_1', 'delta-nearest', 'star', 'dfs+soft'))
 (datetime.datetime(2024, 7, 19, 16, 0, 12, 393040), ('rescue', 'c1_1', 'delta-nearest', 'star', 'dfs+soft'))
 (datetime.datetime(2024, 7, 19, 16, 0, 40, 503024), ('rescue', 'c2_1', 'delta-nearest', 'star', 'dfs+soft'))
+(datetime.datetime(2024, 7, 24, 17, 14, 32, 305578), ('chain-of-rooms', 'p8', 'delta-nearest', 'star', 'test,v2024-07-24'))
+(datetime.datetime(2024, 7, 24, 17, 14, 32, 424289), ('earth-observation', 'p32', 'delta-nearest', 'star', 'test,v2024-07-24'))
+(datetime.datetime(2024, 7, 24, 17, 14, 32, 534106), ('rescue', 'c3_1', 'delta-nearest', 'star', 'test,v2024-07-24'))

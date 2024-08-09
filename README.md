@@ -30,6 +30,28 @@ The results will appear in `./misc/data/raw_results` directory.
 
 Create `./white-list.txt` to define which instances will be used. (one `<domain-label,instance-label>` per line).
 
+
+## New benchmark
+
+To explore the instances of the new FOND benchmark we're developing, please navigate to the `./new-benchmark/` directory.
+
+If you wish to test these instances, you'll find them available in the `./res/benchmarks` directory. 
+
+
+## Experiments
+
+The data from our runs is available in the compresse file `.experiments.zip`.
+
+## Algorithms
+
+The implementations of GPM1, GPM2 w/D.DE, and GPM2 w/DE can be found in the `./src/task_solvers/and_star.cpp` file. All algorithms use the `DEPTH_FIRST_THEORETICAL` parameter for the comparator variable and employ the h* heuristic, located in `./src/state_heuristic/star.cpp`.
+
+Additionally, GPM2 w/D.DE and GPM2 w/DE utilize dead-end information to refine their heuristic estimates:
+
+For GPM2 w/D.DE, the dead-end information is sourced from `./src/dead_end_detectors/easy_reachable_dead_end_detector.cpp`.
+
+For GPM2 w/DE, the dead-end information is sourced from `./src/dead_end_detectors/reachable_dead_end_detector.cpp`.
+
 ## Problems
 ### Problem
 ```

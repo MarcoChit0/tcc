@@ -40,7 +40,7 @@ If you wish to test these instances, you'll find them available in the `./res/be
 
 ## Experiments
 
-The data from our runs is available in the compresse file `.experiments.zip`.
+The data from our runs is available in the compressed file `.experiments.zip`.
 
 ## Algorithms
 

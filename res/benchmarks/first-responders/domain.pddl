@@ -1,6 +1,6 @@
 (define (domain first-response)
   (:requirements :typing 
-		 :equal ity
+		 :equality
 		 :negative-preconditions
 		 :disjunctive-preconditions
 		 :universal-preconditions

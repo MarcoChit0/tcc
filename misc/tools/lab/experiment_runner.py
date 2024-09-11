@@ -71,6 +71,7 @@ class ArgParsingNamespace(tap.Tap):
     solver: str
     dead_end_time_limit_for_state_space_creation: int
     cache_enable: bool
+    metrics: str
 
     def configure(self) -> None:
         self.add_argument("-n", "--number-of-threads", type=int, default=3)
@@ -98,6 +99,7 @@ class ArgParsingNamespace(tap.Tap):
         self.add_argument("-s", "--solver", type=str, default="and-star") # choices in {and-star, weighted-and-star, depth-first-and-star, greedy-and-star}
         self.add_argument("-detl", "--dead-end-time-limit-for-state-space-creation", type=int, default=None)
         self.add_argument("-c", "--cache-enable", default=True, action='store_false')
+        self.add_argument("-ms", "--metrics", type=str, default="")
 
 apn = ArgParsingNamespace()
 argcomplete.autocomplete(apn)
@@ -140,7 +142,8 @@ class ThreadArguments:
         solver: str,
         dead_end_time_limit_for_state_space_creation: int,
         time_limit: float,
-        cache_enable: bool = True
+        cache_enable: bool = True,
+        metrics: str = ""
         ):
         global base_dir_structure
         self.task_info = task_info
@@ -171,6 +174,7 @@ class ThreadArguments:
             self.dead_end_time_limit_for_state_space_creation = "none"
         self.time_limit = round(time_limit * 60 )
         self.cache_enable = cache_enable
+        self.metrics = metrics
 
     def get_splitted_command(self) -> list[str]:
         return [
@@ -196,6 +200,7 @@ class ThreadArguments:
             f'{self.dead_end_time_limit_for_state_space_creation}',
             f'{self.time_limit}',
             f'{int(self.cache_enable)}',
+            f'{self.metrics}',
             f'{self.save_folder_path}'
         ]
     
@@ -230,6 +235,7 @@ class ThreadArguments:
             "params": self.params,
             "cache_enable": self.cache_enable,
             "save_folder_path": self.save_folder_path,
+            "metrics": self.metrics
         }
         # Convert the dictionary to a JSON string
         return json.dumps(params_dict, indent=4)
@@ -321,7 +327,9 @@ def get_threads_for_task(task_info: TaskInfo) -> Generator[Thread, None, None]:
                                                     for regressor in apn.regressor.split(','):
                                                         for dead_end_detector in apn.dead_end_detector.split(','):
                                                             for solver in apn.solver.split(','):
-                                                                args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow, solver, apn.dead_end_time_limit_for_state_space_creation, apn.time_limit, apn.cache_enable)
+                                                                if solver == 'none':
+                                                                    solver = ''
+                                                                args = ThreadArguments(task_info, policy_heuristic, state_heuristic, number_of_samples, length, percentage_fsm, sample_generator, sample_treatment_class, percentage_timer, percentage_time_limit, percentage_memory_limit, walker, concrete_states_generator, regressor, dead_end_detector, apn.dead_end_labels_program_flow, solver, apn.dead_end_time_limit_for_state_space_creation, apn.time_limit, apn.cache_enable, apn.metrics)
                                                                 yield Thread(target=run_thread, args=[args])
 
                                         

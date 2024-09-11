@@ -2,7 +2,6 @@
 
 #include "dead_end_detector.hpp"
 #define DEAD_END_LABEL_TO_IP_FILE "labels.txt"
-#define DEAD_END_METADATA_FILE "metadata.txt"
 
 class ReachableDeadEndDetector : public DeadEndDetector
 {
@@ -43,6 +42,5 @@ protected:
 
 public:
     ReachableDeadEndDetector(const Task &task, const opt<int> &time_limit_seconds = std::nullopt);
-    double is_deadend(const State &state) const;
     void label_states(const bool save_metadata) override;
 };

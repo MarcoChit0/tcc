@@ -2,7 +2,7 @@
 #include <algorithm> // For std::set_difference, std::set_intersection
 #include <iterator>  // For std::back_inserter
 
-SetDeadEndDetector::SetDeadEndDetector(const Task &task, const opt<int> &time_limit_seconds) : ReachableDeadEndDetector(task, time_limit_seconds)
+SetDeadEndDetector::SetDeadEndDetector(const Task &task) : DeadEndDetector(task)
 {
     this->alive = std::unordered_set<State>();
     this->unk = std::unordered_set<State>();
@@ -12,11 +12,6 @@ SetDeadEndDetector::SetDeadEndDetector(const Task &task, const opt<int> &time_li
     this->goal_count = 0;
     this->is_bad = StateActionPairToBoolMap();
     this->predecessors = std::map<State, vec<StateActionPair>>();
-}
-
-double SetDeadEndDetector::is_deadend(const State &state) const
-{
-    return this->labeled_states.at(state.id) == HARD_DEAD_END ? 1.0 : 0.0;
 }
 
 set<State> my_set_intersection(const set<State> &set1, const set<State> &set2)
@@ -77,10 +72,12 @@ void SetDeadEndDetector::forward_search()
         if (state.is_goal(this->task.goal_condition()))
         {
             alive.insert(state);
+            this->labeled_states[state.id] = ALIVE;
         }
         else
         {
             unk.insert(state);
+            this->labeled_states[state.id] = WEAK_ALIVE;
             for (const Action &action : state.get_applicable_actions(this->task.actions()))
             {
                 for (const State &successor_state : state.get_successors(action))
@@ -111,7 +108,7 @@ void SetDeadEndDetector::backward_search(std::unordered_set<State> &visited)
 
         for (const StateActionPair &p : predecessors[state])
         {
-            if(not is_bad[p] and visited.find(p.first) == visited.end())
+            if (not is_bad[p] and visited.find(p.first) == visited.end())
             {
                 queue.push(p.first);
                 visited.insert(p.first);
@@ -119,11 +116,11 @@ void SetDeadEndDetector::backward_search(std::unordered_set<State> &visited)
         }
     }
 }
-void SetDeadEndDetector::label_dead_states(std::unordered_set<State> &visited, const int &iteration)
+void SetDeadEndDetector::label_dead_states(std::unordered_set<State> &visited, const int &iteration, State &last_dead_end)
 {
     std::unordered_set<State> new_dead = my_set_difference(unk, visited);
     int label;
-    if(iteration == 0)
+    if (iteration == 0)
     {
         label = EASY_DEAD_END;
         easy_dead_end_count += new_dead.size();
@@ -134,11 +131,13 @@ void SetDeadEndDetector::label_dead_states(std::unordered_set<State> &visited, c
         hard_dead_end_count += new_dead.size();
     }
 
+    last_dead_end = new_dead.size() > 0 ? *new_dead.begin() : last_dead_end;
+
     for (const auto &d : new_dead)
     {
         this->labeled_states[d.id] = label;
         dead.insert(d);
-        for(const StateActionPair &p : predecessors[d])
+        for (const StateActionPair &p : predecessors[d])
         {
             is_bad[p] = true;
         }
@@ -152,15 +151,16 @@ void SetDeadEndDetector::label_alive_states()
     {
         this->labeled_states[a.id] = ALIVE;
     }
+    unk.clear();
 }
 
-void SetDeadEndDetector::print(const int& iteration) const
+void SetDeadEndDetector::print(const int &iteration) const
 {
     int set_memory_estimate = sizeof(State) * (alive.size() + dead.size() + unk.size());
     std::ofstream metadata_file(dead_end_directory + DEAD_END_METADATA_FILE);
     if (!metadata_file.is_open())
     {
-        std::cerr << "LOG::ReachableDeadEndDetector::save_metadata::Error opening metadata file." << std::endl;
+        std::cerr << "LOG::SetDeadEndDetector::save_metadata::Error opening metadata file." << std::endl;
         return;
     }
     metadata_file << "Metric,Count\n";
@@ -172,7 +172,7 @@ void SetDeadEndDetector::print(const int& iteration) const
     metadata_file << "TotalStates," << alive.size() + dead.size() << "\n";
     metadata_file << "GoalStates," << goal_count << "\n";
     metadata_file << "NonGoalStates," << (alive.size() + dead.size()) - goal_count << "\n";
-    metadata_file << "Iteration," << iteration << "\n";
+    metadata_file << "K1Metric," << iteration - 1 << "\n";
     metadata_file << "MemoryEstimate," << set_memory_estimate << "\n";
     metadata_file << "Memory," << get_memory_usage() << "\n";
     metadata_file.close();
@@ -182,31 +182,70 @@ void SetDeadEndDetector::label_states(const bool save_metadata)
 {
     std::unordered_set<State> visited;
     int i = 0, dead_end_count = 0;
-    std::cerr << "LOG::ReachableDeadEndDetector::label_states::Starting forward search at " << get_elapsed_time() << std::endl;
+    std::cerr << "LOG::SetDeadEndDetector::label_states::Starting forward search at " << get_elapsed_time() << std::endl;
     forward_search();
-    std::cerr << "LOG::ReachableDeadEndDetector::label_states::Ending forward search at " << get_elapsed_time() << std::endl;
+    std::cerr << "LOG::SetDeadEndDetector::label_states::Ending forward search at " << get_elapsed_time() << std::endl;
     goal_count = alive.size();
-
+    State last_dead_end_found;
     do
     {
         dead_end_count = dead.size();
         visited.clear();
-        std::cerr << "LOG::ReachableDeadEndDetector::label_states::Starting backward search #" << i << " at " << get_elapsed_time() << std::endl;
+        std::cerr << "LOG::SetDeadEndDetector::label_states::Starting backward search #" << i << " at " << get_elapsed_time() << std::endl;
         backward_search(visited);
-        std::cerr << "LOG::ReachableDeadEndDetector::label_states::Starting backward search #" << i << " at " << get_elapsed_time() << std::endl;
-        std::cerr << "LOG::ReachableDeadEndDetector::label_states::#DeadEndStates before: " << dead.size() << std::endl;
-        label_dead_states(visited, i);
-        std::cerr << "LOG::ReachableDeadEndDetector::label_states::#DeadEndStates after: " << dead.size() << std::endl;
-        std::cerr << "LOG::ReachableDeadEndDetector::label_states::#UnknownStates before: " << unk.size() << std::endl;
+        std::cerr << "LOG::SetDeadEndDetector::label_states::Starting backward search #" << i << " at " << get_elapsed_time() << std::endl;
+        std::cerr << "LOG::SetDeadEndDetector::label_states::#DeadEndStates before: " << dead.size() << std::endl;
+        label_dead_states(visited, i, last_dead_end_found);
+        std::cerr << "LOG::SetDeadEndDetector::label_states::#DeadEndStates after: " << dead.size() << std::endl;
+        std::cerr << "LOG::SetDeadEndDetector::label_states::#UnknownStates before: " << unk.size() << std::endl;
         unk = my_set_intersection(unk, visited);
-        std::cerr << "LOG::ReachableDeadEndDetector::label_states::#UnknownStates after: " << unk.size() << std::endl;
+        std::cerr << "LOG::SetDeadEndDetector::label_states::#UnknownStates after: " << unk.size() << std::endl;
         i++;
     } while (dead_end_count != dead.size());
-    std::cerr << "LOG::ReachableDeadEndDetector::label_states::#AliveStates before: " << alive.size() << std::endl;
+    std::cerr << "LOG::SetDeadEndDetector::label_states::#AliveStates before: " << alive.size() << std::endl;
     label_alive_states();
-    std::cerr << "LOG::ReachableDeadEndDetector::label_states::#AliveStates after: " << alive.size() << std::endl;
-    if(save_metadata)
+    std::cerr << "LOG::SetDeadEndDetector::label_states::#AliveStates after: " << alive.size() << std::endl;
+    std::cerr << "LOG::SetDeadEndDetector::label_states::last dead end found:\n"
+              << last_dead_end_found << std::endl;
+    if (save_metadata)
     {
         print(i);
     }
+}
+
+bool SetDeadEndDetector::iterative_states_labeling(int &iteration, const bool save_metadata)
+{
+    if (iteration == 0)
+    {
+        std::cerr << "LOG::SetDeadEndDetector::label_states::Starting forward search at " << get_elapsed_time() << std::endl;
+        forward_search();
+        std::cerr << "LOG::SetDeadEndDetector::label_states::Ending forward search at " << get_elapsed_time() << std::endl;
+    }
+    State last_dead_end;
+    int dead_end_count = dead.size();
+    std::unordered_set<State> visited;
+    std::cerr << "LOG::SetDeadEndDetector::label_states::Starting backward search #" << iteration << " at " << get_elapsed_time() << std::endl;
+    backward_search(visited);
+    std::cerr << "LOG::SetDeadEndDetector::label_states::Ending backward search #" << iteration << " at " << get_elapsed_time() << std::endl;
+    std::cerr << "LOG::SetDeadEndDetector::label_states::#DeadEndStates before: " << dead.size() << std::endl;
+    label_dead_states(visited, iteration, last_dead_end);
+    std::cerr << "LOG::SetDeadEndDetector::label_states::#DeadEndStates after: " << dead.size() << std::endl;
+    std::cerr << "LOG::SetDeadEndDetector::label_states::#UnknownStates before: " << unk.size() << std::endl;
+    unk = my_set_intersection(unk, visited);
+    std::cerr << "LOG::SetDeadEndDetector::label_states::#UnknownStates after: " << unk.size() << std::endl;
+    iteration++;
+    if (dead_end_count == dead.size())
+    {
+        std::cerr << "LOG::SetDeadEndDetector::label_states::#AliveStates before: " << alive.size() << std::endl;
+        label_alive_states();
+        std::cerr << "LOG::SetDeadEndDetector::label_states::#AliveStates after: " << alive.size() << std::endl;
+        if (save_metadata)
+        {
+            print(iteration);
+        }
+        // return true if the execution is complete
+        return true;
+    }
+    // return false if the execution is not complete
+    return false;
 }

@@ -6,6 +6,7 @@
 #define DEAD_END_LOG_FILE "log.txt"
 #define DEAD_END_DIR "dead-end/"
 #define DEAD_END_LABEL_FILE "labeled_states.txt"
+#define DEAD_END_METADATA_FILE "metadata.txt"
 
 
 enum StateLabel
@@ -66,7 +67,7 @@ class DeadEndDetector
             }
         };
         
-        virtual double is_deadend(const State &state) const = 0;
+        virtual double is_deadend(const State &state) const;
         virtual void label_states(const bool save_metadata=true) = 0;
         str get_statistics() const;
         str get_statistics_header() const;

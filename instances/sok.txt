@@ -1,0 +1,4 @@
+sokoban,c2_1
+sokoban,c3_1
+kitchen,c4_1
+travelling-salesman,c4_1

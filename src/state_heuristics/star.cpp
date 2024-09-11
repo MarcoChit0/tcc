@@ -7,69 +7,41 @@ Star::Star(const Task &task, const opt<std::shared_ptr<DeadEndDetector>> &dead_e
     set<State> non_goal_states;
     set<State> goal_states;
 
-    if (dead_end_detector.has_value())
+    auto is_good_action = [&](const State &state, const Action &action)
     {
-        stack.push_back(task.initial_state());
-        while (not stack.empty())
+        for (const State &successor_state : state.get_successors(action))
         {
-            State state = stack.back();
-            stack.pop_back();
-            for (const Action &action : state.get_applicable_actions(task.actions()))
+            if ((*(this->dead_end_detector))->is_deadend(successor_state) == 1.0f)
             {
-                bool is_usefull_action = true;
-                for (const State &successor_state : state.get_successors(action))
-                {
-                    if ((*(this->dead_end_detector))->is_deadend(successor_state) == 1.0f) // that action is no longer usefull
-                    {
-                        is_usefull_action = false;
-                        break;
-                    }
-                }
-                if (is_usefull_action)
-                {
-                    for (const State &successor_state : state.get_successors(action))
-                    {
-                        reverse_edges[successor_state].push_back(state);
-                        if (successor_state.is_goal(task.goal_condition()))
-                        {
-                            goal_states.insert(successor_state);
-                        }
-                        else
-                        {
-                            if (not non_goal_states.contains(successor_state))
-                            {
-                                stack.push_back(successor_state);
-                                non_goal_states.insert(successor_state);
-                            }
-                        }
-                    }
-                }
+                return false;
             }
         }
-    }
-    else
+        return true;
+    };
+    stack.push_back(task.initial_state());
+    while (not stack.empty())
     {
-        stack.push_back(task.initial_state());
-        while (not stack.empty())
+        State state = stack.back();
+        stack.pop_back();
+        for (const Action &action : state.get_applicable_actions(task.actions()))
         {
-            State state = stack.back();
-            stack.pop_back();
-            for (const Action &action : state.get_applicable_actions(task.actions()))
+            if (dead_end_detector.has_value() and not is_good_action(state, action))
             {
-                for (const State &successor_state : state.get_successors(action))
+                continue;
+            }
+            for (const State &successor_state : state.get_successors(action))
+            {
+                reverse_edges[successor_state].push_back(state);
+                if (successor_state.is_goal(task.goal_condition()))
                 {
-                    reverse_edges[successor_state].push_back(state);
-                    if (successor_state.is_goal(task.goal_condition()))
+                    goal_states.insert(successor_state);
+                }
+                else
+                {
+                    if (not non_goal_states.contains(successor_state))
                     {
-                        goal_states.insert(successor_state);
-                    }
-                    else
-                    {
-                        if (not non_goal_states.contains(successor_state))
-                        {
-                            stack.push_back(successor_state);
-                            non_goal_states.insert(successor_state);
-                        }
+                        stack.push_back(successor_state);
+                        non_goal_states.insert(successor_state);
                     }
                 }
             }

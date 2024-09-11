@@ -15,4 +15,9 @@ public:
     set<State> get_concrete_states(const PartialState &partial_state) const override;
 
     int size() const;
+
+    void clear_pdb()
+    {
+        functions_storage[Function{&Star::operator[], *this}].clear();
+    }
 };

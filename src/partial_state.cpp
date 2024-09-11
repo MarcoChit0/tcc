@@ -75,7 +75,7 @@ std::ostream& operator<<(std::ostream &out, const PartialState &self)
         {
             if (not first)
             {
-                out << ", ";
+                out << "; ";
             }
             out << fact;
             first = false;

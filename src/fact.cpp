@@ -10,6 +10,29 @@ Fact::Fact(const Variable &variable, const str &value, const mpz_class &hash)
 
 std::ostream& operator<<(std::ostream &out, const Fact &self)
 {
-    out << self.variable() << " = " << self.value();
+    if (self.value().starts_with("Atom "))
+    {
+        out << self.value().substr(5);
+    }
+    else
+    if (self.value().starts_with("NegatedAtom "))
+    {
+        out << "not(" << self.value().substr(12) << ")";
+    }
+    else
+    {
+        assert(self.value() == "<none of those>");
+        bool first = true;
+        for (const Fact &other_fact: self.variable().facts())
+        {
+            if (other_fact != self)
+            {
+                if (not first) {out << "/";} first = false;
+                assert(other_fact.value().starts_with("Atom "));
+                out << "not(" << other_fact.value().substr(5) << ")";
+            }
+        }
+    }
+
     return out;
 }

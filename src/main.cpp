@@ -1,5 +1,4 @@
 #include "./general.hpp"
-
 #include "./task.hpp"
 #include "./trie.hpp"
 #include "./policy_heuristics/count.hpp"
@@ -31,8 +30,9 @@
 #include "./dead_end_detectors/set_dead_end_detector.hpp"
 #include "./neural_networks/dead_end_neural_network.hpp"
 #include "./neural_networks/state_neural_network.hpp"
-
-#include "./metrics.hpp"
+#include "./task_solvers/gpm.hpp"
+#include "./metrics/metric.hpp"
+#include "./metrics/k2-metric.hpp"
 
 
 static Trie trie = Trie();
@@ -404,7 +404,7 @@ void select_dead_end_detector(const Task &task, str dead_end_detector_str, int d
     }
     else if (dead_end_detector_str == "set")
     {
-        optional_dead_end_detector = std::make_shared<SetDeadEndDetector>(task, time_limit_to_generate_state_space);
+        optional_dead_end_detector = std::make_shared<SetDeadEndDetector>(task);
     }
     else
     {
@@ -463,10 +463,32 @@ std::unique_ptr<Task::Solver> parse_task_solver(const std::string& task_solver, 
     {
         return std::make_unique<AndStar>(policy_heuristic, state_heuristic, AndStar::BREADTH_FIRST, dead_end_detector);
     }
+    else if(task_solver == "gpm")
+    {
+        return std::make_unique<GPM>(state_heuristic, dead_end_detector);
+    }
     else
     {
         throw std::domain_error("Invalid task solver.");
     }
+}
+
+vec<std::unique_ptr<Metric>> parse_metrics(const Task &task, const str &metrics_str)
+{
+    vec<str> metrics_tokens = split(metrics_str, ',');
+    vec<std::unique_ptr<Metric>> metrics;
+    for (const str &metric_str : metrics_tokens)
+    {
+        if (metric_str == "k2")
+        {
+            metrics.push_back(std::make_unique<K2Metric>(task));
+        }
+        else
+        {
+            throw std::domain_error("Invalid metric.");
+        }
+    }
+    return metrics;
 }
 
 
@@ -507,13 +529,20 @@ int main(int argc, char **argv)
     Sample::Treatment *sample_treatment = parse_sample_treatment(str(argv[9]));
     Policy::Heuristic *policy_heuristic = parse_policies_heuristics(task, state_heuristic, str(argv[3]), samples_generator, sample_treatment);
 
-    auto solver = parse_task_solver(str(argv[18]), *policy_heuristic, *state_heuristic, optional_dead_end_detector);
-    Policy opt_solution = solver->get_solution(task);
+    if(not str(argv[18]).empty())
+    {
+        auto solver = parse_task_solver(str(argv[18]), *policy_heuristic, *state_heuristic, optional_dead_end_detector);
+        Policy opt_solution = solver->get_solution(task);
+        print_end(argv, task, policy_heuristic, solver, opt_solution, optional_dead_end_detector, state_heuristic->size());
+    }
+
+    auto metrics = parse_metrics(task, str(argv[22]));
+    for (auto &metric : metrics)
+    {
+        metric->compute();
+    }
     
-    // std::cout << opt_solution << std::endl;
-    print_end(argv, task, policy_heuristic, solver, opt_solution, optional_dead_end_detector, state_heuristic->size());
     std::cerr << "LOG::main::end of [" << get_domain(str(argv[1])) << ":" << get_problem(str(argv[2])) << "]" << std::endl;
 
-    // find_reachable_states_that_do_not_lead_to_dead_end_states(task, *state_heuristic, optional_dead_end_detector);
     return 0;
 }

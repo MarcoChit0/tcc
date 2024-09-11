@@ -234,27 +234,6 @@ void ReachableDeadEndDetector::mark_bad_state_action_pairs(
     }
 }
 
-double ReachableDeadEndDetector::is_deadend(const State &state) const
-{
-    number_of_lookups++;
-    if (this->labeled_states.at(state.id) == HARD_DEAD_END)
-    {
-        number_of_hard_dead_end_lookups++;
-        number_of_useful_lookups++;
-        return 1.0f;
-    }
-    else if (this->labeled_states.at(state.id) == EASY_DEAD_END)
-    {
-        number_of_easy_dead_end_lookups++;
-        number_of_useful_lookups++;
-        return 1.0f;
-    }
-    else
-    {
-        return 0.0f;
-    }
-}
-
 ReachableDeadEndDetector::ReachableDeadEndDetector(const Task &task, const opt<int> &time_limit_seconds) : DeadEndDetector(task),
                                                                                                            time_limit_seconds(time_limit_seconds)
                                                                                                            {};
